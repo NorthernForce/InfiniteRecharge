@@ -5,15 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "RobotContainer.h"
+#include "subsystems/Drivetrain.h"
 
-RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
+Drivetrain::Drivetrain() {}
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
-}
-
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
+// This method will be called once per scheduler run
+void Drivetrain::Periodic() {}

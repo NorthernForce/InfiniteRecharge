@@ -5,15 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "RobotContainer.h"
+#pragma once
 
-RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
+#include <frc2/command/SubsystemBase.h>
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
-}
+class Drivetrain : public frc2::SubsystemBase {
+ public:
+  Drivetrain();
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
+  /**
+   * Will be called periodically whenever the CommandScheduler runs.
+   */
+  void Periodic();
+
+ private:
+  // Components (e.g. motor controllers and sensors) should generally be
+  // declared private and exposed only through public methods.
+};
