@@ -17,9 +17,11 @@ Drivetrain::Drivetrain() {
     rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower1, rev::CANSparkMax::MotorType::kBrushless));
     rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 
-    SetFollowers();
-    SetRamp();
-    InvertFollowers();
+////TODO: Why are these prototyped here in the Constructor, is this new syntax requirement??? They are already prototyped in the Header File...///
+////Commented Out Method "Ptototypes"
+    //  SetFollowers();
+    //  SetRamp();
+    //  InvertFollowers();
 }
 
 // This method will be called once per scheduler run
