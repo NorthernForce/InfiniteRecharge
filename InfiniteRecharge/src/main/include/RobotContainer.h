@@ -9,6 +9,9 @@
 
 #include <frc2/command/Command.h>
 
+#include "subsystems/Drivetrain.h"
+#include "OI.h"
+
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -19,9 +22,12 @@
 class RobotContainer {
  public:
   RobotContainer();
+  static std::shared_ptr<OI> oi;
+  static std::shared_ptr<Drivetrain> drivetrain;
 
  private:
   // The robot's subsystems and commands are defined here...
 
   void ConfigureButtonBindings();
+
 };

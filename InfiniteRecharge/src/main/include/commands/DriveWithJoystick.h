@@ -5,19 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+#pragma once
+
+#include <frc2/command/CommandBase.h>
+#include <frc2/command/CommandHelper.h>
 #include "RobotContainer.h"
 
+class DriveWithJoystick
+    : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
+ public:
+  DriveWithJoystick();
 
-std::shared_ptr<OI> RobotContainer::oi;
-std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
+  void Initialize() override;
 
-RobotContainer::RobotContainer() {
-  oi.reset(new OI);
-  drivetrain.reset(new Drivetrain);
-  
-  ConfigureButtonBindings();
-}
+  void Execute() override;
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
+  void End(bool interrupted) override;
+
+  bool IsFinished() override;
+};

@@ -7,12 +7,23 @@
 
 #pragma once
 
-/**
- * The Constants header provides a convenient place for teams to hold robot-wide
- * numerical or boolean constants.  This should not be used for any other
- * purpose.
- *
- * It is generally a good idea to place constants into subsystem- or
- * command-specific namespaces within this header, which can then be used where
- * they are needed.
- */
+namespace Constants {
+
+    namespace Drivetrain {
+
+        const int leftPrimary = 1;
+        const int leftFollower1 = 3;
+        const int leftFollower2 = 5;
+
+        const int rightPrimary = 1;
+        const int rightFollower1 = 3;
+        const int rightFollower2 = 5;
+
+    }
+
+    namespace OI {
+        const int driverController_id = 0;
+        const int manipulatorController_id = 1;
+    }
+
+}

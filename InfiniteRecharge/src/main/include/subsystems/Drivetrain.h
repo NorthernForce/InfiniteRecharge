@@ -8,17 +8,26 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <rev/CANSparkMax.h>
+#include <frc/Drive/DifferentialDrive.h>
 
 class Drivetrain : public frc2::SubsystemBase {
  public:
   Drivetrain();
-
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
+  void SetFollowers();
+  void SetRamp();
+  void InvertFollowers();
+  void Drive(double speed, double rotation);
   void Periodic();
 
  private:
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
+  std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
+  std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
+  std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
+
+  std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
+  std::shared_ptr<rev::CANSparkMax> rightFollowerSpark1;
+  std::shared_ptr<rev::CANSparkMax> rightFollowerSpark2;
+
+  std::shared_ptr<frc::DifferentialDrive> robotDrive;
 };
