@@ -22,7 +22,6 @@ Drivetrain::Drivetrain() {
     //  SetFollowers();
     //  SetRamp();
     //  InvertFollowers();
-
 }
 
 // This method will be called once per scheduler run
