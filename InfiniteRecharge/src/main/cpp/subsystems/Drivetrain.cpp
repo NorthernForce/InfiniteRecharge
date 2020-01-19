@@ -24,9 +24,6 @@ Drivetrain::Drivetrain() {
     //  SetRamp();
     //  InvertFollowers();
 =======
-    SetFollowers();
-    SetRamp();
-    InvertFollowers();
 >>>>>>> ad13abd5a1b5e35d99d26eede19d4b30f5bb5d22
 }
 
