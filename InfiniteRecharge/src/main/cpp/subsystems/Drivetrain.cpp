@@ -18,10 +18,16 @@ Drivetrain::Drivetrain() {
     rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 
 ////TODO: Why are these prototyped here in the Constructor, is this new syntax requirement??? They are already prototyped in the Header File...///
+<<<<<<< HEAD
 ////Commented Out Method "Ptototypes"
     //  SetFollowers();
     //  SetRamp();
     //  InvertFollowers();
+=======
+    SetFollowers();
+    SetRamp();
+    InvertFollowers();
+>>>>>>> ad13abd5a1b5e35d99d26eede19d4b30f5bb5d22
 }
 
 // This method will be called once per scheduler run
