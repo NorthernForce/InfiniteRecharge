@@ -17,13 +17,11 @@ Drivetrain::Drivetrain() {
     rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower1, rev::CANSparkMax::MotorType::kBrushless));
     rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 
-////Execute Methods to set up Motor Colntrollers (Followers, Ramping Rates, and Inverted Motors)
+////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetFollowers();
     SetRamp();
     InvertFollowers();
 }
-
-// This method will be called once per scheduler run
 
 void Drivetrain::SetFollowers() {
     leftFollowerSpark1->Follow(*leftPrimarySpark);
@@ -48,4 +46,5 @@ void Drivetrain::Drive(double speed, double rotation) {
     robotDrive->ArcadeDrive(speed, rotation);
 }
 
+// This method will be called once per scheduler run
 void Drivetrain::Periodic() {}
