@@ -96,6 +96,8 @@
   "numeric": "cpp",
   "string_view": "cpp",
   "iomanip": "cpp",
-  "cinttypes": "cpp"
+  "cinttypes": "cpp",
+  "shared_mutex": "cpp",
+  "stack": "cpp"
 }
 }
