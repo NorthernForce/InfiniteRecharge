@@ -20,20 +20,15 @@ Drivetrain::Drivetrain() {
 
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetFollowers();
-    SetRamp();
     InvertFollowers();
+    SetupControllers();
 }
 
 void Drivetrain::SetFollowers() {
     leftFollowerSpark1->Follow(*leftPrimarySpark);
-    leftFollowerSpark2->Follow(*leftPrimarySpark);
     rightFollowerSpark1->Follow(*rightPrimarySpark);
+    leftFollowerSpark2->Follow(*leftPrimarySpark);
     rightFollowerSpark2->Follow(*rightPrimarySpark);
-}
-
-void Drivetrain::SetRamp() {
-    leftPrimarySpark->SetClosedLoopRampRate(0.2);
-    rightPrimarySpark->SetClosedLoopRampRate(0.2);
 }
 
 void Drivetrain::InvertFollowers() {
@@ -43,13 +38,13 @@ void Drivetrain::InvertFollowers() {
     rightFollowerSpark2->SetInverted(true);
 }
 
-void Drivetrain::OutputCurrents() {
-    std::cerr << "LP: " << leftPrimarySpark->GetOutputCurrent() << '\n';
-    std::cerr << "RP: " << rightPrimarySpark->GetOutputCurrent() << '\n';
-    std::cerr << "LF1: " << leftFollowerSpark1->GetOutputCurrent() << '\n';
-    std::cerr << "RF1: " << rightFollowerSpark1->GetOutputCurrent() << '\n';
-    std::cerr << "LF2: " << leftFollowerSpark2->GetOutputCurrent() << '\n';
-    std::cerr << "RF2: " << rightFollowerSpark2->GetOutputCurrent() << '\n';
+void Drivetrain::SetupControllers() {
+    ConfigureController(*leftPrimarySpark);
+    ConfigureController(*rightPrimarySpark);
+    ConfigureController(*leftFollowerSpark1);
+    ConfigureController(*rightFollowerSpark1);
+    ConfigureController(*leftFollowerSpark2);
+    ConfigureController(*leftFollowerSpark2);
 }
 
 void Drivetrain::Drive(double speed, double rotation) {
@@ -57,6 +52,16 @@ void Drivetrain::Drive(double speed, double rotation) {
 }
 
 // This method will be called once per scheduler run
-void Drivetrain::Periodic() {
-    OutputCurrents();
+void Drivetrain::Periodic() {}
+
+// Sets each Spark motor controller with current limits, a speed ramp, and brake
+void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
+  controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
+  controller.SetSmartCurrentLimit(currentLimit);
+  if(!controller.IsFollower())
+  {
+    controller.SetClosedLoopRampRate(rampRate);
+    controller.SetOpenLoopRampRate(rampRate);
+  }
+  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }

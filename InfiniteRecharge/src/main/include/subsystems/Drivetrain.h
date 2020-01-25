@@ -15,11 +15,11 @@ class Drivetrain : public frc2::SubsystemBase {
  public:
   Drivetrain();
   void SetFollowers();
-  void SetRamp();
   void InvertFollowers();
-  void OutputCurrents();
+  void SetupControllers();
   void Drive(double speed, double rotation);
   void Periodic();
+  void ConfigureController(rev::CANSparkMax& controller);
 
  private:
   std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
@@ -31,4 +31,8 @@ class Drivetrain : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> rightFollowerSpark2;
 
   std::shared_ptr<frc::DifferentialDrive> robotDrive;
+
+  int currentLimit = 60;
+  int secondaryCurrentLimit = 80;
+  double rampRate = 0.2;
 };
