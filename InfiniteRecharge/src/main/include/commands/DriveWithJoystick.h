@@ -14,7 +14,7 @@
 class DriveWithJoystick
     : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
  public:
-  DriveWithJoystick();
+  DriveWithJoystick(std::function<double()> speed, std::function<double()> rotation);
 
   void Initialize() override;
 
@@ -23,4 +23,11 @@ class DriveWithJoystick
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+  double getSpeedMultiplier();
+
+ private:
+  std::function<double()> m_speed;
+  std::function<double()> m_rotation;
+
 };

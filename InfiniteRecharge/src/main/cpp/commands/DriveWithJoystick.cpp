@@ -6,8 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DriveWithJoystick.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
-DriveWithJoystick::DriveWithJoystick() {
+DriveWithJoystick::DriveWithJoystick(std::function<double()> speed, std::function<double()> rotation)
+  :  m_speed(speed), m_rotation(rotation) {
     AddRequirements(RobotContainer::drivetrain.get());
 }
 
@@ -16,8 +18,8 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  std::pair<double, double> steeringControls = RobotContainer::oi->getSteeringControls();
-  RobotContainer::drivetrain->Drive(steeringControls.first, steeringControls.second);
+  double speedMultiplier = RobotContainer::getSpeedMultiplier();
+  RobotContainer::drivetrain->Drive(m_speed() * speedMultiplier, m_rotation() * speedMultiplier);
 }
 
 // Called once the command ends or is interrupted.
