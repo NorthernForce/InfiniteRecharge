@@ -7,25 +7,21 @@
 
 #pragma once
 
-namespace Constants {
+#include <frc2/command/SubsystemBase.h>
+#include <frc/Compressor.h>
 
-    namespace Drivetrain {
+class PCM : public frc2::SubsystemBase {
+ public:
+  PCM();
 
-        const int leftPrimary = 4;
-        const int leftFollower1 = 6;
-        const int leftFollower2 = 2;
 
-        const int rightPrimary = 5;
-        const int rightFollower1 = 3;
-        const int rightFollower2 = 1;
+  /**
+   * Will be called periodically whenever the CommandScheduler runs.
+   */
+  void Periodic();
 
-    }
-
-    namespace OI {
-        const int driverController_id = 0;
-        const int manipulatorController_id = 1;
-    }
-
-    const int PCMCanBusID = 15;
-
-}
+ private:
+  // Components (e.g. motor controllers and sensors) should generally be
+  // declared private and exposed only through public methods.
+  std::shared_ptr<frc::Compressor> compressor;
+};

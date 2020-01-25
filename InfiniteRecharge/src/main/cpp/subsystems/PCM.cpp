@@ -5,27 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "subsystems/PCM.h"
+#include "Constants.h"
 
-namespace Constants {
-
-    namespace Drivetrain {
-
-        const int leftPrimary = 4;
-        const int leftFollower1 = 6;
-        const int leftFollower2 = 2;
-
-        const int rightPrimary = 5;
-        const int rightFollower1 = 3;
-        const int rightFollower2 = 1;
-
-    }
-
-    namespace OI {
-        const int driverController_id = 0;
-        const int manipulatorController_id = 1;
-    }
-
-    const int PCMCanBusID = 15;
-
+PCM::PCM() {
+    compressor.reset(new frc::Compressor(Constants::PCMCanBusID));
+    compressor->SetClosedLoopControl(true);
 }
+
+// This method will be called once per scheduler run
+void PCM::Periodic() {}
