@@ -9,7 +9,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
-#include <frc/Drive/DifferentialDrive.h>
+#include <frc/drive/DifferentialDrive.h>
 
 class Drivetrain : public frc2::SubsystemBase {
  public:
@@ -17,6 +17,7 @@ class Drivetrain : public frc2::SubsystemBase {
   void SetFollowers();
   void SetRamp();
   void InvertFollowers();
+  void OutputCurrents();
   void Drive(double speed, double rotation);
   void Periodic();
 

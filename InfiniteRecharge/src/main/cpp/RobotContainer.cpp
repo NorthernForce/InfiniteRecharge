@@ -20,7 +20,7 @@ RobotContainer::RobotContainer() {
   manipulatorController.reset(new frc::XboxController(Constants::OI::manipulatorController_id));
 
   drivetrain.reset(new Drivetrain);
-
+  
   InitDefaultCommand();
 
   ConfigureButtonBindings();
