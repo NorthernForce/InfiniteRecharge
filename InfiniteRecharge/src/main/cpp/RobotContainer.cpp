@@ -38,12 +38,12 @@ void RobotContainer::InitDefaultCommand() {
 }
 
 double RobotContainer::getSpeedMultiplier() {
-    double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
+  double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
 
-    if (speedMultiplier < 0)
-        speedMultiplier = 0;
-    else if (speedMultiplier > 1)
-        speedMultiplier = 1;
+  if (speedMultiplier < 0)
+      speedMultiplier = 0;
+  else if (speedMultiplier > 1)
+      speedMultiplier = 1;
 
-    return speedMultiplier;
+  return speedMultiplier;
 }
