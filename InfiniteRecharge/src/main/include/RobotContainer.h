@@ -32,6 +32,7 @@ class RobotContainer {
  private:
   // The robot's subsystems and commands are defined here...
   void InitSubsystems();
+  void InitControllers();
   void InitDefaultCommands();
   void ConfigureButtonBindings();
   static std::shared_ptr<frc::XboxController> driverController;
