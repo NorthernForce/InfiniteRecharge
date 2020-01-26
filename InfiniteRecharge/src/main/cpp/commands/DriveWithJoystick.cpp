@@ -20,7 +20,7 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  double speedMultiplier = RobotContainer::getSpeedMultiplier();
+  double speedMultiplier = RobotContainer::getDriveSpeedMultiplier();
   RobotContainer::drivetrain->Drive(m_speed() * speedMultiplier, m_rotation() * speedMultiplier);
 }
 

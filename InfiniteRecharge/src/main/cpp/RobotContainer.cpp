@@ -14,32 +14,41 @@ std::shared_ptr<frc::XboxController> RobotContainer::driverController;
 std::shared_ptr<frc::XboxController> RobotContainer::manipulatorController;
 
 std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
+std::shared_ptr<PCM> RobotContainer::pcm;
 
 RobotContainer::RobotContainer() {
-  driverController.reset(new frc::XboxController(Constants::OI::driverController_id));
-  manipulatorController.reset(new frc::XboxController(Constants::OI::manipulatorController_id));
+  InitSubsystems();
 
-  drivetrain.reset(new Drivetrain);
+  InitControllers();
+  InitDefaultCommands();
   
-  InitDefaultCommand();
-
   ConfigureButtonBindings();
 }
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
+void RobotContainer::InitControllers() {
+  driverController.reset(new frc::XboxController(Constants::OI::driverController_id));
+  manipulatorController.reset(new frc::XboxController(Constants::OI::manipulatorController_id));
 }
 
-void RobotContainer::InitDefaultCommand() {
+void RobotContainer::InitSubsystems() {
+  drivetrain.reset(new Drivetrain);
+  pcm.reset(new PCM);
+}
+
+void RobotContainer::InitDefaultCommands() {
   drivetrain->SetDefaultCommand(DriveWithJoystick(
     [this] { return driverController->GetY(frc::XboxController::kLeftHand); },
     [this] { return driverController->GetX(frc::XboxController::kRightHand); }
   ));
 }
 
-double RobotContainer::getSpeedMultiplier() {
-  double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
+void RobotContainer::ConfigureButtonBindings() {
+  // Configure your button bindings here
+}
 
+
+double RobotContainer::getDriveSpeedMultiplier() {
+  double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
   if (speedMultiplier < 0)
       speedMultiplier = 0;
   else if (speedMultiplier > 1)

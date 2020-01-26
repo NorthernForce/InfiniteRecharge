@@ -8,10 +8,12 @@
 #pragma once
 
 #include <frc2/command/Command.h>
+#include <frc/XboxController.h>
 
 #include "subsystems/Drivetrain.h"
+#include "subsystems/PCM.h"
+
 #include "commands/DriveWithJoystick.h"
-#include <frc/XboxController.h>
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -24,13 +26,14 @@ class RobotContainer {
  public:
   RobotContainer();
   static std::shared_ptr<Drivetrain> drivetrain;
-  static double getSpeedMultiplier();
+  static std::shared_ptr<PCM> pcm;
+  static double getDriveSpeedMultiplier();
 
  private:
   // The robot's subsystems and commands are defined here...
-
+  void InitSubsystems();
+  void InitDefaultCommands();
   void ConfigureButtonBindings();
-  void InitDefaultCommand();
   static std::shared_ptr<frc::XboxController> driverController;
   static std::shared_ptr<frc::XboxController> manipulatorController;
 

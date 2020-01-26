@@ -24,8 +24,6 @@ class DriveWithJoystick
 
   bool IsFinished() override;
 
-  double getSpeedMultiplier();
-
  private:
   std::function<double()> m_speed;
   std::function<double()> m_rotation;
