@@ -19,8 +19,8 @@ RobotContainer::RobotContainer() {
   oi.reset(new OI);
   oi->InitControllers();
 
-  oi->MapControllerButtons();
   InitDefaultCommands();
+  oi->MapControllerButtons();
 }
 
 void RobotContainer::InitSubsystems() {

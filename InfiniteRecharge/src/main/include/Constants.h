@@ -11,13 +11,13 @@ namespace Constants {
 
     namespace Drivetrain {
 
-        const int leftPrimary = 5;
-        const int leftFollower1 = 3;
-        const int leftFollower2 = 1;
+        const int leftPrimary = 4;
+        const int leftFollower1 = 6;
+        const int leftFollower2 = 2;
 
-        const int rightPrimary = 4;
-        const int rightFollower1 = 2;
-        const int rightFollower2 = 6;
+        const int rightPrimary = 5;
+        const int rightFollower1 = 1;
+        const int rightFollower2 = 3;
 
     }
 
