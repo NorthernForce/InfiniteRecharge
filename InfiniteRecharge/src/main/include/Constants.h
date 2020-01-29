@@ -26,6 +26,6 @@ namespace Constants {
         const int manipulatorController_id = 1;
     }
 
-    const int PCMCanBusID = 15;
+    const int PCMCanBusID = 12;
 
 }
