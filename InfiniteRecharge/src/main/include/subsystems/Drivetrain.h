@@ -14,8 +14,7 @@
 class Drivetrain : public frc2::SubsystemBase {
  public:
   Drivetrain();
-  void SetFollowers();
-  void InvertFollowers();
+  void SetInvertedFollowers();
   void SetupControllers();
   void Drive(double speed, double rotation);
   void Periodic();
