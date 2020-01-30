@@ -19,23 +19,15 @@ Drivetrain::Drivetrain() {
     robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
 
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
-    SetFollowers();
-    InvertFollowers();
+    SetInvertedFollowers();
     SetupControllers();
 }
 
-void Drivetrain::SetFollowers() {
-    leftFollowerSpark1->Follow(*leftPrimarySpark);
-    rightFollowerSpark1->Follow(*rightPrimarySpark);
-    leftFollowerSpark2->Follow(*leftPrimarySpark);
-    rightFollowerSpark2->Follow(*rightPrimarySpark);
-}
-
-void Drivetrain::InvertFollowers() {
-    leftFollowerSpark1->SetInverted(true);
-    rightFollowerSpark1->SetInverted(true);
-    leftFollowerSpark2->SetInverted(true);
-    rightFollowerSpark2->SetInverted(true);
+void Drivetrain::SetInvertedFollowers() {
+    leftFollowerSpark1->Follow(*leftPrimarySpark, true);
+    rightFollowerSpark1->Follow(*rightPrimarySpark, true);
+    leftFollowerSpark2->Follow(*leftPrimarySpark, true);
+    rightFollowerSpark2->Follow(*rightPrimarySpark, true);
 }
 
 void Drivetrain::SetupControllers() {
