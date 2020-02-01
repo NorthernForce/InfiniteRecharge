@@ -25,12 +25,12 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::InitSubsystems() {
   drivetrain.reset(new Drivetrain);
-  pcm.reset(new PCM);
+  // pcm.reset(new PCM);
 }
 
 void RobotContainer::InitDefaultCommands() {
   drivetrain->SetDefaultCommand(DriveWithJoystick(
     [this] { return oi->driverController->GetY(frc::XboxController::kLeftHand); },
-    [this] { return oi->driverController->GetX(frc::XboxController::kRightHand); }
+    [this] { return oi->driverController->GetX(frc::XboxController::kRightHand) *-1; }
   ));
 }
