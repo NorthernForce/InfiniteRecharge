@@ -20,16 +20,17 @@ class Drivetrain : public frc2::SubsystemBase {
   void Periodic();
   void ConfigureController(rev::CANSparkMax& controller);
 
+  static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
+  static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
+
+  static std::shared_ptr<frc::DifferentialDrive> robotDrive;
+
  private:
-  std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
 
-  std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   std::shared_ptr<rev::CANSparkMax> rightFollowerSpark1;
   std::shared_ptr<rev::CANSparkMax> rightFollowerSpark2;
-
-  std::shared_ptr<frc::DifferentialDrive> robotDrive;
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;

@@ -8,9 +8,7 @@
 #pragma once
 
 namespace Constants {
-
     namespace Drivetrain {
-
         const int leftPrimary = 4;
         const int leftFollower1 = 6;
         const int leftFollower2 = 2;
@@ -18,7 +16,6 @@ namespace Constants {
         const int rightPrimary = 5;
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
-
     }
 
     namespace OI {
@@ -26,6 +23,8 @@ namespace Constants {
         const int manipulatorController_id = 1;
     }
 
-    const int PCMCanBusID = 11;
-
+    namespace PCM {
+        const int PCMCanBusID = 11;
+        const std::pair<int, int> shifterDS_id(2,3);
+    }
 }

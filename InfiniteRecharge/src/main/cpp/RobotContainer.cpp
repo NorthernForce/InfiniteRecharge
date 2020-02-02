@@ -11,6 +11,7 @@
 
 std::shared_ptr<OI> RobotContainer::oi;
 std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
+std::shared_ptr<DriveShifter> RobotContainer::driveShifter;
 std::shared_ptr<PCM> RobotContainer::pcm;
 
 RobotContainer::RobotContainer() {
@@ -25,7 +26,8 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::InitSubsystems() {
   drivetrain.reset(new Drivetrain);
-  // pcm.reset(new PCM);
+  pcm.reset(new PCM);
+  driveShifter.reset(new DriveShifter);
 }
 
 void RobotContainer::InitDefaultCommands() {

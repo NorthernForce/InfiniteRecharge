@@ -5,13 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/PCM.h"
-#include "Constants.h"
+#pragma once
 
-PCM::PCM() {
-    compressor.reset(new frc::Compressor(Constants::PCM::PCMCanBusID));
-    compressor->SetClosedLoopControl(true);
-}
+#include <frc2/command/CommandBase.h>
+#include <frc2/command/CommandHelper.h>
 
-// This method will be called once per scheduler run
-void PCM::Periodic() {}
+#include "RobotContainer.h"
+#include "subsystems/DriveShifter.h"
+
+class ShiftGear
+    : public frc2::CommandHelper<frc2::CommandBase, ShiftGear> {
+ public:
+  using Gear = DriveShifter::Gear;
+  ShiftGear(Gear gear);
+  void Initialize() override;
+  bool IsFinished() override;
+
+ private:
+  Gear m_gear;
+  char logMessage[32];
+};

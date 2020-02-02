@@ -1,28 +1,28 @@
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc2/command/Command.h>
 #include "OI.h"
 #include "Constants.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 #include "triggers/ComboControl.h"
 #include "triggers/RawAxis.h"
 #include "triggers/RawButton.h"
 
 #include "commands/DriveWithJoystick.h"
-
-#include <frc2/command/Command.h>
+#include "commands/ShiftGear.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
 
 namespace {
-    static void WhenPressed(frc2::Trigger* trigger, frc2::Command* command) {
+    void WhenPressed(frc2::Trigger* trigger, frc2::Command* command) {
         trigger->WhenActive(command);
     }
 
-    static void WhenReleased(frc2::Trigger* trigger, frc2::Command* command) {
+    void WhenReleased(frc2::Trigger* trigger, frc2::Command* command) {
         trigger->WhenInactive(command);
     }
 
-    static void WhileHeld(frc2::Trigger* trigger, frc2::Command* command) {
+    void WhileHeld(frc2::Trigger* trigger, frc2::Command* command) {
         trigger->WhileActiveContinous(command);
     }
 }
@@ -35,7 +35,8 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    
+    WhenPressed(new RawButton<OI::Xbox>(driverController, Xbox::rt_bumper), new ShiftGear(ShiftGear::Gear::High));
+    WhenReleased(new RawButton<OI::Xbox>(driverController, Xbox::rt_bumper), new ShiftGear(ShiftGear::Gear::Low));
 }
 
 double OI::getDriveSpeedMultiplier() {
