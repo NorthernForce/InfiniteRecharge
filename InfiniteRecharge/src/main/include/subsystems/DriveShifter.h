@@ -21,6 +21,7 @@ class DriveShifter : public frc2::SubsystemBase {
   void Periodic();
   
   void Shift(Gear gear);
+  void CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM);
   Gear GetGear();
   bool IsShiftDone() const;
 
@@ -31,4 +32,5 @@ class DriveShifter : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> leftSideSpark;
   std::shared_ptr<rev::CANSparkMax> rightSideSpark;
   mutable int shiftCountdown;
+  const int velocityForShift = 4200;
 };

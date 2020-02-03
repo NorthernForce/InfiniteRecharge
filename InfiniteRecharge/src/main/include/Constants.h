@@ -16,6 +16,14 @@ namespace Constants {
         const int rightPrimary = 5;
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
+
+        namespace GearRatio {
+            const int low = 4.286;
+            const int high = 1.176;
+        };
+        const int motorCPR = 42;
+        const double wheelCPR_low = motorCPR * GearRatio::low;
+        const double wheelCPR_high = motorCPR * GearRatio::high;
     }
 
     namespace OI {

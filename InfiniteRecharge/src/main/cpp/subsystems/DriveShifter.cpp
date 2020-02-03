@@ -45,13 +45,17 @@ void DriveShifter::Shift(Gear gear) {
 			BeginShift(frc::DoubleSolenoid::Value::kForward);
             const auto leftSpeedInRPM = leftSideSpark->GetEncoder().GetVelocity();
 			const auto rightSpeedInRPM = rightSideSpark->GetEncoder().GetVelocity();
-			if(abs(leftSpeedInRPM) + abs(rightSpeedInRPM) > 100)
-			{
-				leftSideSpark->Set(leftSpeedInRPM > 0 ? 1 : -1);
-				rightSideSpark->Set(rightSpeedInRPM > 0 ? 1 : -1);
-			}
+			CheckVelocityForShift(rightSpeedInRPM, leftSpeedInRPM);
 		}
 		Drivetrain::robotDrive->SetSafetyEnabled(false);
+	}
+}
+
+void DriveShifter::CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM) {
+	int averageSpeedInRPM = (abs(leftSpeedInRPM) + abs(rightSpeedInRPM)) / 2;
+	if(averageSpeedInRPM > velocityForShift) {
+		leftSideSpark->Set(leftSpeedInRPM > 0 ? 1 : -1);
+		rightSideSpark->Set(rightSpeedInRPM > 0 ? 1 : -1);
 	}
 }
 
