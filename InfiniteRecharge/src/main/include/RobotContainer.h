@@ -12,6 +12,9 @@
 
 #include "subsystems/Drivetrain.h"
 #include "subsystems/PCM.h"
+#include "subsystems/DriveShifter.h"
+#include "subsystems/IMU.h"
+#include "subsystems/Navigation.h"
 
 #include "commands/DriveWithJoystick.h"
 
@@ -28,9 +31,11 @@ class RobotContainer {
   static std::shared_ptr<OI> oi;
   static std::shared_ptr<Drivetrain> drivetrain;
   static std::shared_ptr<PCM> pcm;
+  static std::shared_ptr<DriveShifter> driveShifter;
+  static std::shared_ptr<IMU> imu;
+  static std::shared_ptr<Navigation> navigation;
 
  private:
   void InitSubsystems();
   void InitDefaultCommands();
-
 };

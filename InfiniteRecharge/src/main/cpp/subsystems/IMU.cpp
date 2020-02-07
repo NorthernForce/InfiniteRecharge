@@ -5,13 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/PCM.h"
-#include "Constants.h"
+#include "subsystems/IMU.h"
+#include <frc/SPI.h>
 
-PCM::PCM() {
-    compressor.reset(new frc::Compressor(Constants::PCM::PCMCanBusID));
-    compressor->SetClosedLoopControl(true);
+IMU::IMU() {
+    ahrs.reset(new AHRS(SPI::Port::kMXP));
 }
 
-// This method will be called once per scheduler run
-void PCM::Periodic() {}
+void IMU::Periodic() {
+    double currentAccelX = ahrs->GetWorldLinearAccelX();
+    previousAccelX = currentAccelX;
+
+    double currentAccelY = ahrs->GetWorldLinearAccelY();
+    previousAccelY = currentAccelY;
+}
+
+double IMU::GetRollAngle() {
+    return ahrs->GetRoll();
+}
+
+double IMU::GetRotation() {
+    return ahrs->GetYaw();
+}

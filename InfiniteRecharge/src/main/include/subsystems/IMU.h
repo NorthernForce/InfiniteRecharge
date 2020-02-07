@@ -5,13 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/PCM.h"
-#include "Constants.h"
+#pragma once
 
-PCM::PCM() {
-    compressor.reset(new frc::Compressor(Constants::PCM::PCMCanBusID));
-    compressor->SetClosedLoopControl(true);
-}
+#include <frc2/command/SubsystemBase.h>
+#include <AHRS.h>
 
-// This method will be called once per scheduler run
-void PCM::Periodic() {}
+class IMU : public frc2::SubsystemBase {
+ public:
+  IMU();
+  void Periodic();
+  double GetRollAngle();
+  double GetRotation();
+
+ private:
+  std::shared_ptr<AHRS> ahrs;
+  double previousAccelX;
+  double previousAccelY;
+};

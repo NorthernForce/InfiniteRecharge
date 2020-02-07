@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/PCM.h"
-#include "Constants.h"
+#include "subsystems/Navigation.h"
+#include "RobotContainer.h"
 
-PCM::PCM() {
-    compressor.reset(new frc::Compressor(Constants::PCM::PCMCanBusID));
-    compressor->SetClosedLoopControl(true);
-}
+Navigation::Navigation() {}
 
 // This method will be called once per scheduler run
-void PCM::Periodic() {}
+void Navigation::Periodic() {
+    robotCurrentAngle = RobotContainer::imu->GetRotation();
+    speedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+}

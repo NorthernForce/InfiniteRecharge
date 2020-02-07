@@ -15,28 +15,27 @@ Drivetrain::Drivetrain() {
     rightPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::rightPrimary, rev::CANSparkMax::MotorType::kBrushless));
     rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower1, rev::CANSparkMax::MotorType::kBrushless));
     rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
-
-    robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
-
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
     SetupControllers();
+
+    robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
 }
 
 void Drivetrain::SetInvertedFollowers() {
     leftFollowerSpark1->Follow(*leftPrimarySpark, true);
-    rightFollowerSpark1->Follow(*rightPrimarySpark, true);
     leftFollowerSpark2->Follow(*leftPrimarySpark, true);
+    rightFollowerSpark1->Follow(*rightPrimarySpark, true);
     rightFollowerSpark2->Follow(*rightPrimarySpark, true);
 }
 
 void Drivetrain::SetupControllers() {
     ConfigureController(*leftPrimarySpark);
-    ConfigureController(*rightPrimarySpark);
     ConfigureController(*leftFollowerSpark1);
+    ConfigureController(*leftFollowerSpark2);
+    ConfigureController(*rightPrimarySpark);
     ConfigureController(*rightFollowerSpark1);
-    ConfigureController(*leftFollowerSpark2);
-    ConfigureController(*leftFollowerSpark2);
+    ConfigureController(*rightFollowerSpark2);
 }
 
 void Drivetrain::Drive(double speed, double rotation) {
@@ -56,4 +55,12 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
     controller.SetOpenLoopRampRate(rampRate);
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+}
+
+double Drivetrain::GetLeftRPM() {
+    return leftPrimarySpark->GetEncoder().GetVelocity();
+}
+
+double Drivetrain::GetRightRPM() {
+    return rightPrimarySpark->GetEncoder().GetVelocity();
 }

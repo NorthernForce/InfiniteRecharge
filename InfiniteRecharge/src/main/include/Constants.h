@@ -8,9 +8,7 @@
 #pragma once
 
 namespace Constants {
-
     namespace Drivetrain {
-
         const int leftPrimary = 4;
         const int leftFollower1 = 6;
         const int leftFollower2 = 2;
@@ -19,6 +17,13 @@ namespace Constants {
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
 
+        namespace GearRatio {
+            const int low = 4.286;
+            const int high = 1.176;
+        }
+        const int motorCPR = 42;
+        const double wheelCPR_low = motorCPR * GearRatio::low;
+        const double wheelCPR_high = motorCPR * GearRatio::high;
     }
 
     namespace OI {
@@ -26,6 +31,7 @@ namespace Constants {
         const int manipulatorController_id = 1;
     }
 
-    const int PCMCanBusID = 12;
-
+    namespace PCM {
+        const int PCMCanBusID = 11;
+    }
 }
