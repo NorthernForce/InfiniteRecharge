@@ -6,8 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Navigation.h"
+#include "RobotContainer.h"
 
 Navigation::Navigation() {}
 
 // This method will be called once per scheduler run
-void Navigation::Periodic() {}
+void Navigation::Periodic() {
+    robotCurrentAngle = RobotContainer::imu->GetRotation();
+    speedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+}

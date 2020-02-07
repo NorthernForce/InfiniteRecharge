@@ -12,4 +12,18 @@ IMU::IMU() {
     ahrs.reset(new AHRS(SPI::Port::kMXP));
 }
 
-void IMU::Periodic() {}
+void IMU::Periodic() {
+    double currentAccelX = ahrs->GetWorldLinearAccelX();
+    previousAccelX = currentAccelX;
+
+    double currentAccelY = ahrs->GetWorldLinearAccelY();
+    previousAccelY = currentAccelY;
+}
+
+double IMU::GetRollAngle() {
+    return ahrs->GetRoll();
+}
+
+double IMU::GetRotation() {
+    return ahrs->GetYaw();
+}
