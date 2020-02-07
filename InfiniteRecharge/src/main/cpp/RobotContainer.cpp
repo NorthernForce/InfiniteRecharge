@@ -7,19 +7,18 @@
 
 #include "RobotContainer.h"
 #include <frc2/command/RunCommand.h>
-#include "Constants.h"
+#include "Constants.h" 
 
 std::shared_ptr<OI> RobotContainer::oi;
 std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
 std::shared_ptr<DriveShifter> RobotContainer::driveShifter;
 std::shared_ptr<PCM> RobotContainer::pcm;
+std::shared_ptr<IMU> RobotContainer::imu;
+std::shared_ptr<Navigation> RobotContainer::navigation;
 
 RobotContainer::RobotContainer() {
+  oi.reset(new OI());
   InitSubsystems();
-
-  oi.reset(new OI);
-  oi->InitControllers();
-
   InitDefaultCommands();
   oi->MapControllerButtons();
 }
@@ -28,6 +27,8 @@ void RobotContainer::InitSubsystems() {
   drivetrain.reset(new Drivetrain);
   pcm.reset(new PCM);
   driveShifter.reset(new DriveShifter);
+  imu.reset(new IMU);
+  navigation.reset(new Navigation);
 }
 
 void RobotContainer::InitDefaultCommands() {

@@ -2,6 +2,7 @@
 #include <frc2/command/Command.h>
 #include "OI.h"
 #include "Constants.h"
+#include <frc2/command/button/JoystickButton.h>
 
 #include "triggers/ComboControl.h"
 #include "triggers/RawAxis.h"
@@ -9,25 +10,17 @@
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
+#include "commands/test.h"
+
+#include "frc2/command/button/Button.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
 
-namespace {
-    void WhenPressed(frc2::Trigger* trigger, frc2::Command* command) {
-        trigger->WhenActive(command);
-    }
-
-    void WhenReleased(frc2::Trigger* trigger, frc2::Command* command) {
-        trigger->WhenInactive(command);
-    }
-
-    void WhileHeld(frc2::Trigger* trigger, frc2::Command* command) {
-        trigger->WhileActiveContinous(command);
-    }
+OI::OI() {
+    frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
+    InitControllers();
 }
-
-OI::OI() {}
 
 void OI::InitControllers() {
     driverController.reset(new frc::XboxController(Constants::OI::driverController_id));
@@ -35,16 +28,14 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    WhenPressed(new RawButton<OI::Xbox>(driverController, Xbox::rt_bumper), new ShiftGear(ShiftGear::Gear::High));
-    WhenReleased(new RawButton<OI::Xbox>(driverController, Xbox::rt_bumper), new ShiftGear(ShiftGear::Gear::Low));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
 }
 
 double OI::getDriveSpeedMultiplier() {
     double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
     if (speedMultiplier < 0)
-        speedMultiplier = 0;
+        return speedMultiplier = 0;
     else if (speedMultiplier > 1)
-        speedMultiplier = 1;
-
-    return speedMultiplier;
+        return speedMultiplier = 1;
 }
