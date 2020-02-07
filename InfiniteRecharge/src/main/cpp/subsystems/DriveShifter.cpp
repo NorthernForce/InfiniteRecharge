@@ -20,8 +20,8 @@ DriveShifter::DriveShifter() :
   leftSideSpark(Drivetrain::leftPrimarySpark),
   rightSideSpark(Drivetrain::rightPrimarySpark)
 {
-    shifter.reset(new frc::DoubleSolenoid(Constants::PCM::shifterDS_id.first,Constants::PCM::shifterDS_id.second));
-    BeginShift(frc::DoubleSolenoid::Value::kForward);
+    shifter.reset(new frc::Solenoid(Constants::PCM::PCMCanBusID, 0));
+    BeginShift(false);
 }
 
 // This method will be called once per scheduler run
@@ -36,15 +36,15 @@ void DriveShifter::Shift(Gear gear) {
 		currentGear = gear;
 		if(currentGear == Gear::High)
 		{
-			BeginShift(frc::DoubleSolenoid::Value::kReverse);
+			BeginShift(false);
 			leftSideSpark->Set(0);
 			rightSideSpark->Set(0);
 		}
 		else
 		{
-			BeginShift(frc::DoubleSolenoid::Value::kForward);
-            const auto leftSpeedInRPM = leftSideSpark->GetEncoder().GetVelocity();
-			const auto rightSpeedInRPM = rightSideSpark->GetEncoder().GetVelocity();
+			BeginShift(true);
+            const auto leftSpeedInRPM = RobotContainer::drivetrain->GetLeftRPM();
+			const auto rightSpeedInRPM = RobotContainer::drivetrain->GetRightRPM();
 			CheckVelocityForShift(rightSpeedInRPM, leftSpeedInRPM);
 		}
 		Drivetrain::robotDrive->SetSafetyEnabled(false);
@@ -63,8 +63,8 @@ Gear DriveShifter::GetGear() {
     return currentGear;
 }
 
-void DriveShifter::BeginShift(const frc::DoubleSolenoid::Value value) {
-    shifter->Set(value);
+void DriveShifter::BeginShift(bool shift) {
+    shifter->Set(shift);
     shiftCountdown = 5;
 }
 

@@ -56,3 +56,11 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
+
+double Drivetrain::GetLeftRPM() {
+    return leftPrimarySpark->GetEncoder().GetVelocity();
+}
+
+double Drivetrain::GetRightRPM() {
+    return rightPrimarySpark->GetEncoder().GetVelocity();
+}

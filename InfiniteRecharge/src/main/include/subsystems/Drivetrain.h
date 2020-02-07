@@ -19,6 +19,8 @@ class Drivetrain : public frc2::SubsystemBase {
   void Drive(double speed, double rotation);
   void Periodic();
   void ConfigureController(rev::CANSparkMax& controller);
+  double GetRightRPM();
+  double GetLeftRPM();
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;

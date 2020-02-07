@@ -8,7 +8,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <frc/DoubleSolenoid.h>
+#include <frc/Solenoid.h>
 #include <rev/CANSparkMax.h>
 
 class DriveShifter : public frc2::SubsystemBase {
@@ -24,13 +24,13 @@ class DriveShifter : public frc2::SubsystemBase {
   void CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM);
   Gear GetGear();
   bool IsShiftDone() const;
+  void BeginShift(bool shift);
 
  private:
-  void BeginShift(const frc::DoubleSolenoid::Value value);
-  std::shared_ptr<frc::DoubleSolenoid> shifter;
+  std::shared_ptr<frc::Solenoid> shifter;
   Gear currentGear;
   std::shared_ptr<rev::CANSparkMax> leftSideSpark;
   std::shared_ptr<rev::CANSparkMax> rightSideSpark;
   mutable int shiftCountdown;
-  const int velocityForShift = 4200;
+  const int velocityForShift = 4000;
 };
