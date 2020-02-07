@@ -1,18 +1,12 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Command.h>
+#include "frc2/command/button/Button.h"
 #include "OI.h"
 #include "Constants.h"
-#include <frc2/command/button/JoystickButton.h>
-
-#include "triggers/ComboControl.h"
-#include "triggers/RawAxis.h"
-#include "triggers/RawButton.h"
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
-#include "commands/test.h"
 
-#include "frc2/command/button/Button.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -35,7 +29,8 @@ void OI::MapControllerButtons() {
 double OI::getDriveSpeedMultiplier() {
     double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
     if (speedMultiplier < 0)
-        return speedMultiplier = 0;
+        speedMultiplier = 0;
     else if (speedMultiplier > 1)
-        return speedMultiplier = 1;
+        speedMultiplier = 1;
+    return speedMultiplier;
 }
