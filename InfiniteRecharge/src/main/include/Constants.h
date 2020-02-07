@@ -33,6 +33,5 @@ namespace Constants {
 
     namespace PCM {
         const int PCMCanBusID = 11;
-        const std::pair<int, int> shifterDS_id(2,3);
     }
 }
