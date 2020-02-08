@@ -13,5 +13,24 @@ Navigation::Navigation() {}
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
-    speedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    // std::cout << "Distance Travelled- L: " << GetInchesTravelled().first << '\n';
+    // std::cout << "Distance travelled- R: " << GetInchesTravelled().second << '\n';
+}
+
+std::pair<double, double> Navigation::GetInchesTravelled() {
+    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first;
+    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second;
+    double leftDistance;
+    double rightDistance;
+
+    if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
+        leftDistance = ((5.88) * leftEncoderPos)/Constants::Encoders::wheelCircumference;
+        rightEncoderPos = (5.88 * rightEncoderPos)/Constants::Encoders::wheelCircumference;
+    }
+    else {
+        leftDistance = (21.43 * leftEncoderPos)/Constants::Encoders::wheelCircumference;
+        rightEncoderPos = (21.43 * rightEncoderPos)/Constants::Encoders::wheelCircumference;
+    }
+    return std::make_pair(leftDistance, rightDistance);
 }

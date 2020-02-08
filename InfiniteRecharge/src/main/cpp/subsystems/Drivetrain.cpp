@@ -7,6 +7,7 @@
 
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {    
     leftPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::leftPrimary, rev::CANSparkMax::MotorType::kBrushless));
@@ -43,7 +44,11 @@ void Drivetrain::Drive(double speed, double rotation) {
 }
 
 // This method will be called once per scheduler run
-void Drivetrain::Periodic() {}
+void Drivetrain::Periodic() {
+    // frc::SmartDashboard::PutNumber("Set Encoder Position: ", 0);
+    // double position = frc::SmartDashboard::GetNumber("Set Encoder Position: ", 0);
+    // SetEncoderPosition(position);
+}
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake
 void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
@@ -58,9 +63,26 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
 }
 
 double Drivetrain::GetLeftRPM() {
-    return leftPrimarySpark->GetEncoder().GetVelocity();
+    return leftPrimarySpark->GetEncoder().GetVelocity() * -1;
 }
 
 double Drivetrain::GetRightRPM() {
-    return rightPrimarySpark->GetEncoder().GetVelocity();
+    return rightPrimarySpark->GetEncoder().GetVelocity() * -1;
+}
+
+std::pair<double, double> Drivetrain::GetEncoderRotations() {
+    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
+    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
+    return std::make_pair(leftSideRotations, rightSideRotations);
+}
+
+std::pair<double, double> Drivetrain::GetEncoderCounts() {
+    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR;
+    double rightSideCounts = GetEncoderRotations().second / Constants::Encoders::motorCPR;
+    return std::make_pair(leftSideCounts, rightSideCounts);
+}
+
+void Drivetrain::SetEncoderPosition(double position) {
+    leftPrimarySpark->GetEncoder().SetPosition(position);
+    rightPrimarySpark->GetEncoder().SetPosition(position);
 }

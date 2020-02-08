@@ -63,6 +63,15 @@ Gear DriveShifter::GetGear() {
     return currentGear;
 }
 
+int DriveShifter::GetGearAsInt() {
+	int gear;
+	if (GetGear() == Gear::High)
+		gear = 1;
+	else
+		gear = 0;
+	return gear;
+}
+
 void DriveShifter::BeginShift(bool shift) {
     shifter->Set(shift);
     shiftCountdown = 5;

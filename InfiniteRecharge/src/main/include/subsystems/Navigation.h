@@ -14,6 +14,7 @@ class Navigation : public frc2::SubsystemBase {
  public:
   Navigation();
   void Periodic();
+  std::pair<double, double> GetInchesTravelled();
 
  private:
     double robotStartingAngle;
@@ -22,11 +23,12 @@ class Navigation : public frc2::SubsystemBase {
     double cameraStartingAngle;
     double cameraCurrentAngle;
     double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
-    double speedInRPM;
+
+    double averageSpeedInRPM;
+    double totalDistanceTravelled;
+    double lastDistanceTravelled;
 
     // const double cameraOffsetFromCenter;
-    const double wheelCPR = Constants::Drivetrain::motorCPR * Constants::Drivetrain::GearRatio::low;
-
     const std::pair<double, double> currentLocation;
-    double distanceToObstacle;
+    double distanceToObstacle;   
 };
