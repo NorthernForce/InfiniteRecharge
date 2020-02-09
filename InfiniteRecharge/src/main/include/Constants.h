@@ -17,7 +17,7 @@ namespace Constants {
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
 
-        namespace GearRatio {
+        namespace Gear {
             const int low = 4.286;
             const int high = 1.176;
         }
@@ -25,11 +25,11 @@ namespace Constants {
     namespace Encoders {
         const double pi = 3.14159265359;
         const int motorCPR = 42;
-        const double wheelCPR_low = motorCPR * Constants::Drivetrain::GearRatio::low;
-        const double wheelCPR_high = motorCPR * Constants::Drivetrain::GearRatio::high;
-        const double wheelCircumference = 6 * pi;
-        const double wheelCPR = motorCPR * Constants::Drivetrain::GearRatio::low;
-        const int motorHallDivisor = 5;
+        const double wheelCPR_low = motorCPR * Constants::Drivetrain::Gear::low;
+        const double wheelCPR_high = motorCPR * Constants::Drivetrain::Gear::high;
+        const double wheelCircum = 6 * pi;
+        const double wheelCPR = motorCPR * Constants::Drivetrain::Gear::low;
+        const int rotationMultiplier = 5;
     }
 
     namespace OI {

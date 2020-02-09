@@ -30,5 +30,5 @@ class Navigation : public frc2::SubsystemBase {
 
     // const double cameraOffsetFromCenter;
     const std::pair<double, double> currentLocation;
-    double distanceToObstacle;   
+    double distanceToObstacle;
 };
