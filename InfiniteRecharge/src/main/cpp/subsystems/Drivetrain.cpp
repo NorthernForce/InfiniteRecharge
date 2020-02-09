@@ -63,11 +63,11 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
 }
 
 double Drivetrain::GetLeftRPM() {
-    return leftPrimarySpark->GetEncoder().GetVelocity() * -1;
+    return leftPrimarySpark->GetEncoder().GetVelocity() * Constants::Encoders::rotationMultiplier * -1;
 }
 
 double Drivetrain::GetRightRPM() {
-    return rightPrimarySpark->GetEncoder().GetVelocity() * -1;
+    return rightPrimarySpark->GetEncoder().GetVelocity() * Constants::Encoders::rotationMultiplier * -1;
 }
 
 std::pair<double, double> Drivetrain::GetEncoderRotations() {
@@ -77,7 +77,7 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
 }
 
 std::pair<double, double> Drivetrain::GetEncoderCounts() {
-    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR;
+    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR ;
     double rightSideCounts = GetEncoderRotations().second / Constants::Encoders::motorCPR;
     return std::make_pair(leftSideCounts, rightSideCounts);
 }

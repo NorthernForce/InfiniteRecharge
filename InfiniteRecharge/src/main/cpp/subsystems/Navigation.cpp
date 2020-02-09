@@ -25,12 +25,12 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double rightDistance;
 
     if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
-        leftDistance = ((Constants::Encoders::rotationMultiplier * Constants::Drivetrain::Gear::high) * leftEncoderPos) / Constants::Encoders::wheelCircum;
-        rightEncoderPos = ((Constants::Encoders::rotationMultiplier * Constants::Drivetrain::Gear::high) * rightEncoderPos) / Constants::Encoders::wheelCircum;
+        leftDistance = (Constants::Drivetrain::Gear::high * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        rightEncoderPos = (Constants::Drivetrain::Gear::high * rightEncoderPos) / Constants::Encoders::wheelCircum;
     }
     else {
-        leftDistance = ((Constants::Encoders::rotationMultiplier * Constants::Drivetrain::Gear::low) * leftEncoderPos) / Constants::Encoders::wheelCircum;
-        rightEncoderPos = ((Constants::Encoders::rotationMultiplier * Constants::Drivetrain::Gear::low) * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        leftDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        rightEncoderPos = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
     }
     return std::make_pair(leftDistance, rightDistance);
 }
