@@ -17,13 +17,13 @@ namespace Constants {
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
 
-        namespace GearRatio {
-            const int low = 4.286;
-            const int high = 1.176;
+        namespace Gear {
+            const double low = 60/14;
+            const double high = 40/34;
         }
         const int motorCPR = 42;
-        const double wheelCPR_low = motorCPR * GearRatio::low;
-        const double wheelCPR_high = motorCPR * GearRatio::high;
+        const double wheelCPR_low = motorCPR * Gear::low;
+        const double wheelCPR_high = motorCPR * Gear::high;
     }
 
     namespace OI {
@@ -35,8 +35,15 @@ namespace Constants {
         const int PCMCanBusID = 11;
     }
 
+<<<<<<< Updated upstream
     namespace Servo {
         const int panServo = 0;
         const int tiltServo = 1;
     }
 }
+=======
+    namespace Navigation {
+        const int targetDistanceSensor_id = 0;
+    }
+}
+>>>>>>> Stashed changes
