@@ -17,6 +17,8 @@ void SweepAICamera::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
   //Query AI for Powercell in frame
+  
+  /*
   if(!TargFound)
   {
     RobotContainer::cameraMount->SweepForPowercells();
@@ -25,6 +27,7 @@ void SweepAICamera::Execute() {
   {
     End(true);
   }
+  */
 }
 
 // Called once the command ends or is interrupted.
