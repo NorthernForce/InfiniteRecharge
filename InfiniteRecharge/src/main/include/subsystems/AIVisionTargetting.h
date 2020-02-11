@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/* <-- Remove once Ready
+
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
@@ -21,6 +23,9 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
+
+  /* <-- Remove Once Ready
+
   void Periodic();
 
  private:
@@ -32,3 +37,5 @@ enum class Target {
   UpperGoal,
   LowerGoal
 };
+
+*/
