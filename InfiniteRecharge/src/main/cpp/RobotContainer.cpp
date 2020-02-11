@@ -15,6 +15,8 @@ std::shared_ptr<DriveShifter> RobotContainer::driveShifter;
 std::shared_ptr<PCM> RobotContainer::pcm;
 std::shared_ptr<IMU> RobotContainer::imu;
 std::shared_ptr<Navigation> RobotContainer::navigation;
+std::shared_ptr<CameraMount> RobotContainer::cameraMount;
+// std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());
@@ -29,6 +31,8 @@ void RobotContainer::InitSubsystems() {
   driveShifter.reset(new DriveShifter);
   imu.reset(new IMU);
   navigation.reset(new Navigation);
+  // aiVisionTargetting.reset(new AIVisionTargetting);
+  cameraMount.reset(new CameraMount);
 }
 
 void RobotContainer::InitDefaultCommands() {

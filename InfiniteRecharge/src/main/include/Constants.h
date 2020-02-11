@@ -40,4 +40,9 @@ namespace Constants {
     namespace PCM {
         const int PCMCanBusID = 11;
     }
+
+    namespace Servo {
+        const int panServo = 0;
+        const int tiltServo = 1;
+    }
 }
