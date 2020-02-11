@@ -6,7 +6,6 @@
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
-#include "commands/SweepAICamera.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -24,8 +23,6 @@ void OI::InitControllers() {
 void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
-
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
 }
 
 double OI::getDriveSpeedMultiplier() {

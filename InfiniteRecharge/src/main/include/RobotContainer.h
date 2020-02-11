@@ -15,8 +15,6 @@
 #include "subsystems/DriveShifter.h"
 #include "subsystems/IMU.h"
 #include "subsystems/Navigation.h"
-#include "subsystems/CameraMount.h"
-// #include "subsystems/AIVisionTargetting.h"
 
 #include "commands/DriveWithJoystick.h"
 
@@ -36,8 +34,6 @@ class RobotContainer {
   static std::shared_ptr<DriveShifter> driveShifter;
   static std::shared_ptr<IMU> imu;
   static std::shared_ptr<Navigation> navigation;
-  // static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
-  static std::shared_ptr<CameraMount> cameraMount;
 
  private:
   void InitSubsystems();
