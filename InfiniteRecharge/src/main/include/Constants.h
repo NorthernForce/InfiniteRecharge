@@ -35,7 +35,6 @@ namespace Constants {
         const int PCMCanBusID = 11;
     }
 
-<<<<<<< Updated upstream
     namespace Servo {
         const int panServo = 0;
         const int tiltServo = 1;
@@ -45,9 +44,3 @@ namespace Constants {
         const int ultrasonicRangeFinder = 0; // analog port 0
     }
 }
-=======
-    namespace Navigation {
-        const int targetDistanceSensor_id = 0;
-    }
-}
->>>>>>> Stashed changes

@@ -25,7 +25,7 @@ class Navigation : public frc2::SubsystemBase {
     double speedInRPM;
 
     // const double cameraOffsetFromCenter;
-    const double wheelCPR = Constants::Drivetrain::motorCPR * Constants::Drivetrain::GearRatio::low;
+    const double wheelCPR = Constants::Drivetrain::motorCPR * Constants::Drivetrain::Gear::low;
 
     const std::pair<double, double> currentLocation;
     double distanceToObstacle;
