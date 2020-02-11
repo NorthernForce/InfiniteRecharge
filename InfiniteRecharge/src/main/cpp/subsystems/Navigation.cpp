@@ -13,5 +13,26 @@ Navigation::Navigation() {}
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
-    speedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    averageSpeedInRPM = ((RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM()) / 2);
+    std::cout << "Distance travelled- L: " << GetInchesTravelled().first << '\n';
+    std::cout << "Distance travelled- R: " << GetInchesTravelled().second << '\n';
+    std::cout << "Encoder Position- L: " << RobotContainer::drivetrain->GetEncoderRotations().first << '\n';
+    std::cout << "Encoder Position- R: " << RobotContainer::drivetrain->GetEncoderRotations().second << '\n';
+}
+
+std::pair<double, double> Navigation::GetInchesTravelled() {
+    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first;
+    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second;
+    double leftDistance;
+    double rightDistance;
+
+    if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
+        leftDistance = leftEncoderPos * 71.52305;
+        rightDistance = rightEncoderPos * 71.52305;
+    }
+    else {
+        leftDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        rightDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
+    }
+    return std::make_pair(leftDistance, rightDistance);
 }

@@ -62,5 +62,22 @@ double Drivetrain::GetLeftRPM() {
 }
 
 double Drivetrain::GetRightRPM() {
-    return rightPrimarySpark->GetEncoder().GetVelocity();
+    return rightPrimarySpark->GetEncoder().GetVelocity() * Constants::Encoders::rotationMultiplier * -1;
+}
+
+std::pair<double, double> Drivetrain::GetEncoderRotations() {
+    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
+    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
+    return std::make_pair(leftSideRotations, rightSideRotations);
+}
+
+std::pair<double, double> Drivetrain::GetEncoderCounts() {
+    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR ;
+    double rightSideCounts = GetEncoderRotations().second / Constants::Encoders::motorCPR;
+    return std::make_pair(leftSideCounts, rightSideCounts);
+}
+
+void Drivetrain::SetEncoderPosition(double position) {
+    leftPrimarySpark->GetEncoder().SetPosition(position);
+    rightPrimarySpark->GetEncoder().SetPosition(position);
 }
