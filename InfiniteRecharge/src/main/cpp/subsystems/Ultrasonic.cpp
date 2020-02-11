@@ -7,7 +7,28 @@
 
 #include "subsystems/Ultrasonic.h"
 
+
 Ultrasonic::Ultrasonic() {}
 
 // This method will be called once per scheduler run
-void Ultrasonic::Periodic() {}
+void Ultrasonic::Periodic() {
+    if (ultrasonicOn) {
+        distance = analogUltrasonic.GetValue() * ValueToInches;
+    }
+
+    else {
+        distance = 0;
+    }
+}
+
+double Ultrasonic::GetDistance() {
+    return distance;
+}
+
+void Ultrasonic::Enable() {
+    ultrasonicState = ultrasonicOn;
+}
+
+void Ultrasonic::Disable() {
+    ultrasonicState = ultrasonicOff;
+}

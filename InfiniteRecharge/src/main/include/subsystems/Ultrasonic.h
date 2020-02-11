@@ -8,6 +8,8 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <frc/AnalogInput.h>
+#include "Constants.h"
 
 class Ultrasonic : public frc2::SubsystemBase {
  public:
@@ -18,7 +20,22 @@ class Ultrasonic : public frc2::SubsystemBase {
    */
   void Periodic();
 
+  double GetDistance();
+  void Enable();
+  void Disable();
+
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  static constexpr double ValueToInches = 0.125;
+
+  double distance;
+
+  bool ultrasonicState;
+
+  frc::AnalogInput analogUltrasonic{Constants::Ultrasonic::ultrasonicRangeFinder};
+
+  const static bool ultrasonicOn = true;
+  const static bool ultrasonicOff = false;
 };

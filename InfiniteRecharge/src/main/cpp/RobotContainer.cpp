@@ -33,6 +33,7 @@ void RobotContainer::InitSubsystems() {
   navigation.reset(new Navigation);
   aiVisionTargetting.reset(new AIVisionTargetting);
   cameraMount.reset(new CameraMount);
+  ultrasonic.reset(new Ultrasonic);
 }
 
 void RobotContainer::InitDefaultCommands() {

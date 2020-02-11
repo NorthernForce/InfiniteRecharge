@@ -39,4 +39,8 @@ namespace Constants {
         const int panServo = 0;
         const int tiltServo = 1;
     }
+
+    namespace Ultrasonic {
+        const int ultrasonicRangeFinder = 0; // analog port 0
+    }
 }
