@@ -75,11 +75,14 @@ void CameraMount::SetAngles(int panAngle, int tiltAngle)
 
 bool CameraMount::SweepForPowercells()
 {
-    Tilt(-15);
+    Tilt(0);
 
     for(int i=-91; i<=90; i++)
     {
         Pan(i);
+        std::cout << "Pan" << GetCurrentPan();
+        std::cout << "Tilt" << GetCurrentTilt();
+
         /* <-- Remove; AIVision
         if (RobotContainer::aiVisionTargetting->CheckForTarget()) 
         {

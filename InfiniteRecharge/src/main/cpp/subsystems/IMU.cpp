@@ -27,3 +27,11 @@ double IMU::GetRollAngle() {
 double IMU::GetRotation() {
     return ahrs->GetYaw();
 }
+
+void IMU::Reset() {
+    ahrs->Reset();
+}
+
+void IMU::Initialize() {
+    ahrs->ResetDisplacement();
+}

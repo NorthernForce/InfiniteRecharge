@@ -16,6 +16,8 @@ class IMU : public frc2::SubsystemBase {
   void Periodic();
   double GetRollAngle();
   double GetRotation();
+  void Reset();
+  void Initialize();
 
  private:
   std::shared_ptr<AHRS> ahrs;

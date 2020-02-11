@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/SweepAICamera.h"
+#include <iostream>
 
 SweepAICamera::SweepAICamera() {
   AddRequirements(RobotContainer::cameraMount.get());
@@ -16,7 +17,7 @@ void SweepAICamera::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
-
+  std::cout << "running sweep command\n"; 
   RobotContainer::cameraMount->SweepForPowercells();
 
   //Query AI for Powercell in frame
