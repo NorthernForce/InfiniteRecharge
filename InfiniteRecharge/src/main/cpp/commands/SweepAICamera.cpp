@@ -16,6 +16,9 @@ void SweepAICamera::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
+
+  RobotContainer::cameraMount->SweepForPowercells();
+
   //Query AI for Powercell in frame
   
   /*

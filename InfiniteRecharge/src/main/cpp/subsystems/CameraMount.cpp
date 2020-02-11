@@ -77,7 +77,7 @@ bool CameraMount::SweepForPowercells()
 {
     Tilt(-15);
 
-    for(int i=-136; i<=135; i++)
+    for(int i=-91; i<=90; i++)
     {
         Pan(i);
         /* <-- Remove; AIVision
@@ -88,7 +88,7 @@ bool CameraMount::SweepForPowercells()
         }
         */
     }
-    for(int i=135; i>=-135; i--) 
+    for(int i=91; i>=-90; i--) 
     {
         Pan(i);
         /* <-- Remove; AiVision
