@@ -17,6 +17,7 @@ std::shared_ptr<IMU> RobotContainer::imu;
 std::shared_ptr<Navigation> RobotContainer::navigation;
 std::shared_ptr<CameraMount> RobotContainer::cameraMount;
 // std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
+std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());

@@ -8,7 +8,9 @@
 #include "subsystems/Ultrasonic.h"
 
 
-Ultrasonic::Ultrasonic() {}
+Ultrasonic::Ultrasonic() {\
+    ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
+}
 
 // This method will be called once per scheduler run
 void Ultrasonic::Periodic() {
@@ -22,13 +24,16 @@ void Ultrasonic::Periodic() {
 }
 
 double Ultrasonic::GetDistance() {
+    distance = analogUltrasonic.GetValue() * ValueToInches;
     return distance;
 }
 
 void Ultrasonic::Enable() {
     ultrasonicState = ultrasonicOn;
+    ctrl->Set(ultrasonicOn);
 }
 
 void Ultrasonic::Disable() {
     ultrasonicState = ultrasonicOff;
+    ctrl->Set(ultrasonicOff);
 }
