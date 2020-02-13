@@ -6,16 +6,19 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Ultrasonic.h"
+#include <iostream>
 
+//all digital stuff is commented out
 
-Ultrasonic::Ultrasonic() {\
-    ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
+Ultrasonic::Ultrasonic() {
+    //ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
 }
 
 // This method will be called once per scheduler run
 void Ultrasonic::Periodic() {
     if (ultrasonicOn) {
         distance = analogUltrasonic.GetValue() * ValueToInches;
+        std::cout << distance << "\n";
     }
 
     else {
@@ -30,10 +33,10 @@ double Ultrasonic::GetDistance() {
 
 void Ultrasonic::Enable() {
     ultrasonicState = ultrasonicOn;
-    ctrl->Set(ultrasonicOn);
+   // ctrl->Set(ultrasonicOn);
 }
 
 void Ultrasonic::Disable() {
     ultrasonicState = ultrasonicOff;
-    ctrl->Set(ultrasonicOff);
+  //  ctrl->Set(ultrasonicOff);
 }

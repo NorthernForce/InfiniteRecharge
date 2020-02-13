@@ -10,7 +10,9 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc/AnalogInput.h>
 #include "Constants.h"
-#include <frc/DigitalOutput.h>
+//#include <frc/DigitalOutput.h>
+
+//all digital stuff is commented out
 
 class Ultrasonic : public frc2::SubsystemBase {
  public:
@@ -37,7 +39,7 @@ class Ultrasonic : public frc2::SubsystemBase {
 
   frc::AnalogInput analogUltrasonic{Constants::Ultrasonic::ultrasonicRangeFinder};
 
-  std::shared_ptr<frc::DigitalOutput> ctrl;
+  //std::shared_ptr<frc::DigitalOutput> ctrl;
 
   const static bool ultrasonicOn = true;
   const static bool ultrasonicOff = false;

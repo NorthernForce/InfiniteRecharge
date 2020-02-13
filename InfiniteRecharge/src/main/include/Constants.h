@@ -48,6 +48,6 @@ namespace Constants {
 
     namespace Ultrasonic {
         const int ultrasonicRangeFinder = 0; // analog port 0
-        const int digitalCtrlPort = 9; 
+      //  const int digitalCtrlPort = 9; 
     }
 }
