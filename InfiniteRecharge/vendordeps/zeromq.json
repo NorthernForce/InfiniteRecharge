@@ -1,0 +1,24 @@
+{
+    "fileName": "zeormq.json",
+    "name": "zeromq",
+    "version": "4.3.0",
+    "uuid": "a903d854-a8b9-4d8a-8164-0a2598e64de2",
+    "mavenUrls": [
+        "https://file.tavsys.net/frc/maven/"
+    ],
+    "jsonUrl": "https://file.tavsys.net/frc/zeromq.json",
+    "cppDependencies": [
+        {
+            "groupId": "com.frc3512",
+            "artifactId": "zeromq-cpp",
+            "version": "4.3.0",
+            "libName": "libzeromq",
+            "headerClassifier": "headers",
+            "sharedLibrary": false,
+            "skipInvalidPlatforms": true,
+            "binaryPlatforms": [
+                "linuxathena"
+            ]
+        }
+    ]
+}
