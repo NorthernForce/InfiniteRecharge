@@ -4,9 +4,12 @@
 #include "OI.h"
 #include "Constants.h"
 
+#include "frc2/command/button/Button.h"
+#include <frc2/command/button/JoystickButton.h>
+
+#include "commands/SweepAICamera.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
-#include "commands/SweepAICamera.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
