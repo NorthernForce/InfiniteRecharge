@@ -24,7 +24,7 @@
 #include <vector>
 #include <utility>
 
-#include <ZeroMQ/zmq.h>
+#include <utilities/ZeroMQ/zmq.h>
 
 #include "compatibility.hpp"
 #include "frame.hpp"

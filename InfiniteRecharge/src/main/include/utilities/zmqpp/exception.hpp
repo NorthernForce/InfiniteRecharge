@@ -20,7 +20,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <ZeroMQ/zmq.h>
+#include <utilities/ZeroMQ/zmq.h>
 
 #include "compatibility.hpp"
 

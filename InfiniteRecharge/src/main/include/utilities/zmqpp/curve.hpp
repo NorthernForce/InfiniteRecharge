@@ -18,7 +18,7 @@
 #define ZMQPP_CURVE_HPP_
 
 #include <string>
-#include <ZeroMQ/zmq.h>
+#include <utilities/ZeroMQ/zmq.h>
 
 namespace zmqpp {
 /**

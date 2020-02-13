@@ -21,7 +21,7 @@
 #include <string>
 #include <list>
 
-#include <ZeroMQ/zmq.h>
+#include <utilities/ZeroMQ/zmq.h>
 
 #include "compatibility.hpp"
 

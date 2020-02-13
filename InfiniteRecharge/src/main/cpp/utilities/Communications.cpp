@@ -13,7 +13,7 @@ zmqpp::socket SocketHandler::GetSocket() {
 }
 
 void SocketHandler::EstablishConnection(zmqpp::socket socket) {
-    socket.bind("tcp://" + jetsonIP + ':' + std::to_string(port));
+    socket.bind("tcp://" + jetsonNanoIP + ':' + std::to_string(port));
 }
 
 void SocketHandler::SendRequest(zmqpp::socket socket, std::string request) {
