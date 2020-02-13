@@ -4,13 +4,8 @@
 #include "Constants.h"
 #include <frc2/command/button/JoystickButton.h>
 
-#include "triggers/ComboControl.h"
-#include "triggers/RawAxis.h"
-#include "triggers/RawButton.h"
-
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
-#include "commands/test.h"
 
 #include "frc2/command/button/Button.h"
 

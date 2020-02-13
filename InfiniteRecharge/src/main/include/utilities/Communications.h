@@ -1,4 +1,4 @@
-#include "libzmq/zmqpp/zmqpp.hpp"
+#include "zmqpp/zmqpp.hpp"
 #include <string>
 
 class SocketHandler {
@@ -11,6 +11,6 @@ class SocketHandler {
     std::pair<std::string, double> ParseRequestForData(std::string request);
 
  private:
-    std::string jetsonIP = "10.1.72.7";
+    std::string jetsonIP = "10.1.72.4";
     int port = 5555;
 };
