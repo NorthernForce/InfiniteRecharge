@@ -10,7 +10,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <utilities/ZeroMQ/zmq.h>
+#include <ZeroMQ/zmq.h>
 #include "compatibility.hpp"
 
 namespace zmqpp

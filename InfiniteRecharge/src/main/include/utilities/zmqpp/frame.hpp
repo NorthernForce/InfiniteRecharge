@@ -17,7 +17,7 @@
 #ifndef ZMQPP_MESSAGE_FRAME_HPP_
 #define ZMQPP_MESSAGE_FRAME_HPP_
 
-#include <utilities/ZeroMQ/zmq.h>
+#include <ZeroMQ/zmq.h>
 
 #include "compatibility.hpp"
 
