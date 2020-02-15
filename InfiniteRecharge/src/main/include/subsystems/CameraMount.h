@@ -37,14 +37,13 @@ class CameraMount : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
-  int currentPan;
-  int currentTilt;
+  static int currentPan;
+  static int currentTilt;
   int previousPan;
   int previousTilt;
   char panDirection;
   char tiltDirection;
   int servoAngleToTarget;
-  static int sweepDegree;
   static int sweepPassCount;
 
   std::shared_ptr<frc::Servo> panServo;
