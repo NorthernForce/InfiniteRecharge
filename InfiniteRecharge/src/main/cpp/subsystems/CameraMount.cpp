@@ -87,17 +87,17 @@ void CameraMount::SweepForPowercells() {
     RobotContainer::cameraMount->Tilt(90);
 
     if (sweepPassCount % 2 == 0) {
-        if (currentPan <= 180) {
+        if (currentPan <= 160) {
             RobotContainer::cameraMount->Pan(currentPan);
             currentPan++;
         }
     } else if (sweepPassCount % 2 == 1) {
-        if (currentPan <= 180) {
+        if (currentPan <= 160) {
             RobotContainer::cameraMount->Pan(currentPan);
             currentPan--;
         }
     }
-    if (currentPan == 0 || currentPan == 180)
+    if (currentPan == 30 || currentPan == 160)
         sweepPassCount++;
 }
 
