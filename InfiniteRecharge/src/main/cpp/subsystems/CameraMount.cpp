@@ -7,107 +7,100 @@
 
 #include "subsystems/CameraMount.h"
 #include "Constants.h"
+#include <chrono>
+#include <thread>
 
-CameraMount::CameraMount() 
-{
+int CameraMount::sweepPassCount;
+int CameraMount::sweepDegree;
+
+CameraMount::CameraMount() {
     panServo.reset(new frc::Servo(Constants::Servo::panServo));
     tiltServo.reset(new frc::Servo(Constants::Servo::tiltServo));
     Init();
+    SetToZero();
 }
 
-void CameraMount::Init()
-{
+void CameraMount::Init() {
     currentPan = 0;
     currentTilt = 0;
     previousPan = 0;
     previousTilt = 0;
     panDirection = 0;
     tiltDirection = 0;
+    sweepDegree = -90;
 }
 
-void CameraMount::Pan(int degrees)
-{
+void CameraMount::Pan(int degrees) {
     previousPan = currentPan;
     currentPan = degrees;
     panServo->SetAngle(degrees);
 }
 
-int CameraMount::GetCurrentPan()
-{
+int CameraMount::GetCurrentPan() {
     currentPan = panServo->GetAngle();
     return currentPan;
 }
 
-int CameraMount::GetPreviousPan()
-{
+int CameraMount::GetPreviousPan() {
     return previousPan;
 }
 
-void CameraMount::Tilt(int degrees)
-{
+void CameraMount::Tilt(int degrees) {
     previousTilt = currentTilt;
     currentTilt = degrees;
     tiltServo->SetAngle(degrees);
 }
 
-int CameraMount::GetCurrentTilt()
-{
+int CameraMount::GetCurrentTilt() {
     currentTilt = tiltServo->GetAngle();
     return currentTilt;
 }
 
-int CameraMount::GetPreviousTilt()
-{
+int CameraMount::GetPreviousTilt() {
     return previousTilt;
 }
 
-void CameraMount::SetToZero()
-{
+void CameraMount::SetToZero() {
     Pan(0);
     Tilt(0);
 }
 
-void CameraMount::SetAngles(int panAngle, int tiltAngle)
-{
+void CameraMount::SetAngles(int panAngle, int tiltAngle) {
     Pan(panAngle);
     Tilt(tiltAngle);
 }
 
-bool CameraMount::SweepForPowercells()
-{
-    Tilt(0);
-
-    for(int i=-91; i<=90; i++)
-    {
-        Pan(i);
-        std::cout << "Pan" << GetCurrentPan();
-        std::cout << "Tilt" << GetCurrentTilt();
-
-        /* <-- Remove; AIVision
-        if (RobotContainer::aiVisionTargetting->CheckForTarget()) 
-        {
-            servoAngleToTarget = i;
-            return true;
+void CameraMount::IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval) {
+    std::thread([periodicFunction, msInterval]() {
+        while (true) { 
+            auto timePoint = std::chrono::steady_clock::now() + std::chrono::milliseconds(msInterval);
+            periodicFunction();
+            std::this_thread::sleep_until(timePoint);
         }
-        */
-    }
-    for(int i=91; i>=-90; i--) 
-    {
-        Pan(i);
-        /* <-- Remove; AiVision
-        if (RobotContainer::aiVisionTargetting->CheckForTarget()) 
-        {
-            servoAngleToTarget = i;
-            return true;
-            
-        }
-        */
-    }    
-    return true;
+    }).detach();
 }
 
-int CameraMount::GetServoAngleToTarget()
-{
+#include "RobotContainer.h"
+
+void CameraMount::SweepForPowercells() {
+    RobotContainer::cameraMount->Tilt(0);
+
+    if (sweepPassCount % 2 == 0) {
+        if (sweepDegree <= 90) {
+            RobotContainer::cameraMount->Pan(sweepDegree);
+            sweepDegree++;
+        }
+    } else if (sweepPassCount % 2 == 1) {
+        if (sweepDegree <= 90) {
+            RobotContainer::cameraMount->Pan(sweepDegree);
+            sweepDegree--;
+        }
+    }
+    if (sweepDegree == -90 || sweepDegree == 90)
+        sweepPassCount++;
+}
+
+int CameraMount::GetServoAngleToTarget() {
     return servoAngleToTarget;
 }
 
