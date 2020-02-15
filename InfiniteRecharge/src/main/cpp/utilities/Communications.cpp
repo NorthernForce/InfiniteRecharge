@@ -4,27 +4,27 @@
 
 SocketHandler::SocketHandler() {}
 
-zmqpp::socket SocketHandler::GetSocket() {
-    zmqpp::context socketContext;
+zmqpp::socket_t SocketHandler::GetSocket() {
+    zmqpp::context_t socketContext;
     zmqpp::socket_type typeOfSocket = zmqpp::socket_type::pair;
-    zmqpp::socket socket (socketContext, typeOfSocket);
+    zmqpp::socket_t socket (socketContext, typeOfSocket);
 
     return socket;
 }
 
-void SocketHandler::EstablishConnection(zmqpp::socket socket) {
+void SocketHandler::EstablishConnection(zmqpp::socket_t socket) {
     socket.bind("tcp://" + jetsonNanoIP + ':' + std::to_string(port));
 }
 
-void SocketHandler::SendRequest(zmqpp::socket socket, std::string request) {
-    zmqpp::message message;
+void SocketHandler::SendRequest(zmqpp::socket_t socket, std::string request) {
+    zmqpp::message_t message;
     message << request;
     socket.send(message);
 }
 
-std::string SocketHandler::RecieveRequest(zmqpp::socket socket) {
+std::string SocketHandler::RecieveRequest(zmqpp::socket_t socket) {
     std::string recievedRequest;
-    zmqpp::message request;
+    zmqpp::message_t request;
     socket.receive(request);
     request >> recievedRequest;
 
