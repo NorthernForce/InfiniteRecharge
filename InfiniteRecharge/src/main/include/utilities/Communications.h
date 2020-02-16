@@ -12,5 +12,5 @@ class SocketHandler {
 
  private:
     std::string jetsonNanoIP = "10.1.72.4";
-    int port = 5555;
+    int port = 5800;
 };
