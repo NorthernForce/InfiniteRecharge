@@ -3,12 +3,12 @@
 
 class SocketHandler {
  public:
-    static zmqpp::socket_t MakeSocket(zmqpp::socket_type typeOfSocket);
-    void EstablishConnection();
-    void Send(std::string request);
-    std::string Recieve();
-    std::pair<std::string, double> ParseForData(std::string request);
-    static zmqpp::socket_t masterSocket;
+    SocketHandler();
+    zmqpp::socket_t GetSocket();
+    void EstablishConnection(zmqpp::socket_t socket);
+    void SendRequest(zmqpp::socket_t socket, std::string request);
+    std::string RecieveRequest(zmqpp::socket_t socket);
+    std::pair<std::string, double> ParseRequestForData(std::string request);
 
  private:
     std::string jetsonNanoIP = "10.1.72.4";

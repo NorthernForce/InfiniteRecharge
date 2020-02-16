@@ -19,12 +19,9 @@ std::shared_ptr<CameraMount> RobotContainer::cameraMount;
 // std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
 std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 
-std::shared_ptr<SocketHandler> RobotContainer::aiComms;
-
 RobotContainer::RobotContainer() {
-  oi.reset(new OI);
+  oi.reset(new OI());
   InitSubsystems();
-  aiComms.reset(new SocketHandler);
   InitDefaultCommands();
   oi->MapControllerButtons();
 }
