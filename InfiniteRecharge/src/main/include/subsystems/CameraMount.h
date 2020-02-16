@@ -37,7 +37,6 @@ class CameraMount : public frc2::SubsystemBase {
   char panDirection;
   char tiltDirection;
   int servoAngleToTarget;
-  static int sweepDegree;
   static int sweepPassCount;
 
   std::shared_ptr<frc::Servo> panServo;

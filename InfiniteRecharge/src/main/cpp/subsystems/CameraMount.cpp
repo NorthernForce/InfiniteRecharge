@@ -12,7 +12,8 @@
 #include <thread>
 
 int CameraMount::sweepPassCount;
-int CameraMount::sweepDegree;
+int CameraMount::currentPan;
+int CameraMount::currentTilt;
 
 CameraMount::CameraMount() {
     panServo.reset(new frc::Servo(Constants::Servo::panServo));
@@ -30,7 +31,6 @@ void CameraMount::Init() {
     previousTilt = 90;
     panDirection = 90;
     tiltDirection = 90;
-    sweepDegree = 0;
 }
 
 void CameraMount::Pan(int degrees) {
@@ -68,9 +68,9 @@ void CameraMount::SetToZero() {
     Tilt(90);
 }
 
-void CameraMount::SetAngles(int panAngle, int tiltAngle) {
-    Pan(panAngle);
-    Tilt(tiltAngle);
+void CameraMount::SetAngles(int currentPan, int currentTilt) {
+    Pan(currentPan);
+    Tilt(currentTilt);
 }
 
 bool CameraMount::IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval) {
@@ -90,17 +90,17 @@ void CameraMount::SweepForPowercells() {
     RobotContainer::cameraMount->Tilt(90);
 
     if (sweepPassCount % 2 == 0) {
-        if (sweepDegree <= 180) {
-            RobotContainer::cameraMount->Pan(sweepDegree);
-            sweepDegree++;
+        if (currentPan <= 160) {
+            RobotContainer::cameraMount->Pan(currentPan);
+            currentPan++;
         }
     } else if (sweepPassCount % 2 == 1) {
-        if (sweepDegree <= 180) {
-            RobotContainer::cameraMount->Pan(sweepDegree);
-            sweepDegree--;
+        if (currentPan <= 160) {
+            RobotContainer::cameraMount->Pan(currentPan);
+            currentPan--;
         }
     }
-    if (sweepDegree == 0 || sweepDegree == 180)
+    if (currentPan == 30 || currentPan == 160)
         sweepPassCount++;
 }
 
