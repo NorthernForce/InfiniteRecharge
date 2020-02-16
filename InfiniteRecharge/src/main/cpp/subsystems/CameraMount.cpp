@@ -12,8 +12,6 @@
 #include <thread>
 
 int CameraMount::sweepPassCount;
-int CameraMount::currentPan;
-int CameraMount::currentTilt;
 
 CameraMount::CameraMount() {
     panServo.reset(new frc::Servo(Constants::Servo::panServo));
@@ -88,6 +86,7 @@ bool CameraMount::IntervaledExecution(std::function<void()> periodicFunction, un
 
 void CameraMount::SweepForPowercells() {
     RobotContainer::cameraMount->Tilt(90);
+    int currentPan = RobotContainer::cameraMount->currentPan;
 
     if (sweepPassCount % 2 == 0) {
         if (currentPan <= 160) {

@@ -7,7 +7,6 @@
 
 #include "subsystems/Navigation.h"
 #include "RobotContainer.h"
-#include "Utilities/Communications.h"
 
 Navigation::Navigation() {}
 
