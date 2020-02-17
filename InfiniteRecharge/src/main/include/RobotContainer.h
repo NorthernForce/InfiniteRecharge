@@ -20,7 +20,6 @@
 #include "subsystems/Ultrasonic.h"
 
 #include "commands/DriveWithJoystick.h"
-#include "utilities/Communications.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -41,8 +40,6 @@ class RobotContainer {
   // static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
   static std::shared_ptr<CameraMount> cameraMount;
   static std::shared_ptr<Ultrasonic> ultrasonic;
-
-  static std::shared_ptr<SocketHandler> aiComms;
 
  private:
   void InitSubsystems();

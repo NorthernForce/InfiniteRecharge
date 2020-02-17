@@ -14,6 +14,7 @@
 class CameraMount : public frc2::SubsystemBase {
  public:
   CameraMount();
+  
   void Init();
   void Pan(int degrees);
   int GetCurrentPan();
@@ -23,15 +24,21 @@ class CameraMount : public frc2::SubsystemBase {
   int GetPreviousTilt();
   void SetToZero();
   void SetAngles(int panAngle, int tiltAngle);
-  static bool IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval);
+  void IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval);
   static void SweepForPowercells();
   int GetServoAngleToTarget();
 
+  /**
+   * Will be called periodically whenever the CommandScheduler runs.
+   */
   void Periodic();
 
  private:
-  int currentPan;
-  int currentTilt;
+  // Components (e.g. motor controllers and sensors) should generally be
+  // declared private and exposed only through public methods.
+
+  static int currentPan;
+  static int currentTilt;
   int previousPan;
   int previousTilt;
   char panDirection;

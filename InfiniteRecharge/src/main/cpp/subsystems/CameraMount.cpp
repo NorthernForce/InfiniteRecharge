@@ -6,20 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/CameraMount.h"
-#include "RobotContainer.h"
 #include "Constants.h"
 #include <chrono>
 #include <thread>
 
 int CameraMount::sweepPassCount;
+int CameraMount::currentPan;
+int CameraMount::currentTilt;
 
 CameraMount::CameraMount() {
     panServo.reset(new frc::Servo(Constants::Servo::panServo));
     tiltServo.reset(new frc::Servo(Constants::Servo::tiltServo));
     Init();
     SetToZero();
-    RobotContainer::aiComms->EstablishConnection();
-    RobotContainer::aiComms->Recieve();
+    
 }
 
 void CameraMount::Init() {
@@ -71,7 +71,7 @@ void CameraMount::SetAngles(int currentPan, int currentTilt) {
     Tilt(currentTilt);
 }
 
-bool CameraMount::IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval) {
+void CameraMount::IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval) {
     std::thread([periodicFunction, msInterval]() {
         while (true) { 
             auto timePoint = std::chrono::steady_clock::now() + std::chrono::milliseconds(msInterval);
@@ -79,14 +79,12 @@ bool CameraMount::IntervaledExecution(std::function<void()> periodicFunction, un
             std::this_thread::sleep_until(timePoint);
         }
     }).detach();
-    return true;
 }
 
 #include "RobotContainer.h"
 
 void CameraMount::SweepForPowercells() {
     RobotContainer::cameraMount->Tilt(90);
-    int currentPan = RobotContainer::cameraMount->currentPan;
 
     if (sweepPassCount % 2 == 0) {
         if (currentPan <= 160) {
