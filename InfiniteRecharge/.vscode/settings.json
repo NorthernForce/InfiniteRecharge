@@ -100,7 +100,8 @@
     "iomanip": "cpp",
     "cinttypes": "cpp",
     "shared_mutex": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "*.rh": "cpp"
   },
   "C_Cpp.errorSquiggles": "Enabled",
   "C_Cpp.default.configurationProvider": "vscode-wpilib"

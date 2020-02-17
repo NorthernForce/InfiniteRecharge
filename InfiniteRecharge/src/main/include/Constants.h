@@ -22,6 +22,12 @@ namespace Constants {
             const int high = 1.176;
         }
     }
+    namespace Shooter{
+        const int Primary = 0;
+        const int Follower1 = 0;
+        const int Follower2 = 0;
+        const int Follower3 = 0;
+    }
     namespace Encoders {
         const double pi = 3.14159265359;
         const int motorCPR = 42;
