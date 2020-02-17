@@ -17,9 +17,13 @@ namespace Constants {
         const int rightFollower1 = 1;
         const int rightFollower2 = 3;
 
+        const double initialStage = 12/42;     //  Driven gear / Shifting Grear
+        const double shiftingHigh = 40/34;     //  Driver Gear / High Shifting Gear
+        const double shiftingLow =  60/14;     //  Driver Gear / Low Shifting Gear
+
         namespace Gear {
-            const int low = 4.286;
-            const int high = 1.176;
+            const double low = initialStage*shiftingLow;
+            const double high = initialStage*shiftingHigh;
         }
     }
     namespace Shooter{
@@ -29,12 +33,11 @@ namespace Constants {
         const int Follower3 = 0;
     }
     namespace Encoders {
-        const double pi = 3.14159265359;
+        const double pi = 3.141592653589793;
         const int motorCPR = 42;
         const double wheelCPR_low = motorCPR * Constants::Drivetrain::Gear::low;
         const double wheelCPR_high = motorCPR * Constants::Drivetrain::Gear::high;
         const double wheelCircum = 6 * pi;
-        const double wheelCPR = motorCPR * Constants::Drivetrain::Gear::low;
         const int rotationMultiplier = 5;
     }
 
@@ -56,4 +59,6 @@ namespace Constants {
         const int ultrasonicRangeFinder = 0; // analog port 0
       //  const int digitalCtrlPort = 9; 
     }
+
+    
 }
