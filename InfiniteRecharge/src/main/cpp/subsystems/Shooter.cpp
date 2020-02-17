@@ -9,10 +9,10 @@
 #include "Constants.h"
 
 Shooter::Shooter() {
-    primary.reset(new rev::CANSparkMax(Constants::Shooter::Primary, rev::CANSparkMax::MotorType::kBrushless));
-    follower1.reset(new rev::CANSparkMax(Constants::Shooter::Follower1, rev::CANSparkMax::MotorType::kBrushless));
-    follower2.reset(new rev::CANSparkMax(Constants::Shooter::Follower2, rev::CANSparkMax::MotorType::kBrushless));
-    follower3.reset(new rev::CANSparkMax(Constants::Shooter::Follower3, rev::CANSparkMax::MotorType::kBrushless));
+    primary.reset(new rev::CANSparkMax(Constants::Shooter::primary, rev::CANSparkMax::MotorType::kBrushless));
+    follower1.reset(new rev::CANSparkMax(Constants::Shooter::follower1, rev::CANSparkMax::MotorType::kBrushless));
+    follower2.reset(new rev::CANSparkMax(Constants::Shooter::follower2, rev::CANSparkMax::MotorType::kBrushless));
+    follower3.reset(new rev::CANSparkMax(Constants::Shooter::follower3, rev::CANSparkMax::MotorType::kBrushless));
 }
 
 void Shooter::SetFollowers(){
@@ -20,6 +20,17 @@ void Shooter::SetFollowers(){
     follower2->Follow(*primary, true);
     follower3->Follow(*primary, true);
 }
+void Shooter::ConfigureController(rev::CANSparkMax& controller) {
+  controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
+  controller.SetSmartCurrentLimit(currentLimit);
+  if(!controller.IsFollower())
+  {
+    controller.SetClosedLoopRampRate(rampRate);
+    controller.SetOpenLoopRampRate(rampRate);
+  }
+  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+}
+
 void Shooter::ShootCell(){
     primary->Set(0.5);
 }

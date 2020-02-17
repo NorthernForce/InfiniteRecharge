@@ -27,10 +27,10 @@ namespace Constants {
         }
     }
     namespace Shooter{
-        const int Primary = 0;
-        const int Follower1 = 0;
-        const int Follower2 = 0;
-        const int Follower3 = 0;
+        const int primary = 0;
+        const int follower1 = 0;
+        const int follower2 = 0;
+        const int follower3 = 0;
     }
     namespace Encoders {
         const double pi = 3.141592653589793;

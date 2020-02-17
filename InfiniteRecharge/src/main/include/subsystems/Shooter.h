@@ -16,6 +16,8 @@ class Shooter : public frc2::SubsystemBase {
   void SetFollowers();
   void ShootCell();
   void Periodic();
+  void SetupControllers();
+  void ConfigureController(rev::CANSparkMax& controller);
 
  private:
 
@@ -26,5 +28,6 @@ class Shooter : public frc2::SubsystemBase {
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
+  double rampRate = 0.2;
 
 };
