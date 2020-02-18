@@ -9,17 +9,20 @@
 #include <frc/DriverStation.h>
 #include <RobotContainer.h>
 
-ShootCell::ShootCell() {
+ShootCell::ShootCell(double rtTriggerAxis) {
   // Use addRequirements() here to declare subsystem dependencies.
+  m_rtTriggerAxis = rtTriggerAxis;
   AddRequirements(RobotContainer::shooter.get());
 }
 
 // Called when the command is initially scheduled.
-void ShootCell::Initialize() {}
+void ShootCell::Initialize(){}
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
+  if(m_rtTriggerAxis > .5) {
   RobotContainer::shooter->ShootCell();
+  }
 }
 
 
