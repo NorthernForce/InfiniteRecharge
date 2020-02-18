@@ -7,6 +7,9 @@
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
 #include "commands/SweepAICamera.h"
+#include "commands/IntakePowerCell.h"
+#include "commands/PushOutPowerCell.h"
+#include "commands/ToggleArm.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -26,6 +29,17 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
 
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
+
+    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhenPressed(new IntakePowerCell());
+    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhenReleased(new IntakePowerCell());
+
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new PushOutPowerCell());
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new PushOutPowerCell()); 
+
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
+
+   
+
 }
 
 double OI::getDriveSpeedMultiplier() {

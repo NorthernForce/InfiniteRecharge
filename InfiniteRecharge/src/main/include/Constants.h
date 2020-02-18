@@ -50,4 +50,12 @@ namespace Constants {
         const int ultrasonicRangeFinder = 0; // analog port 0
       //  const int digitalCtrlPort = 9; 
     }
+
+    namespace Intake {
+        const int intakeMotor = 10; ////TODO: have to reassign these when we actually have the robot
+        const int armMotor = 11;
+        
+        const bool armIsDown = true;
+        const bool armIsUp = false;
+    }
 }

@@ -18,6 +18,7 @@
 #include "subsystems/CameraMount.h"
 #include "subsystems/AIVisionTargetting.h"
 #include "subsystems/Ultrasonic.h"
+#include "subsystems/Intake.h"
 
 #include "commands/DriveWithJoystick.h"
 
@@ -40,6 +41,7 @@ class RobotContainer {
   // static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
   static std::shared_ptr<CameraMount> cameraMount;
   static std::shared_ptr<Ultrasonic> ultrasonic;
+  static std::shared_ptr<Intake> intake;
 
  private:
   void InitSubsystems();
