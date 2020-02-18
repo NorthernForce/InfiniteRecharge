@@ -9,6 +9,7 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <frc/Servo.h>
+#include <functional>
 
 class CameraMount : public frc2::SubsystemBase {
  public:
@@ -23,7 +24,8 @@ class CameraMount : public frc2::SubsystemBase {
   int GetPreviousTilt();
   void SetToZero();
   void SetAngles(int panAngle, int tiltAngle);
-  bool SweepForPowercells();
+  void IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval);
+  static void SweepForPowercells();
   int GetServoAngleToTarget();
 
   /**
@@ -35,13 +37,14 @@ class CameraMount : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
-  int currentPan;
-  int currentTilt;
+  static int currentPan;
+  static int currentTilt;
   int previousPan;
   int previousTilt;
   char panDirection;
   char tiltDirection;
   int servoAngleToTarget;
+  static int sweepPassCount;
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;

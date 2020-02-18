@@ -19,6 +19,7 @@ std::shared_ptr<CameraMount> RobotContainer::cameraMount;
 // std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
 std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 std::shared_ptr<Intake> RobotContainer::intake;
+std::shared_ptr<Shooter> RobotContainer::shooter;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());
@@ -37,6 +38,7 @@ void RobotContainer::InitSubsystems() {
   cameraMount.reset(new CameraMount);
   ultrasonic.reset(new Ultrasonic);
   intake.reset(new Intake);
+  shooter.reset(new Shooter);
 }
 
 void RobotContainer::InitDefaultCommands() {

@@ -7,6 +7,7 @@
 
 #include "subsystems/Navigation.h"
 #include "RobotContainer.h"
+#include "Utilities/Communications.h"
 
 Navigation::Navigation() {}
 
@@ -25,7 +26,7 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double rightDistance;
 
     if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
-        leftDistance = (Constants::Drivetrain::Gear::high * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        leftDistance = (Constants::Drivetrain::Gear::high * leftEncoderPos) * Constants::Encoders::wheelCircum;
         rightEncoderPos = (Constants::Drivetrain::Gear::high * rightEncoderPos) / Constants::Encoders::wheelCircum;
     }
     else {
