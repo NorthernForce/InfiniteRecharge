@@ -20,7 +20,7 @@
 class ShootCell
     : public frc2::CommandHelper<frc2::CommandBase, ShootCell> {
  public:
-  ShootCell();
+  ShootCell(double rtTriggerAxis);
 
   void Initialize() override;
 
@@ -29,4 +29,7 @@ class ShootCell
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+ private:
+  double m_rtTriggerAxis;
 };
