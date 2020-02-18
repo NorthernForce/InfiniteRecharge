@@ -36,15 +36,12 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
 
-    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhenPressed(new IntakePowerCell());
-    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhenReleased(new IntakePowerCell());
+    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhileHeld(new IntakePowerCell());
 
-    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new PushOutPowerCell());
-    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new PushOutPowerCell()); 
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
 
-    frc2::Button([this] {return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell());
     frc2::Button([this] {return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
 }
 
