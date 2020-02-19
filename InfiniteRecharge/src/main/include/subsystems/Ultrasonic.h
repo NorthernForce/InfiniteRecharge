@@ -37,7 +37,7 @@ class Ultrasonic : public frc2::SubsystemBase {
 
   bool ultrasonicState;
 
-  frc::AnalogInput analogUltrasonic{Constants::Ultrasonic::ultrasonicRangeFinder};
+  std::shared_ptr<frc::AnalogInput> analogUltrasonic;
 
   //std::shared_ptr<frc::DigitalOutput> ctrl;
 

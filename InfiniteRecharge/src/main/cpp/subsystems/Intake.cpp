@@ -13,9 +13,7 @@ Intake::Intake() {
     armSpark.reset(new rev::CANSparkMax(Constants::Intake::armMotor, rev::CANSparkMax::MotorType::kBrushless));
 }
 
-// This method will be called once per scheduler run
 void Intake::Periodic() {}
-
 
 void Intake::TakeIn() {
     intakeSpark->Set(.5);

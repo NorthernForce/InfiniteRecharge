@@ -14,17 +14,17 @@ class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
   void SetFollowers();
-  void ShootCell();
+  void Shoot();
   void Periodic();
   void SetupControllers();
   void ConfigureController(rev::CANSparkMax& controller);
 
  private:
 
-  std::shared_ptr<rev::CANSparkMax> primary;
-  std::shared_ptr<rev::CANSparkMax> follower1;
-  std::shared_ptr<rev::CANSparkMax> follower2;
-  std::shared_ptr<rev::CANSparkMax> follower3;
+  std::shared_ptr<rev::CANSparkMax> primarySpark;
+  std::shared_ptr<rev::CANSparkMax> followerSpark1;
+  std::shared_ptr<rev::CANSparkMax> followerSpark2;
+  std::shared_ptr<rev::CANSparkMax> followerSpark3;
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;

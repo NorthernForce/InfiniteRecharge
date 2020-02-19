@@ -14,10 +14,6 @@
 class Intake : public frc2::SubsystemBase {
  public:
   Intake();
-
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
   void Periodic();
  
   void TakeIn();

@@ -26,7 +26,7 @@ namespace Constants {
             const double high = initialStage*shiftingHigh;
         }
     }
-    namespace Shooter{
+    namespace Shooter {
         const int primary = 0;
         const int follower1 = 0;
         const int follower2 = 0;

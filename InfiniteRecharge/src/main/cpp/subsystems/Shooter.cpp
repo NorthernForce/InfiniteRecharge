@@ -9,16 +9,16 @@
 #include "Constants.h"
 
 Shooter::Shooter() {
-    primary.reset(new rev::CANSparkMax(Constants::Shooter::primary, rev::CANSparkMax::MotorType::kBrushless));
-    follower1.reset(new rev::CANSparkMax(Constants::Shooter::follower1, rev::CANSparkMax::MotorType::kBrushless));
-    follower2.reset(new rev::CANSparkMax(Constants::Shooter::follower2, rev::CANSparkMax::MotorType::kBrushless));
-    follower3.reset(new rev::CANSparkMax(Constants::Shooter::follower3, rev::CANSparkMax::MotorType::kBrushless));
+    primarySpark.reset(new rev::CANSparkMax(Constants::Shooter::primary, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark1.reset(new rev::CANSparkMax(Constants::Shooter::follower1, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark2.reset(new rev::CANSparkMax(Constants::Shooter::follower2, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark3.reset(new rev::CANSparkMax(Constants::Shooter::follower3, rev::CANSparkMax::MotorType::kBrushless));
 }
 
 void Shooter::SetFollowers(){
-    follower1->Follow(*primary, true);
-    follower2->Follow(*primary, true);
-    follower3->Follow(*primary, true);
+    followerSpark1->Follow(*primarySpark);
+    followerSpark2->Follow(*primarySpark);
+    followerSpark3->Follow(*primarySpark);
 }
 void Shooter::ConfigureController(rev::CANSparkMax& controller) {
   controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
@@ -31,8 +31,8 @@ void Shooter::ConfigureController(rev::CANSparkMax& controller) {
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
 
-void Shooter::ShootCell(){
-    primary->Set(0.5);
+void Shooter::Shoot() {
+    primarySpark->Set(0.5);
 }
 
 // This method will be called once per scheduler run
