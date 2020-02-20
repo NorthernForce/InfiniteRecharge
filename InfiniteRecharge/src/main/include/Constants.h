@@ -18,11 +18,11 @@ namespace Constants {
         const int rightFollower2 = 3;
 
         const double initialStage = 12/42;     //  Driven gear / Shifting Grear
-        const double shiftingHigh = 40/34;     //  Driver Gear / High Shifting Gear
+        const double shiftingHigh = 44/31;     //  Driver Gear / High Shifting Gear
         const double shiftingLow =  60/14;     //  Driver Gear / Low Shifting Gear
 
         namespace Gear {
-            const double low = initialStage*shiftingLow;
+            const double low = initialStage*shiftingLow
             const double high = initialStage*shiftingHigh;
         }
     }
