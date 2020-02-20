@@ -76,12 +76,6 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
     return std::make_pair(leftSideRotations, rightSideRotations);
 }
 
-std::pair<double, double> Drivetrain::GetEncoderCounts() {
-    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR ;
-    double rightSideCounts = GetEncoderRotations().second / Constants::Encoders::motorCPR;
-    return std::make_pair(leftSideCounts, rightSideCounts);
-}
-
 void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);

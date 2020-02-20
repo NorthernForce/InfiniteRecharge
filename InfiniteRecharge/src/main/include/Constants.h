@@ -22,7 +22,7 @@ namespace Constants {
         const double shiftingLow =  60/14;     //  Driver Gear / Low Shifting Gear
 
         namespace Gear {
-            const double low = initialStage*shiftingLow
+            const double low = initialStage*shiftingLow;
             const double high = initialStage*shiftingHigh;
         }
     }

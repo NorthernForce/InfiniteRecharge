@@ -12,7 +12,6 @@ Intake::Intake() {
     intakeSpark.reset(new rev::CANSparkMax(Constants::Intake::intakeMotor, rev::CANSparkMax::MotorType::kBrushless));
     armSpark.reset(new rev::CANSparkMax(Constants::Intake::armMotor, rev::CANSparkMax::MotorType::kBrushless));
 }
-
 void Intake::Periodic() {}
 
 void Intake::TakeIn() {
