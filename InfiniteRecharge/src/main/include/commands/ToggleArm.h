@@ -11,10 +11,10 @@
 #include <frc2/command/CommandHelper.h>
 #include "RobotContainer.h"
 
-class SweepAICamera
-    : public frc2::CommandHelper<frc2::CommandBase, SweepAICamera> {
+class ToggleArm
+    : public frc2::CommandHelper<frc2::CommandBase, ToggleArm> {
  public:
-  SweepAICamera();
+  ToggleArm();
 
   void Initialize() override;
 

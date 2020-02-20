@@ -8,39 +8,28 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <frc/AnalogInput.h>
+#include <rev/CANSparkMax.h>
 #include "Constants.h"
-//#include <frc/DigitalOutput.h>
 
-//all digital stuff is commented out
-
-class Ultrasonic : public frc2::SubsystemBase {
+class Intake : public frc2::SubsystemBase {
  public:
-  Ultrasonic();
-
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
+  Intake();
   void Periodic();
-
-  double GetDistance();
-  void Enable();
-  void Disable();
+ 
+  void TakeIn();
+  void PushOut();
+  void Stop();
+  bool ArmUp();
+  bool ArmDown();
+  bool ArmState();
 
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  static constexpr double ValueToInches = 0.125;
 
-  double distance;
+  bool armState;
 
-  bool ultrasonicState;
-
-  std::shared_ptr<frc::AnalogInput> analogUltrasonic;
-
-  //std::shared_ptr<frc::DigitalOutput> ctrl;
-
-  const static bool ultrasonicOn = true;
-  const static bool ultrasonicOff = false;
+  std::shared_ptr<rev::CANSparkMax> intakeSpark;
+  std::shared_ptr<rev::CANSparkMax> armSpark;
 };

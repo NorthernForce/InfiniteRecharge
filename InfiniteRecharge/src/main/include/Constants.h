@@ -26,6 +26,12 @@ namespace Constants {
             const double high = initialStage*shiftingHigh;
         }
     }
+    namespace Shooter {
+        const int primary = 0;
+        const int follower1 = 0;
+        const int follower2 = 0;
+        const int follower3 = 0;
+    }
     namespace Encoders {
         const double pi = 3.141592653589793;
         const int motorCPR = 42;
@@ -54,5 +60,12 @@ namespace Constants {
       //  const int digitalCtrlPort = 9; 
     }
 
+    namespace Intake {
+        const int intakeMotor = 10; ////TODO: have to reassign these when we actually have the robot
+        const int armMotor = 11;
+        
+        const bool armIsDown = true;
+        const bool armIsUp = false;
+    }
     
 }
