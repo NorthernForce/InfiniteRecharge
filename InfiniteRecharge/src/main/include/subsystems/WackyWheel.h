@@ -12,6 +12,9 @@
 #include <rev/CANSparkMax.h>
 #include <rev/ColorMatch.h>
 #include <frc/util/color.h>
+#include "subsystems/utilities/FMSWheelInterface.h"
+#include <ctre/Phoenix.h>
+
 // #include <frc/DigitalInput.h>
 
 class WackyWheel : public frc2::SubsystemBase {
@@ -23,6 +26,9 @@ class WackyWheel : public frc2::SubsystemBase {
    */
   void Periodic();
   void FindColor();
+  void AddColorMatches();
+  void PositionControl();
+  void RotationControl();
 
  private:
 
@@ -31,15 +37,21 @@ class WackyWheel : public frc2::SubsystemBase {
   const frc::Color redTarget = frc::Color(0.561, 0.232, 0.114);
   const frc::Color yellowTarget = frc::Color(0.361, 0.524, 0.113);
 
- std::shared_ptr<rev::CANSparkMax> spinner;
- std::shared_ptr<rev::ColorMatch> colorMatcher;
- frc::Color matchedColor;
- frc::Color detectedColor;
- std::shared_ptr<rev::ColorSensorV3> colorSensor;
+  std::shared_ptr<WPI_TalonSRX> spinnerTalon;
+  std::shared_ptr<rev::ColorMatch> colorMatcher;
+  std::shared_ptr<FMSWheelInterface> getDesiredColor;
+  frc::Color matchedColor;
+  frc::Color detectedColor;
+  std::shared_ptr<rev::ColorSensorV3> colorSensor;
  
- std::string colorString;
- double confidence;
- // std::shared_ptr<frc::DigitalOutput> DigitalColorSensor;
+  char colorChar;
+  char desiredColor;
+  double confidence;
+  int colorPasses;
+  char firstColor = WackyWheel::colorChar;
+  bool counterFrozen = true;
+
+  // std::shared_ptr<frc::DigitalOutput> DigitalColorSensor;
   // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
+  // declared private a nd exposed only through public methods.
 };

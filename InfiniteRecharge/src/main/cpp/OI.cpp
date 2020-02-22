@@ -15,6 +15,8 @@
 #include "commands/PushOutPowerCell.h"
 #include "commands/ToggleArm.h"
 #include "commands/ShootCell.h"
+#include "commands/PositionControl.h"
+#include "commands/RotationControl.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -43,6 +45,9 @@ void OI::MapControllerButtons() {
     frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
 
     frc2::Button([this] {return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
+
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new PositionControl());
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new RotationControl());
 }
 
 double OI::getDriveSpeedMultiplier() {
