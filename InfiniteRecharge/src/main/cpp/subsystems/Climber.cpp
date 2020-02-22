@@ -7,6 +7,12 @@
 
 #include "subsystems/Climber.h"
 
+const int Climber::timeout = 0;
+const int Climber::peakCurrent = 35;
+const int Climber::continuousCurrent = 25;
+const int Climber::peakCurrentDuration = 2000;
+
+
 Climber::Climber() {
     armTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::climberArm));
     
@@ -19,4 +25,10 @@ void Climber::Lifter(double speed) {
     armTalon->Set(speed);
 }
 
+void Climber::limitCurrent(WPI_TalonSRX& controller) {
+    controller.ConfigPeakCurrentLimit(peakCurrent, timeout);
+    controller.ConfigContinuousCurrentLimit(continuousCurrent, timeout);
+    controller.ConfigPeakCurrentDuration(peakCurrentDuration, timeout);
+    controller.EnableCurrentLimit(true);
+} 
 

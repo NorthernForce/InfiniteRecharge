@@ -17,12 +17,14 @@ void ToggleArm::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void ToggleArm::Execute() {
   if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp) {
-    if (RobotContainer::intake->ArmDown() == false) {
+    RobotContainer::intake->ArmDown();
+    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp) {
       ////TODO: make controller rumble
     }
   }
   else {
-    if (RobotContainer::intake->ArmUp() == false) {
+    RobotContainer::intake->ArmUp();
+    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsDown) {
       ////TODO: make controller rumble
     }
   }

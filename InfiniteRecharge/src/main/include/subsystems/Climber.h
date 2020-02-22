@@ -21,13 +21,18 @@ class Climber : public frc2::SubsystemBase {
   void Periodic();
 
   void Lifter(double speed);
-  
+  void limitCurrent(WPI_TalonSRX&);
 
   ////TODO: add deadband?
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+
+  const static int timeout;
+  const static int peakCurrent;
+  const static int continuousCurrent;
+  const static int peakCurrentDuration;
   
   std::shared_ptr<WPI_TalonSRX> armTalon;
 };
