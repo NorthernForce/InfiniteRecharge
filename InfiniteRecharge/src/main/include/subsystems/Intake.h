@@ -24,8 +24,8 @@ class Intake : public frc2::SubsystemBase {
   void TakeIn();
   void PushOut();
   void Stop();
-  bool ArmUp();
-  bool ArmDown();
+  void ArmUp();
+  void ArmDown();
   ArmState GetArmState();
   void RunConveyor();
   void StopConveyor();

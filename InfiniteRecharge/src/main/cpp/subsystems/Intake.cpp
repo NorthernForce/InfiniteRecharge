@@ -24,7 +24,7 @@ Intake::Intake() {
 }
 
 void Intake::SetFollowers() {
-    followerConveyorSpark->Follow(*primaryConveyorSpark, true);
+    followerConveyorSpark->Follow(*primaryConveyorSpark);
 }
 void Intake::Periodic() {}
 
@@ -40,22 +40,16 @@ void Intake::Stop() {
     intakeSpark->Set(0);
 }
 
-bool Intake::ArmUp() {
+void Intake::ArmUp() {
     if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsUp;
-        return true;
     }
-    else
-        return false;
 }
 
-bool Intake::ArmDown() {
+void Intake::ArmDown() {
     if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsDown;
-        return true;
     }
-    else
-        return false;
 }
 
 ArmState Intake::GetArmState() {
