@@ -14,8 +14,6 @@ Navigation::Navigation() {}
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
-    std::cout << "Distance Travelled- L: " << GetInchesTravelled().first << '\n';
-    std::cout << "Distance travelled- R: " << GetInchesTravelled().second << '\n';
     std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
