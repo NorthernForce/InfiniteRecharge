@@ -5,35 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/IntakePowerCell.h"
+#include "commands/InventoryPowerCells.h"
 
-IntakePowerCell::IntakePowerCell() {
+InventoryPowerCells::InventoryPowerCells() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {
-  IntakePowerCell::emptyPosition = RobotContainer::intake->FirstEmptyPosition();
-}
+void InventoryPowerCells::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void IntakePowerCell::Execute() {
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-     RobotContainer::intake->RunConveyor();
-  }
+void InventoryPowerCells::Execute() {
+  RobotContainer::intake->InventoryPowerCells();
 }
 
 // Called once the command ends or is interrupted.
-void IntakePowerCell::End(bool interrupted) {}
+void InventoryPowerCells::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool IntakePowerCell::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(IntakePowerCell::emptyPosition) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->StopConveyor();
-    return true;
-  }
-  else {
-  return false; 
-  }
-}
+bool InventoryPowerCells::IsFinished() { return false; }
