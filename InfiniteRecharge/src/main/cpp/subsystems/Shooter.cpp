@@ -20,13 +20,14 @@ void Shooter::SetFollowers(){
     followerSpark2->Follow(*primarySpark);
     followerSpark3->Follow(*primarySpark);
 }
-void Shooter::ConfigureController(rev::CANSparkMax& controller) {
+
+void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
   controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
   controller.SetSmartCurrentLimit(currentLimit);
   if(!controller.IsFollower())
   {
-    controller.SetClosedLoopRampRate(rampRate);
-    controller.SetOpenLoopRampRate(rampRate);
+    controller.SetClosedLoopRampRate(ramp);
+    controller.SetOpenLoopRampRate(ramp);
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }

@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
+#include "rev/ColorSensorV3.h"
 
 namespace Constants {
     namespace Drivetrain {
@@ -27,7 +28,7 @@ namespace Constants {
         }
     }
     namespace Shooter {
-        const int primary = 0;
+        const int primary = 0; ////TODO: Reassign these when we have the competition robot 
         const int follower1 = 0;
         const int follower2 = 0;
         const int follower3 = 0;
@@ -58,6 +59,11 @@ namespace Constants {
     namespace Ultrasonic {
         const int ultrasonicRangeFinder = 0; // analog port 0
       //  const int digitalCtrlPort = 9; 
+    }
+
+    namespace ColorSensor {
+        const int primary = 0;
+        constexpr auto i2cPort = frc::I2C::Port::kOnboard;
     }
 
     namespace Intake {

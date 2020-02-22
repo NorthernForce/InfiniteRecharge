@@ -7,7 +7,7 @@
 
 #include "commands/ShootCell.h"
 #include <frc/DriverStation.h>
-#include <RobotContainer.h>
+#include "RobotContainer.h"
 
 ShootCell::ShootCell(double rtTriggerAxis) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -20,8 +20,9 @@ void ShootCell::Initialize(){}
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
-  if(m_rtTriggerAxis > .5) {
-  RobotContainer::shooter->Shoot();
+  double rampMultiplier = RobotContainer::oi->getShootRampRateMultiplier();
+  if (m_rtTriggerAxis > .5) {
+    RobotContainer::shooter->Shoot();
   }
 }
 

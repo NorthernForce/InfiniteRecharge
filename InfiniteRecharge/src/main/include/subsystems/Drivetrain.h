@@ -15,7 +15,7 @@ class Drivetrain : public frc2::SubsystemBase {
  public:
   Drivetrain();
   void SetInvertedFollowers();
-  void SetupControllers();
+  void ConfigureAllControllers();
   void Drive(double speed, double rotation);
   void Periodic();
   void ConfigureController(rev::CANSparkMax& controller);

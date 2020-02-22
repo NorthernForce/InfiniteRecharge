@@ -18,7 +18,7 @@ Drivetrain::Drivetrain() {
     rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
-    SetupControllers();
+    ConfigureAllControllers();
 
     robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
 }
@@ -30,7 +30,7 @@ void Drivetrain::SetInvertedFollowers() {
     rightFollowerSpark2->Follow(*rightPrimarySpark, true);
 }
 
-void Drivetrain::SetupControllers() {
+void Drivetrain::ConfigureAllControllers() {
     ConfigureController(*leftPrimarySpark);
     ConfigureController(*leftFollowerSpark1);
     ConfigureController(*leftFollowerSpark2);

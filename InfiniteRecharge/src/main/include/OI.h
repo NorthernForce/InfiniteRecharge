@@ -9,6 +9,7 @@ class OI {
     void InitControllers();
     void MapControllerButtons();
     double getDriveSpeedMultiplier();
+    double getShootRampRateMultiplier();
 
     static std::shared_ptr<frc::XboxController> driverController;
     static std::shared_ptr<frc::XboxController> manipulatorController;
