@@ -13,8 +13,8 @@
 int CameraMount::sweepPassCount;
 
 CameraMount::CameraMount() {
-    panServo.reset(new frc::Servo(Constants::Servo::panServo));
-    tiltServo.reset(new frc::Servo(Constants::Servo::tiltServo));
+    panServo.reset(new frc::Servo(Constants::MotorIDs::panServoPWM));
+    tiltServo.reset(new frc::Servo(Constants::MotorIDs::tiltServoPWM));
     Init();
     SetToZero();
     

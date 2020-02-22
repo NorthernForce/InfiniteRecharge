@@ -26,8 +26,8 @@ OI::OI() {
 }
 
 void OI::InitControllers() {
-    driverController.reset(new frc::XboxController(Constants::OI::driverController_id));
-    manipulatorController.reset(new frc::XboxController(Constants::OI::manipulatorController_id));
+    driverController.reset(new frc::XboxController(Constants::driverController_id));
+    manipulatorController.reset(new frc::XboxController(Constants::manipulatorController_id));
 }
 
 void OI::MapControllerButtons() {

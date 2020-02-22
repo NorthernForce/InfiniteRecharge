@@ -8,7 +8,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <rev/CANSparkMax.h>
+#include <ctre/Phoenix.h>
 #include "Constants.h"
 
 class Climber : public frc2::SubsystemBase {
@@ -18,7 +18,6 @@ class Climber : public frc2::SubsystemBase {
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
-  void SetInvertedFollowers();
   void Periodic();
 
   void Lifter(double speed);
@@ -30,7 +29,5 @@ class Climber : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   
-  std::shared_ptr<rev::CANSparkMax> leftArmSpark;
-  std::shared_ptr<rev::CANSparkMax> rightArmSpark;
-
+  std::shared_ptr<WPI_TalonSRX> armTalon;
 };

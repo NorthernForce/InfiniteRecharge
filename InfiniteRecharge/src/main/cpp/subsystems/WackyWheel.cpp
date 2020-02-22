@@ -14,7 +14,7 @@
 
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
-    primary.reset(new rev::CANSparkMax(Constants::ColorSensor::primary, rev::CANSparkMax::MotorType::kBrushless));
+    spinner.reset(new rev::CANSparkMax(Constants::MotorIDs::wackyWheel, rev::CANSparkMax::MotorType::kBrushless));
     colorMatcher->AddColorMatch(blueTarget);
     colorMatcher->AddColorMatch(greenTarget);
     colorMatcher->AddColorMatch(redTarget);

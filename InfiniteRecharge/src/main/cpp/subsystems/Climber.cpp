@@ -8,21 +8,15 @@
 #include "subsystems/Climber.h"
 
 Climber::Climber() {
-    leftArmSpark.reset(new rev::CANSparkMax(Constants::Climber::leftArmMotor, rev::CANSparkMax::MotorType::kBrushless));
-    rightArmSpark.reset(new rev::CANSparkMax(Constants::Climber::rightArmMotor, rev::CANSparkMax::MotorType::kBrushless));
+    armTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::climberArm));
     
-    SetInvertedFollowers(); ////TODO: determine if arm sparks are inverted/where they are
-}
-
-void Climber::SetInvertedFollowers() {
-    rightArmSpark->Follow(*leftArmSpark, true);
 }
 
 // This method will be called once per scheduler run
 void Climber::Periodic() {}
 
 void Climber::Lifter(double speed) {
-    leftArmSpark->Set(speed);
+    armTalon->Set(speed);
 }
 
 
