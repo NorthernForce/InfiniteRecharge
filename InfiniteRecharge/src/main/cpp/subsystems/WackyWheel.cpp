@@ -9,7 +9,6 @@
 #include "rev/ColorSensorV3.h"
 #include "subsystems/utilities/FMSWheelInterface.h"
 
-
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
     spinnerTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::wackyWheel));
@@ -24,7 +23,7 @@ void WackyWheel::Periodic() {
     FindColor();
 } 
 
-void WackyWheel::AddColorMatches(){
+void WackyWheel::AddColorMatches() {
     colorMatcher->AddColorMatch(blueTarget);
     colorMatcher->AddColorMatch(greenTarget);
     colorMatcher->AddColorMatch(redTarget);
@@ -32,10 +31,13 @@ void WackyWheel::AddColorMatches(){
 }
 
 void WackyWheel::MoveToColor() {
-  if (colorChar != desiredColor) {
+  if (colorChar != desiredColor)
     spinnerTalon->Set(0.2);
-  } else if (colorChar == desiredColor) {
-    spinnerTalon->SetNeutralMode(NeutralMode::Brake);
+  else if (colorChar == desiredColor) {
+    if(true){ // colorChar == 
+      spinnerTalon->SetNeutralMode(NeutralMode::Brake);
+
+    }
   }
 }
 void WackyWheel::FindColor() {
@@ -50,5 +52,21 @@ void WackyWheel::FindColor() {
       colorChar = 'Y';
     else
       colorChar = 'N';
+}
+
+void WackyWheel::RotationControl() {
+  char firstColor = WackyWheel::colorChar;
+  bool counterFrozen = true;
+
+  while (WackyWheel::colorPasses < 8) {
+    spinnerTalon->Set(2.0);
+    if ((WackyWheel::colorChar == firstColor) && (counterFrozen == false)) {
+      WackyWheel::colorPasses ++;
+      counterFrozen = true;
+    }
+    if (WackyWheel::colorChar != firstColor)
+      counterFrozen = false;
+  }
+
 }
 

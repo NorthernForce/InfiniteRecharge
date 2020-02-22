@@ -28,6 +28,7 @@ class WackyWheel : public frc2::SubsystemBase {
   void FindColor();
   void AddColorMatches();
   void MoveToColor();
+  void RotationControl();
 
  private:
 
@@ -46,6 +47,8 @@ class WackyWheel : public frc2::SubsystemBase {
   char colorChar;
   char desiredColor;
   double confidence;
+  int colorPasses;
+
   // std::shared_ptr<frc::DigitalOutput> DigitalColorSensor;
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private a nd exposed only through public methods.
