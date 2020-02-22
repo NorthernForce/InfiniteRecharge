@@ -14,12 +14,11 @@ PositionControl::PositionControl() {
 }
 
 // Called when the command is initially scheduled.
-void PositionControl::Initialize() {}
+void PositionControl::Initialize() {  
+  RobotContainer::wackyWheel->PositionControl();}
 
 // Called repeatedly when this Command is scheduled to run
-void PositionControl::Execute() {
-  RobotContainer::wackyWheel->MoveToColor();
-}
+void PositionControl::Execute() {}
 
 // Called once the command ends or is interrupted.
 void PositionControl::End(bool interrupted) {}

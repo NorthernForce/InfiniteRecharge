@@ -46,8 +46,8 @@ void OI::MapControllerButtons() {
 
     frc2::Button([this] {return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
 
-    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new PositionControl());
-    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::B_button); }).WhileHeld(new RotationControl());
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new PositionControl());
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new RotationControl());
 }
 
 double OI::getDriveSpeedMultiplier() {
