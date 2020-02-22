@@ -7,6 +7,7 @@
 
 #include "subsystems/utilities/FMSWheelInterface.h"
 #include <frc/DriverStation.h>
+#include <string>
 
 FMSWheelInterface::FMSWheelInterface() {
     if(gameData.length() > 0) {

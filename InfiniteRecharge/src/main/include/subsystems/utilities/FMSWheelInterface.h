@@ -6,13 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
+#include <string>
 
 class FMSWheelInterface {
  public:
   FMSWheelInterface();
   void GetGameData();
   void GameDataRequirements();
- private:
   std::string gameData;
   std::string desiredColor;
+ private:
 };
