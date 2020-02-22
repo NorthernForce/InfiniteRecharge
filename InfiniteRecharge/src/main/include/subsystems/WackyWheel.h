@@ -26,10 +26,10 @@ class WackyWheel : public frc2::SubsystemBase {
 
  private:
 
-static constexpr frc::Color blueTarget = frc::Color(0.143, 0.427, 0.429);
-static constexpr frc::Color greenTarget = frc::Color(0.197, 0.561, 0.240);
-static constexpr frc::Color redTarget = frc::Color(0.561, 0.232, 0.114);
-static constexpr frc::Color yellowTarget = frc::Color(0.361, 0.524, 0.113);
+  const frc::Color blueTarget = frc::Color(0.143, 0.427, 0.429);
+  const frc::Color greenTarget = frc::Color(0.197, 0.561, 0.240);
+  const frc::Color redTarget = frc::Color(0.561, 0.232, 0.114);
+  const frc::Color yellowTarget = frc::Color(0.361, 0.524, 0.113);
 
  std::shared_ptr<rev::CANSparkMax> primary;
  std::shared_ptr<rev::ColorMatch> colorMatcher;

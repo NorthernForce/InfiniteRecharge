@@ -7,6 +7,7 @@
 
 #include "subsystems/Intake.h"
 
+using ArmState = Intake::ArmState;
 
 Intake::Intake() {
     intakeSpark.reset(new rev::CANSparkMax(Constants::Intake::intakeMotor, rev::CANSparkMax::MotorType::kBrushless));
@@ -20,7 +21,6 @@ Intake::Intake() {
     ballPosition3.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort3));
     ballPosition4.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort4));
     ballPosition5.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort5));
-
 }
 
 void Intake::SetFollowers() {
@@ -42,26 +42,24 @@ void Intake::Stop() {
 
 bool Intake::ArmUp() {
     if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
-        armState = Constants::Intake::armIsUp;
+        currentArmState = ArmState::armIsUp;
         return true;
     }
-    else {
+    else
         return false;
-    }
 }
 
 bool Intake::ArmDown() {
     if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
-        armState = Constants::Intake::armIsDown;
+        currentArmState = ArmState::armIsDown;
         return true;
     }
-    else {
+    else
         return false;
-    }
 }
 
-bool Intake::ArmState() {
-    return armState;
+ArmState Intake::GetArmState() {
+    return currentArmState;
 }
 
 void Intake::RunConveyor() {

@@ -46,7 +46,7 @@ void OI::MapControllerButtons() {
 }
 
 double OI::getDriveSpeedMultiplier() {
-    double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed: ", 1.0);
+    double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
     if (speedMultiplier < 0)
         speedMultiplier = 0;
     else if (speedMultiplier > 1)

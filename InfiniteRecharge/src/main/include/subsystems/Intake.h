@@ -9,34 +9,33 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
-#include "Constants.h"
 #include <frc/DigitalInput.h>
+#include "Constants.h"
 
 class Intake : public frc2::SubsystemBase {
  public:
+  enum class ArmState {
+    armIsUp,
+    armIsDown
+  };
   Intake();
   void Periodic();
   void SetFollowers();
- 
   void TakeIn();
   void PushOut();
   void Stop();
   bool ArmUp();
   bool ArmDown();
-  bool ArmState();
-
+  ArmState GetArmState();
   void RunConveyor();
   void StopConveyor();
 
-
   ////TODO: add ramp rate?
 
-
  private:
+  ArmState currentArmState;
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-
-  bool armState;
 
   std::shared_ptr<frc::DigitalInput> ballPosition1;
   std::shared_ptr<frc::DigitalInput> ballPosition2;
