@@ -26,7 +26,6 @@ void DriveWithJoystick::Execute() {
 
 // Called once the command ends or is interrupted.
 void DriveWithJoystick::End(bool interrupted) {
-////TODO: Review whether we want to stop the Drive if this is just Interrupted, If (interrupted == false) ...///
   RobotContainer::drivetrain->Drive(0, 0);
 }
 

@@ -10,6 +10,11 @@
 
 IMU::IMU() {
     ahrs.reset(new AHRS(SPI::Port::kMXP));
+    Init();
+}
+
+void IMU::Init() {
+    ahrs->ResetDisplacement();
 }
 
 void IMU::Periodic() {
@@ -30,8 +35,4 @@ double IMU::GetRotation() {
 
 void IMU::Reset() {
     ahrs->Reset();
-}
-
-void IMU::Initialize() {
-    ahrs->ResetDisplacement();
 }

@@ -15,7 +15,6 @@ class Intake : public frc2::SubsystemBase {
  public:
   Intake();
   void Periodic();
- 
   void TakeIn();
   void PushOut();
   void Stop();
