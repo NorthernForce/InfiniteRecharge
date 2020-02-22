@@ -12,7 +12,7 @@
 
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
-    spinner.reset(new WPI_TalonSRX(Constants::MotorIDs::wackyWheel));
+    spinnerTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::wackyWheel));
     getDesiredColor.reset(new FMSWheelInterface);
     AddColorMatches();
 }
@@ -32,10 +32,10 @@ void WackyWheel::AddColorMatches(){
 }
 
 void WackyWheel::MoveToColor() {
-  if (colorChar == desiredColor) {
-    spinner->Set(0.2);
-  } else if (colorChar != desiredColor) {
-    spinner->SetNeutralMode(NeutralMode::Brake);
+  if (colorChar != desiredColor) {
+    spinnerTalon->Set(0.2);
+  } else if (colorChar == desiredColor) {
+    spinnerTalon->SetNeutralMode(NeutralMode::Brake);
   }
 }
 void WackyWheel::FindColor() {
