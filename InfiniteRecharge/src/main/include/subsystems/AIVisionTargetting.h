@@ -20,8 +20,8 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   int GetAngleOfTarget();
   double GetTargetOffsetInCamera();
 
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
+  /*
+    Will be called periodically whenever the CommandScheduler runs.
    */
 
   /* <-- Remove Once Ready
