@@ -27,15 +27,14 @@ namespace Constants {
         const int shooterFollower2 = 0;
         const int shooterFollower3 = 0;
 
-        const int wackyWheelPrimary = 0;
+        const int wackyWheel = 0;
 
         const int intake = 10;
-        const int arm = 11;
+        const int intakeArm = 11;
         const int conveyor1 = 0;
         const int conveyor2 = 0;
 
-        const int leftArm = 13;
-        const int rightArm = 12;
+        const int climberArm = 13;
 
         const int panServoPWM = 0;
         const int tiltServoPWM = 1;

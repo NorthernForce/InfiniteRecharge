@@ -11,7 +11,7 @@
 //all digital stuff is commented out
 
 Ultrasonic::Ultrasonic() {
-    analogUltrasonic.reset(new frc::AnalogInput(Constants::Ultrasonic::ultrasonicRangeFinder));
+    analogUltrasonic.reset(new frc::AnalogInput(Constants::ultrasonicRangeFinder));
     //ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
 }
 

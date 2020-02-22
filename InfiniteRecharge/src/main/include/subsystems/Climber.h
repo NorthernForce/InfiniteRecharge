@@ -8,7 +8,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <ctre/Pheonix.h>
+#include <ctre/Phoenix.h>
 #include "Constants.h"
 
 class Climber : public frc2::SubsystemBase {

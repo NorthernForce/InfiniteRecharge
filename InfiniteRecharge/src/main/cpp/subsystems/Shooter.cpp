@@ -9,10 +9,10 @@
 #include "Constants.h"
 
 Shooter::Shooter() {
-    primarySpark.reset(new rev::CANSparkMax(Constants::Shooter::primary, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark1.reset(new rev::CANSparkMax(Constants::Shooter::follower1, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark2.reset(new rev::CANSparkMax(Constants::Shooter::follower2, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark3.reset(new rev::CANSparkMax(Constants::Shooter::follower3, rev::CANSparkMax::MotorType::kBrushless));
+    primarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterPrimary, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower1, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    followerSpark3.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower3, rev::CANSparkMax::MotorType::kBrushless));
 }
 
 void Shooter::SetFollowers(){

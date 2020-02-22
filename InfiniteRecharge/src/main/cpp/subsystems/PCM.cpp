@@ -9,7 +9,7 @@
 #include "Constants.h"
 
 PCM::PCM() {
-    compressor.reset(new frc::Compressor(Constants::PCM::PCMCanBusID));
+    compressor.reset(new frc::Compressor(Constants::PCMCanBusID));
     compressor->SetClosedLoopControl(true);
 }
 

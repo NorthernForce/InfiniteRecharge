@@ -10,17 +10,17 @@
 using ArmState = Intake::ArmState;
 
 Intake::Intake() {
-    intakeSpark.reset(new rev::CANSparkMax(Constants::Intake::intakeMotor, rev::CANSparkMax::MotorType::kBrushless));
-    armSpark.reset(new rev::CANSparkMax(Constants::Intake::armMotor, rev::CANSparkMax::MotorType::kBrushless));
+    intakeSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intake, rev::CANSparkMax::MotorType::kBrushless));
+    armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
 
-    primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::Intake::conveyorMotor1, rev::CANSparkMax::MotorType::kBrushless));
-    followerConveyorSpark.reset(new rev::CANSparkMax(Constants::Intake::conveyorMotor2, rev::CANSparkMax::MotorType::kBrushless));
+    primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
+    followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
 
-    ballPosition1.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort1));
-    ballPosition2.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort2));
-    ballPosition3.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort3));
-    ballPosition4.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort4));
-    ballPosition5.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort5));
+    ballPosition1.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
+    ballPosition2.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
+    ballPosition3.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
+    ballPosition4.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
+    ballPosition5.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
 void Intake::SetFollowers() {

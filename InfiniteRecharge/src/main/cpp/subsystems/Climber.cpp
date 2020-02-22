@@ -8,7 +8,7 @@
 #include "subsystems/Climber.h"
 
 Climber::Climber() {
-    armTalon.reset(new WPI_TalonSRX(Constants::Climber::leftArmMotor, rev::CANSparkMax::MotorType::kBrushless));
+    armTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::climberArm));
     
 }
 
@@ -16,7 +16,7 @@ Climber::Climber() {
 void Climber::Periodic() {}
 
 void Climber::Lifter(double speed) {
-    armSpark->Set(speed);
+    armTalon->Set(speed);
 }
 
 

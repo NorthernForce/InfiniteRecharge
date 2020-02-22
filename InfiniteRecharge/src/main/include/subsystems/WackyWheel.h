@@ -31,7 +31,7 @@ class WackyWheel : public frc2::SubsystemBase {
   const frc::Color redTarget = frc::Color(0.561, 0.232, 0.114);
   const frc::Color yellowTarget = frc::Color(0.361, 0.524, 0.113);
 
- std::shared_ptr<rev::CANSparkMax> primary;
+ std::shared_ptr<rev::CANSparkMax> spinner;
  std::shared_ptr<rev::ColorMatch> colorMatcher;
  frc::Color matchedColor;
  frc::Color detectedColor;
