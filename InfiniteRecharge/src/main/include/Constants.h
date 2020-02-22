@@ -6,86 +6,61 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include "rev/ColorSensorV3.h"
 
 namespace Constants {
-    namespace Drivetrain {
-        const int leftPrimary = 4;
-        const int leftFollower1 = 6;
-        const int leftFollower2 = 2;
+    const int driverController_id = 0;
+    const int manipulatorController_id = 1;
 
-        const int rightPrimary = 5;
-        const int rightFollower1 = 1;
-        const int rightFollower2 = 3;
+    const int PCMCanBusID = 11;
+    const int ultrasonicRangeFinder = 0;
+    
+    namespace MotorIDs {
+        const int driveLeftPrimary = 4;
+        const int driveLeftFollower1 = 6;
+        const int driveLeftFollower2 = 2;
+        const int driveRightPrimary = 5;
+        const int driveRightFollower1 = 1;
+        const int driveRightFollower2 = 3;
 
-        const double initialStage = 12/42;     //  Driven gear / Shifting Grear
-        const double shiftingHigh = 44/31;     //  Driver Gear / High Shifting Gear
-        const double shiftingLow =  60/14;     //  Driver Gear / Low Shifting Gear
+        const int shooterPrimary = 0;
+        const int shooterFollower1 = 0;
+        const int shooterFollower2 = 0;
+        const int shooterFollower3 = 0;
+
+        const int wackyWheelPrimary = 0;
+
+        const int intake = 10;
+        const int arm = 11;
+        const int conveyor1 = 0;
+        const int conveyor2 = 0;
+
+        const int leftArm = 13;
+        const int rightArm = 12;
+
+        const int panServoPWM = 0;
+        const int tiltServoPWM = 1;
+    }
+
+    namespace Shifting {
+        const double initialStage = 12/42;
+        const double shiftingHigh = 44/31;
+        const double shiftingLow =  60/14;
+
+        const double pi = 3.141592653589793;
+        const double wheelCircum = 6 * pi;
+        const int rotationMultiplier = 5;
 
         namespace Gear {
             const double low = initialStage*shiftingLow;
             const double high = initialStage*shiftingHigh;
         }
     }
-    namespace Shooter {
-        const int primary = 0; ////TODO: Reassign these when we have the competition robot 
-        const int follower1 = 0;
-        const int follower2 = 0;
-        const int follower3 = 0;
-    }
-    namespace Encoders {
-        const double pi = 3.141592653589793;
-        const int motorCPR = 42;
-        const double wheelCPR_low = motorCPR * Constants::Drivetrain::Gear::low;
-        const double wheelCPR_high = motorCPR * Constants::Drivetrain::Gear::high;
-        const double wheelCircum = 6 * pi;
-        const int rotationMultiplier = 5;
-    }
 
-    namespace OI {
-        const int driverController_id = 0;
-        const int manipulatorController_id = 1;
+    namespace DigitalPort {  
+        const int ballPort1 = 1;
+        const int ballPort2 = 2;
+        const int ballPort3 = 3;
+        const int ballPort4 = 4;
+        const int ballPort5 = 5;
     }
-
-    namespace PCM {
-        const int PCMCanBusID = 11;
-    }
-
-    namespace Servo {
-        const int panServo = 0;
-        const int tiltServo = 1;
-    }
-
-    namespace Ultrasonic {
-        const int ultrasonicRangeFinder = 0; // analog port 0
-      //  const int digitalCtrlPort = 9; 
-    }
-
-    namespace ColorSensor {
-        const int primary = 0;
-        constexpr auto i2cPort = frc::I2C::Port::kOnboard;
-    }
-
-    namespace Intake {
-        const int intakeMotor = 10; ////TODO: have to reassign these when we actually have the robot
-        const int armMotor = 11;
-
-        const int conveyorMotor1 = 0; ////TODO: reassign!
-        const int conveyorMotor2 = 0;
-        
-        const int ballDigitalPort1 = 1;
-        const int ballDigitalPort2 = 2;
-        const int ballDigitalPort3 = 3;
-        const int ballDigitalPort4 = 4;
-        const int ballDigitalPort5 = 5;
-        
-        const bool armIsDown = true;
-        const bool armIsUp = false;
-    }
-
-    namespace Climber {
-        const int leftArmMotor = 13; ////TODO: change these
-        const int rightArmMotor = 12;
-    }
-    
 }

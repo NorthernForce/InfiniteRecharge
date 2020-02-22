@@ -16,6 +16,7 @@ void Navigation::Periodic() {
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
     std::cout << "Distance Travelled- L: " << GetInchesTravelled().first << '\n';
     std::cout << "Distance travelled- R: " << GetInchesTravelled().second << '\n';
+    std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
@@ -25,12 +26,12 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double rightDistance;
 
     if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
-        leftDistance = (Constants::Drivetrain::Gear::high * leftEncoderPos) * Constants::Encoders::wheelCircum;
-        rightDistance = (Constants::Drivetrain::Gear::high * rightEncoderPos) * Constants::Encoders::wheelCircum;
+        leftDistance = leftEncoderPos * 3.67 / 5;
+        rightDistance = rightEncoderPos * 3.67 / 5;
     }
     else {
-        leftDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) * Constants::Encoders::wheelCircum;
-        rightDistance = (Constants::Drivetrain::Gear::low * rightEncoderPos) * Constants::Encoders::wheelCircum;
+        leftDistance = leftEncoderPos * 3.67 / 5;
+        rightDistance = rightEncoderPos * 3.67 / 5;
     }
     return std::make_pair(leftDistance, rightDistance);
 }

@@ -10,12 +10,12 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {    
-    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::leftPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::rightPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::leftPrimarySpark, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollowerSpark1, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollowerSpark2, rev::CANSparkMax::MotorType::kBrushless));
+    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::rightPrimarySpark, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollowerSpark1, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollowerSpark2, rev::CANSparkMax::MotorType::kBrushless));
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
     ConfigureAllControllers();
