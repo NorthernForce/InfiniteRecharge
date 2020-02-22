@@ -21,6 +21,7 @@ std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 std::shared_ptr<Intake> RobotContainer::intake;
 std::shared_ptr<Shooter> RobotContainer::shooter;
 std::shared_ptr<Climber> RobotContainer::climber;
+std::shared_ptr<WackyWheel> RobotContainer::wackyWheel;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());

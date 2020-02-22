@@ -41,7 +41,6 @@ void WackyWheel::MoveToColor() {
   }
 }
 void WackyWheel::FindColor() {
-    
     if (detectedColor == blueTarget) 
       colorChar = 'B';
     else if (detectedColor == redTarget)
@@ -55,18 +54,15 @@ void WackyWheel::FindColor() {
 }
 
 void WackyWheel::RotationControl() {
-  char firstColor = WackyWheel::colorChar;
-  bool counterFrozen = true;
 
-  while (WackyWheel::colorPasses < 8) {
-    spinnerTalon->Set(2.0);
+  if (WackyWheel::colorPasses < 8) {
+    spinnerTalon->Set(0.2);
     if ((WackyWheel::colorChar == firstColor) && (counterFrozen == false)) {
       WackyWheel::colorPasses ++;
       counterFrozen = true;
     }
-    if (WackyWheel::colorChar != firstColor)
+    else if (WackyWheel::colorChar != firstColor)
       counterFrozen = false;
   }
 
 }
-
