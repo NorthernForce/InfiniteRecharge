@@ -11,9 +11,9 @@
 class FMSWheelInterface {
  public:
   FMSWheelInterface();
-  void GetGameData();
+  char GetGameData();
   void GameDataRequirements();
   std::string gameData;
-  std::string desiredColor;
+  char desiredColor;
  private:
 };

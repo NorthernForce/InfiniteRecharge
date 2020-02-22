@@ -19,26 +19,7 @@ void FMSWheelInterface::GameDataRequirements() {
     gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
 }
 
-void FMSWheelInterface::GetGameData() {
-    {
-    switch (gameData[0])
-    {
-        case 'B' :
-        desiredColor = 'Blue';
-        break;
-        case 'G' :
-        desiredColor = 'Green';
-        break;
-        case 'R' :
-        desiredColor = 'Red';
-         break;
-        case 'Y' :
-         desiredColor = 'Yellow';
-          break;
-        default :
-         desiredColor = 'None';
-         break;
-        
+char FMSWheelInterface::GetGameData() {
+    desiredColor = gameData[0];
+    return desiredColor;
 }
-    }
-    }
