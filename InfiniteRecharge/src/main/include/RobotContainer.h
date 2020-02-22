@@ -21,8 +21,10 @@
 #include "subsystems/Intake.h"
 #include "subsystems/Shooter.h"
 #include "subsystems/WackyWheel.h"
+#include "subsystems/Climber.h"
 
 #include "commands/DriveWithJoystick.h"
+#include "commands/Climb.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -46,6 +48,7 @@ class RobotContainer {
   static std::shared_ptr<Intake> intake;
   static std::shared_ptr<Shooter> shooter;
   static std::shared_ptr<WackyWheel> wackyWheel;
+  static std::shared_ptr<Climber> climber;
 
  private:
   void InitSubsystems();

@@ -69,9 +69,23 @@ namespace Constants {
     namespace Intake {
         const int intakeMotor = 10; ////TODO: have to reassign these when we actually have the robot
         const int armMotor = 11;
+
+        const int conveyorMotor1 = 0; ////TODO: reassign!
+        const int conveyorMotor2 = 0;
+        
+        const int ballDigitalPort1 = 1;
+        const int ballDigitalPort2 = 2;
+        const int ballDigitalPort3 = 3;
+        const int ballDigitalPort4 = 4;
+        const int ballDigitalPort5 = 5;
         
         const bool armIsDown = true;
         const bool armIsUp = false;
+    }
+
+    namespace Climber {
+        const int leftArmMotor = 13; ////TODO: change these
+        const int rightArmMotor = 12;
     }
     
 }

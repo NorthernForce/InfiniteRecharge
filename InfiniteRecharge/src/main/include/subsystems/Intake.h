@@ -10,17 +10,26 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc/DigitalInput.h>
 
 class Intake : public frc2::SubsystemBase {
  public:
   Intake();
   void Periodic();
+  void SetFollowers();
+ 
   void TakeIn();
   void PushOut();
   void Stop();
   bool ArmUp();
   bool ArmDown();
   bool ArmState();
+
+  void RunConveyor();
+  void StopConveyor();
+
+
+  ////TODO: add ramp rate?
 
 
  private:
@@ -29,6 +38,16 @@ class Intake : public frc2::SubsystemBase {
 
   bool armState;
 
+  std::shared_ptr<frc::DigitalInput> ballPosition1;
+  std::shared_ptr<frc::DigitalInput> ballPosition2;
+  std::shared_ptr<frc::DigitalInput> ballPosition3;
+  std::shared_ptr<frc::DigitalInput> ballPosition4;
+  std::shared_ptr<frc::DigitalInput> ballPosition5;
+
+
   std::shared_ptr<rev::CANSparkMax> intakeSpark;
   std::shared_ptr<rev::CANSparkMax> armSpark;
+
+  std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
+  std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
 };

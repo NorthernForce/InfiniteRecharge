@@ -5,23 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/IntakeDown.h"
+#include "commands/Climb.h"
 
-IntakeDown::IntakeDown() {
+Climb::Climb(std::function<double()> speed) : m_speed(speed) {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::intake.get());
+  AddRequirements(RobotContainer::climber.get());
 }
 
 // Called when the command is initially scheduled.
-void IntakeDown::Initialize() {}
+void Climb::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void IntakeDown::Execute() {
-  RobotContainer::intake->ArmDown();
+void Climb::Execute() {
+  if (abs(m_speed()) > 0.3) {
+    RobotContainer::climber->Lifter(m_speed());
+  }
 }
 
 // Called once the command ends or is interrupted.
-void IntakeDown::End(bool interrupted) {}
+void Climb::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool IntakeDown::IsFinished() { return false; }
+bool Climb::IsFinished() { return false; }

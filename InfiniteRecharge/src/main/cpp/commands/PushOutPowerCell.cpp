@@ -9,6 +9,7 @@
 
 PushOutPowerCell::PushOutPowerCell() {
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.

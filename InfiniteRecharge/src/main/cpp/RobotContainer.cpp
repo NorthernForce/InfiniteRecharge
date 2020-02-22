@@ -20,6 +20,7 @@ std::shared_ptr<CameraMount> RobotContainer::cameraMount;
 std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 std::shared_ptr<Intake> RobotContainer::intake;
 std::shared_ptr<Shooter> RobotContainer::shooter;
+std::shared_ptr<Climber> RobotContainer::climber;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());
@@ -39,11 +40,16 @@ void RobotContainer::InitSubsystems() {
   ultrasonic.reset(new Ultrasonic);
   intake.reset(new Intake);
   shooter.reset(new Shooter);
+  climber.reset(new Climber);
 }
 
 void RobotContainer::InitDefaultCommands() {
   drivetrain->SetDefaultCommand(DriveWithJoystick(
     [this] { return oi->driverController->GetY(frc::XboxController::kLeftHand); },
     [this] { return oi->driverController->GetX(frc::XboxController::kRightHand) *-1; }
+  ));
+
+  climber->SetDefaultCommand(Climb( 
+    [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
   ));
 }

@@ -11,15 +11,29 @@
 Intake::Intake() {
     intakeSpark.reset(new rev::CANSparkMax(Constants::Intake::intakeMotor, rev::CANSparkMax::MotorType::kBrushless));
     armSpark.reset(new rev::CANSparkMax(Constants::Intake::armMotor, rev::CANSparkMax::MotorType::kBrushless));
+
+    primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::Intake::conveyorMotor1, rev::CANSparkMax::MotorType::kBrushless));
+    followerConveyorSpark.reset(new rev::CANSparkMax(Constants::Intake::conveyorMotor2, rev::CANSparkMax::MotorType::kBrushless));
+
+    ballPosition1.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort1));
+    ballPosition2.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort2));
+    ballPosition3.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort3));
+    ballPosition4.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort4));
+    ballPosition5.reset(new frc::DigitalInput(Constants::Intake::ballDigitalPort5));
+
+}
+
+void Intake::SetFollowers() {
+    followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
 void Intake::Periodic() {}
 
 void Intake::TakeIn() {
-    intakeSpark->Set(.5);
+    intakeSpark->Set(0.5);
 }
 
 void Intake::PushOut() {
-    intakeSpark->Set(-.5);
+    intakeSpark->Set(-0.5);
 }
 
 void Intake::Stop() {
@@ -48,4 +62,12 @@ bool Intake::ArmDown() {
 
 bool Intake::ArmState() {
     return armState;
+}
+
+void Intake::RunConveyor() {
+    primaryConveyorSpark->Set(0.5);
+}
+
+void Intake::StopConveyor() {
+    primaryConveyorSpark->Set(0);
 }
