@@ -30,18 +30,24 @@ void WackyWheel::AddColorMatches() {
     colorMatcher->AddColorMatch(yellowTarget);
 }
 
-void WackyWheel::MoveToColor() {
-  if (colorChar != desiredColor)
-    spinnerTalon->Set(0.2);
-  else if (colorChar == desiredColor) {
-    if(true){ // colorChar == 
-      spinnerTalon->SetNeutralMode(NeutralMode::Brake);
-
-    }
+void WackyWheel::PositionControl() {
+  if (colorChar != desiredColor) {
+    if((colorChar ==  'Y') && (desiredColor == 'R'))
+      spinnerTalon->Set(-0.2);
+    else if ((colorChar == 'B') && (desiredColor = 'Y'))
+      spinnerTalon->Set(-0.2);
+    else if ((colorChar == 'G') && (desiredColor == 'B'))
+      spinnerTalon->Set(-0.2);
+    else if ((colorChar == 'R') && (desiredColor == 'G'))
+      spinnerTalon->Set(-0.2);
+    else
+      spinnerTalon->Set(0.2);
   }
+  else if (colorChar == desiredColor)
+    spinnerTalon->SetNeutralMode(NeutralMode::Brake);
 }
+
 void WackyWheel::FindColor() {
-    
     if (detectedColor == blueTarget) 
       colorChar = 'B';
     else if (detectedColor == redTarget)
@@ -58,7 +64,7 @@ void WackyWheel::RotationControl() {
   char firstColor = WackyWheel::colorChar;
   bool counterFrozen = true;
 
-  while (WackyWheel::colorPasses < 8) {
+  if (WackyWheel::colorPasses < 8) {
     spinnerTalon->Set(2.0);
     if ((WackyWheel::colorChar == firstColor) && (counterFrozen == false)) {
       WackyWheel::colorPasses ++;
