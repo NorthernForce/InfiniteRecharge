@@ -7,7 +7,7 @@
 #include "subsystems/WackyWheel.h"
 #include "Constants.h"
 #include "rev/ColorSensorV3.h"
-#include "subsystems/utilities/FMSWheelInterface.h"
+#include "subsystems/utilities/FMSWheelInterface.h" 
 
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
@@ -23,6 +23,13 @@ void WackyWheel::Periodic() {
     FindColor();
 } 
 
+void WackyWheel::AddColorMatches() {
+    colorMatcher->AddColorMatch(blueTarget);
+    colorMatcher->AddColorMatch(greenTarget);
+    colorMatcher->AddColorMatch(redTarget);
+    colorMatcher->AddColorMatch(yellowTarget);
+}
+
 void WackyWheel::FindColor() {
     if (detectedColor == blueTarget) 
       colorChar = 'B';
@@ -34,13 +41,6 @@ void WackyWheel::FindColor() {
       colorChar = 'Y';
     else
       colorChar = 'N';
-}
-
-void WackyWheel::AddColorMatches() {
-    colorMatcher->AddColorMatch(blueTarget);
-    colorMatcher->AddColorMatch(greenTarget);
-    colorMatcher->AddColorMatch(redTarget);
-    colorMatcher->AddColorMatch(yellowTarget);
 }
 
 void WackyWheel::PositionControl() {
@@ -58,19 +58,6 @@ void WackyWheel::PositionControl() {
   }
   else if (colorChar == desiredColor)
     spinnerTalon->SetNeutralMode(NeutralMode::Brake);
-}
-
-void WackyWheel::FindColor() {
-    if (detectedColor == blueTarget) 
-      colorChar = 'B';
-    else if (detectedColor == redTarget)
-      colorChar = 'R';
-    else if (detectedColor == greenTarget)
-      colorChar = 'G';
-    else if (detectedColor == yellowTarget)
-      colorChar = 'Y';
-    else
-      colorChar = 'N';
 }
 
 void WackyWheel::RotationControl() {
