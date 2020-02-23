@@ -18,6 +18,5 @@ class AICommunication : public frc2::SubsystemBase {
   void Periodic();
 
  private:
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
+  const std::string powercellOffsetInCam =  "PC Offset in AI Cam:";
 };
