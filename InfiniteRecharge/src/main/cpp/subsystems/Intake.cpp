@@ -67,53 +67,21 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for (int position = 0; position < 6; position++) {
-        switch (position) {
-            case 0: if (ballPosition0->Get() == ballDetected) {
-                        powerCellPosition[position0] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position0] = StorageState::EMPTY;
-                    }
-                    break;
-            case 1: if (ballPosition1->Get() == ballDetected) {
-                        powerCellPosition[position1] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position1] = StorageState::EMPTY;
-                    }
-                    break;
-            case 2: if (ballPosition2->Get() == ballDetected) {
-                        powerCellPosition[position2] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position2] = StorageState::EMPTY;
-                    }
-                    break;
-            case 3: if (ballPosition3->Get() == ballDetected) {
-                        powerCellPosition[position3] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position3] = StorageState::EMPTY;
-                    }
-                    break;
-            case 4: if (ballPosition4->Get() == ballDetected) {
-                        powerCellPosition[position4] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position4] = StorageState::EMPTY;
-                    }
-                    break;
-            case 5: if (ballPosition5->Get() == ballDetected) {
-                        powerCellPosition[position5] = StorageState::PRESENT;
-                    }
-                    else {
-                        powerCellPosition[position5] = StorageState::EMPTY;
-                    }
-                    break;
-        }
+    bool ball[6];
+    ball[0] = ballPosition0->Get();
+    ball[1] = ballPosition1->Get();
+    ball[2] = ballPosition2->Get();
+    ball[3] = ballPosition3->Get();
+    ball[4] = ballPosition4->Get();
+    ball[5] = ballPosition5->Get();
+    for (int pos=0; pos<6; pos++) {
+        if (ball[pos] == ballDetected)
+            powerCellPosition[pos] = StorageState::PRESENT;
+        else
+            powerCellPosition[pos] = StorageState::EMPTY;
     }
 }
+
 StorageState Intake::GetInventory(int position) {
     return powerCellPosition[position];
 }
