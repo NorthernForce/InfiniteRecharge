@@ -9,7 +9,6 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "RobotContainer.h"
 
 /**
  * An example command.
@@ -18,10 +17,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class IntakePowerCell
-    : public frc2::CommandHelper<frc2::CommandBase, IntakePowerCell> {
+class RotationControl
+    : public frc2::CommandHelper<frc2::CommandBase, RotationControl> {
  public:
-  IntakePowerCell();
+  RotationControl();
 
   void Initialize() override;
 
@@ -30,7 +29,4 @@ class IntakePowerCell
   void End(bool interrupted) override;
 
   bool IsFinished() override;
-
-  private:
-    int emptyPosition;
 };

@@ -23,6 +23,19 @@ void WackyWheel::Periodic() {
     FindColor();
 } 
 
+void WackyWheel::FindColor() {
+    if (detectedColor == blueTarget) 
+      colorChar = 'B';
+    else if (detectedColor == redTarget)
+      colorChar = 'R';
+    else if (detectedColor == greenTarget)
+      colorChar = 'G';
+    else if (detectedColor == yellowTarget)
+      colorChar = 'Y';
+    else
+      colorChar = 'N';
+}
+
 void WackyWheel::AddColorMatches() {
     colorMatcher->AddColorMatch(blueTarget);
     colorMatcher->AddColorMatch(greenTarget);
@@ -61,18 +74,14 @@ void WackyWheel::FindColor() {
 }
 
 void WackyWheel::RotationControl() {
-  char firstColor = WackyWheel::colorChar;
-  bool counterFrozen = true;
 
   if (WackyWheel::colorPasses < 8) {
-    spinnerTalon->Set(2.0);
+    spinnerTalon->Set(0.2);
     if ((WackyWheel::colorChar == firstColor) && (counterFrozen == false)) {
       WackyWheel::colorPasses ++;
       counterFrozen = true;
     }
-    if (WackyWheel::colorChar != firstColor)
+    else if (WackyWheel::colorChar != firstColor)
       counterFrozen = false;
   }
-
 }
-

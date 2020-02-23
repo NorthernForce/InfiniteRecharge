@@ -5,35 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/IntakePowerCell.h"
+#include "commands/RotationControl.h"
+#include "RobotContainer.h"
 
-IntakePowerCell::IntakePowerCell() {
+RotationControl::RotationControl() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::intake.get());
+  AddRequirements(RobotContainer::wackyWheel.get());
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {
-  IntakePowerCell::emptyPosition = RobotContainer::intake->FirstEmptyPosition();
-}
+void RotationControl::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void IntakePowerCell::Execute() {
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-     RobotContainer::intake->RunConveyor();
-  }
+void RotationControl::Execute() {
+  RobotContainer::wackyWheel->RotationControl();
 }
 
 // Called once the command ends or is interrupted.
-void IntakePowerCell::End(bool interrupted) {}
+void RotationControl::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool IntakePowerCell::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(IntakePowerCell::emptyPosition) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->StopConveyor();
-    return true;
-  }
-  else {
-  return false; 
-  }
-}
+bool RotationControl::IsFinished() { return false; }

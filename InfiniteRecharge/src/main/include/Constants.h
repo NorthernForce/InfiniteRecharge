@@ -55,7 +55,8 @@ namespace Constants {
         }
     }
 
-    namespace DigitalPort {  
+    namespace DigitalPort { 
+        const int ballPort0 = 0; 
         const int ballPort1 = 1;
         const int ballPort2 = 2;
         const int ballPort3 = 3;

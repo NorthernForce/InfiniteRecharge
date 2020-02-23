@@ -18,10 +18,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class IntakePowerCell
-    : public frc2::CommandHelper<frc2::CommandBase, IntakePowerCell> {
+class InventoryPowerCells
+    : public frc2::CommandHelper<frc2::CommandBase, InventoryPowerCells> {
  public:
-  IntakePowerCell();
+  InventoryPowerCells();
 
   void Initialize() override;
 
@@ -32,5 +32,6 @@ class IntakePowerCell
   bool IsFinished() override;
 
   private:
-    int emptyPosition;
+  int emptyPosition;
 };
+

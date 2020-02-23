@@ -10,6 +10,8 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 
+#include "commands/InventoryPowerCells.h"
+
 void Robot::RobotInit() {
 
   container.reset(new RobotContainer());
@@ -56,7 +58,9 @@ void Robot::TeleopInit() {
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  InventoryPowerCells();
+}
 
 /**
  * This function is called periodically during test mode.

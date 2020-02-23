@@ -48,6 +48,8 @@ class WackyWheel : public frc2::SubsystemBase {
   char desiredColor;
   double confidence;
   int colorPasses;
+  char firstColor = WackyWheel::colorChar;
+  bool counterFrozen = true;
 
   // std::shared_ptr<frc::DigitalOutput> DigitalColorSensor;
   // Components (e.g. motor controllers and sensors) should generally be
