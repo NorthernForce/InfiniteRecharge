@@ -114,10 +114,13 @@ void Intake::InventoryPowerCells() {
         }
     }
 }
+
+//Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 
 StorageState Intake::GetInventory(int position) {
     return powerCellPosition[position];
 }
 
+//Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::FirstEmptyPosition() {
     int position = noEmptyPositionFound;
     for (int i = 1; i < 6; i++) {

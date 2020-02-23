@@ -19,11 +19,13 @@ class Intake : public frc2::SubsystemBase {
     armIsDown
   };
 
+//"StorageState" = whether there is a PC (Ball) at a Conveyor Position
   enum class StorageState {
-    PRESENT,
-    EMPTY
+    PRESENT,                  //Have Ball
+    EMPTY                     //No Ball
   };
 
+//Digital Ports Assigned to each Position
   const int position0 = 0;
   const int position1 = 1;
   const int position2 = 2;
@@ -44,8 +46,14 @@ class Intake : public frc2::SubsystemBase {
   ArmState GetArmState();
   void RunConveyor();
   void StopConveyor();
+
+  //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition
   void InventoryPowerCells(); ///set array and then set a counter
+
+  //Returns the previously detemined "StorageState" of the specific Conveyor Storage Position (integer) given
   StorageState GetInventory(int position);
+
+  //Return the First Position in the Conveyor Storage that is empty (no PC).
   int FirstEmptyPosition();
 
   ////TODO: add ramp rate?
@@ -55,7 +63,7 @@ class Intake : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
-  StorageState powerCellPosition[6];
+  StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position
 
   const bool ballDetected = false;
 
