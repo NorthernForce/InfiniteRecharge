@@ -7,7 +7,7 @@
 #include "subsystems/WackyWheel.h"
 #include "Constants.h"
 #include "rev/ColorSensorV3.h"
-#include "subsystems/utilities/FMSWheelInterface.h"
+#include "utilities/FMSWheelInterface.h"
 
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));

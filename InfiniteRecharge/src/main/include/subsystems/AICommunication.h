@@ -7,21 +7,17 @@
 
 #pragma once
 
-#include <frc2/command/CommandBase.h>
-#include <frc2/command/CommandHelper.h>
-#include "RobotContainer.h"
+#include <frc2/command/SubsystemBase.h>
+#include <string>
 
-class DriveWithJoystick
-    : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
+class AICommunication : public frc2::SubsystemBase {
  public:
-  DriveWithJoystick();
+  AICommunication();
+  std::vector<double> GetValueArray(std::string key);
+  double GetNumber(std::string key);
+  void Periodic();
 
-  void Initialize() override;
-
-  void Execute() override;
-
-  void End(bool interrupted) override;
-
-  bool IsFinished() override;
-
+ private:
+  // Components (e.g. motor controllers and sensors) should generally be
+  // declared private and exposed only through public methods.
 };

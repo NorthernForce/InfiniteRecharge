@@ -8,8 +8,8 @@ class OI {
     OI();
     void InitControllers();
     void MapControllerButtons();
-    double getDriveSpeedMultiplier();
-    double getShootRampRateMultiplier();
+    std::pair<double, double> GetDriveControls();
+    double GetShootRampRateMultiplier();
 
     static std::shared_ptr<frc::XboxController> driverController;
     static std::shared_ptr<frc::XboxController> manipulatorController;
@@ -19,8 +19,8 @@ class OI {
         B_button     = 2, 
         X_button     = 3, 
         Y_button     = 4, 
-        rt_bumper    = 5, 
-        lt_bumper    = 6, 
+        lt_bumper    = 5,
+        rt_bumper    = 6,  
         menu_button  = 7, 
         view_button  = 8,
         lt_stick     = 9,
@@ -46,4 +46,6 @@ class OI {
         left         = 270,
         left_up      = 315
     };
+ private:
+    double GetDriveSpeedMultiplier();
 };

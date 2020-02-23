@@ -15,6 +15,7 @@ IMU::IMU() {
 
 void IMU::Init() {
     ahrs->ResetDisplacement();
+    ZeroRotation();
 }
 
 void IMU::Periodic() {
@@ -23,6 +24,8 @@ void IMU::Periodic() {
 
     double currentAccelY = ahrs->GetWorldLinearAccelY();
     previousAccelY = currentAccelY;
+
+    std::cout << "Rotation: " << GetRotation() << '\n';
 }
 
 double IMU::GetRollAngle() {
@@ -31,6 +34,10 @@ double IMU::GetRollAngle() {
 
 double IMU::GetRotation() {
     return ahrs->GetYaw();
+}
+
+void IMU::ZeroRotation() {
+    ahrs->ZeroYaw();
 }
 
 void IMU::Reset() {

@@ -1,27 +1,19 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
 #pragma once
+#include <frc/GenericHID.h>
 
-#include <frc2/command/SubsystemBase.h>
-#include <AHRS.h>
-
-class IMU : public frc2::SubsystemBase {
+class ComboControl {
  public:
-  IMU();
-  void Init();
-  void Periodic();
-  double GetRollAngle();
-  double GetRotation();
-  void ZeroRotation();
-  void Reset();
-
+  ComboControl(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2);
+  bool Get();
  private:
-  std::shared_ptr<AHRS> ahrs;
-  double previousAccelX;
-  double previousAccelY;
+  std::shared_ptr<frc::GenericHID> currentJoystick;
+  int m_button1;
+  int m_button2;
 };

@@ -9,10 +9,9 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "subsystems/Drivetrain.h"
 
-DriveWithJoystick::DriveWithJoystick(std::function<double()> speed, std::function<double()> rotation)
-  :  m_speed(speed), m_rotation(rotation) {
-    SetName("DriveWithJoystick");
-    AddRequirements(RobotContainer::drivetrain.get());
+DriveWithJoystick::DriveWithJoystick() {
+  SetName("DriveWithJoystick");
+  AddRequirements(RobotContainer::drivetrain.get());
 }
 
 // Called when the command is initially scheduled.
@@ -20,8 +19,9 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  double driveSpeedMultiplier = RobotContainer::oi->getDriveSpeedMultiplier();
-  RobotContainer::drivetrain->Drive(m_speed() * driveSpeedMultiplier, m_rotation() * driveSpeedMultiplier);
+  double speed = RobotContainer::oi->GetDriveControls().first;
+  double rotation = RobotContainer::oi->GetDriveControls().second;
+  RobotContainer::drivetrain->Drive(speed, rotation);
 }
 
 // Called once the command ends or is interrupted.

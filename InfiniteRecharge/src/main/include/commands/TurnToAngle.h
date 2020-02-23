@@ -9,12 +9,18 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "RobotContainer.h"
 
-class DriveWithJoystick
-    : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class TurnToAngle
+    : public frc2::CommandHelper<frc2::CommandBase, TurnToAngle> {
  public:
-  DriveWithJoystick();
+  TurnToAngle(double targetAngle = 0);
 
   void Initialize() override;
 
@@ -24,4 +30,21 @@ class DriveWithJoystick
 
   bool IsFinished() override;
 
+ private:
+  double targetAngle = 0;
+  double totalTargetAngle = 0;
+
+  const double pValue = 1.3;
+  const double iValue = 0;
+  const double dValue = 0.5;
+
+  const double maxTurnSpeed = 0.35;
+  const double minError = 0.05;
+
+  double error = 0;
+  double errorPrior = 0;
+  double integral = 0;
+  double derivative = 0;
+
+  int defaultPeriodInMs = 20;
 };
