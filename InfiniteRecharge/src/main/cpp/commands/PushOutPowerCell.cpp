@@ -24,6 +24,6 @@ void PushOutPowerCell::Execute() {
 void PushOutPowerCell::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool PushOutPowerCell::IsFinished() { return false; } //need to set this to true?
+bool PushOutPowerCell::IsFinished() { return false; } 
 
 

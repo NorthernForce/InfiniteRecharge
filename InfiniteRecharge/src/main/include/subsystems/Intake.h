@@ -12,6 +12,7 @@
 #include <frc/DigitalInput.h>
 #include "Constants.h"
 
+
 class Intake : public frc2::SubsystemBase {
  public:
   enum class ArmState {
@@ -32,6 +33,9 @@ class Intake : public frc2::SubsystemBase {
   const int position5 = 5;
 
   const int noEmptyPositionFound = -1;
+  const int noFullPositionFound = -1;
+
+  int powerCellCount = 0;
 
   Intake();
   void Periodic();
@@ -47,6 +51,7 @@ class Intake : public frc2::SubsystemBase {
   void InventoryPowerCells(); ///set array and then set a counter
   StorageState GetInventory(int position);
   int FirstEmptyPosition();
+  int LowestFullPosition();
 
   ////TODO: add ramp rate?
 

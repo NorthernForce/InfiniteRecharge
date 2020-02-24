@@ -19,8 +19,14 @@ void IntakePowerCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+  RobotContainer::intake->TakeIn();
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
      RobotContainer::intake->RunConveyor();
+  }
+  else if (RobotContainer::intake->powerCellCount >= 5) {
+    RobotContainer::oi->SetControllerRumble(1, false);
+    RobotContainer::intake->Stop();
+    RobotContainer::intake->StopConveyor();
   }
 }
 
@@ -30,6 +36,7 @@ void IntakePowerCell::End(bool interrupted) {}
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() { 
   if (RobotContainer::intake->GetInventory(IntakePowerCell::emptyPosition) == Intake::StorageState::PRESENT) {
+    RobotContainer::intake->Stop();
     RobotContainer::intake->StopConveyor();
     return true;
   }

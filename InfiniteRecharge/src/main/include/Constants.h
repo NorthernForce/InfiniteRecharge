@@ -22,10 +22,7 @@ namespace Constants {
         const int driveRightFollower1 = 1;
         const int driveRightFollower2 = 3;
 
-        const int shooterPrimary = 0;
-        const int shooterFollower1 = 0;
-        const int shooterFollower2 = 0;
-        const int shooterFollower3 = 0;
+        const int shooter = 0;
 
         const int wackyWheel = 0;
 

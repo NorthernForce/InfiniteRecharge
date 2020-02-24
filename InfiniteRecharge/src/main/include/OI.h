@@ -11,6 +11,8 @@ class OI {
     double getDriveSpeedMultiplier();
     double getShootRampRateMultiplier();
 
+    void SetControllerRumble(double value = 0, bool lightly = false);
+
     static std::shared_ptr<frc::XboxController> driverController;
     static std::shared_ptr<frc::XboxController> manipulatorController;
 

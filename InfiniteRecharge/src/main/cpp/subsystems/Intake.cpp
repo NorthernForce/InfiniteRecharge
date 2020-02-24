@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Intake.h"
+#include "RobotContainer.h"
 
 using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
@@ -28,7 +29,10 @@ Intake::Intake() {
 void Intake::SetFollowers() {
     followerConveyorSpark->Follow(*primaryConveyorSpark);
 }
-void Intake::Periodic() {}
+void Intake::Periodic() {
+    RobotContainer::oi->SetControllerRumble(1, false);
+    //RobotContainer::intake->GetInventory();
+}
 
 void Intake::TakeIn() {
     intakeSpark->Set(0.5);
@@ -78,6 +82,7 @@ void Intake::InventoryPowerCells() {
                     break;
             case 1: if (ballPosition1->Get() == ballDetected) {
                         powerCellPosition[position1] = StorageState::PRESENT;
+                        powerCellCount++;
                     }
                     else {
                         powerCellPosition[position1] = StorageState::EMPTY;
@@ -85,6 +90,7 @@ void Intake::InventoryPowerCells() {
                     break;
             case 2: if (ballPosition2->Get() == ballDetected) {
                         powerCellPosition[position2] = StorageState::PRESENT;
+                        powerCellCount++;
                     }
                     else {
                         powerCellPosition[position2] = StorageState::EMPTY;
@@ -92,6 +98,7 @@ void Intake::InventoryPowerCells() {
                     break;
             case 3: if (ballPosition3->Get() == ballDetected) {
                         powerCellPosition[position3] = StorageState::PRESENT;
+                        powerCellCount++;
                     }
                     else {
                         powerCellPosition[position3] = StorageState::EMPTY;
@@ -99,6 +106,7 @@ void Intake::InventoryPowerCells() {
                     break;
             case 4: if (ballPosition4->Get() == ballDetected) {
                         powerCellPosition[position4] = StorageState::PRESENT;
+                        powerCellCount++;
                     }
                     else {
                         powerCellPosition[position4] = StorageState::EMPTY;
@@ -106,6 +114,7 @@ void Intake::InventoryPowerCells() {
                     break;
             case 5: if (ballPosition5->Get() == ballDetected) {
                         powerCellPosition[position5] = StorageState::PRESENT;
+                        powerCellCount++;
                     }
                     else {
                         powerCellPosition[position5] = StorageState::EMPTY;
@@ -122,6 +131,17 @@ int Intake::FirstEmptyPosition() {
     int position = noEmptyPositionFound;
     for (int i = 1; i < 6; i++) {
         if (Intake::GetInventory(i) == StorageState::PRESENT) {
+            continue;
+        }
+        position = i;
+    }
+    return position;
+}
+
+int Intake::LowestFullPosition() {
+    int position = noFullPositionFound;
+    for (int i = 1; i < 6; i++) {
+        if (Intake::GetInventory(i) == StorageState::EMPTY) {
             continue;
         }
         position = i;

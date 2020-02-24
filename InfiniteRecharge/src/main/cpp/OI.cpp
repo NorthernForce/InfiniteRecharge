@@ -67,3 +67,12 @@ double OI::getShootRampRateMultiplier() {
         shootRampRateMultiplier = 1;
     return shootRampRateMultiplier;
 }
+
+void OI::SetControllerRumble(double value, bool lightly) {
+  if (lightly) {
+    driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+  }
+  else {
+    driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  }
+}

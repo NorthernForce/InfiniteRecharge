@@ -9,16 +9,11 @@
 #include "Constants.h"
 
 Shooter::Shooter() {
-    primarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark3.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower3, rev::CANSparkMax::MotorType::kBrushless));
-}
+    shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
 
-void Shooter::SetFollowers(){
-    followerSpark1->Follow(*primarySpark);
-    followerSpark2->Follow(*primarySpark);
-    followerSpark3->Follow(*primarySpark);
+  /*  pidController.SetP(p);
+    pidController.SetI(i);
+    pidController.SetD(d); */
 }
 
 void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
@@ -33,7 +28,8 @@ void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
 }
 
 void Shooter::Shoot() {
-    primarySpark->Set(0.5);
+  //  shooterSpark->Set(0.5);
+   // pidController.SetReference(0.75, rev::ControlType::kVelocity); //code to try and use the pid loop, might be wrong
 }
 
 // This method will be called once per scheduler run
