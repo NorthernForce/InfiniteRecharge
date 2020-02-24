@@ -5,26 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-/* <-- Remove once Ready
-
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include "RobotContainer.h"
 
 class AIVisionTargetting : public frc2::SubsystemBase {
  public:
   AIVisionTargetting();
 
-  bool CheckForTarget();
-  Target CheckTargetType();
-  int GetAngleOfTarget();
-  double GetTargetOffsetInCamera();
+  // bool CheckForTarget();
+  // Target CheckTargetType();
+  std::pair<double, double> CamTargetPositioning();
+  double RoboAngleToTarget();
 
   /*
     Will be called periodically whenever the CommandScheduler runs.
    */
-
-  /* <-- Remove Once Ready
 
   void Periodic();
 
@@ -37,5 +34,3 @@ enum class Target {
   UpperGoal,
   LowerGoal
 };
-
-*/

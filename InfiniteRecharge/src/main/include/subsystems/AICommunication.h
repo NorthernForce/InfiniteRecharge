@@ -16,7 +16,8 @@ class AICommunication : public frc2::SubsystemBase {
   std::vector<double> GetValueArray(std::string key);
   double GetNumber(std::string key);
   void Periodic();
+  const std::string powercellOffsetInCam =  "PC Offset in AI Cam:";
+  const std::string powercellDistanceInCam = "PC Distance in AI Cam:";
 
  private:
-  const std::string powercellOffsetInCam =  "PC Offset in AI Cam:";
 };
