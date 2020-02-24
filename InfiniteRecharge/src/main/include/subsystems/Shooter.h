@@ -13,17 +13,12 @@
 class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
-  void SetFollowers();
   void Shoot();
   void Periodic();
-  void ConfigureController(rev::CANSparkMax& controller, double ramp);
+  void ConfigureSpark(double ramp=rampRate);  
 
  private:
   std::shared_ptr<rev::CANSparkMax> primarySpark;
-  std::shared_ptr<rev::CANSparkMax> followerSpark1;
-  std::shared_ptr<rev::CANSparkMax> followerSpark2;
-  std::shared_ptr<rev::CANSparkMax> followerSpark3;
-
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   static double rampRate;

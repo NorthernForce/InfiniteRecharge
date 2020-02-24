@@ -38,11 +38,11 @@ class Intake : public frc2::SubsystemBase {
   Intake();
   void Periodic();
   void SetFollowers();
-  void TakeIn();
-  void PushOut();
+  void TakeInPowercell();
+  void PushOutPowercell();
   void Stop();
-  void ArmUp();
-  void ArmDown();
+  void SetArmUp();
+  void SetArmDown();
   ArmState GetArmState();
   void RunConveyor();
   void StopConveyor();
@@ -54,7 +54,7 @@ class Intake : public frc2::SubsystemBase {
   StorageState GetInventory(int position);
 
   //Return the First Position in the Conveyor Storage that is empty (no PC).
-  int FirstEmptyPosition();
+  int GetFirstEmptyPosition();
 
   ////TODO: add ramp rate?
 

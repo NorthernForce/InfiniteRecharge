@@ -30,11 +30,11 @@ void Intake::SetFollowers() {
 }
 void Intake::Periodic() {}
 
-void Intake::TakeIn() {
+void Intake::TakeInPowercell() {
     intakeSpark->Set(0.5);
 }
 
-void Intake::PushOut() {
+void Intake::PushOutPowercell() {
     intakeSpark->Set(-0.5);
 }
 
@@ -42,13 +42,13 @@ void Intake::Stop() {
     intakeSpark->Set(0);
 }
 
-void Intake::ArmUp() {
+void Intake::SetArmUp() {
     if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsUp;
     }
 }
 
-void Intake::ArmDown() {
+void Intake::SetArmDown() {
     if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsDown;
     }
@@ -88,7 +88,7 @@ StorageState Intake::GetInventory(int position) {
 }
 
 //Return the First Position in the Conveyor Storage that is empty (no PC).
-int Intake::FirstEmptyPosition() {
+int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
     for (int i = 1; i < 6; i++) {
         if (Intake::GetInventory(i) == StorageState::PRESENT) {

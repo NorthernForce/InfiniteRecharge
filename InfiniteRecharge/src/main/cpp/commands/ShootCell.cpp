@@ -16,16 +16,16 @@ ShootCell::ShootCell(double rtTriggerAxis) {
 }
 
 // Called when the command is initially scheduled.
-void ShootCell::Initialize(){}
+void ShootCell::Initialize() {
+  double ramp = RobotContainer::oi->GetShooterRampRate();
+  RobotContainer::shooter->ConfigureSpark(ramp);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
-  double rampMultiplier = RobotContainer::oi->GetShootRampRateMultiplier();
-  if (m_rtTriggerAxis > .5) {
+  if (m_rtTriggerAxis > .5)
     RobotContainer::shooter->Shoot();
-  }
 }
-
 
 // Called once the command ends or is interrupted.
 void ShootCell::End(bool interrupted) {}

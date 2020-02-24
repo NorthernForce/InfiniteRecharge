@@ -21,11 +21,11 @@ Climber::Climber() {
 // This method will be called once per scheduler run
 void Climber::Periodic() {}
 
-void Climber::Lifter(double speed) {
+void Climber::SetLifter(double speed) {
     armTalon->Set(speed);
 }
 
-void Climber::limitCurrent(WPI_TalonSRX& controller) {
+void Climber::SetCurrentLimits(WPI_TalonSRX& controller) {
     controller.ConfigPeakCurrentLimit(peakCurrent, timeout);
     controller.ConfigContinuousCurrentLimit(continuousCurrent, timeout);
     controller.ConfigPeakCurrentDuration(peakCurrentDuration, timeout);

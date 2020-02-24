@@ -17,7 +17,7 @@ void PushOutPowerCell::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void PushOutPowerCell::Execute() {
-  RobotContainer::intake->PushOut();
+  RobotContainer::intake->PushOutPowercell();
 }
 
 // Called once the command ends or is interrupted.

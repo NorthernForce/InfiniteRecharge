@@ -43,7 +43,7 @@ void WackyWheel::FindColor() {
       colorChar = 'N';
 }
 
-void WackyWheel::PositionControl() {
+void WackyWheel::GoToFMSColor() {
   if (colorChar != desiredColor) {
     if((colorChar ==  'Y') && (desiredColor == 'R'))
       spinnerTalon->Set(-0.2);
@@ -60,9 +60,8 @@ void WackyWheel::PositionControl() {
     spinnerTalon->SetNeutralMode(NeutralMode::Brake);
 }
 
-void WackyWheel::RotationControl() {
-
-  if (WackyWheel::colorPasses < 8) {
+void WackyWheel::Rotate(int rotations) {
+  if (WackyWheel::colorPasses < 2*rotations) {
     spinnerTalon->Set(0.2);
     if ((WackyWheel::colorChar == firstColor) && (counterFrozen == false)) {
       WackyWheel::colorPasses ++;

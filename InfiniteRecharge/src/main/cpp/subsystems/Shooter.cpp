@@ -8,20 +8,24 @@
 #include "subsystems/Shooter.h"
 #include "Constants.h"
 
+double Shooter::rampRate;
+
 Shooter::Shooter() {
     primarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    followerSpark3.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterFollower3, rev::CANSparkMax::MotorType::kBrushless));
+    rampRate = 0.2;
+    ConfigureSpark();
 }
 
-void Shooter::SetFollowers(){
-    followerSpark1->Follow(*primarySpark);
-    followerSpark2->Follow(*primarySpark);
-    followerSpark3->Follow(*primarySpark);
+void Shooter::Shoot() {
+    primarySpark->Set(0.5);
 }
 
-void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
+// This method will be called once per scheduler run
+void Shooter::Periodic() {}
+
+void Shooter::ConfigureSpark(double ramp) {
+  auto &controller = *primarySpark;
+  rampRate = ramp;
   controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
   controller.SetSmartCurrentLimit(currentLimit);
   if(!controller.IsFollower())
@@ -31,10 +35,3 @@ void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
-
-void Shooter::Shoot() {
-    primarySpark->Set(0.5);
-}
-
-// This method will be called once per scheduler run
-void Shooter::Periodic() {}

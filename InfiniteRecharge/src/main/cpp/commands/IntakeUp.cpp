@@ -17,7 +17,7 @@ void IntakeUp::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeUp::Execute() {
-  RobotContainer::intake->ArmUp();
+  RobotContainer::intake->SetArmUp();
 }
 
 // Called once the command ends or is interrupted.

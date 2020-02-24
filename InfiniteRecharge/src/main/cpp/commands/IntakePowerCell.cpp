@@ -14,7 +14,7 @@ IntakePowerCell::IntakePowerCell() {
 
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
-  IntakePowerCell::emptyPosition = RobotContainer::intake->FirstEmptyPosition();
+  IntakePowerCell::emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
 }
 
 // Called repeatedly when this Command is scheduled to run

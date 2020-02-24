@@ -17,7 +17,7 @@ void IntakeDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeDown::Execute() {
-  RobotContainer::intake->ArmDown();
+  RobotContainer::intake->SetArmDown();
 }
 
 // Called once the command ends or is interrupted.

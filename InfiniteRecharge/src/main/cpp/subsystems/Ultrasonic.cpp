@@ -9,22 +9,18 @@
 #include <iostream>
 
 //all digital stuff is commented out
-
 Ultrasonic::Ultrasonic() {
     analogUltrasonic.reset(new frc::AnalogInput(Constants::ultrasonicRangeFinder));
     //ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
 }
 
-// This method will be called once per scheduler run
 void Ultrasonic::Periodic() {
     if (ultrasonicOn) {
         distance = analogUltrasonic->GetValue() * ValueToInches;
         std::cout << distance << "\n";
     }
-
-    else {
+    else
         distance = 0;
-    }
 }
 
 double Ultrasonic::GetDistance() {

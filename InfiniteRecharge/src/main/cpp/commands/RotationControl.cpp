@@ -18,7 +18,7 @@ void RotationControl::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void RotationControl::Execute() {
-  RobotContainer::wackyWheel->RotationControl();
+  RobotContainer::wackyWheel->GoToFMSColor();
 }
 
 // Called once the command ends or is interrupted.

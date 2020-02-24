@@ -20,8 +20,8 @@ class Climber : public frc2::SubsystemBase {
    */
   void Periodic();
 
-  void Lifter(double speed);
-  void limitCurrent(WPI_TalonSRX&);
+  void SetLifter(double speed);
+  void SetCurrentLimits(WPI_TalonSRX&);
 
   ////TODO: add deadband?
 

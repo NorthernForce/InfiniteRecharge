@@ -15,7 +15,7 @@ PositionControl::PositionControl() {
 
 // Called when the command is initially scheduled.
 void PositionControl::Initialize() {  
-  RobotContainer::wackyWheel->PositionControl();
+  RobotContainer::wackyWheel->Rotate(4);
 }
 
 // Called repeatedly when this Command is scheduled to run
