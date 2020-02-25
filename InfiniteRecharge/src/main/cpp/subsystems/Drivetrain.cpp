@@ -81,7 +81,7 @@ void Drivetrain::SetEncoderPosition(double position) {
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
 
-void Drivetrain::DriveInInches(double leftSpeed, double rightSpeed, double inches) {
+void Drivetrain::DriveInInches(double inches, double leftSpeed, double rightSpeed) {
     double encoderToTravel = inches * Constants::inchesToEncoder;
     double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
     if(averageDistance < encoderToTravel) {

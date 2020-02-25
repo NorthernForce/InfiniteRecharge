@@ -12,6 +12,7 @@
 InFrontOfGoal::InFrontOfGoal() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::drivetrain.get());
+  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
@@ -19,8 +20,8 @@ void InFrontOfGoal::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void InFrontOfGoal::Execute() {
-  RobotContainer::drivetrain->DriveInInches(0.5, 0.5, 60);
-  RobotContainer::drivetrain->DriveInInches(0.5, 0.5, 144);
+  RobotContainer::drivetrain->DriveInInches(60, 0.5, 0.5);
+  RobotContainer::drivetrain->DriveInInches(144, 0.5, 0.5);
 }
 
 // Called once the command ends or is interrupted.

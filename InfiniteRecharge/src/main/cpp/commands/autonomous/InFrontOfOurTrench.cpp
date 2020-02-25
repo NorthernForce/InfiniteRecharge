@@ -6,9 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/InFrontOfOurTrench.h"
+#include "RobotContainer.h"
 
 InFrontOfOurTrench::InFrontOfOurTrench() {
-  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(RobotContainer::drivetrain.get());
+  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
