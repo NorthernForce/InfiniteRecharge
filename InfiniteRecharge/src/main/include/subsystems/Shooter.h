@@ -20,13 +20,11 @@ class Shooter : public frc2::SubsystemBase {
 
  private:
   std::shared_ptr<rev::CANSparkMax> shooterSpark;
+  std::shared_ptr<rev::CANPIDController> pidController;
 
-  //rev::CANPIDController pidController = shooterSpark->rev::CANSparkMax::GetPIDController();
-/*
   const double p = 0.5;
   const double i = 0.0;
   const double d = 0.0;
-*/
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;

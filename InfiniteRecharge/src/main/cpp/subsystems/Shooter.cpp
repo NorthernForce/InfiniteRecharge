@@ -10,10 +10,12 @@
 
 Shooter::Shooter() {
     shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
+    pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
 
-  /*  pidController.SetP(p);
-    pidController.SetI(i);
-    pidController.SetD(d); */
+
+    pidController->SetP(p);
+    pidController->SetI(i);
+    pidController->SetD(d);
 }
 
 void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
@@ -29,7 +31,7 @@ void Shooter::ConfigureController(rev::CANSparkMax& controller, double ramp) {
 
 void Shooter::Shoot() {
   //  shooterSpark->Set(0.5);
-   // pidController.SetReference(0.75, rev::ControlType::kVelocity); //code to try and use the pid loop, might be wrong
+   pidController->SetReference(0.75, rev::ControlType::kVelocity); //code to try and use the pid loop, might be wrong
 }
 
 // This method will be called once per scheduler run

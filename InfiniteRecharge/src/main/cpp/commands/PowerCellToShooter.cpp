@@ -4,39 +4,31 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+//not sure if we will need this command 
 
-#include "commands/IntakePowerCell.h"
+#include "commands/PowerCellToShooter.h"
 
-IntakePowerCell::IntakePowerCell() {
+PowerCellToShooter::PowerCellToShooter() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {
-  IntakePowerCell::emptyPosition = RobotContainer::intake->FirstEmptyPosition();
-}
+void PowerCellToShooter::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void IntakePowerCell::Execute() {
-  RobotContainer::intake->TakeIn();
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
+void PowerCellToShooter::Execute() {
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
      RobotContainer::intake->RunConveyor();
-  }
-  else if (RobotContainer::intake->powerCellCount >= 5) {
-    RobotContainer::oi->SetManipulatorControllerRumble(1, true);
-    RobotContainer::intake->Stop();
-    RobotContainer::intake->StopConveyor();
   }
 }
 
 // Called once the command ends or is interrupted.
-void IntakePowerCell::End(bool interrupted) {}
+void PowerCellToShooter::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool IntakePowerCell::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(IntakePowerCell::emptyPosition) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->Stop();
+bool PowerCellToShooter::IsFinished() { 
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->StopConveyor();
     return true;
   }
