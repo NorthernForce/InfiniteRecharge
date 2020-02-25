@@ -9,6 +9,8 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/TurnToAngle.h"
+#include "commands/ShootCell.h"
 
 /**
  * An example command.
@@ -29,4 +31,8 @@ class InFrontOfGoal
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+private:
+  std::shared_ptr<TurnToAngle> turnToAngle;
+  std::shared_ptr<ShootCell> shootCell;
+
 };

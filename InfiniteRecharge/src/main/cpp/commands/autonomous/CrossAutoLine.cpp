@@ -6,13 +6,17 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/CrossAutoLine.h"
+#include "RobotContainer.h"
 
 CrossAutoLine::CrossAutoLine() {
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(RobotContainer::drivetrain.get());
 }
 
 // Called when the command is initially scheduled.
-void CrossAutoLine::Initialize() {}
+void CrossAutoLine::Initialize() {
+  RobotContainer::drivetrain->DriveInInches(0.5, 0.5, 12);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void CrossAutoLine::Execute() {}
