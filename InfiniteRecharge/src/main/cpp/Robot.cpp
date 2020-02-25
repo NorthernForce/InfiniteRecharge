@@ -43,7 +43,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  RobotContainer::oi->AutonomousRadioButtons();
+  RobotContainer::oi->DisplayAutonomousChooser();
 }
 
 void Robot::AutonomousPeriodic() {}

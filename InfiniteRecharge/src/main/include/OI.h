@@ -9,7 +9,7 @@ class OI {
     OI();
     void InitControllers();
     void MapControllerButtons();
-    void AutonomousRadioButtons();
+    void DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
     double GetShooterRampRate();
     void SetDriverControllerRumble(double value = 0, bool lightly = false);
