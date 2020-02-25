@@ -53,3 +53,7 @@ void RobotContainer::InitDefaultCommands() {
     [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
   ));
 }
+
+void RobotContainer::InitAutonomousCommands() {
+  
+}

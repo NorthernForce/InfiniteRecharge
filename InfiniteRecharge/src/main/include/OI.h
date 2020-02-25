@@ -2,12 +2,14 @@
 
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 class OI {
  public:
     OI();
     void InitControllers();
     void MapControllerButtons();
+    void AutonomousRadioButtons();
     std::pair<double, double> GetDriveControls();
     double GetShooterRampRate();
     void SetDriverControllerRumble(double value = 0, bool lightly = false);
@@ -50,4 +52,7 @@ class OI {
     };
  private:
     double GetDriveSpeedMultiplier();
+    std::unique_ptr<frc2::Command*> autonomousCommand;
+    frc::SendableChooser<frc2::Command*> autonomousChooser;
+
 };
