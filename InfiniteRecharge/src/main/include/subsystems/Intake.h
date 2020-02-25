@@ -26,14 +26,6 @@ class Intake : public frc2::SubsystemBase {
     EMPTY                     //No Ball
   };
 
-//Digital Ports Assigned to each Position
-  const int position0 = 0;
-  const int position1 = 1;
-  const int position2 = 2;
-  const int position3 = 3; //might not need this anymore
-  const int position4 = 4;
-  const int position5 = 5;
-
   const int noEmptyPositionFound = -1;
   const int noFullPositionFound = -1;
 
@@ -65,12 +57,10 @@ class Intake : public frc2::SubsystemBase {
   ////TODO: add ramp rate?
 
  private:
+  void GetBallPositions();
+
   ArmState currentArmState;
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
-
   StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position
-
   const bool ballDetected = false;
 
   std::shared_ptr<frc::DigitalInput> ballPosition0;
@@ -82,7 +72,8 @@ class Intake : public frc2::SubsystemBase {
 
   std::shared_ptr<rev::CANSparkMax> intakeSpark;
   std::shared_ptr<rev::CANSparkMax> armSpark;
-
   std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
+
+  bool ballOccupancy[6];
 };

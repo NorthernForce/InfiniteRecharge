@@ -9,18 +9,18 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/TurnToAngle.h"
 #include "RobotContainer.h"
 
 class SweepAICamera
     : public frc2::CommandHelper<frc2::CommandBase, SweepAICamera> {
  public:
   SweepAICamera();
-
   void Initialize() override;
-
   void Execute() override;
-
+  void TurnToServoAngle();
   void End(bool interrupted) override;
-
   bool IsFinished() override;
+ private:
+  std::shared_ptr<TurnToAngle> turnToAngle;
 };

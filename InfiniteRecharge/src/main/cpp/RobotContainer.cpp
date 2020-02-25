@@ -17,7 +17,7 @@ std::shared_ptr<IMU> RobotContainer::imu;
 std::shared_ptr<Navigation> RobotContainer::navigation;
 std::shared_ptr<CameraMount> RobotContainer::cameraMount;
 std::shared_ptr<AICommunication> RobotContainer::aiComms;
-// std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
+std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
 std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 std::shared_ptr<Intake> RobotContainer::intake;
 std::shared_ptr<Shooter> RobotContainer::shooter;
@@ -38,7 +38,7 @@ void RobotContainer::InitSubsystems() {
   imu.reset(new IMU);
   navigation.reset(new Navigation);
   aiComms.reset(new AICommunication);
-  // aiVisionTargetting.reset(new AIVisionTargetting);
+  aiVisionTargetting.reset(new AIVisionTargetting);
   cameraMount.reset(new CameraMount);
   ultrasonic.reset(new Ultrasonic);
   intake.reset(new Intake);

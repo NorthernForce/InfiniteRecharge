@@ -21,17 +21,14 @@ class TurnToAngle
     : public frc2::CommandHelper<frc2::CommandBase, TurnToAngle> {
  public:
   TurnToAngle(double targetAngle = 0);
-
   void Initialize() override;
-
   void Execute() override;
-
+  void Start(int angle=targetAngle);
   void End(bool interrupted) override;
-
   bool IsFinished() override;
 
  private:
-  double targetAngle = 0;
+  static double targetAngle;
   double totalTargetAngle = 0;
 
   const double pValue = 1.3;
