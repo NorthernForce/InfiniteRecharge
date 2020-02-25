@@ -12,6 +12,7 @@
 #include <frc/DigitalInput.h>
 #include "Constants.h"
 
+
 class Intake : public frc2::SubsystemBase {
  public:
   enum class ArmState {
@@ -29,17 +30,20 @@ class Intake : public frc2::SubsystemBase {
   const int position0 = 0;
   const int position1 = 1;
   const int position2 = 2;
-  const int position3 = 3;
+  const int position3 = 3; //might not need this anymore
   const int position4 = 4;
   const int position5 = 5;
 
   const int noEmptyPositionFound = -1;
+  const int noFullPositionFound = -1;
+
+  int powerCellCount = 0;
 
   Intake();
   void Periodic();
   void SetFollowers();
-  void TakeInPowercell();
-  void PushOutPowercell();
+  void TakeInPowerCell();
+  void PushOutPowerCell();
   void Stop();
   void SetArmUp();
   void SetArmDown();
@@ -55,6 +59,8 @@ class Intake : public frc2::SubsystemBase {
 
   //Return the First Position in the Conveyor Storage that is empty (no PC).
   int GetFirstEmptyPosition();
+  int FirstEmptyPosition(); //something here might be wrong
+  int LowestFullPosition();
 
   ////TODO: add ramp rate?
 

@@ -76,3 +76,21 @@ double OI::GetDriveSpeedMultiplier() {
         speedMultiplier = 1;
     return speedMultiplier;
 }
+
+void OI::SetDriverControllerRumble(double value, bool lightly) {
+  if (lightly) {
+    driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+  }
+  else {
+    driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  }
+}
+
+void OI::SetManipulatorControllerRumble(double value, bool lightly) {
+  if (lightly) {
+    manipulatorController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+  }
+  else {
+    manipulatorController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  }
+}

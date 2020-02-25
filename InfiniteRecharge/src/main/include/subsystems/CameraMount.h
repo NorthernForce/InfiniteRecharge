@@ -25,7 +25,7 @@ class CameraMount : public frc2::SubsystemBase {
   void SetToZero();
   void SetAngles(int panAngle, int tiltAngle);
   void IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval);
-  static void SweepForPowercells();
+  void SweepForPowercells();
   int GetServoAngleToTarget();
 
   /**

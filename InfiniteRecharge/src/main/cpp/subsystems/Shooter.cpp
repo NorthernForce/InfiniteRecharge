@@ -11,20 +11,19 @@
 double Shooter::rampRate;
 
 Shooter::Shooter() {
-    primarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooterPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    rampRate = 0.2;
-    ConfigureSpark();
-}
+  shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
+  pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
 
-void Shooter::Shoot() {
-    primarySpark->Set(0.5);
+  pidController->SetP(p);
+  pidController->SetI(i);
+  pidController->SetD(d);
 }
 
 // This method will be called once per scheduler run
 void Shooter::Periodic() {}
 
 void Shooter::ConfigureSpark(double ramp) {
-  auto &controller = *primarySpark;
+  auto &controller = *shooterSpark;
   rampRate = ramp;
   controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
   controller.SetSmartCurrentLimit(currentLimit);
@@ -34,4 +33,9 @@ void Shooter::ConfigureSpark(double ramp) {
     controller.SetOpenLoopRampRate(ramp);
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+}
+
+void Shooter::Shoot() {
+  //  shooterSpark->Set(0.5);
+  pidController->SetReference(0.75, rev::ControlType::kVelocity); //code to try and use the pid loop, might be wrong
 }
