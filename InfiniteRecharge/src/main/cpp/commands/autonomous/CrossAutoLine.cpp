@@ -14,7 +14,9 @@ CrossAutoLine::CrossAutoLine() {
 }
 
 // Called when the command is initially scheduled.
-void CrossAutoLine::Initialize() {}
+void CrossAutoLine::Initialize() {
+  RobotContainer::drivetrain->DriveInInches(12, 0.5, 0.5);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void CrossAutoLine::Execute() {}
