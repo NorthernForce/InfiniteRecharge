@@ -35,9 +35,9 @@ void SweepAICamera::TurnToServoAngle() {
   char aiPanDir = RobotContainer::cameraMount->GetPanDirection();
 
     if (aiPanDir == 'l')
-      turnToAngle->Start(robotAng-aiPanAng);
+      turnToAngle->TurnInLoop(robotAng-aiPanAng);
     else if (aiPanDir == 'r')
-      turnToAngle->Start(robotAng+aiPanAng);
+      turnToAngle->TurnInLoop(robotAng+aiPanAng);
 }
 
 // Called once the command ends or is interrupted.

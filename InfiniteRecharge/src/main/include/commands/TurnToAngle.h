@@ -23,13 +23,17 @@ class TurnToAngle
   TurnToAngle(double targetAngle = 0);
   void Initialize() override;
   void Execute() override;
-  void Start(int angle=targetAngle);
+  void TurnInLoop(int angle=targetAngle);
   void End(bool interrupted) override;
   bool IsFinished() override;
 
  private:
+  double GetRotationFromPID(double p, double i, double d);
+  double LimitMaxTurnSpeed(double currentSpeed);
+
   static double targetAngle;
   double totalTargetAngle = 0;
+  int defaultPeriodInMs = 20;
 
   const double pValue = 1.3;
   const double iValue = 0;
@@ -37,11 +41,8 @@ class TurnToAngle
 
   const double maxTurnSpeed = 0.35;
   const double minError = 0.05;
-
   double error = 0;
   double errorPrior = 0;
   double integral = 0;
   double derivative = 0;
-
-  int defaultPeriodInMs = 20;
 };
