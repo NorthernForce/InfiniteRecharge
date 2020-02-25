@@ -6,30 +6,34 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/AIVisionTargetting.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "RobotContainer.h"
 #include "Constants.h"
+#include <string>
+
+using Target = AIVisionTargetting::Target;
 
 AIVisionTargetting::AIVisionTargetting() {}
 
 // This method will be called once per scheduler run
 void AIVisionTargetting::Periodic() {}
 
-// bool AIVisionTargetting::CheckForTarget() {
-//     if (TargetFound)
-//         return true;
-// }
-// Target AIVisionTargetting::CheckTargetType() {
-//     switch(TargetType) {
-//         case 0:
-//             return Target::Powercell;
-//             break;
-//         case 1:
-//             return Target::UpperGoal;
-//             break;
-//         case 2:
-//             return Target::LowerGoal;
-//             break;
-//     }
-// }
+bool AIVisionTargetting::CheckForTarget(Target type) {
+    if (CheckTargetType() == type)
+        return true;
+    else
+        return false;
+}
+
+Target AIVisionTargetting::CheckTargetType() {
+    std::string targetType = frc::SmartDashboard::GetString("targetType:", "none");
+    if (targetType == "pc")
+        return Target::Powercell;
+    else if (targetType == "goal")
+        return Target::Goal;
+    else
+        return Target::None;
+}
 
 void AIVisionTargetting::RefreshTargetPositioning() {
     double currentPan = RobotContainer::cameraMount->GetCurrentPan();

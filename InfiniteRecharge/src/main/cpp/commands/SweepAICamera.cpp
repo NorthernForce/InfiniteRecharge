@@ -6,12 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/SweepAICamera.h"
+#include "commands/TurnToAngle.h"
 #include <iostream>
-#include <functional>
-#include <future>
 
 SweepAICamera::SweepAICamera() {
   AddRequirements(RobotContainer::cameraMount.get());
+  AddRequirements(RobotContainer::aiVisionTargetting.get());
+  turnToAngle.reset(new TurnToAngle());
 }
 
 // Called when the command is initially scheduled.
@@ -21,31 +22,22 @@ void SweepAICamera::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
-  std::cout << "running sweep command\n"; 
-
-  RobotContainer::cameraMount->SweepForPowercells();
-
-  // std::future<void> awaitSweep = std::async
-  // (
-  //   std::launch::async,
-  //   &CameraMount::IntervaledExecution, 
-  //   RobotContainer::cameraMount,
-  //   RobotContainer::cameraMount->SweepForPowercells,
-  //   10
-  // );
-  // awaitSweep.get();
-
-  //Query AI for Powercell in frame
-  /*
-  if(!TargFound)
-  {
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
+  if(!RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
     RobotContainer::cameraMount->SweepForPowercells();
-  }
   else
-  {
-    End(true);
-  }
-  */
+    TurnToServoAngle();
+}
+
+void SweepAICamera::TurnToServoAngle() {
+  int aiPanAng = RobotContainer::cameraMount->GetCurrentPan();
+  int robotAng = RobotContainer::imu->GetRotation();
+  char aiPanDir = RobotContainer::cameraMount->GetPanDirection();
+
+    if (aiPanDir == 'l')
+      turnToAngle->Start(robotAng-aiPanAng);
+    else if (aiPanDir == 'r')
+      turnToAngle->Start(robotAng+aiPanAng);
 }
 
 // Called once the command ends or is interrupted.

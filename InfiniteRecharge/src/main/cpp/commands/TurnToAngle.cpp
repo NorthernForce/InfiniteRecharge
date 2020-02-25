@@ -10,10 +10,11 @@
 #include <frc/TimedRobot.h>
 #include "RobotContainer.h"
 
+double TurnToAngle::targetAngle;
+
 TurnToAngle::TurnToAngle(double target) {
   AddRequirements(RobotContainer::drivetrain.get());
   AddRequirements(RobotContainer::imu.get());
-
   targetAngle = target;
 
   frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
@@ -30,11 +31,14 @@ void TurnToAngle::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
+  Start();
+}
+
+void TurnToAngle::Start(int angle) {
   double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
   double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
   double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
 
-  // PID Loop math taken from some site on the internet
   error = (RobotContainer::imu->GetRotation() - totalTargetAngle) / 180;
   if (error == 0)
     integral = 0;
@@ -45,14 +49,12 @@ void TurnToAngle::Execute() {
   errorPrior = error;
 
   // Limit max turn speed
-  if (rotation < maxTurnSpeed * -1) {
+  if (rotation < maxTurnSpeed * -1)
     rotation = maxTurnSpeed * -1;
-  }
-  else if (rotation > maxTurnSpeed) {
+  else if (rotation > maxTurnSpeed)
     rotation = maxTurnSpeed;
-  }
-  std::cout << " rotation: " << rotation << " goal: " << totalTargetAngle << " angle: " << RobotContainer::imu->GetRotation() << '\n';
 
+  std::cout << " rotation: " << rotation << " goal: " << totalTargetAngle << " angle: " << RobotContainer::imu->GetRotation() << '\n';
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotation + driveControls.second * 0.5);
 }

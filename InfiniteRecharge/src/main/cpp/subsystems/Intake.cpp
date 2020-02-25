@@ -70,19 +70,22 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    bool ball[6];
-    ball[0] = ballPosition0->Get();
-    ball[1] = ballPosition1->Get();
-    ball[2] = ballPosition2->Get();
-    ball[3] = ballPosition3->Get();
-    ball[4] = ballPosition4->Get();
-    ball[5] = ballPosition5->Get();
+    GetBallPositions();
     for (int pos = 0; pos < 6; pos++) {
-        if (ball[pos] == ballDetected)
+        if (ballOccupancy[pos] == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
             powerCellPosition[pos] = StorageState::EMPTY;
     }
+}
+
+void Intake::GetBallPositions() {
+    ballOccupancy[0] = ballPosition0->Get();
+    ballOccupancy[1] = ballPosition1->Get();
+    ballOccupancy[2] = ballPosition2->Get();
+    ballOccupancy[3] = ballPosition3->Get();
+    ballOccupancy[4] = ballPosition4->Get();
+    ballOccupancy[5] = ballPosition5->Get();
 }
 
 //Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 

@@ -45,7 +45,7 @@ class RobotContainer {
   static std::shared_ptr<IMU> imu;
   static std::shared_ptr<Navigation> navigation;
   static std::shared_ptr<AICommunication> aiComms;
-  // static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
+  static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
   static std::shared_ptr<CameraMount> cameraMount;
   static std::shared_ptr<Ultrasonic> ultrasonic;
   static std::shared_ptr<Intake> intake;

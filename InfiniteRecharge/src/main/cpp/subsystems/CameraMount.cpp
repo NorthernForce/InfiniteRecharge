@@ -22,17 +22,36 @@ CameraMount::CameraMount() {
 
 void CameraMount::Init() {
     currentPan = 90;
-    currentTilt = 90;
+    currentTilt = 0;
     previousPan = 90;
-    previousTilt = 90;
-    panDirection = 90;
-    tiltDirection = 90;
+    previousTilt = 0;
 }
 
-void CameraMount::Pan(int degrees) {
-    previousPan = currentPan;
-    currentPan = degrees;
-    panServo->SetAngle(degrees);
+void CameraMount::Periodic() {}
+
+int CameraMount::GetServoAngleToTarget() {
+    return servoAngleToTarget;
+}
+
+void CameraMount::SweepForPowercells() {    
+    if (sweepPassCount % 2 == 0) {
+        if (currentPan <= 155) {
+            Pan(currentPan);
+            currentPan++;
+        }
+    } else if (sweepPassCount % 2 == 1) {
+        if (currentPan <= 155) {
+            Pan(currentPan);
+            currentPan--;
+        }
+    }
+    if (currentPan == 35 || currentPan == 155)
+        sweepPassCount++;
+}
+
+void CameraMount::SetToZero() {
+    Pan(90);
+    Tilt(90);
 }
 
 int CameraMount::GetCurrentPan() {
@@ -44,12 +63,6 @@ int CameraMount::GetPreviousPan() {
     return previousPan;
 }
 
-void CameraMount::Tilt(int degrees) {
-    previousTilt = currentTilt;
-    currentTilt = degrees;
-    tiltServo->SetAngle(degrees);
-}
-
 int CameraMount::GetCurrentTilt() {
     currentTilt = tiltServo->GetAngle();
     return currentTilt;
@@ -59,46 +72,22 @@ int CameraMount::GetPreviousTilt() {
     return previousTilt;
 }
 
-void CameraMount::SetToZero() {
-    Pan(90);
-    Tilt(90);
+void CameraMount::Pan(int degrees) {
+    previousPan = currentPan;
+    currentPan = degrees;
+    panServo->SetAngle(degrees);
 }
 
-void CameraMount::SetAngles(int currentPan, int currentTilt) {
-    Pan(currentPan);
-    Tilt(currentTilt);
+void CameraMount::Tilt(int degrees) {
+    previousTilt = currentTilt;
+    currentTilt = degrees;
+    tiltServo->SetAngle(degrees);
 }
 
-void CameraMount::IntervaledExecution(std::function<void()> periodicFunction, unsigned msInterval) {
-    std::thread([periodicFunction, msInterval]() {
-        while (true) { 
-            auto timePoint = std::chrono::steady_clock::now() + std::chrono::milliseconds(msInterval);
-            periodicFunction();
-            std::this_thread::sleep_until(timePoint);
-        }
-    }).detach();
+char CameraMount::GetPanDirection() {
+    if (currentPan < 90)
+        panDirection = 'l';
+    else
+        panDirection = 'r';
+    return panDirection;
 }
-
-void CameraMount::SweepForPowercells() {    
-    if (sweepPassCount % 2 == 0) {
-        if (currentPan <= 160) {
-            Pan(currentPan);
-            currentPan++;
-        }
-    } else if (sweepPassCount % 2 == 1) {
-        if (currentPan <= 160) {
-            Pan(currentPan);
-            currentPan--;
-        }
-    }
-    if (currentPan == 30 || currentPan == 160)
-        sweepPassCount++;
-}
-
-int CameraMount::GetServoAngleToTarget() {
-    return servoAngleToTarget;
-}
-
-
-// This method will be called once per scheduler run
-void CameraMount::Periodic() {}

@@ -8,14 +8,17 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include "RobotContainer.h"
 
 class AIVisionTargetting : public frc2::SubsystemBase {
  public:
   AIVisionTargetting();
-
-  // bool CheckForTarget();
-  // Target CheckTargetType();
+  enum class Target {
+    Powercell,
+    Goal,
+    None
+  };
+  bool CheckForTarget(Target type);
+  Target CheckTargetType();
   void RefreshTargetPositioning();
   double RoboAngleToTarget();
   double RoboDistToTarget();
@@ -28,13 +31,8 @@ class AIVisionTargetting : public frc2::SubsystemBase {
 
  private:
   
+  bool targetFound;
   double targetPositionX;
   double targetPositionY;
 
-};
-
-enum class Target {
-  Powercell,
-  UpperGoal,
-  LowerGoal
 };
