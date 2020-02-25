@@ -80,3 +80,16 @@ void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
+
+void Drivetrain::DriveInInches(double leftSpeed, double rightSpeed, double inches) {
+    double encoderToTravel = inches * Constants::inchesToEncoder;
+    double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
+    if(averageDistance < encoderToTravel) {
+        leftPrimarySpark->Set(leftSpeed);
+        rightPrimarySpark->Set(rightSpeed);
+    }
+    else {
+        leftPrimarySpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+        rightPrimarySpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    }
+}

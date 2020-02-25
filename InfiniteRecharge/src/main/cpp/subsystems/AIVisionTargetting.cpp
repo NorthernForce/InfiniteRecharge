@@ -6,13 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/AIVisionTargetting.h"
+#include "Constants.h"
 
 AIVisionTargetting::AIVisionTargetting() {}
 
 // This method will be called once per scheduler run
-void AIVisionTargetting::Periodic() {
-
-}
+void AIVisionTargetting::Periodic() {}
 
 // bool AIVisionTargetting::CheckForTarget() {
 //     if (TargetFound)
@@ -32,24 +31,27 @@ void AIVisionTargetting::Periodic() {
 //     }
 // }
 
-std::pair<double, double> AIVisionTargetting::CamTargetPositioning() {
+void AIVisionTargetting::RefreshTargetPositioning() {
     double currentPan = RobotContainer::cameraMount->GetCurrentPan();
     double powerCellOffsetX = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam)[0];
     double camAngleToTarget = currentPan + powerCellOffsetX;
-    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->powercellDistanceInCam);
+    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam);
     camAngleToTarget *= Constants::degreesToRadians;
 
-    double targetPositionX = camDistToTarget * std::sin(camAngleToTarget);
-    double targetPositionY = camDistToTarget * std::cos(camAngleToTarget);
-
-    return std::make_pair(targetPositionX, targetPositionY);
+    targetPositionX = camDistToTarget * std::sin(camAngleToTarget);
+    targetPositionY = camDistToTarget * std::cos(camAngleToTarget);
 }
 
 double AIVisionTargetting::RoboAngleToTarget() {
-    double targetPositionX = CamTargetPositioning().first;
-    double targetPositionY = CamTargetPositioning().second;
-    return std::atan((targetPositionX-Constants::camDistFromRoboCent)/targetPositionY);
+    RefreshTargetPositioning();
+    return std::atan((targetPositionX-Constants::camDistFromRoboFrontCent)/(targetPositionY+Constants::camDistFromRoboSideCent));
 }
+
+double AIVisionTargetting::RoboDistToTarget() {
+    RefreshTargetPositioning();
+    return sqrt(pow((targetPositionY+Constants::camDistFromRoboFrontCent),2.0)+pow((Constants::camDistFromRoboSideCent-targetPositionX),2.0));
+}
+
 
 // double TargDist(double Ac,double Dc)
 // {

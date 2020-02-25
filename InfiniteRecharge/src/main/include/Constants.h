@@ -14,8 +14,11 @@ namespace Constants {
     const int PCMCanBusID = 11;
     const int ultrasonicRangeFinder = 0;
 
-    const double camDistFromRoboCent = 9.5;
-    const double degreesToRadians = 3.141592653589793/180 ; 
+    const double camDistFromRoboFrontCent = 9.5;
+    const double camDistFromRoboSideCent = 10;
+
+    const double degreesToRadians = 3.141592653589793/180; 
+    const double inchesToEncoder = 1.39383333333333333333;
 
     
     namespace MotorIDs {

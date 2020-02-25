@@ -16,8 +16,9 @@ class AIVisionTargetting : public frc2::SubsystemBase {
 
   // bool CheckForTarget();
   // Target CheckTargetType();
-  std::pair<double, double> CamTargetPositioning();
+  void RefreshTargetPositioning();
   double RoboAngleToTarget();
+  double RoboDistToTarget();
 
   /*
     Will be called periodically whenever the CommandScheduler runs.
@@ -26,6 +27,9 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   void Periodic();
 
  private:
+  
+  double targetPositionX;
+  double targetPositionY;
 
 };
 
