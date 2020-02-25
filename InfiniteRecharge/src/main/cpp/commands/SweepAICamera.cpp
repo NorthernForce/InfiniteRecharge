@@ -15,7 +15,9 @@ SweepAICamera::SweepAICamera() {
 }
 
 // Called when the command is initially scheduled.
-void SweepAICamera::Initialize() {}
+void SweepAICamera::Initialize() {
+  RobotContainer::cameraMount->Tilt(0);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
