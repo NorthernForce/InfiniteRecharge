@@ -18,7 +18,13 @@ class Shooter : public frc2::SubsystemBase {
   void ConfigureSpark(double ramp=rampRate);  
 
  private:
-  std::shared_ptr<rev::CANSparkMax> primarySpark;
+  std::shared_ptr<rev::CANSparkMax> shooterSpark;
+  std::shared_ptr<rev::CANPIDController> pidController;
+
+  const double p = 0.5;
+  const double i = 0.0;
+  const double d = 0.0;
+
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   static double rampRate;

@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Intake.h"
+#include "RobotContainer.h"
 
 using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
@@ -28,13 +29,15 @@ Intake::Intake() {
 void Intake::SetFollowers() {
     followerConveyorSpark->Follow(*primaryConveyorSpark);
 }
-void Intake::Periodic() {}
+void Intake::Periodic() {
+    RobotContainer::intake->InventoryPowerCells();
+}
 
-void Intake::TakeInPowercell() {
+void Intake::TakeInPowerCell() {
     intakeSpark->Set(0.5);
 }
 
-void Intake::PushOutPowercell() {
+void Intake::PushOutPowerCell() {
     intakeSpark->Set(-0.5);
 }
 
@@ -74,7 +77,7 @@ void Intake::InventoryPowerCells() {
     ball[3] = ballPosition3->Get();
     ball[4] = ballPosition4->Get();
     ball[5] = ballPosition5->Get();
-    for (int pos=0; pos<6; pos++) {
+    for (int pos = 0; pos < 6; pos++) {
         if (ball[pos] == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -92,6 +95,17 @@ int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
     for (int i = 1; i < 6; i++) {
         if (Intake::GetInventory(i) == StorageState::PRESENT) {
+            continue;
+        }
+        position = i;
+    }
+    return position;
+}
+
+int Intake::LowestFullPosition() {
+    int position = noFullPositionFound;
+    for (int i = 1; i < 6; i++) {
+        if (Intake::GetInventory(i) == StorageState::EMPTY) {
             continue;
         }
         position = i;

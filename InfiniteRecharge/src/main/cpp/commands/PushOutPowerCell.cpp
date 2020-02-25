@@ -17,13 +17,13 @@ void PushOutPowerCell::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void PushOutPowerCell::Execute() {
-  RobotContainer::intake->PushOutPowercell();
+  RobotContainer::intake->PushOutPowerCell();
 }
 
 // Called once the command ends or is interrupted.
 void PushOutPowerCell::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool PushOutPowerCell::IsFinished() { return false; } //need to set this to true?
+bool PushOutPowerCell::IsFinished() { return false; } 
 
 
