@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/CameraMount.h"
+#include "RobotContainer.h"
 #include "Constants.h"
 #include <chrono>
 #include <thread>
@@ -17,7 +18,6 @@ CameraMount::CameraMount() {
     tiltServo.reset(new frc::Servo(Constants::MotorIDs::tiltServoPWM));
     Init();
     SetToZero();
-    
 }
 
 void CameraMount::Init() {
@@ -79,20 +79,15 @@ void CameraMount::IntervaledExecution(std::function<void()> periodicFunction, un
     }).detach();
 }
 
-#include "RobotContainer.h"
-
-void CameraMount::SweepForPowercells() {
-    int currentPan = RobotContainer::cameraMount->currentPan;
-    RobotContainer::cameraMount->Tilt(90);
-
+void CameraMount::SweepForPowercells() {    
     if (sweepPassCount % 2 == 0) {
         if (currentPan <= 160) {
-            RobotContainer::cameraMount->Pan(currentPan);
+            Pan(currentPan);
             currentPan++;
         }
     } else if (sweepPassCount % 2 == 1) {
         if (currentPan <= 160) {
-            RobotContainer::cameraMount->Pan(currentPan);
+            Pan(currentPan);
             currentPan--;
         }
     }
