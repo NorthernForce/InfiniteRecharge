@@ -37,6 +37,7 @@
 class RobotContainer {
  public:
   RobotContainer();
+  void InitAutonomousCommands();
   static std::shared_ptr<OI> oi;
   static std::shared_ptr<Drivetrain> drivetrain;
   static std::shared_ptr<PCM> pcm;

@@ -11,6 +11,7 @@
 #include <frc2/command/CommandScheduler.h>
 
 #include "commands/InventoryPowerCells.h"
+#include "OI.h"
 
 void Robot::RobotInit() {
 
@@ -42,7 +43,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  
+  RobotContainer::oi->AutonomousRadioButtons();
 }
 
 void Robot::AutonomousPeriodic() {}

@@ -19,6 +19,10 @@
 #include "commands/PositionControl.h"
 #include "commands/RotationControl.h"
 #include "commands/TurnToAngle.h"
+#include "commands/autonomous/InFrontOfFoesTrench.h"
+#include "commands/autonomous/InFrontOfGoal.h"
+#include "commands/autonomous/InFrontOfOurTrench.h"
+#include "commands/autonomous/CrossAutoLine.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -27,6 +31,16 @@ OI::OI() {
     frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
     frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
     InitControllers();
+    AutonomousRadioButtons();
+}
+
+void OI::AutonomousRadioButtons() {
+  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+
+  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 }
 
 void OI::InitControllers() {
