@@ -10,8 +10,6 @@ class OI {
     void MapControllerButtons();
     std::pair<double, double> GetDriveControls();
     double GetShooterRampRate();
-    double getDriveSpeedMultiplier();
-    double getShootRampRateMultiplier();
     void SetDriverControllerRumble(double value = 0, bool lightly = false);
     void SetManipulatorControllerRumble(double value = 0, bool lightly = false);
 
