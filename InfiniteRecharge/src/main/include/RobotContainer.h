@@ -37,6 +37,7 @@
 class RobotContainer {
  public:
   RobotContainer();
+  void InitAutonomousCommands();
   static std::shared_ptr<OI> oi;
   static std::shared_ptr<Drivetrain> drivetrain;
   static std::shared_ptr<PCM> pcm;
@@ -44,7 +45,7 @@ class RobotContainer {
   static std::shared_ptr<IMU> imu;
   static std::shared_ptr<Navigation> navigation;
   static std::shared_ptr<AICommunication> aiComms;
-  // static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
+  static std::shared_ptr<AIVisionTargetting> aiVisionTargetting;
   static std::shared_ptr<CameraMount> cameraMount;
   static std::shared_ptr<Ultrasonic> ultrasonic;
   static std::shared_ptr<Intake> intake;

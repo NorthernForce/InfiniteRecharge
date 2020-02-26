@@ -23,7 +23,6 @@ class DriveShifter : public frc2::SubsystemBase {
   void Shift(Gear gear);
   void CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM);
   Gear GetGear();
-  int GetGearAsInt();
   bool IsShiftDone() const;
   void BeginShift(bool shift);
 

@@ -2,18 +2,17 @@
 
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 class OI {
  public:
     OI();
     void InitControllers();
     void MapControllerButtons();
+    void DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
     double GetShooterRampRate();
-    double getDriveSpeedMultiplier();
-    double getShootRampRateMultiplier();
-    void SetDriverControllerRumble(double value = 0, bool lightly = false);
-    void SetManipulatorControllerRumble(double value = 0, bool lightly = false);
+    void SetControllerRumble(frc::XboxController *controller, double value=0, bool lightly=false);
 
     static std::shared_ptr<frc::XboxController> driverController;
     static std::shared_ptr<frc::XboxController> manipulatorController;
@@ -52,4 +51,8 @@ class OI {
     };
  private:
     double GetDriveSpeedMultiplier();
+    double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
+    std::unique_ptr<frc2::Command*> autonomousCommand;
+    frc::SendableChooser<frc2::Command*> autonomousChooser;
+
 };

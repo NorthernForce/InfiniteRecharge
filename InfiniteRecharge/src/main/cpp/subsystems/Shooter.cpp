@@ -32,7 +32,7 @@ void Shooter::ConfigureSpark(double ramp) {
     controller.SetClosedLoopRampRate(ramp);
     controller.SetOpenLoopRampRate(ramp);
   }
-  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 }
 
 void Shooter::Shoot() {

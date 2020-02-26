@@ -23,6 +23,7 @@ class Drivetrain : public frc2::SubsystemBase {
   double GetLeftRPM();
   std::pair<double, double> GetEncoderRotations();
   void SetEncoderPosition(double position);
+  void DriveInInches(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;

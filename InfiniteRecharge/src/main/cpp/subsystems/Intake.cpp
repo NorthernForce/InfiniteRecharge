@@ -12,12 +12,20 @@ using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
 
 Intake::Intake() {
+    InitSparks();
+    InitBallPositionSensors();
+    SetFollowers();
+}
+
+void Intake::InitSparks() {
     intakeSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intake, rev::CANSparkMax::MotorType::kBrushless));
     armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
+}
 
+void Intake::InitBallPositionSensors() {
     ballPosition0.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
     ballPosition1.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
     ballPosition2.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
@@ -68,21 +76,24 @@ void Intake::RunConveyor() {
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }
-
+////TODO: Change to eliminate intermediate array. Return StorageState from ballPosition? remove for loop?
 void Intake::InventoryPowerCells() {
-    bool ball[6];
-    ball[0] = ballPosition0->Get();
-    ball[1] = ballPosition1->Get();
-    ball[2] = ballPosition2->Get();
-    ball[3] = ballPosition3->Get();
-    ball[4] = ballPosition4->Get();
-    ball[5] = ballPosition5->Get();
+    StoreCurrentBallPositions();
     for (int pos = 0; pos < 6; pos++) {
-        if (ball[pos] == ballDetected)
+        if (ballOccupancy[pos] == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
             powerCellPosition[pos] = StorageState::EMPTY;
     }
+}
+
+void Intake::StoreCurrentBallPositions() {
+    ballOccupancy[0] = ballPosition0->Get();
+    ballOccupancy[1] = ballPosition1->Get();
+    ballOccupancy[2] = ballPosition2->Get();
+    ballOccupancy[3] = ballPosition3->Get();
+    ballOccupancy[4] = ballPosition4->Get();
+    ballOccupancy[5] = ballPosition5->Get();
 }
 
 //Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 

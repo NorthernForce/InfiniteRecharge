@@ -5,24 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/Climb.h"
+#include "commands/autonomous/CrossAutoLine.h"
+#include "RobotContainer.h"
 
-Climb::Climb(std::function<double()> speed) : m_speed(speed) {
-  AddRequirements(RobotContainer::climber.get());
+CrossAutoLine::CrossAutoLine() {
+  AddRequirements(RobotContainer::drivetrain.get());
+  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
-void Climb::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void Climb::Execute() {
-  if (abs(m_speed()) > 0.3) {
-    RobotContainer::climber->SetLifter(m_speed());
-  }
+void CrossAutoLine::Initialize() {
+  RobotContainer::drivetrain->DriveInInches(12, 0.5, 0.5);
 }
 
+// Called repeatedly when this Command is scheduled to run
+void CrossAutoLine::Execute() {}
+
 // Called once the command ends or is interrupted.
-void Climb::End(bool interrupted) {}
+void CrossAutoLine::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool Climb::IsFinished() { return false; }
+bool CrossAutoLine::IsFinished() { return false; }

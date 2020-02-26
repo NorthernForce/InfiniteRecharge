@@ -6,12 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/SweepAICamera.h"
+#include "commands/TurnToAngle.h"
 #include <iostream>
-#include <functional>
-#include <future>
 
 SweepAICamera::SweepAICamera() {
   AddRequirements(RobotContainer::cameraMount.get());
+  AddRequirements(RobotContainer::aiVisionTargetting.get());
+  turnToAngle.reset(new TurnToAngle());
 }
 
 // Called when the command is initially scheduled.
@@ -21,31 +22,35 @@ void SweepAICamera::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
-  std::cout << "running sweep command\n"; 
-
-  RobotContainer::cameraMount->SweepForPowercells();
-
-  // std::future<void> awaitSweep = std::async
-  // (
-  //   std::launch::async,
-  //   &CameraMount::IntervaledExecution, 
-  //   RobotContainer::cameraMount,
-  //   RobotContainer::cameraMount->SweepForPowercells,
-  //   10
-  // );
-  // awaitSweep.get();
-
-  //Query AI for Powercell in frame
-  /*
-  if(!TargFound)
-  {
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
+  if(!RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
     RobotContainer::cameraMount->SweepForPowercells();
-  }
   else
-  {
-    End(true);
-  }
-  */
+    TurnToServoAngle();
+}
+
+void SweepAICamera::TurnToServoAngle() {
+  int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
+  char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
+  std::vector<double> pcOffsetInCamera = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam);
+
+  AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera[0]);
+  TurnRobotUsingServoAngle(servoPanAng, servoPanDir);
+}
+
+void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
+  if (pcOffset < -10)
+    RobotContainer::cameraMount->Pan(servoAng+=1);
+  else if (pcOffset > 10)
+    RobotContainer::cameraMount->Pan(servoAng-=1);
+}
+
+void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
+  int robotAng = RobotContainer::imu->GetRotation();
+  if (servoDir == 'l')
+    turnToAngle->TurnInLoop(robotAng-servoAng);
+  else if (servoDir == 'r')
+    turnToAngle->TurnInLoop(robotAng+servoAng);
 }
 
 // Called once the command ends or is interrupted.
