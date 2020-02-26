@@ -30,14 +30,27 @@ void SweepAICamera::Execute() {
 }
 
 void SweepAICamera::TurnToServoAngle() {
-  int aiPanAng = RobotContainer::cameraMount->GetCurrentPan();
-  int robotAng = RobotContainer::imu->GetRotation();
-  char aiPanDir = RobotContainer::cameraMount->GetPanDirection();
+  int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
+  char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
+  std::vector<double> pcOffsetInCamera = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam);
 
-    if (aiPanDir == 'l')
-      turnToAngle->TurnInLoop(robotAng-aiPanAng);
-    else if (aiPanDir == 'r')
-      turnToAngle->TurnInLoop(robotAng+aiPanAng);
+  AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera[0]);
+  TurnRobotUsingServoAngle(servoPanAng, servoPanDir);
+}
+
+void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
+  if (pcOffset < -10)
+    RobotContainer::cameraMount->Pan(servoAng+=1);
+  else if (pcOffset > 10)
+    RobotContainer::cameraMount->Pan(servoAng-=1);
+}
+
+void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
+  int robotAng = RobotContainer::imu->GetRotation();
+  if (servoDir == 'l')
+    turnToAngle->TurnInLoop(robotAng-servoAng);
+  else if (servoDir == 'r')
+    turnToAngle->TurnInLoop(robotAng+servoAng);
 }
 
 // Called once the command ends or is interrupted.
