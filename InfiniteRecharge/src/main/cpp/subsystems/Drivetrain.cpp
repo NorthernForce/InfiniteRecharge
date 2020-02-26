@@ -63,16 +63,16 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
 }
 
 double Drivetrain::GetLeftRPM() {
-    return leftPrimarySpark->GetEncoder().GetVelocity() * Constants::Shifting::rotationMultiplier * -1;
+    return leftPrimarySpark->GetEncoder().GetVelocity() * -1;
 }
 
 double Drivetrain::GetRightRPM() {
-    return rightPrimarySpark->GetEncoder().GetVelocity() * Constants::Shifting::rotationMultiplier * -1;
+    return rightPrimarySpark->GetEncoder().GetVelocity() * -1;
 }
 
 std::pair<double, double> Drivetrain::GetEncoderRotations() {
-    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * Constants::Shifting::rotationMultiplier * -1;
-    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition() * Constants::Shifting::rotationMultiplier;
+    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
+    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
     return std::make_pair(leftSideRotations, rightSideRotations);
 }
 
@@ -82,14 +82,14 @@ void Drivetrain::SetEncoderPosition(double position) {
 }
 
 void Drivetrain::DriveInInches(double inches, double leftSpeed, double rightSpeed) {
-    double encoderToTravel = inches * Constants::inchesToEncoder;
+    double encoderToTravel = inches * Constants::Shifting::highMultiplier;
     double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
     if(averageDistance < encoderToTravel) {
         leftPrimarySpark->Set(leftSpeed);
         rightPrimarySpark->Set(rightSpeed);
     }
     else {
-        leftPrimarySpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-        rightPrimarySpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+        leftPrimarySpark->Set(0);
+        rightPrimarySpark->Set(0);
     }
 }
