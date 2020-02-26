@@ -23,7 +23,7 @@ void ShootCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
-  if (m_rtTriggerAxis > .5)
+  if (m_rtTriggerAxis > 0.5)
     RobotContainer::shooter->Shoot();
 }
 

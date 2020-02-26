@@ -26,14 +26,6 @@ class Intake : public frc2::SubsystemBase {
     EMPTY                     //No Ball
   };
 
-//Digital Ports Assigned to each Position
-  const int position0 = 0;
-  const int position1 = 1;
-  const int position2 = 2;
-  const int position3 = 3; //might not need this anymore
-  const int position4 = 4;
-  const int position5 = 5;
-
   const int noEmptyPositionFound = -1;
   const int noFullPositionFound = -1;
 
