@@ -25,8 +25,9 @@ void InFrontOfGoal::Initialize() {
   turnToAngle->TurnInLoop(90);
   RobotContainer::drivetrain->DriveInInches(60, 0.5, 0.5);
   turnToAngle->TurnInLoop(90);
-  //// TODO: Intake stuff goes here
+  RobotContainer::intake->SetArmDown();
   RobotContainer::drivetrain->DriveInInches(144, 0.5, 0.5);
+  RobotContainer::intake->SetArmUp();
 
 }
 

@@ -16,7 +16,9 @@ InFrontOfOurTrench::InFrontOfOurTrench() {
 // Called when the command is initially scheduled.
 void InFrontOfOurTrench::Initialize() {
   turnToAngle.reset(new TurnToAngle(180));
+  RobotContainer::intake->SetArmDown();
   RobotContainer::drivetrain->DriveInInches(0.5, 0.5, 144);
+  RobotContainer::intake->SetArmUp();
 }
 
 // Called repeatedly when this Command is scheduled to run
