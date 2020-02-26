@@ -18,8 +18,6 @@ namespace Constants {
     const double camDistFromRoboSideCent = 10;
 
     const double degreesToRadians = 3.141592653589793/180; 
-    const double inchesToEncoder = 1.39383333333333333333;
-
     
     namespace MotorIDs {
         const int driveLeftPrimary = 4;
@@ -45,18 +43,8 @@ namespace Constants {
     }
 
     namespace Shifting {
-        const double initialStage = 12/42;
-        const double shiftingHigh = 44/31;
-        const double shiftingLow =  60/14;
-
-        const double pi = 3.141592653589793;
-        const double wheelCircum = 6 * pi;
-        const int rotationMultiplier = 5;
-
-        namespace Gear {
-            const double low = initialStage*shiftingLow;
-            const double high = initialStage*shiftingHigh;
-        }
+        const double lowMultiplier = 0;
+        const double highMultiplier = 1.39383333333333333333;
     }
 
     namespace DigitalPort { 
