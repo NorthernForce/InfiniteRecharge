@@ -59,7 +59,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
-    frc2::Button([this] {return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
+    frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new PositionControl());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new RotationControl());
@@ -74,36 +74,25 @@ std::pair<double, double> OI::GetDriveControls() {
 
 double OI::GetShooterRampRate() {
     double shootRampRateMultiplier = frc::SmartDashboard::GetNumber("Shooter Ramp Rate:", 0.2);
-    if (shootRampRateMultiplier < 0)
-        shootRampRateMultiplier = 0;
-    else if (shootRampRateMultiplier > 1)
-        shootRampRateMultiplier = 1;
-    return shootRampRateMultiplier;
+    return CheckAndLimitValue(shootRampRateMultiplier);
 }
 
 double OI::GetDriveSpeedMultiplier() {
     double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
-    if (speedMultiplier < 0)
-        speedMultiplier = 0;
-    else if (speedMultiplier > 1)
-        speedMultiplier = 1;
-    return speedMultiplier;
+    return CheckAndLimitValue(speedMultiplier);
 }
 
-void OI::SetDriverControllerRumble(double value, bool lightly) {
-  if (lightly) {
-    driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
-  }
-  else {
-    driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
-  }
+void OI::SetControllerRumble(frc::XboxController *controller, double value, bool lightly) {
+  if (lightly)
+    controller->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+  else
+    controller->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
 }
 
-void OI::SetManipulatorControllerRumble(double value, bool lightly) {
-  if (lightly) {
-    manipulatorController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
-  }
-  else {
-    manipulatorController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
-  }
+double OI::CheckAndLimitValue(double value, double upperLimit, double lowerLimit) {
+  if (value < lowerLimit)
+    value = lowerLimit;
+  else if (value > upperLimit)
+    value = upperLimit;
+  return value;
 }

@@ -8,7 +8,6 @@
 #include "commands/Climb.h"
 
 Climb::Climb(std::function<double()> speed) : m_speed(speed) {
-  // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::climber.get());
 }
 
