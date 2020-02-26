@@ -10,6 +10,8 @@
 
 Navigation::Navigation() {}
 
+
+////TODO: Need to calculate position
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
@@ -23,6 +25,7 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double leftDistance;
     double rightDistance;
 
+////TODO: Correct constant to single value
     if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
         leftDistance = leftEncoderPos * 3.67 / 5;
         rightDistance = rightEncoderPos * 3.67 / 5;

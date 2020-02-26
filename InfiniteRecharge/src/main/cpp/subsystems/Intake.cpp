@@ -68,7 +68,7 @@ void Intake::RunConveyor() {
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }
-
+////TODO: Change to eliminate intermediate array. Return StorageState from ballPosition? remove for loop?
 void Intake::InventoryPowerCells() {
     GetBallPositions();
     for (int pos = 0; pos < 6; pos++) {

@@ -32,6 +32,7 @@ void Shooter::ConfigureSpark(double ramp) {
     controller.SetClosedLoopRampRate(ramp);
     controller.SetOpenLoopRampRate(ramp);
   }
+  ////TODO: Make coast
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
 
