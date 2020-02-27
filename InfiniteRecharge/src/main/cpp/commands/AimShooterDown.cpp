@@ -5,30 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ShootCell.h"
-#include <frc/DriverStation.h>
-#include "RobotContainer.h"
+#include "commands/AimShooterDown.h"
 
-ShootCell::ShootCell(double rtTriggerAxis) {
+AimShooterDown::AimShooterDown() {
   // Use addRequirements() here to declare subsystem dependencies.
-  m_rtTriggerAxis = rtTriggerAxis;
   AddRequirements(RobotContainer::shooter.get());
 }
 
 // Called when the command is initially scheduled.
-void ShootCell::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate(); //TODO: fix these
-  RobotContainer::shooter->ConfigureSpark(ramp);
-}
+void AimShooterDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void ShootCell::Execute() {
-  if (m_rtTriggerAxis > 0.5)
-    RobotContainer::shooter->Shoot();
+void AimShooterDown::Execute() {
+  RobotContainer::shooter->ShooterDown(RobotContainer::shooter->shiftOff);
 }
 
 // Called once the command ends or is interrupted.
-void ShootCell::End(bool interrupted) {}
+void AimShooterDown::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool ShootCell::IsFinished() { return false; }
+bool AimShooterDown::IsFinished() { return false; }

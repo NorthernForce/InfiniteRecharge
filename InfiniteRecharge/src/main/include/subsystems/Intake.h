@@ -59,7 +59,6 @@ class Intake : public frc2::SubsystemBase {
   ////TODO: add ramp rate?
 
  private:
-  void StoreCurrentBallPositions();
 
   ArmState currentArmState;
   StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position

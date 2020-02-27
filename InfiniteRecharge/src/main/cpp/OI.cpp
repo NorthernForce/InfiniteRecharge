@@ -23,6 +23,8 @@
 #include "commands/autonomous/InFrontOfGoal.h"
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include "commands/autonomous/CrossAutoLine.h"
+#include "commands/AimShooterUp.h"
+#include "commands/AimShooterDown.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -59,7 +61,10 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
+
     frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
+    frc2::Button([this] { return manipulatorController->GetRawButton(XboxPOV::up); }).WhenPressed(new AimShooterUp);
+    frc2::Button([this] { return manipulatorController->GetRawButton(XboxPOV::down); }).WhenPressed(new AimShooterDown);
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new PositionControl());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new RotationControl());

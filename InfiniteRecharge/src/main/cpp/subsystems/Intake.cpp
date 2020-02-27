@@ -78,22 +78,42 @@ void Intake::StopConveyor() {
 }
 ////TODO: Change to eliminate intermediate array. Return StorageState from ballPosition? remove for loop?
 void Intake::InventoryPowerCells() {
-    StoreCurrentBallPositions();
-    for (int pos = 0; pos < 6; pos++) {
-        if (ballOccupancy[pos] == ballDetected)
-            powerCellPosition[pos] = StorageState::PRESENT;
-        else
-            powerCellPosition[pos] = StorageState::EMPTY;
+    if (ballPosition0->Get() == ballDetected) {
+        powerCellPosition[0] = StorageState::PRESENT;
     }
-}
-
-void Intake::StoreCurrentBallPositions() {
-    ballOccupancy[0] = ballPosition0->Get();
-    ballOccupancy[1] = ballPosition1->Get();
-    ballOccupancy[2] = ballPosition2->Get();
-    ballOccupancy[3] = ballPosition3->Get();
-    ballOccupancy[4] = ballPosition4->Get();
-    ballOccupancy[5] = ballPosition5->Get();
+    else {
+        powerCellPosition[0] = StorageState::EMPTY;
+    }
+    if (ballPosition1->Get() == ballDetected) {
+        powerCellPosition[1] = StorageState::PRESENT;
+    }
+    else {
+        powerCellPosition[1] = StorageState::EMPTY;
+    }
+    if (ballPosition2->Get() == ballDetected) {
+        powerCellPosition[2] = StorageState::PRESENT;
+    }
+    else {
+        powerCellPosition[2] = StorageState::EMPTY;
+    }
+    if (ballPosition3->Get() == ballDetected) {
+        powerCellPosition[3] = StorageState::PRESENT;
+    }
+    else {
+        powerCellPosition[3] = StorageState::EMPTY;
+    }
+    if (ballPosition4->Get() == ballDetected) {
+        powerCellPosition[4] = StorageState::PRESENT;
+    }
+    else {
+        powerCellPosition[4] = StorageState::EMPTY;
+    }
+    if (ballPosition5->Get() == ballDetected) {
+        powerCellPosition[5] = StorageState::PRESENT;
+    }
+    else {
+        powerCellPosition[5] = StorageState::EMPTY;
+    }
 }
 
 //Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 
