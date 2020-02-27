@@ -44,6 +44,11 @@ void Drivetrain::Drive(double speed, double rotation) {
     robotDrive->ArcadeDrive(speed, rotation);
 }
 
+void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
+    leftPrimarySpark->Set(leftSpeed);
+    rightPrimarySpark->Set(rightSpeed);
+}
+
 // This method will be called once per scheduler run
 void Drivetrain::Periodic() {
     // frc::SmartDashboard::PutNumber("Set Encoder Position: ", 0);
@@ -80,32 +85,4 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
 void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);
-}
-
-
-void Drivetrain::AutoDrive(double inches, double leftSpeed, double rightSpeed) {
-    double encoderToTravel = inches * Constants::Shifting::highMultiplier;
-    double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
-
-    if((!CheckForObstacleAt(12)) && (averageDistance < encoderToTravel)) {
-        leftPrimarySpark->Set(leftSpeed);
-        rightPrimarySpark->Set(rightSpeed);    
-    }
-    else {
-        leftPrimarySpark->Set(0);
-        rightPrimarySpark->Set(0);
-    }
-}
-
-void Drivetrain::DriveInInches(double inches, double leftSpeed, double rightSpeed) {
-    double encoderToTravel = inches * Constants::Shifting::highMultiplier;
-    double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
-    if(averageDistance < encoderToTravel) {
-        leftPrimarySpark->Set(leftSpeed);
-        rightPrimarySpark->Set(rightSpeed);
-    }
-    else {
-        leftPrimarySpark->Set(0);
-        rightPrimarySpark->Set(0);
-    }
 }

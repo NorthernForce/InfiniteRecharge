@@ -53,7 +53,6 @@ class Intake : public frc2::SubsystemBase {
 
   //Return the First Position in the Conveyor Storage that is empty (no PC).
   int GetFirstEmptyPosition();
-  int FirstEmptyPosition(); //something here might be wrong
   int LowestFullPosition();
 
   ////TODO: add ramp rate?
@@ -64,12 +63,7 @@ class Intake : public frc2::SubsystemBase {
   StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position
   const bool ballDetected = false;
 
-  std::shared_ptr<frc::DigitalInput> ballPosition0;
-  std::shared_ptr<frc::DigitalInput> ballPosition1;
-  std::shared_ptr<frc::DigitalInput> ballPosition2;
-  std::shared_ptr<frc::DigitalInput> ballPosition3;
-  std::shared_ptr<frc::DigitalInput> ballPosition4;
-  std::shared_ptr<frc::DigitalInput> ballPosition5;
+  std::vector<frc::DigitalInput*> ballPosition;
 
   std::shared_ptr<rev::CANSparkMax> intakeSpark;
   std::shared_ptr<rev::CANSparkMax> armSpark;

@@ -10,8 +10,28 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
-class CrossAutoLine
-    : public frc2::CommandHelper<frc2::CommandBase, CrossAutoLine> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class AutoDrive
+    : public frc2::CommandHelper<frc2::CommandBase, AutoDrive> {
  public:
-  CrossAutoLine();
+  AutoDrive(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
+
+  void Initialize() override;
+
+  void Execute() override;
+
+  void End(bool interrupted) override;
+
+  bool IsFinished() override;
+
+ private:
+  double m_inches;
+  double m_leftSpeed;
+  double m_rightSpeed;
 };

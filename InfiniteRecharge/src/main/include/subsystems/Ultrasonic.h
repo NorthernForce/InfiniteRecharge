@@ -31,7 +31,6 @@ class Ultrasonic : public frc2::SubsystemBase {
   double distance;
   bool isObstacleDetected;
 
-
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

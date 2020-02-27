@@ -6,21 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/InFrontOfFoesTrench.h"
-#include "RobotContainer.h"
+#include <frc2/command/SequentialCommandGroup.h>
 
 InFrontOfFoesTrench::InFrontOfFoesTrench() {
-  AddRequirements(RobotContainer::drivetrain.get());
-  AddRequirements(RobotContainer::imu.get());
+  frc2::SequentialCommandGroup {};
 }
-
-// Called when the command is initially scheduled.
-void InFrontOfFoesTrench::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void InFrontOfFoesTrench::Execute() {}
-
-// Called once the command ends or is interrupted.
-void InFrontOfFoesTrench::End(bool interrupted) {}
-
-// Returns true when the command should end.
-bool InFrontOfFoesTrench::IsFinished() { return false; }

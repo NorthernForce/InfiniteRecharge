@@ -26,12 +26,12 @@ void Intake::InitSparks() {
 }
 
 void Intake::InitBallPositionSensors() {
-    ballPosition0.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
-    ballPosition1.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
-    ballPosition2.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
-    ballPosition3.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
-    ballPosition4.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
-    ballPosition5.reset(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
 void Intake::SetFollowers() {
@@ -76,43 +76,13 @@ void Intake::RunConveyor() {
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }
-////TODO: Change to eliminate intermediate array. Return StorageState from ballPosition? remove for loop?
+
 void Intake::InventoryPowerCells() {
-    if (ballPosition0->Get() == ballDetected) {
-        powerCellPosition[0] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[0] = StorageState::EMPTY;
-    }
-    if (ballPosition1->Get() == ballDetected) {
-        powerCellPosition[1] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[1] = StorageState::EMPTY;
-    }
-    if (ballPosition2->Get() == ballDetected) {
-        powerCellPosition[2] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[2] = StorageState::EMPTY;
-    }
-    if (ballPosition3->Get() == ballDetected) {
-        powerCellPosition[3] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[3] = StorageState::EMPTY;
-    }
-    if (ballPosition4->Get() == ballDetected) {
-        powerCellPosition[4] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[4] = StorageState::EMPTY;
-    }
-    if (ballPosition5->Get() == ballDetected) {
-        powerCellPosition[5] = StorageState::PRESENT;
-    }
-    else {
-        powerCellPosition[5] = StorageState::EMPTY;
+    for(int pos=0; pos<6; pos++) {
+        if (ballPosition[pos]->Get() == ballDetected)
+            powerCellPosition[pos] = StorageState::PRESENT;
+        else
+            powerCellPosition[pos] = StorageState::EMPTY;
     }
 }
 
