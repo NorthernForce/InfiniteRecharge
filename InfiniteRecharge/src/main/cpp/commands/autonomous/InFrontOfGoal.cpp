@@ -32,7 +32,9 @@ void InFrontOfGoal::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void InFrontOfGoal::Execute() {}
+void InFrontOfGoal::Execute() {
+  
+}
 
 // Called once the command ends or is interrupted.
 void InFrontOfGoal::End(bool interrupted) {}

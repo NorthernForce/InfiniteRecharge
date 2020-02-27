@@ -27,13 +27,13 @@ class Ultrasonic : public frc2::SubsystemBase {
   void Enable();
   void Disable();
 
+  double distance;
+
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   static constexpr double ValueToInches = 0.125;
-
-  double distance;
 
   bool ultrasonicState;
 
