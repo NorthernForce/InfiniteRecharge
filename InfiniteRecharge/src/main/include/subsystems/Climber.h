@@ -23,8 +23,6 @@ class Climber : public frc2::SubsystemBase {
   void SetLifter(double speed);
   void SetCurrentLimits(WPI_TalonSRX& controller);
 
-  ////TODO: add deadband?
-
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
