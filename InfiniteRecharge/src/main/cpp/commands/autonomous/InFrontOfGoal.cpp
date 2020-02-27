@@ -9,7 +9,7 @@
 #include "RobotContainer.h"
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
-
+#include <functional>
 
 InFrontOfGoal::InFrontOfGoal() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -22,18 +22,16 @@ InFrontOfGoal::InFrontOfGoal() {
 // Called when the command is initially scheduled.
 void InFrontOfGoal::Initialize() {
   RobotContainer::shooter->Shoot();
-  turnToAngle->TurnInLoop(90);
-  RobotContainer::drivetrain->DriveInInches(60, 0.5, 0.5);
-  turnToAngle->TurnInLoop(90);
-  RobotContainer::intake->SetArmDown();
-  RobotContainer::drivetrain->DriveInInches(144, 0.5, 0.5);
-  RobotContainer::intake->SetArmUp();
-
 }
 
 // Called repeatedly when this Command is scheduled to run
 void InFrontOfGoal::Execute() {
-  
+  RunOnce(turnToAngle->TurnInLoop(90));
+  RobotContainer::drivetrain->AutoDrive(60, 0.5, 0.5);
+  RunOnce(turnToAngle->TurnInLoop(90));
+  RunOnce(RobotContainer::intake->SetArmDown());
+  RobotContainer::drivetrain->AutoDrive(144, 0.5, 0.5);
+  RunOnce(RobotContainer::intake->SetArmUp();
 }
 
 // Called once the command ends or is interrupted.
@@ -41,3 +39,10 @@ void InFrontOfGoal::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool InFrontOfGoal::IsFinished() { return false; }
+
+void InFrontOfGoal::RunOnce(std::function<void()> function()) {
+  int counter;
+  if (counter < 1) 
+    function();
+  counter++;
+}

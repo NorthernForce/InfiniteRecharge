@@ -26,8 +26,10 @@ class Ultrasonic : public frc2::SubsystemBase {
   double GetDistance();
   void Enable();
   void Disable();
+  bool IsObstacleAt(int targetDistance);
 
   double distance;
+  bool isObstacleDetected;
 
 
  private:

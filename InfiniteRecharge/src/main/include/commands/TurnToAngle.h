@@ -20,7 +20,7 @@
 class TurnToAngle
     : public frc2::CommandHelper<frc2::CommandBase, TurnToAngle> {
  public:
-  TurnToAngle(double targetAngle = 0);
+  TurnToAngle(double target = targetAngle);
   void Initialize() override;
   void Execute() override;
   void TurnInLoop(int angle=targetAngle);

@@ -40,11 +40,19 @@ void TurnToAngle::TurnInLoop(int angle) {
   double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
 
   double rotationRaw = GetRotationFromPID(p,i,d);
-  double rotationLimited = LimitMaxTurnSpeed(rotationRaw); 
+  double rotationLimited = LimitMaxTurnSpeed(rotationRaw);
 
   std::cout << " rotation: " << rotationLimited << " goal: " << totalTargetAngle << " angle: " << RobotContainer::imu->GetRotation() << '\n';
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
+  if (angle > 0) {
+    if (angle == targetAngle)
+      End(true);
+  }
+  else if (angle < 0) {
+    if (angle == targetAngle)
+      End(true);
+  }
 }
 
 void TurnToAngle::End(bool interrupted) {

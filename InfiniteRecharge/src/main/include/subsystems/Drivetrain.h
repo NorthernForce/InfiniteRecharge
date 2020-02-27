@@ -25,14 +25,13 @@ class Drivetrain : public frc2::SubsystemBase {
   void SetEncoderPosition(double position);
   void DriveInInches(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
   void AutoDrive(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
-  bool UltrasonicAuto();
+  bool CheckForObstacleAt(int distance);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
 
-  double distance;
-  bool collisiondetected;
+  bool continueDrive;
 
  private:
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;

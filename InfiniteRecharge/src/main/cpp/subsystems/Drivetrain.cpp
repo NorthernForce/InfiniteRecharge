@@ -82,24 +82,14 @@ void Drivetrain::SetEncoderPosition(double position) {
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
 
-bool Drivetrain::UltrasonicAuto(){
-    distance = RobotContainer::ultrasonic->distance;
-    if(distance < 12) {
-        collisiondetected = true;
-    } else {
-        collisiondetected = false;
-    }
-    return collisiondetected;
-}
 
 void Drivetrain::AutoDrive(double inches, double leftSpeed, double rightSpeed) {
     double encoderToTravel = inches * Constants::Shifting::highMultiplier;
     double averageDistance = (leftPrimarySpark->GetEncoder().GetPosition() + rightPrimarySpark->GetEncoder().GetPosition())/2;
-    collisiondetected = UltrasonicAuto();
 
-    if(collisiondetected = false && averageDistance < encoderToTravel) {
+    if((!CheckForObstacleAt(12)) && (averageDistance < encoderToTravel)) {
         leftPrimarySpark->Set(leftSpeed);
-        rightPrimarySpark->Set(rightSpeed);
+        rightPrimarySpark->Set(rightSpeed);    
     }
     else {
         leftPrimarySpark->Set(0);
