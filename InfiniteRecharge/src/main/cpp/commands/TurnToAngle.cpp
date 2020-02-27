@@ -24,8 +24,8 @@ TurnToAngle::TurnToAngle(double target) {
 
 // Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
-  RobotContainer::imu->ZeroRotation();
-  totalTargetAngle = RobotContainer::imu->GetRotation() + targetAngle;
+  currentAngle = RobotContainer::imu->GetRotation();
+  totalTargetAngle = currentAngle + targetAngle;
   integral = 0;
 }
 
@@ -34,7 +34,7 @@ void TurnToAngle::Execute() {
   TurnInLoop();
 }
 
-void TurnToAngle::TurnInLoop(int angle) {
+void TurnToAngle::TurnInLoop(double target) {
   double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
   double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
   double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
@@ -42,16 +42,12 @@ void TurnToAngle::TurnInLoop(int angle) {
   double rotationRaw = GetRotationFromPID(p,i,d);
   double rotationLimited = LimitMaxTurnSpeed(rotationRaw);
 
-  std::cout << " rotation: " << rotationLimited << " goal: " << totalTargetAngle << " angle: " << RobotContainer::imu->GetRotation() << '\n';
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
-  if (angle > 0) {
-    if (angle == targetAngle)
-      IsFinished();
-  }
-  else if (angle < 0) {
-    if (angle == targetAngle)
-      IsFinished();
+  if ((targetAngle > 0) && (currentAngle >= targetAngle))
+    IsFinished();
+  else if ((targetAngle < 0) && (currentAngle <= targetAngle)) {
+    IsFinished();
   }
 }
 

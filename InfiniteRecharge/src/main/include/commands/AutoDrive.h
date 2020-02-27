@@ -21,13 +21,10 @@ class AutoDrive
     : public frc2::CommandHelper<frc2::CommandBase, AutoDrive> {
  public:
   AutoDrive(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
-
   void Initialize() override;
-
+  void CheckForAndFixNegatives();
   void Execute() override;
-
   void End(bool interrupted) override;
-
   bool IsFinished() override;
 
  private:

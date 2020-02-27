@@ -20,10 +20,10 @@
 class TurnToAngle
     : public frc2::CommandHelper<frc2::CommandBase, TurnToAngle> {
  public:
-  TurnToAngle(double target = targetAngle);
+  TurnToAngle(double target=targetAngle);
   void Initialize() override;
   void Execute() override;
-  void TurnInLoop(int angle=targetAngle);
+  void TurnInLoop(double target=targetAngle);
   void End(bool interrupted) override;
   bool IsFinished() override;
 
@@ -33,6 +33,7 @@ class TurnToAngle
 
   static double targetAngle;
   double totalTargetAngle = 0;
+  double currentAngle;
   int defaultPeriodInMs = 20;
 
   const double pValue = 1.3;

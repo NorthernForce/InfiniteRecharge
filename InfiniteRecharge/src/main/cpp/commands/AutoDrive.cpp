@@ -14,7 +14,17 @@ AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
 }
 
 // Called when the command is initially scheduled.
-void AutoDrive::Initialize() {}
+void AutoDrive::Initialize() {
+  CheckForAndFixNegatives();
+}
+
+void AutoDrive::CheckForAndFixNegatives() {
+  if (m_inches < 0) {
+    m_inches *= -1;
+    m_rightSpeed *= -1;
+    m_leftSpeed *= -1;
+  }
+}
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
