@@ -23,6 +23,7 @@
 #include "commands/autonomous/InFrontOfGoal.h"
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include "commands/autonomous/CrossAutoLine.h"
+#include "commands/autonomous/DoNothing.h"
 #include "commands/AimShooterUp.h"
 #include "commands/AimShooterDown.h"
 
@@ -36,10 +37,11 @@ OI::OI() {
 }
 
 void OI::DisplayAutonomousChooser() {
-  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.AddDefault("1) Cross auto line", new CrossAutoLine());
   autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
   autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
 
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 }
