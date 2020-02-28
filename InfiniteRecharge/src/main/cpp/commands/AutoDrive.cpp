@@ -32,13 +32,16 @@ void AutoDrive::Execute() {
   double encoderToTravel = m_inches * Constants::Shifting::highMultiplier;
   double averageDistance = (RobotContainer::drivetrain->GetEncoderRotations().first + RobotContainer::drivetrain->GetEncoderRotations().second)/2;
 
-  if(!obstacle && (averageDistance < encoderToTravel)) {
+  if(!obstacle && (averageDistance < encoderToTravel))
       RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
-  }
+  else if (obstacle && (averageDistance < encoderToTravel))
+      RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
   else {
       RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
       IsFinished();
   }
+    
+  
 }
 
 // Called once the command ends or is interrupted.
