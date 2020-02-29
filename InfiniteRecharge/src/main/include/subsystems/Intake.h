@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <ctre/Phoenix.h>
 #include <rev/CANSparkMax.h>
 #include <frc/DigitalInput.h>
 #include "Constants.h"
@@ -65,7 +66,7 @@ class Intake : public frc2::SubsystemBase {
 
   std::vector<frc::DigitalInput*> ballPosition;
 
-  std::shared_ptr<rev::CANSparkMax> intakeSpark;
+  std::shared_ptr<WPI_TalonSRX> intakeTalon;
   std::shared_ptr<rev::CANSparkMax> armSpark;
   std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;

@@ -28,10 +28,9 @@ namespace Constants {
         const int driveRightFollower2 = 4;
 
         const int shooter = 8;
+        const int wackyWheel = 13; 
 
-        const int wackyWheel = 11; 
-
-        const int intake = 13;
+        const int intake = 11;  
 
         const int intakeArm = 9;
         const int conveyor1 = 10;

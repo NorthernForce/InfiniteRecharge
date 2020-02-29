@@ -20,7 +20,7 @@ DriveShifter::DriveShifter() :
   leftSideSpark(Drivetrain::leftPrimarySpark),
   rightSideSpark(Drivetrain::rightPrimarySpark)
 {
-    shifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
+    shifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 0));
     BeginShift(false);
 }
 
