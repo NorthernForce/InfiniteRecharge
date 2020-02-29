@@ -11,7 +11,7 @@ namespace Constants {
     const int driverController_id = 0;
     const int manipulatorController_id = 1;
 
-    const int PCMCanBusID = 11;
+    const int PCMCanBusID = 15;
     const int ultrasonicRangeFinder = 0;
 
     const double camDistFromRoboFrontCent = 9.5;
@@ -54,5 +54,9 @@ namespace Constants {
         const int ballPort3 = 3;
         const int ballPort4 = 4;
         const int ballPort5 = 5;
+
+        const int redRGB = 10;
+        const int greenRGB = 11;
+        const int blueRGB = 12;
     }
 }

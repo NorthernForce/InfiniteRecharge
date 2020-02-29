@@ -46,9 +46,8 @@ void TurnToAngle::TurnInLoop(double target) {
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
   if ((targetAngle > 0) && (currentAngle >= targetAngle))
     IsFinished();
-  else if ((targetAngle < 0) && (currentAngle <= targetAngle)) {
+  else if ((targetAngle < 0) && (currentAngle <= targetAngle))
     IsFinished();
-  }
 }
 
 void TurnToAngle::End(bool interrupted) {

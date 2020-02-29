@@ -40,8 +40,6 @@ void AutoDrive::Execute() {
       RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
       IsFinished();
   }
-    
-  
 }
 
 // Called once the command ends or is interrupted.
