@@ -7,19 +7,28 @@
 
 #include "commands/autonomous/InFrontOfGoal.h"
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/ParallelCommandGroup.h>
 
 #include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
 #include "commands/IntakeDown.h"
 #include "commands/IntakeUp.h"
+#include "commands/IntakePowerCell.h"
 
 InFrontOfGoal::InFrontOfGoal() {
   frc2::SequentialCommandGroup {
     TurnToAngle(90),
-    AutoDrive(60),
+    AutoDrive(48),
     TurnToAngle(90),
-    IntakeUp(),
-    AutoDrive(144),
-    IntakeDown()
+    IntakeDown(),
+  };
+
+    frc2::ParallelCommandGroup {
+      IntakePowerCell(),
+      AutoDrive(219),
+    };
+
+  frc2::SequentialCommandGroup {
+    AutoDrive(-168),
   };
 }

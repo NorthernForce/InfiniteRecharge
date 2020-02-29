@@ -78,7 +78,7 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for(int pos; pos<6; pos++) {
+    for(int pos=0; pos<6; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else

@@ -7,4 +7,10 @@
 
 #include "commands/autonomous/DoNothing.h"
 
-DoNothing::DoNothing() {}
+DoNothing::DoNothing() {
+  IsFinished();
+}
+
+bool DoNothing::IsFinished() {
+  return true;
+}

@@ -37,7 +37,7 @@ OI::OI() {
 }
 
 void OI::DisplayAutonomousChooser() {
-  autonomousChooser.AddDefault("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
   autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
   autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
