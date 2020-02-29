@@ -12,6 +12,7 @@
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::limelight.get());
+
 }
 
 // Called when the command is initially scheduled.
@@ -19,9 +20,9 @@ void MoveToLimelight::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToLimelight::Execute() {
-  limeLightOffset = RobotContainer::limelight->XOffset();
+  limeLightOffset = RobotContainer::limelight->GetXOffset();
   isTargetThere = RobotContainer::limelight->IsTargetThere();
-  TurnToAngle(XOffset);
+  turnToAngle->TurnInLoop(limeLightOffset);
 }
 
 // Called once the command ends or is interrupted.

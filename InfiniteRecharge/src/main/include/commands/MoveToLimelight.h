@@ -9,6 +9,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/TurnToAngle.h"
 
 /**
  * An example command.
@@ -30,6 +31,7 @@ class MoveToLimelight
 
   bool IsFinished() override;
  private:
+  std::shared_ptr<TurnToAngle> turnToAngle;
   double limeLightOffset;
   bool isTargetThere;
 };

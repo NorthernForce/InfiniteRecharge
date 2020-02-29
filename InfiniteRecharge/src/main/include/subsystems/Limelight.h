@@ -14,17 +14,14 @@
 class Limelight : public frc2::SubsystemBase {
  public:
   Limelight();
-  double XOffset();
-  std::pair<double, double> TargetAreaSkew();
+  double GetXOffset();
   bool IsTargetThere();
+  std::pair<double, double> GetTargetAreaSkew();
 
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
   void Periodic();
 
  private:
-std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+  std::shared_ptr<NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };

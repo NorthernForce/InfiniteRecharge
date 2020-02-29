@@ -61,7 +61,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
-    frc2::Button([this] {return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
 
    // frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhileHeld(new IntakePowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhileHeld(new RunIntakeMotor(ltTriggerAxis));

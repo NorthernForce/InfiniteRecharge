@@ -11,12 +11,12 @@ Limelight::Limelight() {}
 
 // This method will be called once per scheduler run
 void Limelight::Periodic() {
-    XOffset();
-    TargetAreaSkew();
+    GetXOffset();
+    GetTargetAreaSkew();
     IsTargetThere();
 }
 
-double Limelight::XOffset() {
+double Limelight::GetXOffset() {
     double targetOffsetAngleX = table->GetNumber("tx",0.0);
     return targetOffsetAngleX;
 }
@@ -26,7 +26,7 @@ bool Limelight::IsTargetThere() {
     return IsTargetThere;
 }
 
-std::pair<double, double> Limelight::TargetAreaSkew() {
+std::pair<double, double> Limelight::GetTargetAreaSkew() {
     double targetArea = table->GetNumber("ta",0.0);
     double targetSkew = table->GetNumber("ts",0.0);
     return std::make_pair(targetArea, targetSkew);
