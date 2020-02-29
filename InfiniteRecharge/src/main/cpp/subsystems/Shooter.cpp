@@ -13,7 +13,7 @@ double Shooter::rampRate;
 Shooter::Shooter() {
   shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
   pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
-  shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 0));
+  shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
 
   pidController->SetP(p);
   pidController->SetI(i);

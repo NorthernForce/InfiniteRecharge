@@ -5,26 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/Climb.h"
+#include "commands/RunIntakeMotor.h"
+#include <iostream>
 
-Climb::Climb(std::function<double()> speed) : m_speed(speed) {
-  AddRequirements(RobotContainer::climber.get());
+RunIntakeMotor::RunIntakeMotor(double speed) {
+  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(RobotContainer::intake.get());
+  m_speed = speed;
 }
 
 // Called when the command is initially scheduled.
-void Climb::Initialize() {}
+void RunIntakeMotor::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void Climb::Execute() {
-  if (abs(m_speed()) > 0.3) {
-    RobotContainer::climber->SetLifter(m_speed());
-  }
+void RunIntakeMotor::Execute() {
+  if (m_speed > 0.3)
+    std::cout << "in execute\n";
+    RobotContainer::intake->TakeInPowerCell();
 }
 
 // Called once the command ends or is interrupted.
-void Climb::End(bool interrupted) {
-  RobotContainer::climber->SetLifter(0.0);
+void RunIntakeMotor::End(bool interrupted) {
+  RobotContainer::intake->Stop();
 }
 
 // Returns true when the command should end.
-bool Climb::IsFinished() { return false; }
+bool RunIntakeMotor::IsFinished() { return false; }
