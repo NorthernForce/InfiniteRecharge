@@ -14,7 +14,7 @@
 class Limelight : public frc2::SubsystemBase {
  public:
   Limelight();
-  std::pair<double, double> XYOffset();
+  double XOffset();
   std::pair<double, double> TargetAreaSkew();
   bool IsTargetThere();
 

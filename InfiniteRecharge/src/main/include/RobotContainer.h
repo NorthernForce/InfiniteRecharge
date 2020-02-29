@@ -23,6 +23,7 @@
 #include "subsystems/Shooter.h"
 #include "subsystems/WackyWheel.h"
 #include "subsystems/Climber.h"
+#include "subsystems/Limelight.h"
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/Climb.h"
@@ -52,6 +53,7 @@ class RobotContainer {
   static std::shared_ptr<Shooter> shooter;
   static std::shared_ptr<WackyWheel> wackyWheel;
   static std::shared_ptr<Climber> climber;
+  static std::shared_ptr<Limelight> limelight;
 
  private:
   void InitSubsystems();
