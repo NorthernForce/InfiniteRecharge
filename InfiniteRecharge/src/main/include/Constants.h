@@ -18,16 +18,14 @@ namespace Constants {
     const double camDistFromRoboSideCent = 10;
 
     const double degreesToRadians = 3.141592653589793/180; 
-
-    ////TODO: Limelight is 14
     
     namespace MotorIDs {
-        const int driveLeftPrimary = 4;
-        const int driveLeftFollower1 = 6;
-        const int driveLeftFollower2 = 2;
-        const int driveRightPrimary = 5;
-        const int driveRightFollower1 = 1;
-        const int driveRightFollower2 = 3;
+        const int driveLeftPrimary = 5;
+        const int driveLeftFollower1 = 1;
+        const int driveLeftFollower2 = 3;
+        const int driveRightPrimary = 6;
+        const int driveRightFollower1 = 2;
+        const int driveRightFollower2 = 4;
 
         const int shooter = 8;
 
