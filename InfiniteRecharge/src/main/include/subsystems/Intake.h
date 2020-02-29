@@ -36,7 +36,7 @@ class Intake : public frc2::SubsystemBase {
   void InitSparks();
   void InitBallPositionSensors();
   void Periodic();
-  void SetFollowers();
+  void SetInvertedFollower();
   void TakeInPowerCell();
   void PushOutPowerCell();
   void Stop();

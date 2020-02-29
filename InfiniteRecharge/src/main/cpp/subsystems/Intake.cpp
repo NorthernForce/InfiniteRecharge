@@ -7,6 +7,7 @@
 
 #include "subsystems/Intake.h"
 #include "RobotContainer.h"
+#include <iostream>
 
 using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
@@ -14,7 +15,7 @@ using StorageState = Intake::StorageState;
 Intake::Intake() {
     InitSparks();
     InitBallPositionSensors();
-    SetFollowers();
+    SetInvertedFollower();
 }
 
 void Intake::InitSparks() {
@@ -23,6 +24,9 @@ void Intake::InitSparks() {
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
+
+    intakeTalon->ConfigPeakCurrentLimit(5);
+    intakeTalon->ConfigPeakOutputForward(1);
 }
 
 void Intake::InitBallPositionSensors() {
@@ -34,8 +38,8 @@ void Intake::InitBallPositionSensors() {
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
-void Intake::SetFollowers() {
-    followerConveyorSpark->Follow(*primaryConveyorSpark);
+void Intake::SetInvertedFollower() {
+    followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
 void Intake::Periodic() {
     InventoryPowerCells();
@@ -70,7 +74,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(0.5);
+    primaryConveyorSpark->Set(-0.5);
 }
 
 void Intake::StopConveyor() {
@@ -78,7 +82,7 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for(int pos=0; pos<6; pos++) {
+    for(int pos=1; pos<6; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -94,13 +98,12 @@ StorageState Intake::GetInventory(int position) {
 //Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
-    for (int i = 1; i < 6; i++) {
-        if (Intake::GetInventory(i) == StorageState::PRESENT) {
-            continue;
+    for (int i = 2; i < 6; i++) { //TODO: Change this after you have changed the array stuff
+        if (Intake::GetInventory(i) == StorageState::EMPTY) {
+            position = i;
+            return position;
         }
-        position = i;
     }
-    return position;
 }
 
 int Intake::LowestFullPosition() {
