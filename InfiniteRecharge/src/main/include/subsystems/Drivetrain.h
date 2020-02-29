@@ -17,18 +17,19 @@ class Drivetrain : public frc2::SubsystemBase {
   void SetInvertedFollowers();
   void ConfigureAllControllers();
   void Drive(double speed, double rotation);
+  void DriveUsingSpeeds(double leftSpeed, double rightSpeed);
   void Periodic();
   void ConfigureController(rev::CANSparkMax& controller);
   double GetRightRPM();
   double GetLeftRPM();
   std::pair<double, double> GetEncoderRotations();
   void SetEncoderPosition(double position);
-  void DriveInInches(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
-
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
+
+  bool continueDrive;
 
  private:
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;

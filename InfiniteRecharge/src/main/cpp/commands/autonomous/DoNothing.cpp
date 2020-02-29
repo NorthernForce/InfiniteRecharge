@@ -5,13 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "commands/autonomous/DoNothing.h"
 
-#include <frc2/command/CommandBase.h>
-#include <frc2/command/CommandHelper.h>
-
-class CrossAutoLine
-    : public frc2::CommandHelper<frc2::CommandBase, CrossAutoLine> {
- public:
-  CrossAutoLine();
-};
+DoNothing::DoNothing() {}

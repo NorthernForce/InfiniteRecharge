@@ -6,36 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/InFrontOfGoal.h"
-#include "RobotContainer.h"
-#include "commands/TurnToAngle.h"
-#include "commands/ShootCell.h"
+#include <frc2/command/SequentialCommandGroup.h>
 
+#include "commands/TurnToAngle.h"
+#include "commands/AutoDrive.h"
+#include "commands/IntakeDown.h"
+#include "commands/IntakeUp.h"
 
 InFrontOfGoal::InFrontOfGoal() {
-  // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::drivetrain.get());
-  AddRequirements(RobotContainer::imu.get());
-  turnToAngle.reset(new TurnToAngle());
-  
+  frc2::SequentialCommandGroup {
+    TurnToAngle(90),
+    AutoDrive(60),
+    TurnToAngle(90),
+    IntakeUp(),
+    AutoDrive(144),
+    IntakeDown()
+  };
 }
-
-// Called when the command is initially scheduled.
-void InFrontOfGoal::Initialize() {
-  RobotContainer::shooter->Shoot();
-  turnToAngle->TurnInLoop(90);
-  RobotContainer::drivetrain->DriveInInches(60, 0.5, 0.5);
-  turnToAngle->TurnInLoop(90);
-  RobotContainer::intake->SetArmDown();
-  RobotContainer::drivetrain->DriveInInches(144, 0.5, 0.5);
-  RobotContainer::intake->SetArmUp();
-
-}
-
-// Called repeatedly when this Command is scheduled to run
-void InFrontOfGoal::Execute() {}
-
-// Called once the command ends or is interrupted.
-void InFrontOfGoal::End(bool interrupted) {}
-
-// Returns true when the command should end.
-bool InFrontOfGoal::IsFinished() { return false; }

@@ -15,12 +15,21 @@ Ultrasonic::Ultrasonic() {
 }
 
 void Ultrasonic::Periodic() {
+    isObstacleDetected = IsObstacleAt(12);
     if (ultrasonicOn) {
         distance = analogUltrasonic->GetValue() * ValueToInches;
         std::cout << distance << "\n";
     }
     else
         distance = 0;
+}
+
+bool Ultrasonic::IsObstacleAt(int targetDistance) {
+    if(distance < targetDistance) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 double Ultrasonic::GetDistance() {
@@ -37,3 +46,4 @@ void Ultrasonic::Disable() {
     ultrasonicState = ultrasonicOff;
   //  ctrl->Set(ultrasonicOff);
 }
+

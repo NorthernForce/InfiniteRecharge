@@ -6,23 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/CrossAutoLine.h"
-#include "RobotContainer.h"
+#include <frc2/command/SequentialCommandGroup.h>
+#include "commands/AutoDrive.h"
 
 CrossAutoLine::CrossAutoLine() {
-  AddRequirements(RobotContainer::drivetrain.get());
-  AddRequirements(RobotContainer::imu.get());
+  frc2::SequentialCommandGroup {
+    AutoDrive(144)
+  }; 
 }
-
-// Called when the command is initially scheduled.
-void CrossAutoLine::Initialize() {
-  RobotContainer::drivetrain->DriveInInches(12, 0.5, 0.5);
-}
-
-// Called repeatedly when this Command is scheduled to run
-void CrossAutoLine::Execute() {}
-
-// Called once the command ends or is interrupted.
-void CrossAutoLine::End(bool interrupted) {}
-
-// Returns true when the command should end.
-bool CrossAutoLine::IsFinished() { return false; }
