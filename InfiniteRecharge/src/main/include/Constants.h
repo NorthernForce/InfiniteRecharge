@@ -18,6 +18,8 @@ namespace Constants {
     const double camDistFromRoboSideCent = 10;
 
     const double degreesToRadians = 3.141592653589793/180; 
+
+    ////TODO: Limelight is 14
     
     namespace MotorIDs {
         const int driveLeftPrimary = 4;
@@ -27,16 +29,17 @@ namespace Constants {
         const int driveRightFollower1 = 1;
         const int driveRightFollower2 = 3;
 
-        const int shooter = 0;
+        const int shooter = 8;
 
-        const int wackyWheel = 0;
+        const int wackyWheel = 13; 
 
-        const int intake = 10;
-        const int intakeArm = 11;
-        const int conveyor1 = 0;
-        const int conveyor2 = 0;
+        const int intake = 11;
 
-        const int climberArm = 13;
+        const int intakeArm = 9;
+        const int conveyor1 = 10;
+        const int conveyor2 = 12;
+
+        const int climberArm = 7;
 
         const int panServoPWM = 0;
         const int tiltServoPWM = 1;
