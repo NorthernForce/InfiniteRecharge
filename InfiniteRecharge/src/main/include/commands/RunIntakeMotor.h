@@ -21,7 +21,7 @@
 class RunIntakeMotor
     : public frc2::CommandHelper<frc2::CommandBase, RunIntakeMotor> {
  public:
-  RunIntakeMotor(double speed);
+  RunIntakeMotor();
 
   void Initialize() override;
 
@@ -30,6 +30,4 @@ class RunIntakeMotor
   void End(bool interrupted) override;
 
   bool IsFinished() override;
- private:
-  double m_speed;
 };

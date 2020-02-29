@@ -42,9 +42,9 @@ void Shooter::Shoot() {
 }
 
 void Shooter::ShooterUp(bool shift) {
-  shooterShifter->Set(shiftOn);
+  shooterShifter->Set(shiftOff);
 }
 
 void Shooter::ShooterDown(bool shift) {
-  shooterShifter->Set(shiftOff);
+  shooterShifter->Set(shiftOn);
 }
