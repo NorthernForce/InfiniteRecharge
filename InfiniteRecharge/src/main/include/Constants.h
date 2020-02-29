@@ -29,9 +29,9 @@ namespace Constants {
 
         const int shooter = 8;
 
-        const int wackyWheel = 13; 
+        const int wackyWheel = 11; 
 
-        const int intake = 11;
+        const int intake = 13;
 
         const int intakeArm = 9;
         const int conveyor1 = 10;
@@ -39,8 +39,8 @@ namespace Constants {
 
         const int climberArm = 7;
 
-        const int panServoPWM = 0;
-        const int tiltServoPWM = 1;
+        const int panServoPWM = 7;
+        const int tiltServoPWM = 8;
     }
 
     namespace Shifting {
