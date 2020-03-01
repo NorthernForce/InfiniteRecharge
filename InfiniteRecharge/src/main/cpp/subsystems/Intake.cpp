@@ -35,13 +35,14 @@ void Intake::InitBallPositionSensors() {
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
+    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
 void Intake::SetInvertedFollower() {
     followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
 void Intake::Periodic() {
-    InventoryPowerCells();
+   InventoryPowerCells();
 }
 
 void Intake::TakeInPowerCell() {
@@ -57,13 +58,13 @@ void Intake::Stop() {
 }
 
 void Intake::SetArmUp() {
-    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsUp;
     }
 }
 
 void Intake::SetArmDown() {
-    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsDown;
     }
 }
@@ -81,7 +82,7 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for(int pos=0; pos<5; pos++) {
+    for(int pos=0; pos<6; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -97,7 +98,7 @@ StorageState Intake::GetInventory(int position) {
 //Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
-    for (int i = 1; i < 5; i++) {
+    for (int i = 1; i < 6; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             position = i;
             break;
@@ -108,7 +109,7 @@ int Intake::GetFirstEmptyPosition() {
 
 int Intake::LowestFullPosition() {
     int position = noFullPositionFound;
-    for (int i = 1; i < 5; i++) {
+    for (int i = 1; i < 6; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             continue;
         }

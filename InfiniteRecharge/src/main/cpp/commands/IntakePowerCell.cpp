@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/IntakePowerCell.h"
+#include <iostream>
 
 IntakePowerCell::IntakePowerCell() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -19,9 +20,9 @@ void IntakePowerCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
-  std::cout << "Empty Position: "<<  RobotContainer::intake->GetFirstEmptyPosition() << "\n";
+  RobotContainer::intake->InventoryPowerCells();
   RobotContainer::intake->TakeInPowerCell();
- if (RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
+ if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
      RobotContainer::intake->RunConveyor();
   } 
   else if (RobotContainer::intake->powerCellCount >= 5) {

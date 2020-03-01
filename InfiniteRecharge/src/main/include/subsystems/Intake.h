@@ -24,7 +24,7 @@ class Intake : public frc2::SubsystemBase {
 //"StorageState" = whether there is a PC (Ball) at a Conveyor Position
   enum class StorageState {
     PRESENT,                  //Have Ball
-    EMPTY                     //No Ball
+    EMPTY                    //No Ball
   };
 
   const int noEmptyPositionFound = -1;

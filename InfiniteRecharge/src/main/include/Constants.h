@@ -53,6 +53,7 @@ namespace Constants {
         const int ballPort2 = 2;
         const int ballPort3 = 3;
         const int ballPort4 = 4;
+        const int ballPort5 = 5;
 
         const int redRGB = 10;
         const int greenRGB = 11;
