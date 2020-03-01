@@ -10,6 +10,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "commands/TurnToAngle.h"
+#include "RobotContainer.h"
 
 /**
  * An example command.
@@ -32,6 +33,7 @@ class MoveToLimelight
   bool IsFinished() override;
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
+  std::shared_ptr<NetworkTable> table = RobotContainer::limelight->GetTable();
   double limeLightOffset;
   bool isTargetThere;
 };

@@ -7,16 +7,18 @@
 
 #include "commands/MoveToLimelight.h"
 #include "commands/TurnToAngle.h"
-#include "RobotContainer.h"
 
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::limelight.get());
-
+  AddRequirements(RobotContainer::drivetrain.get());
+  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
-void MoveToLimelight::Initialize() {}
+void MoveToLimelight::Initialize() {
+  table->PutNumber("ledMode", 3);
+}
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToLimelight::Execute() {
@@ -26,7 +28,9 @@ void MoveToLimelight::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void MoveToLimelight::End(bool interrupted) {}
+void MoveToLimelight::End(bool interrupted) {
+  table->PutNumber("ledmode", 1);
+}
 
 // Returns true when the command should end.
 bool MoveToLimelight::IsFinished() { return false; }

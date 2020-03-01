@@ -33,3 +33,7 @@ std::pair<double, double> Limelight::GetTargetAreaSkew() {
     double targetSkew = table->GetNumber("ts",0.0);
     return std::make_pair(targetArea, targetSkew);
 }
+
+std::shared_ptr<NetworkTable> Limelight::GetTable() {
+    return table;
+}
