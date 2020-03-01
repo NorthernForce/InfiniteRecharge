@@ -9,12 +9,16 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include "Constants.h"
+#include <rev/CANSparkMax.h>
 
 class Navigation : public frc2::SubsystemBase {
  public:
   Navigation();
   void Periodic();
   std::pair<double, double> GetInchesTravelled();
+  void ResetPosition();
+  void CoordinatePosition();
+  std::pair<double, double> GetCoordinatePosition();
 
  private:
     double robotStartingAngle;
@@ -23,12 +27,16 @@ class Navigation : public frc2::SubsystemBase {
     double cameraStartingAngle;
     double cameraCurrentAngle;
     double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
+    double previousLeftEncoder = 0;
+    double previousRightEncoder = 0;
 
     double averageSpeedInRPM;
     double totalDistanceTravelled;
     double lastDistanceTravelled;
 
+    double xPosition;
+    double yPosition;
+
     // const double cameraOffsetFromCenter;
-    const std::pair<double, double> currentLocation;
     double distanceToObstacle;
 };

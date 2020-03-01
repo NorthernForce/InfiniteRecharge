@@ -7,7 +7,6 @@
 
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
-#include "RobotContainer.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {    
@@ -42,11 +41,6 @@ void Drivetrain::ConfigureAllControllers() {
 
 void Drivetrain::Drive(double speed, double rotation) {
     robotDrive->ArcadeDrive(speed, rotation);
-}
-
-void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
-    leftPrimarySpark->Set(leftSpeed);
-    rightPrimarySpark->Set(rightSpeed);
 }
 
 // This method will be called once per scheduler run

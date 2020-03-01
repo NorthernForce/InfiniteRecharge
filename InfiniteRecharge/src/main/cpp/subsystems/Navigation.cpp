@@ -16,12 +16,14 @@ Navigation::Navigation() {}
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
-    std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
+    // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
-    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first;
-    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second;
+    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
+    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
+    previousLeftEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
+    previousRightEncoder = RobotContainer::drivetrain->GetEncoderRotations().second;
     double leftDistance;
     double rightDistance;
 
@@ -34,4 +36,18 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
         rightDistance = rightEncoderPos * Constants::Shifting::lowMultiplier;
     }
     return std::make_pair(leftDistance, rightDistance);
+}
+
+void Navigation::ResetPosition() {
+    // Re-define xPosition & yPosition
+}
+
+void Navigation::CoordinatePosition() {
+    xPosition +=  sin(-robotAngleDifference);
+    yPosition += cos(-robotAngleDifference);
+    //Navigation::GetInchesTravelled().swap
+}
+
+std::pair<double, double> Navigation::GetCoordinatePosition() {
+    return std::make_pair(xPosition, yPosition);
 }
