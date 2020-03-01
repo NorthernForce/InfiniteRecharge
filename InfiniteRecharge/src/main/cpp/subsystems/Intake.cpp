@@ -35,7 +35,6 @@ void Intake::InitBallPositionSensors() {
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
 void Intake::SetInvertedFollower() {
@@ -82,7 +81,7 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for(int pos=1; pos<6; pos++) {
+    for(int pos=0; pos<5; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -98,17 +97,18 @@ StorageState Intake::GetInventory(int position) {
 //Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
-    for (int i = 2; i < 6; i++) { //TODO: Change this after you have changed the array stuff
+    for (int i = 1; i < 5; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             position = i;
-            return position;
+            break;
         }
     }
+    return position;
 }
 
 int Intake::LowestFullPosition() {
     int position = noFullPositionFound;
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i < 5; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             continue;
         }
