@@ -16,7 +16,8 @@ class Limelight : public frc2::SubsystemBase {
   Limelight();
   double GetXOffset();
   bool IsTargetThere();
-  std::pair<double, double> GetTargetAreaSkew();
+  double GetTargetArea();
+  double GetTargetSkew();
   std::shared_ptr<NetworkTable> GetTable();
 
   void Periodic();

@@ -11,8 +11,6 @@
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::limelight.get());
-  AddRequirements(RobotContainer::drivetrain.get());
-  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
@@ -30,6 +28,7 @@ void MoveToLimelight::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToLimelight::End(bool interrupted) {
   table->PutNumber("ledmode", 1);
+  RobotContainer::drivetrain->Drive(0,0);
 }
 
 // Returns true when the command should end.
