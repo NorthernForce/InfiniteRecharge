@@ -11,19 +11,16 @@
 #include <iostream>
 
 ShootCell::ShootCell(double rtTriggerAxis ) {
-  // Use addRequirements() here to declare subsystem dependencies.
   m_rtTriggerAxis = rtTriggerAxis;
   AddRequirements(RobotContainer::shooter.get());
   AddRequirements(RobotContainer::intake.get());
 }
 
-// Called when the command is initially scheduled.
 void ShootCell::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate(); //TODO: fix these
-//  RobotContainer::shooter->ConfigureSpark(ramp);
+  double ramp = RobotContainer::oi->GetShooterRampRate();
+  RobotContainer::shooter->ConfigureSpark(ramp); // if shooter isn't working then this is the problem
 }
 
-// Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
   if (m_rtTriggerAxis > 0.5) {
     RobotContainer::shooter->Shoot();
@@ -40,11 +37,9 @@ void ShootCell::Execute() {
   }
 }
 
-// Called once the command ends or is interrupted.
 void ShootCell::End(bool interrupted) {
   RobotContainer::shooter->SetSpeed(0);
   RobotContainer::intake->StopConveyor();
 }
 
-// Returns true when the command should end.
 bool ShootCell::IsFinished() { return false; }

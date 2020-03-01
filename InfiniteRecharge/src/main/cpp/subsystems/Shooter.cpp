@@ -18,6 +18,8 @@ Shooter::Shooter() {
   pidController->SetP(p);
   pidController->SetI(i);
   pidController->SetD(d); 
+
+  ConfigureSpark
 }
 
 // This method will be called once per scheduler run
