@@ -7,7 +7,9 @@
 
 #include "subsystems/Limelight.h"
 
-Limelight::Limelight() {}
+Limelight::Limelight() {
+    table->PutNumber("ledMode", 1);
+}
 
 // This method will be called once per scheduler run
 void Limelight::Periodic() {
