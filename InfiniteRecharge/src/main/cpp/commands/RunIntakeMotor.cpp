@@ -5,30 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ShootCell.h"
-#include <frc/DriverStation.h>
-#include "RobotContainer.h"
+#include "commands/RunIntakeMotor.h"
+#include <iostream>
 
-ShootCell::ShootCell(double rtTriggerAxis ) {
+RunIntakeMotor::RunIntakeMotor() {
   // Use addRequirements() here to declare subsystem dependencies.
-  m_rtTriggerAxis = rtTriggerAxis;
-  AddRequirements(RobotContainer::shooter.get());
+  AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
-void ShootCell::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate(); //TODO: fix these
-  RobotContainer::shooter->ConfigureSpark(ramp);
-}
+void RunIntakeMotor::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void ShootCell::Execute() {
-  if (m_rtTriggerAxis > 0.5)
-    RobotContainer::shooter->Shoot();
+void RunIntakeMotor::Execute() {
+    RobotContainer::intake->TakeInPowerCell();
+    RobotContainer::intake->RunConveyor();
 }
 
 // Called once the command ends or is interrupted.
-void ShootCell::End(bool interrupted) {}
+void RunIntakeMotor::End(bool interrupted) {
+  RobotContainer::intake->Stop();
+  RobotContainer::intake->StopConveyor();
+}
 
 // Returns true when the command should end.
-bool ShootCell::IsFinished() { return false; }
+bool RunIntakeMotor::IsFinished() { return false; }

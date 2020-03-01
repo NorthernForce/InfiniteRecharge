@@ -7,7 +7,30 @@
 
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/ParallelCommandGroup.h>
+
+#include "commands/TurnToAngle.h"
+#include "commands/AutoDrive.h"
+#include "commands/IntakeDown.h"
+#include "commands/IntakeUp.h"
+#include "commands/IntakePowerCell.h"
 
 InFrontOfFoesTrench::InFrontOfFoesTrench() {
-  frc2::SequentialCommandGroup {};
+  frc2::SequentialCommandGroup {
+    TurnToAngle(-90),
+    AutoDrive(48),
+    TurnToAngle(-90),
+    IntakeDown(),
+
+  };
+
+  frc2::ParallelCommandGroup {
+    IntakePowerCell(),
+    AutoDrive(144),
+    
+  };
+
+  frc2::SequentialCommandGroup {
+    AutoDrive(-144),
+  };
 }

@@ -5,30 +5,31 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ShootCell.h"
-#include <frc/DriverStation.h>
-#include "RobotContainer.h"
+#include "commands/MoveToLimelight.h"
+#include "commands/TurnToAngle.h"
 
-ShootCell::ShootCell(double rtTriggerAxis ) {
+MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
-  m_rtTriggerAxis = rtTriggerAxis;
-  AddRequirements(RobotContainer::shooter.get());
+  AddRequirements(RobotContainer::limelight.get());
 }
 
 // Called when the command is initially scheduled.
-void ShootCell::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate(); //TODO: fix these
-  RobotContainer::shooter->ConfigureSpark(ramp);
+void MoveToLimelight::Initialize() {
+  table->PutNumber("ledMode", 3);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ShootCell::Execute() {
-  if (m_rtTriggerAxis > 0.5)
-    RobotContainer::shooter->Shoot();
+void MoveToLimelight::Execute() {
+  limeLightOffset = RobotContainer::limelight->GetXOffset();
+  isTargetThere = RobotContainer::limelight->IsTargetThere();
+  turnToAngle->TurnInLoop(limeLightOffset);
 }
 
 // Called once the command ends or is interrupted.
-void ShootCell::End(bool interrupted) {}
+void MoveToLimelight::End(bool interrupted) {
+  table->PutNumber("ledmode", 1);
+  RobotContainer::drivetrain->Drive(0,0);
+}
 
 // Returns true when the command should end.
-bool ShootCell::IsFinished() { return false; }
+bool MoveToLimelight::IsFinished() { return false; }

@@ -22,7 +22,9 @@ void Climb::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void Climb::End(bool interrupted) {}
+void Climb::End(bool interrupted) {
+  RobotContainer::climber->SetLifter(0.0);
+}
 
 // Returns true when the command should end.
 bool Climb::IsFinished() { return false; }

@@ -7,6 +7,7 @@
 #include "frc2/command/button/Button.h"
 #include <frc2/command/button/JoystickButton.h>
 #include "utilities/ComboControl.h"
+#include "utilities/SimpleAxis.h"
 
 #include "commands/SweepAICamera.h"
 #include "commands/DriveWithJoystick.h"
@@ -26,6 +27,8 @@
 #include "commands/autonomous/DoNothing.h"
 #include "commands/AimShooterUp.h"
 #include "commands/AimShooterDown.h"
+#include "commands/MoveToLimelight.h"
+#include "commands/RunIntakeMotor.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -37,7 +40,7 @@ OI::OI() {
 }
 
 void OI::DisplayAutonomousChooser() {
-  autonomousChooser.AddDefault("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
   autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
   autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
@@ -53,13 +56,15 @@ void OI::InitControllers() {
 
 void OI::MapControllerButtons() {
     double rtTriggerAxis = manipulatorController->GetTriggerAxis(frc::Joystick::JoystickHand::kRightHand);
+    auto ltTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::lt_trigger);
 
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
 
-    frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhileHeld(new IntakePowerCell());
+    frc2::Button([this, ltTriggerAxis] { return ltTriggerAxis->Get(); }).WhileHeld(new IntakePowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());

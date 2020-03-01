@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/IntakePowerCell.h"
+#include <iostream>
 
 IntakePowerCell::IntakePowerCell() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -14,20 +15,21 @@ IntakePowerCell::IntakePowerCell() {
 
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
-  IntakePowerCell::emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
+  emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
+  RobotContainer::intake->InventoryPowerCells();
   RobotContainer::intake->TakeInPowerCell();
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
+ if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->powerCellCount <= 5) {
      RobotContainer::intake->RunConveyor();
-  }
+  } 
   else if (RobotContainer::intake->powerCellCount >= 5) {
     RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);
     RobotContainer::intake->Stop();
     RobotContainer::intake->StopConveyor();
-  }
+  } 
 }
 
 // Called once the command ends or is interrupted.
@@ -35,7 +37,7 @@ void IntakePowerCell::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(IntakePowerCell::emptyPosition) == Intake::StorageState::PRESENT) {
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->Stop();
     RobotContainer::intake->StopConveyor();
     return true;

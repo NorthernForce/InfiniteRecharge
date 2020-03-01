@@ -7,6 +7,7 @@
 
 #include "subsystems/Intake.h"
 #include "RobotContainer.h"
+#include <iostream>
 
 using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
@@ -14,15 +15,18 @@ using StorageState = Intake::StorageState;
 Intake::Intake() {
     InitSparks();
     InitBallPositionSensors();
-    SetFollowers();
+    SetInvertedFollower();
 }
 
 void Intake::InitSparks() {
-    intakeSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intake, rev::CANSparkMax::MotorType::kBrushless));
+    intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
     armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
+
+    intakeTalon->ConfigPeakCurrentLimit(5);
+    intakeTalon->ConfigPeakOutputForward(1);
 }
 
 void Intake::InitBallPositionSensors() {
@@ -34,33 +38,33 @@ void Intake::InitBallPositionSensors() {
     ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
 }
 
-void Intake::SetFollowers() {
-    followerConveyorSpark->Follow(*primaryConveyorSpark);
+void Intake::SetInvertedFollower() {
+    followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
 void Intake::Periodic() {
-    RobotContainer::intake->InventoryPowerCells();
+   InventoryPowerCells();
 }
 
 void Intake::TakeInPowerCell() {
-    intakeSpark->Set(0.5);
+    intakeTalon->Set(0.5);
 }
 
 void Intake::PushOutPowerCell() {
-    intakeSpark->Set(-0.5);
+    intakeTalon->Set(-0.5);
 }
 
 void Intake::Stop() {
-    intakeSpark->Set(0);
+    intakeTalon->Set(0);
 }
 
 void Intake::SetArmUp() {
-    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsUp;
     }
 }
 
 void Intake::SetArmDown() {
-    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsDown;
     }
 }
@@ -70,7 +74,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(0.5);
+    primaryConveyorSpark->Set(-0.5);
 }
 
 void Intake::StopConveyor() {
@@ -78,7 +82,7 @@ void Intake::StopConveyor() {
 }
 
 void Intake::InventoryPowerCells() {
-    for(int pos; pos<6; pos++) {
+    for(int pos=0; pos<6; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -95,10 +99,10 @@ StorageState Intake::GetInventory(int position) {
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
     for (int i = 1; i < 6; i++) {
-        if (Intake::GetInventory(i) == StorageState::PRESENT) {
-            continue;
+        if (Intake::GetInventory(i) == StorageState::EMPTY) {
+            position = i;
+            break;
         }
-        position = i;
     }
     return position;
 }

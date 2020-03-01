@@ -23,6 +23,7 @@ std::shared_ptr<Intake> RobotContainer::intake;
 std::shared_ptr<Shooter> RobotContainer::shooter;
 std::shared_ptr<Climber> RobotContainer::climber;
 std::shared_ptr<WackyWheel> RobotContainer::wackyWheel;
+std::shared_ptr<Limelight> RobotContainer::limelight;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());
@@ -44,6 +45,7 @@ void RobotContainer::InitSubsystems() {
   intake.reset(new Intake);
   shooter.reset(new Shooter);
   climber.reset(new Climber);
+  limelight.reset(new Limelight);
 }
 
 void RobotContainer::InitDefaultCommands() {

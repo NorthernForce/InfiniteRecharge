@@ -9,12 +9,25 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "RobotContainer.h"
 
-
-class DoNothing
-    : public frc2::CommandHelper<frc2::CommandBase, DoNothing> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class RunIntakeMotor
+    : public frc2::CommandHelper<frc2::CommandBase, RunIntakeMotor> {
  public:
-  DoNothing();
+  RunIntakeMotor();
+
+  void Initialize() override;
+
+  void Execute() override;
+
+  void End(bool interrupted) override;
 
   bool IsFinished() override;
 };

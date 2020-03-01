@@ -1,16 +1,20 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/autonomous/DoNothing.h"
+#pragma once
+#include <frc/GenericHID.h>
 
-DoNothing::DoNothing() {
-  IsFinished();
-}
+class SimpleAxis {
+ public:
+  SimpleAxis(std::shared_ptr<frc::GenericHID> joystick, int axis, double threshold=0.5);
+  bool Get();
 
-bool DoNothing::IsFinished() {
-  return true;
-}
+ private:
+  std::shared_ptr<frc::GenericHID> m_joystick;
+  int m_axis;
+  double m_threshold;
+};
