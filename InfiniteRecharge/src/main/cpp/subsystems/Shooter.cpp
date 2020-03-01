@@ -17,7 +17,7 @@ Shooter::Shooter() {
 
   pidController->SetP(p);
   pidController->SetI(i);
-  pidController->SetD(d);
+  pidController->SetD(d); 
 }
 
 // This method will be called once per scheduler run
@@ -28,17 +28,30 @@ void Shooter::ConfigureSpark(double ramp) {
   rampRate = ramp;
   controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
   controller.SetSmartCurrentLimit(currentLimit);
-  if(!controller.IsFollower())
-  {
-    controller.SetClosedLoopRampRate(ramp);
-    controller.SetOpenLoopRampRate(ramp);
-  }
-  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  controller.SetClosedLoopRampRate(ramp);
+  controller.SetOpenLoopRampRate(ramp);
+  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+}
+
+double Shooter::GetSpeedFromPID(double p, double i, double d) {
+  error = 0.8;
+  if (error == 0)
+    integral = 0;
+
+  integral += error * 20;
+  derivative = (error - errorPrior) / 20;
+  double speed = p*error + i*integral + d*derivative;
+  errorPrior = error;
+  return speed;
 }
 
 void Shooter::Shoot() {
-  //  shooterSpark->Set(0.5);
-  pidController->SetReference(0.75, rev::ControlType::kVelocity); //code to try and use the pid loop, might be wrong
+  shooterSpark->Set(GetSpeedFromPID(p, i, d));
+ // pidController->SetReference(0.8, rev::ControlType::kSmartMotion); //code to try and use the pid loop, might be wrong
+}
+
+void Shooter::SetSpeed(double speed) {
+  shooterSpark->Set(speed);
 }
 
 void Shooter::ShooterUp(bool shift) {

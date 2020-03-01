@@ -17,6 +17,8 @@ class Shooter : public frc2::SubsystemBase {
   void Shoot();
   void Periodic();
   void ConfigureSpark(double ramp=rampRate);  
+  double GetSpeedFromPID(double p, double i, double d);
+  void SetSpeed(double speed);
   void ShooterUp(bool shift);
   void ShooterDown(bool shift);
 
@@ -28,9 +30,14 @@ class Shooter : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANPIDController> pidController;
   std::shared_ptr<frc::Solenoid> shooterShifter;
 
-  const double p = 0.5;
+  const double p = 1.0;
   const double i = 0.0;
-  const double d = 0.0;
+  const double d = 0.0; 
+
+  double error;
+  double integral;
+  double derivative;
+  double errorPrior;
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;

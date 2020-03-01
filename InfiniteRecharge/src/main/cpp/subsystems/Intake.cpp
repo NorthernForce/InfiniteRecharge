@@ -58,13 +58,13 @@ void Intake::Stop() {
 }
 
 void Intake::SetArmUp() {
-    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsUp;
     }
 }
 
 void Intake::SetArmDown() {
-    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
+    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
         currentArmState = ArmState::armIsDown;
     }
 }
@@ -74,7 +74,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.5);
+    primaryConveyorSpark->Set(-0.8);
 }
 
 void Intake::StopConveyor() {
