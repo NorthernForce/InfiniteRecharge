@@ -7,6 +7,7 @@
 #include "frc2/command/button/Button.h"
 #include <frc2/command/button/JoystickButton.h>
 #include "utilities/ComboControl.h"
+#include "utilities/SimpleAxis.h"
 
 #include "commands/SweepAICamera.h"
 #include "commands/DriveWithJoystick.h"
@@ -55,7 +56,7 @@ void OI::InitControllers() {
 
 void OI::MapControllerButtons() {
     double rtTriggerAxis = manipulatorController->GetTriggerAxis(frc::Joystick::JoystickHand::kRightHand);
-    double ltTriggerAxis = manipulatorController->GetRawAxis(XboxAxis::lt_trigger);
+    auto ltTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::lt_trigger);
 
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
@@ -63,8 +64,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
 
-   // frc2::Button([this] { return manipulatorController->GetRawButton(XboxAxis::lt_trigger); }).WhileHeld(new IntakePowerCell());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakePowerCell());
+    frc2::Button([this, ltTriggerAxis] { return ltTriggerAxis->Get(); }).WhileHeld(new IntakePowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
