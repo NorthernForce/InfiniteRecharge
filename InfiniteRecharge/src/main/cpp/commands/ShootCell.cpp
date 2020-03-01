@@ -8,6 +8,7 @@
 #include "commands/ShootCell.h"
 #include <frc/DriverStation.h>
 #include "RobotContainer.h"
+#include <iostream>
 
 ShootCell::ShootCell(double rtTriggerAxis ) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -25,14 +26,24 @@ void ShootCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ShootCell::Execute() {
   if (m_rtTriggerAxis > 0.5) {
-    RobotContainer::intake->RunConveyor();
     RobotContainer::shooter->Shoot();
+    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+      RobotContainer::intake->RunConveyor();
+    }
+    std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
+    if (RobotContainer::shooter->GetRPM() >= 3500) {
+      RobotContainer::intake->RunConveyor();
+    }
+    else {
+      RobotContainer::intake->StopConveyor();
+    }
   }
 }
 
 // Called once the command ends or is interrupted.
 void ShootCell::End(bool interrupted) {
   RobotContainer::shooter->SetSpeed(0);
+  RobotContainer::intake->StopConveyor();
 }
 
 // Returns true when the command should end.

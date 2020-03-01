@@ -54,10 +54,14 @@ void Shooter::SetSpeed(double speed) {
   shooterSpark->Set(speed);
 }
 
-void Shooter::ShooterUp(bool shift) {
+int Shooter::GetRPM() {
+  return shooterSpark->GetEncoder().GetVelocity();
+}
+
+void Shooter::ShooterUp() {
   shooterShifter->Set(shiftOff);
 }
 
-void Shooter::ShooterDown(bool shift) {
+void Shooter::ShooterDown() {
   shooterShifter->Set(shiftOn);
 }

@@ -19,8 +19,9 @@ class Shooter : public frc2::SubsystemBase {
   void ConfigureSpark(double ramp=rampRate);  
   double GetSpeedFromPID(double p, double i, double d);
   void SetSpeed(double speed);
-  void ShooterUp(bool shift);
-  void ShooterDown(bool shift);
+  int GetRPM();
+  void ShooterUp();
+  void ShooterDown();
 
   const bool shiftOn = true;
   const bool shiftOff = false;

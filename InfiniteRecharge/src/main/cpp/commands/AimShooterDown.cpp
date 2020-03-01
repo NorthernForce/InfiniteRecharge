@@ -17,7 +17,7 @@ void AimShooterDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void AimShooterDown::Execute() {
-  RobotContainer::shooter->ShooterDown(RobotContainer::shooter->shiftOff);
+  RobotContainer::shooter->ShooterDown();
 }
 
 // Called once the command ends or is interrupted.
