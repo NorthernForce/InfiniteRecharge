@@ -28,6 +28,7 @@ void MoveToLimelight::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToLimelight::End(bool interrupted) {
   table->PutNumber("ledmode", 1);
+  RobotContainer::drivetrain->Drive(0,0);
 }
 
 // Returns true when the command should end.

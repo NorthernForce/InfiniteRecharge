@@ -9,7 +9,7 @@
 #include <frc/DriverStation.h>
 #include "RobotContainer.h"
 
-ShootCell::ShootCell(double rtTriggerAxis) {
+ShootCell::ShootCell(double rtTriggerAxis ) {
   // Use addRequirements() here to declare subsystem dependencies.
   m_rtTriggerAxis = rtTriggerAxis;
   AddRequirements(RobotContainer::shooter.get());
