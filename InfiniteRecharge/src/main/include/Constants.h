@@ -14,8 +14,14 @@ namespace Constants {
     const int PCMCanBusID = 15;
     const int ultrasonicRangeFinder = 0;
 
-    const double camDistFromRoboFrontCent = 9.5;
-    const double camDistFromRoboSideCent = 10;
+    const double roboWidth = 29;
+    const double roboLength = 30.5;
+    const double bumperThickness = 3;
+
+    const double camDistFromRoboFrontCent = 9;
+    const double camDistFromRoboSideCent = 9;
+
+    const double ultrasonicDistFromRoboCent = 14; 
 
     const double degreesToRadians = 3.141592653589793/180; 
     
