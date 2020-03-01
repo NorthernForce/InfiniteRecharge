@@ -14,9 +14,13 @@
 #include "commands/IntakeDown.h"
 #include "commands/IntakeUp.h"
 #include "commands/IntakePowerCell.h"
+#include "commands/ShootCell.h"
+#include "commands/MoveToLimelight.h"
 
 InFrontOfGoal::InFrontOfGoal() {
   frc2::SequentialCommandGroup {
+    MoveToLimelight(),
+    ShootCell(1),
     TurnToAngle(90),
     AutoDrive(48),
     TurnToAngle(90),
@@ -24,6 +28,7 @@ InFrontOfGoal::InFrontOfGoal() {
   };
 
     frc2::ParallelCommandGroup {
+      ////TODO: Need to add Hunter's ball targeting when finished
       IntakePowerCell(),
       AutoDrive(219),
     };
