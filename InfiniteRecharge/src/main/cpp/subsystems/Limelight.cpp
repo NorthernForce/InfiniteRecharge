@@ -8,7 +8,8 @@
 #include "subsystems/Limelight.h"
 
 Limelight::Limelight() {
-    table->PutNumber("ledMode", 1);
+    table->PutNumber("camMode", 0);
+    table->PutNumber("ledMode", 3);
 }
 
 // This method will be called once per scheduler run
@@ -34,6 +35,11 @@ double Limelight::GetTargetSkew() {
     return targetSkew;
 }
 
-std::shared_ptr<NetworkTable> Limelight::GetTable() {
-    return table;
+void Limelight::PutNumberToTable(std::string key, double number) {
+    table->PutNumber(key, number);
+}
+
+double Limelight::GetNumberFromTable(std::string key, double defaultValue) {
+    double value = table->GetNumber(key, defaultValue);
+    return value;
 }

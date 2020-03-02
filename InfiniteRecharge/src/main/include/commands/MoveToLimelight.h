@@ -33,7 +33,6 @@ class MoveToLimelight
   bool IsFinished() override;
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
-  std::shared_ptr<NetworkTable> table = RobotContainer::limelight->GetTable();
   double limeLightOffset;
   bool isTargetThere;
 };
