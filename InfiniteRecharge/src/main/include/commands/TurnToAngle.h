@@ -25,12 +25,14 @@ class TurnToAngle
   void Execute() override;
   void TurnInLoop(double target=targetAngle);
   void End(bool interrupted) override;
+  bool CheckIfFinished();
   bool IsFinished() override;
 
  private:
   double GetRotationFromPID(double p, double i, double d);
   double LimitMaxTurnSpeed(double currentSpeed);
 
+  bool isComplete;
   static double targetAngle;
   double totalTargetAngle = 0;
   double currentAngle;

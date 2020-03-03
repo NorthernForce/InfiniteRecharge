@@ -11,8 +11,8 @@
 #include "rev/ColorSensorV3.h"
 #include <rev/CANSparkMax.h>
 #include <rev/ColorMatch.h>
-#include <frc/util/color.h>
-#include "utilities/FMSWheelInterface.h"
+#include <frc/util/Color.h>
+#include "utilities/FMSWheelComms.h"
 #include <ctre/Phoenix.h>
 
 // #include <frc/DigitalInput.h>
@@ -39,7 +39,7 @@ class WackyWheel : public frc2::SubsystemBase {
 
   std::shared_ptr<WPI_TalonSRX> spinnerTalon;
   std::shared_ptr<rev::ColorMatch> colorMatcher;
-  std::shared_ptr<FMSWheelInterface> getDesiredColor;
+  std::shared_ptr<FMSWheelComms> getDesiredColor;
   frc::Color matchedColor;
   frc::Color detectedColor;
   std::shared_ptr<rev::ColorSensorV3> colorSensor;

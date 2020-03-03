@@ -33,7 +33,7 @@ class Intake : public frc2::SubsystemBase {
   int powerCellCount = 0;
 
   Intake();
-  void InitSparks();
+  void InitMotorControllers();
   void InitBallPositionSensors();
   void Periodic();
   void SetInvertedFollower();

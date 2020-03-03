@@ -14,9 +14,8 @@
 #include "OI.h"
 
 void Robot::RobotInit() {
-
+  autonomousChooser = RobotContainer::oi->DisplayAutonomousChooser();
   container.reset(new RobotContainer());
-
 }
 
 /**
@@ -43,10 +42,12 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  RobotContainer::oi->DisplayAutonomousChooser();
+	autonomousCommand = autonomousChooser.GetSelected();
+  autonomousCommand->Schedule();
 }
 
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when

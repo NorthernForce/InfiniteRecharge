@@ -44,18 +44,29 @@ void TurnToAngle::TurnInLoop(double target) {
 
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
-  if ((targetAngle > 0) && (currentAngle >= targetAngle))
-    IsFinished();
-  else if ((targetAngle < 0) && (currentAngle <= targetAngle))
-    IsFinished();
+  if (CheckIfFinished()) {
+    isComplete = true;
+    RobotContainer::drivetrain->Drive(0,0);
+  }
 }
 
 void TurnToAngle::End(bool interrupted) {
   RobotContainer::drivetrain->Drive(0,0);
 }
 
+bool TurnToAngle::CheckIfFinished() {
+  if ((targetAngle >= 0) && (currentAngle >= targetAngle))
+    return true;
+  else if ((targetAngle <= 0) && (currentAngle <= targetAngle))
+    return true;
+  else if (std::abs(error) < minError)
+    return true;
+  else
+    return false;
+}
+
 bool TurnToAngle::IsFinished() {
-  return (std::abs(error) < minError);
+  return CheckIfFinished();
 }
 
 double TurnToAngle::GetRotationFromPID(double p, double i, double d) {

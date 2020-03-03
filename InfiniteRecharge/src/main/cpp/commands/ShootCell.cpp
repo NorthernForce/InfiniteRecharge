@@ -10,36 +10,39 @@
 #include "RobotContainer.h"
 #include <iostream>
 
-ShootCell::ShootCell(double rtTriggerAxis ) {
-  m_rtTriggerAxis = rtTriggerAxis;
+ShootCell::ShootCell() {
   AddRequirements(RobotContainer::shooter.get());
   AddRequirements(RobotContainer::intake.get());
 }
 
 void ShootCell::Initialize() {
   double ramp = RobotContainer::oi->GetShooterRampRate();
-  RobotContainer::shooter->ConfigureSpark(ramp); // if shooter isn't working then this is the problem
+  RobotContainer::shooter->ConfigureSpark(ramp);
 }
 
 void ShootCell::Execute() {
-  if (m_rtTriggerAxis > 0.5) {
+
     RobotContainer::shooter->Shoot();
     if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyor();
-    }
-    std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
-    if (RobotContainer::shooter->GetRPM() >= 3500) {
       RobotContainer::intake->RunConveyor();
     }
     else {
       RobotContainer::intake->StopConveyor();
     }
-  }
+
+    std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
+    
+    if (RobotContainer::shooter->GetRPM() >= 3500) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+      RobotContainer::intake->RunConveyor();
+    }
+    else {
+      RobotContainer::intake->StopConveyor();
+    }
 }
 
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0);
-  RobotContainer::intake->StopConveyor();
+  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off, also is this set to coast?
+  RobotContainer::intake->StopConveyor(); 
 }
 
 bool ShootCell::IsFinished() { return false; }

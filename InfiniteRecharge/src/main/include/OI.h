@@ -9,7 +9,7 @@ class OI {
     OI();
     void InitControllers();
     void MapControllerButtons();
-    void DisplayAutonomousChooser();
+    frc::SendableChooser<frc2::Command*> DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
     double GetShooterRampRate();
     void SetControllerRumble(frc::XboxController *controller, double value=0, bool lightly=false);
@@ -52,7 +52,6 @@ class OI {
  private:
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
-    std::unique_ptr<frc2::Command*> autonomousCommand;
     frc::SendableChooser<frc2::Command*> autonomousChooser;
 
 };
