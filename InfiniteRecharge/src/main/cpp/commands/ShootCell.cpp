@@ -10,8 +10,7 @@
 #include "RobotContainer.h"
 #include <iostream>
 
-ShootCell::ShootCell(double rtTriggerAxis ) {
-  m_rtTriggerAxis = rtTriggerAxis;
+ShootCell::ShootCell() {
   AddRequirements(RobotContainer::shooter.get());
   AddRequirements(RobotContainer::intake.get());
 }
@@ -22,19 +21,23 @@ void ShootCell::Initialize() {
 }
 
 void ShootCell::Execute() {
-  if (m_rtTriggerAxis > 0.5) {
+
     RobotContainer::shooter->Shoot();
     if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
       RobotContainer::intake->RunConveyor();
     }
+    else {
+      RobotContainer::intake->StopConveyor();
+    }
+
     std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
+    
     if (RobotContainer::shooter->GetRPM() >= 3500) {
       RobotContainer::intake->RunConveyor();
     }
     else {
       RobotContainer::intake->StopConveyor();
     }
-  }
 }
 
 void ShootCell::End(bool interrupted) {

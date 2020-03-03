@@ -29,6 +29,7 @@
 #include "commands/AimShooterDown.h"
 #include "commands/MoveToLimelight.h"
 #include "commands/RunIntakeMotor.h"
+#include "commands/Climb.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -55,7 +56,7 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    double rtTriggerAxis = manipulatorController->GetTriggerAxis(frc::Joystick::JoystickHand::kRightHand);
+    auto rtTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::rt_trigger);
     auto ltTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::lt_trigger);
 
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
@@ -63,17 +64,18 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new SweepAICamera());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::B_button); }).WhileHeld(new MoveToLimelight());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhenPressed(new AimShooterDown());
 
-    //frc2::Button([this, ltTriggerAxis] { return ltTriggerAxis->Get(); }).WhileHeld(new IntakePowerCell());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new IntakePowerCell());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new AimShooterDown());
+
+    frc2::Button([this, ltTriggerAxis] { return ltTriggerAxis->Get(); }).WhenPressed(new IntakePowerCell());
+   // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new IntakePowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
 
-   // frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ShootCell(rtTriggerAxis));
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhileHeld(new ShootCell(1));
+    frc2::Button([this, rtTriggerAxis]  { return rtTriggerAxis->Get(); }).WhileHeld(new ShootCell());
+    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhileHeld(new ShootCell(1));
 
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new PositionControl());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new RotationControl());
