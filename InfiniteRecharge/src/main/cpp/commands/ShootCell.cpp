@@ -17,7 +17,7 @@ ShootCell::ShootCell() {
 
 void ShootCell::Initialize() {
   double ramp = RobotContainer::oi->GetShooterRampRate();
-  RobotContainer::shooter->ConfigureSpark(ramp); // if shooter isn't working then this is the problem
+  RobotContainer::shooter->ConfigureSpark(ramp);
 }
 
 void ShootCell::Execute() {
@@ -32,7 +32,7 @@ void ShootCell::Execute() {
 
     std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
     
-    if (RobotContainer::shooter->GetRPM() >= 3500) {
+    if (RobotContainer::shooter->GetRPM() >= 3500) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
       RobotContainer::intake->RunConveyor();
     }
     else {
@@ -41,8 +41,8 @@ void ShootCell::Execute() {
 }
 
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0);
-  RobotContainer::intake->StopConveyor();
+  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off, also is this set to coast?
+  RobotContainer::intake->StopConveyor(); 
 }
 
 bool ShootCell::IsFinished() { return false; }

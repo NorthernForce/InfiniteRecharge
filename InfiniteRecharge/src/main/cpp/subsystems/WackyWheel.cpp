@@ -12,7 +12,7 @@
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
     spinnerTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::wackyWheel));
-    getDesiredColor.reset(new FMSWheelInterface);
+    getDesiredColor.reset(new FMSWheelInterface); // this name is a bit misleading.
     AddColorMatches();
 }
 
