@@ -29,4 +29,6 @@ class Robot : public frc::TimedRobot {
   // doesn't have undefined behavior and potentially crash.
   
   std::shared_ptr<RobotContainer> container;
+  frc2::Command* autonomousCommand;
+  
 };
