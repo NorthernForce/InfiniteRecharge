@@ -20,7 +20,7 @@
 InFrontOfGoal::InFrontOfGoal() {
   frc2::SequentialCommandGroup {
     MoveToLimelight(),
-    ShootCell(1),
+    ShootCell(),
     TurnToAngle(90),
     AutoDrive(48),
     TurnToAngle(90),
