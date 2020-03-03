@@ -67,3 +67,22 @@ void Shooter::ShooterUp() {
 void Shooter::ShooterDown() {
   shooterShifter->Set(shiftOn);
 }
+
+double Shooter::RpmPidLoop(double targetRpm) {
+  rpmError = targetRpm - Shooter::GetRPM();
+  rpmP = targetRpm / 2500;
+
+  if(rpmError < targetRpm * 0.5)
+    rpmIntegral += rpmError;
+  
+  if(rpmI > 1000)
+    rpmIntegral = 500;
+  
+  rpmDerivative = rpmErrorPrior - rpmError;
+
+  double speed = (rpmP * rpmError + rpmI * rpmIntegral + rpmD * rpmDerivative)/5000;
+  if (speed > 1.0)
+    speed = 1.0;
+
+  return speed;
+}
