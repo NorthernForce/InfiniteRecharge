@@ -5,21 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "utilities/FMSWheelInterface.h"
-#include <frc/DriverStation.h>
+#pragma once
 #include <string>
 
-FMSWheelInterface::FMSWheelInterface() {
-    if(gameData.length() > 0) {
-        GetGameData();
-    }
-}
-
-void FMSWheelInterface::GameDataRequirements() {
-    gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
-}
-
-char FMSWheelInterface::GetGameData() {
-    desiredColor = gameData[0];
-    return desiredColor;
-}
+class FMSWheelComms {
+ public:
+  FMSWheelComms();
+  char GetGameData();
+  void GetGameDataRequirements();
+  std::string gameData;
+  char desiredColor;
+ private:
+};

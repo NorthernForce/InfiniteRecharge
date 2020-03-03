@@ -13,14 +13,16 @@ using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
 
 Intake::Intake() {
-    InitSparks();
+    InitMotorControllers();
     InitBallPositionSensors();
     SetInvertedFollower();
+    currentArmState = ArmState::armIsDown;
 }
 
-void Intake::InitSparks() {
+void Intake::InitMotorControllers() {
     intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
     armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
+    armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
@@ -58,14 +60,20 @@ void Intake::Stop() {
 }
 
 void Intake::SetArmUp() {
-    if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)  {     ////TODO: figure out if you want this to be negative or not
-        currentArmState = ArmState::armIsUp;
+    if (currentArmState == ArmState::armIsDown) {
+        armSpark->Set(-0.25);
+        if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)
+            currentArmState = ArmState::armIsUp;
+        armSpark->Set(0);
     }
 }
 
 void Intake::SetArmDown() {
-    if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)  {   ////TODO: figure out if you want this to be negative or not
-        currentArmState = ArmState::armIsDown;
+    if (currentArmState == ArmState::armIsUp) {
+        armSpark->Set(0.25);
+        if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)
+            currentArmState = ArmState::armIsDown;
+        armSpark->Set(0);
     }
 }
 

@@ -7,12 +7,12 @@
 #include "subsystems/WackyWheel.h"
 #include "Constants.h"
 #include "rev/ColorSensorV3.h"
-#include "utilities/FMSWheelInterface.h"
+#include "utilities/FMSWheelComms.h"
 
 WackyWheel::WackyWheel() {
     colorSensor.reset(new rev::ColorSensorV3(frc::I2C::Port::kOnboard));
     spinnerTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::wackyWheel));
-    getDesiredColor.reset(new FMSWheelInterface); // this name is a bit misleading.
+    getDesiredColor.reset(new FMSWheelComms);
     AddColorMatches();
 }
 
