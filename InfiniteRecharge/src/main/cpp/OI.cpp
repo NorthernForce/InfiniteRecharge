@@ -8,6 +8,7 @@
 #include <frc2/command/button/JoystickButton.h>
 #include "utilities/ComboControl.h"
 #include "utilities/SimpleAxis.h"
+#include "utilities/SimpleButton.h"
 
 #include "commands/SweepAICamera.h"
 #include "commands/DriveWithJoystick.h"
@@ -30,6 +31,7 @@
 #include "commands/MoveToLimelight.h"
 #include "commands/RunIntakeMotor.h"
 #include "commands/Climb.h"
+#include "commands/RunSpark9.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -60,9 +62,9 @@ void OI::MapControllerButtons() {
 
     frc2::Button([this, ltTriggerAxis] { return ltTriggerAxis->Get(); }).WhenPressed(new IntakePowerCell());
    // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new IntakePowerCell());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new RunSpark9(-0.5));
 
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ToggleArm());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new RunSpark9(0.5));
 
     frc2::Button([this, rtTriggerAxis]  { return rtTriggerAxis->Get(); }).WhileHeld(new ShootCell());
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhileHeld(new ShootCell(1));
