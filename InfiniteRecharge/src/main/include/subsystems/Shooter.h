@@ -22,6 +22,8 @@ class Shooter : public frc2::SubsystemBase {
   int GetRPM();
   void ShooterUp();
   void ShooterDown();
+  double RpmPidLoop(double targetRPM);
+
 
   const bool shiftOn = true;
   const bool shiftOff = false;
@@ -32,13 +34,20 @@ class Shooter : public frc2::SubsystemBase {
   std::shared_ptr<frc::Solenoid> shooterShifter;
 
   const double p = 1.0;
+  double rpmP;
   const double i = 0.0;
+  const double rpmI = 0;
   const double d = 0.0; 
-
+  const double rpmD = 0;
+  
   double error;
+  double rpmError;
   double integral;
+  double rpmIntegral;
   double derivative;
+  double rpmDerivative;
   double errorPrior;
+  double rpmErrorPrior;
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
