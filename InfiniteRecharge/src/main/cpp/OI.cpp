@@ -38,18 +38,6 @@ OI::OI() {
     frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
     frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
     InitControllers();
-    autonomousChooser = frc::SendableChooser<frc2::Command*>();
-}
-
-frc::SendableChooser<frc2::Command*> OI::DisplayAutonomousChooser() {
-  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
-  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
-  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
-  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
-  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
-
-  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-  return autonomousChooser;
 }
 
 void OI::InitControllers() {

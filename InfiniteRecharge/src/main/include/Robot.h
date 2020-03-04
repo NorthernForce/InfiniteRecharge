@@ -9,6 +9,7 @@
 
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 #include "RobotContainer.h"
 
@@ -29,6 +30,6 @@ class Robot : public frc::TimedRobot {
   // doesn't have undefined behavior and potentially crash.
   
   std::shared_ptr<RobotContainer> container;
-  frc2::Command* autonomousCommand;
-  
+  // std::shared_ptr<frc2::Command> autonomousCommand;
+  // frc::SendableChooser<frc2::Command*> autonomousChooser;
 };

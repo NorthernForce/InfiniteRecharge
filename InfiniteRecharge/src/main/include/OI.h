@@ -52,6 +52,4 @@ class OI {
  private:
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
-    frc::SendableChooser<frc2::Command*> autonomousChooser;
-
 };

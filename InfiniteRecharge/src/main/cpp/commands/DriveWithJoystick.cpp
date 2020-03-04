@@ -6,8 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DriveWithJoystick.h"
+#include "commands/ShiftGear.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "subsystems/Drivetrain.h"
+
+int DriveWithJoystick::countForShiftEligibility;
 
 DriveWithJoystick::DriveWithJoystick() {
   SetName("DriveWithJoystick");
@@ -22,6 +25,9 @@ void DriveWithJoystick::Execute() {
   double speed = RobotContainer::oi->GetDriveControls().first;
   double rotation = RobotContainer::oi->GetDriveControls().second;
   RobotContainer::drivetrain->Drive(speed, rotation);
+  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+
+  AutoShiftIfPermitted(speed, encoderRotations);
 }
 
 // Called once the command ends or is interrupted.
@@ -31,3 +37,13 @@ void DriveWithJoystick::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool DriveWithJoystick::IsFinished() { return false; }
+
+void DriveWithJoystick::AutoShiftIfPermitted(double speed, std::pair<double, double> encoderRotations) {
+  if (countForShiftEligibility >= 25) {
+    if (speed > 0.75 && encoderRotations.first && encoderRotations.second)
+      ShiftGear(ShiftGear::Gear::Low);
+    else
+      ShiftGear(ShiftGear::Gear::High);
+  }
+  countForShiftEligibility++;
+}

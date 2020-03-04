@@ -11,11 +11,25 @@
 #include <frc2/command/CommandScheduler.h>
 
 #include "commands/InventoryPowerCells.h"
+#include "commands/autonomous/CrossAutoLine.h"
+#include "commands/autonomous/InFrontOfGoal.h"
+#include "commands/autonomous/InFrontOfOurTrench.h"
+#include "commands/autonomous/InFrontOfFoesTrench.h"
+#include "commands/autonomous/DoNothing.h"
+
 #include "OI.h"
 
 void Robot::RobotInit() {
-  autonomousChooser = RobotContainer::oi->DisplayAutonomousChooser();
   container.reset(new RobotContainer());
+
+  // autonomousChooser = new SendableChooser<frc2::Command*>();
+  // autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+  // autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+  // autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+  // autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+  // autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+
+  // frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 }
 
 /**
@@ -42,8 +56,8 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-	autonomousCommand = autonomousChooser.GetSelected();
-  autonomousCommand->Schedule();
+	// autonomousCommand.reset(autonomousChooser.GetSelected());
+  // autonomousCommand->Schedule();
 }
 
 void Robot::AutonomousPeriodic() {
