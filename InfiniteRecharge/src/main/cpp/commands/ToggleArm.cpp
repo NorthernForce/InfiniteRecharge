@@ -12,21 +12,22 @@ ToggleArm::ToggleArm() {
 }
 
 // Called when the command is initially scheduled.
-void ToggleArm::Initialize() {}
+void ToggleArm::Initialize() {
+
+}
 
 // Called repeatedly when this Command is scheduled to run
 void ToggleArm::Execute() {
+  auto controller = RobotContainer::oi->manipulatorController;
   if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp) {
     RobotContainer::intake->SetArmDown();
-    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp) {
-      ////TODO: make controller rumble
-    }
+    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp)
+      RobotContainer::oi->SetControllerRumble(controller.get(), 1);
   }
   else {
     RobotContainer::intake->SetArmUp();
-    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsDown) {
-      ////TODO: make controller rumble
-    }
+    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsDown)
+      RobotContainer::oi->SetControllerRumble(controller.get(), 1);
   }
 }
 

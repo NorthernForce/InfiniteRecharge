@@ -62,7 +62,7 @@ void OI::MapControllerButtons() {
    // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new IntakePowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new PushOutPowerCell());
 
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhenPressed(new ToggleArm());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ToggleArm());
 
     frc2::Button([this, rtTriggerAxis]  { return rtTriggerAxis->Get(); }).WhileHeld(new ShootCell());
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhileHeld(new ShootCell(1));
