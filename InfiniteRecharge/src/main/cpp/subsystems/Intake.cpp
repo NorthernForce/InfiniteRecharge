@@ -85,6 +85,10 @@ void Intake::SetArmDown() {
     }
 }
 
+void Intake::SetArm(double speed) {
+    armSpark->Set(speed);
+}
+
 ArmState Intake::GetArmState() {
     return currentArmState;
 }

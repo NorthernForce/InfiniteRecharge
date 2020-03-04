@@ -8,6 +8,7 @@
 #include <frc2/command/button/JoystickButton.h>
 #include "utilities/ComboControl.h"
 #include "utilities/SimpleAxis.h"
+#include "utilities/SimpleButton.h"
 
 #include "commands/SweepAICamera.h"
 #include "commands/DriveWithJoystick.h"
@@ -30,6 +31,7 @@
 #include "commands/MoveToLimelight.h"
 #include "commands/RunIntakeMotor.h"
 #include "commands/Climb.h"
+#include "commands/RunSpark9.h"
 #include "commands/ResetCoordinates.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;

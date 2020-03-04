@@ -23,10 +23,10 @@ void SweepAICamera::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
-  if(!RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
-    RobotContainer::cameraMount->SweepForPowercells();
-  else
+  if(RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
     TurnToServoAngle();
+  else
+    RobotContainer::cameraMount->SweepForPowercells();
 }
 
 void SweepAICamera::TurnToServoAngle() {

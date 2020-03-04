@@ -6,16 +6,19 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include <frc/Joystick.h>
+#include <frc/GenericHID.h>
 #include <frc2/command/button/Button.h>
+#include <frc2/command/Command.h>
 
 
 class SimpleButton {
  public:
-  SimpleButton(frc::Joystick* controller, int button);
-  frc2::Button Get();
+  SimpleButton(frc::GenericHID* controller, int button);
+  frc2::Button WhenPressed(frc2::Command*);
+  frc2::Button WhenReleased(frc2::Command*);
+  frc2::Button WhileHeld(frc2::Command*);
 
  private:
-  frc::Joystick* m_controller;
+  frc::GenericHID* m_controller;
   int m_button;
 };

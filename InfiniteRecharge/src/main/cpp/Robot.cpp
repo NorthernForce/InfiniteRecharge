@@ -32,7 +32,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-  driverCamera.reset(new DriverCamera("Driver", Constants::driverCameraPath, 240, 180, 30));
+  // driverCamera.reset(new DriverCamera("Driver", Constants::driverCameraPath, 240, 180, 30));
 }
 
 /**
