@@ -10,6 +10,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include <frc/Solenoid.h>
+#include <frc/Timer.h>
 
 class Shooter : public frc2::SubsystemBase {
  public:
@@ -23,7 +24,7 @@ class Shooter : public frc2::SubsystemBase {
   void ShooterUp();
   void ShooterDown();
   double RpmPidLoop(double targetRPM);
-
+  void TuneRpmPid_P();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
@@ -32,13 +33,14 @@ class Shooter : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> shooterSpark;
   std::shared_ptr<rev::CANPIDController> pidController;
   std::shared_ptr<frc::Solenoid> shooterShifter;
+  std::shared_ptr<frc::Timer> timer;
 
   const double p = 1.0;
-  double rpmP;
+  double rpmP = 2;
   const double i = 0.0;
-  const double rpmI = 0;
+  double rpmI = 0;
   const double d = 0.0; 
-  const double rpmD = 0;
+  double rpmD = 0;
   
   double error;
   double rpmError;
