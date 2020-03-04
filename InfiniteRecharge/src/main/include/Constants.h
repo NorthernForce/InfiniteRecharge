@@ -26,10 +26,10 @@ namespace Constants {
     const double degreesToRadians = 3.141592653589793/180; 
     
     namespace MotorIDs {
-        const int driveLeftPrimary = 5;
+        // const int driveLeftPrimary = 5;
         const int driveLeftFollower1 = 1;
         const int driveLeftFollower2 = 3;
-        const int driveRightPrimary = 6;
+        // const int driveRightPrimary = 6;
         const int driveRightFollower1 = 2;
         const int driveRightFollower2 = 4;
 
