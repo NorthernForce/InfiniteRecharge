@@ -54,6 +54,8 @@ void RobotContainer::InitDefaultCommands() {
   climber->SetDefaultCommand(Climb( 
     [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
   ));
+
+  cameraMount->SetDefaultCommand(SweepAICamera());
 }
 
 void RobotContainer::InitAutonomousCommands() {

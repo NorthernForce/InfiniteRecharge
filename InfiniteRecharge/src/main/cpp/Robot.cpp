@@ -10,6 +10,10 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 
+#include "utilities/DriverCamera.h"
+#include "Constants.h"
+#include "OI.h"
+
 #include "commands/InventoryPowerCells.h"
 #include "commands/autonomous/CrossAutoLine.h"
 #include "commands/autonomous/InFrontOfGoal.h"
@@ -17,19 +21,18 @@
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
 
-#include "OI.h"
 
 void Robot::RobotInit() {
   container.reset(new RobotContainer());
 
-  // autonomousChooser = new SendableChooser<frc2::Command*>();
-  // autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
-  // autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
-  // autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
-  // autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
-  // autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-  // frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+  driverCamera.reset(new DriverCamera("Driver", Constants::driverCameraPath, 240, 180, 30));
 }
 
 /**
@@ -56,8 +59,9 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-	// autonomousCommand.reset(autonomousChooser.GetSelected());
-  // autonomousCommand->Schedule();
+	autonomousCommand.reset(autonomousChooser.GetSelected());
+  if(autonomousCommand != nullptr)
+      autonomousCommand->Schedule();
 }
 
 void Robot::AutonomousPeriodic() {
