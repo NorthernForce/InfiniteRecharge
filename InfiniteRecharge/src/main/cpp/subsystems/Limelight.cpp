@@ -9,7 +9,7 @@
 
 Limelight::Limelight() {
     table->PutNumber("camMode", 0);
-    table->PutNumber("ledMode", 3);
+    table->PutNumber("ledMode", 1);
 }
 
 // This method will be called once per scheduler run
