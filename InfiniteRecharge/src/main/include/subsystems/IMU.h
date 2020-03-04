@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <frc/Timer.h>
 #include <AHRS.h>
 
 class IMU : public frc2::SubsystemBase {
@@ -19,9 +20,15 @@ class IMU : public frc2::SubsystemBase {
   double GetRotation();
   void ZeroRotation();
   void Reset();
+  double GetAcceleration();
+  bool IsMoreTorqueNeeded();
 
  private:
   std::shared_ptr<AHRS> ahrs;
+  std::shared_ptr<frc::Timer> accelerationRateTimer;
+  double currentAccelX;
+  double currentAccelY;
   double previousAccelX;
   double previousAccelY;
+  double torqueThreshold;
 };
