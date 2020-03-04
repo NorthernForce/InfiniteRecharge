@@ -27,6 +27,7 @@
 
 #include "commands/DriveWithJoystick.h"
 #include "commands/Climb.h"
+#include "commands/SweepAICamera.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since

@@ -10,12 +10,12 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {    
-    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    // leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    // rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower1, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightPrimary, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower1, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
     ConfigureAllControllers();
@@ -24,19 +24,19 @@ Drivetrain::Drivetrain() {
 }
 
 void Drivetrain::SetInvertedFollowers() {
-    leftFollowerSpark1->Follow(*leftPrimarySpark);
-    // leftFollowerSpark2->Follow(*leftPrimarySpark, true);
-    rightFollowerSpark1->Follow(*rightPrimarySpark);
-    // rightFollowerSpark2->Follow(*rightPrimarySpark, true);
+    leftFollowerSpark1->Follow(*leftPrimarySpark, true);
+    leftFollowerSpark2->Follow(*leftPrimarySpark, true);
+    rightFollowerSpark1->Follow(*rightPrimarySpark, true);
+    rightFollowerSpark2->Follow(*rightPrimarySpark, true);
 }
 
 void Drivetrain::ConfigureAllControllers() {
     ConfigureController(*leftPrimarySpark);
     ConfigureController(*leftFollowerSpark1);
-    // ConfigureController(*leftFollowerSpark2);
+    ConfigureController(*leftFollowerSpark2);
     ConfigureController(*rightPrimarySpark);
     ConfigureController(*rightFollowerSpark1);
-    // ConfigureController(*rightFollowerSpark2);
+    ConfigureController(*rightFollowerSpark2);
 }
 
 void Drivetrain::Drive(double speed, double rotation) {

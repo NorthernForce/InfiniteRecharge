@@ -60,19 +60,27 @@ void Intake::Stop() {
 }
 
 void Intake::SetArmUp() {
+    double tolerance = 0.1;
     if (currentArmState == ArmState::armIsDown) {
         armSpark->Set(-0.25);
-        if (armSpark->GetEncoder().SetPosition(-1.666667) == rev::CANError::kOk)
+        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= -1.666667)  // this number is likely incorrect
             currentArmState = ArmState::armIsUp;
+        else
+            currentArmState = ArmState::armIsDown;
         armSpark->Set(0);
     }
 }
 
 void Intake::SetArmDown() {
+    double tolerance = 0.3;
     if (currentArmState == ArmState::armIsUp) {
-        armSpark->Set(0.25);
-        if (armSpark->GetEncoder().SetPosition(1.666667) == rev::CANError::kOk)
+        armSpark->Set(0.1);
+        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
             currentArmState = ArmState::armIsDown;
+            armSpark->GetEncoder().SetPosition(0);
+        }
+        else
+            currentArmState = ArmState::armIsUp;
         armSpark->Set(0);
     }
 }
