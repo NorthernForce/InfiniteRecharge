@@ -16,6 +16,7 @@ Navigation::Navigation() {}
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    Navigation::CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
@@ -39,13 +40,14 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
 }
 
 void Navigation::ResetPosition() {
-    // Re-define xPosition & yPosition
+  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * 0.996194698092 * abs(cos(robotAngleDifference));
+  yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 
 void Navigation::CoordinatePosition() {
-    xPosition +=  sin(-robotAngleDifference);
-    yPosition += cos(-robotAngleDifference);
-    //Navigation::GetInchesTravelled().swap
+    double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+    xPosition +=  averageInches * sin(-robotAngleDifference);
+    yPosition += averageInches * cos(-robotAngleDifference);
 }
 
 std::pair<double, double> Navigation::GetCoordinatePosition() {
