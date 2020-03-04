@@ -21,6 +21,7 @@ InFrontOfGoal::InFrontOfGoal() {
   frc2::SequentialCommandGroup {
     MoveToLimelight(),
     ShootCell(),
+    //632 rpm
     TurnToAngle(90),
     AutoDrive(48),
     TurnToAngle(90),
