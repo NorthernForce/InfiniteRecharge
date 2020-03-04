@@ -33,10 +33,10 @@ class Drivetrain : public frc2::SubsystemBase {
 
  private:
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
-  // std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
+  std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
 
   std::shared_ptr<rev::CANSparkMax> rightFollowerSpark1;
-  // std::shared_ptr<rev::CANSparkMax> rightFollowerSpark2;
+  std::shared_ptr<rev::CANSparkMax> rightFollowerSpark2;
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
