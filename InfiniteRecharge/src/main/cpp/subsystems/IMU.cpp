@@ -11,6 +11,8 @@
 IMU::IMU() {
     ahrs.reset(new AHRS(SPI::Port::kMXP));
     Init();
+    accelerationRateTimer.reset(new frc::Timer());
+    accelerationRateTimer->Start();
 }
 
 void IMU::Init() {
@@ -25,7 +27,10 @@ void IMU::Periodic() {
     double currentAccelY = ahrs->GetWorldLinearAccelY();
     previousAccelY = currentAccelY;
 
-    std::cout << "Rotation: " << GetRotation() << '\n';
+    if (std::abs(currentAccelY - previousAccelY) >= torqueThreshold) {
+        accelerationRateTimer->Reset();
+        accelerationRateTimer->Start();
+    }
 }
 
 double IMU::GetRollAngle() {
@@ -42,4 +47,15 @@ void IMU::ZeroRotation() {
 
 void IMU::Reset() {
     ahrs->Reset();
+}
+
+double IMU::GetAcceleration() {
+    return currentAccelY;
+}
+
+bool IMU::IsMoreTorqueNeeded() {
+    if (accelerationRateTimer->Get() < 0.1)
+        return true;
+    else
+        return false;
 }

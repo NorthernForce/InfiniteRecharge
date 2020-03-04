@@ -19,9 +19,11 @@ class DriveWithJoystick
   void Execute() override;
   void End(bool interrupted) override;
   bool IsFinished() override;
-  void AutoShiftIfPermitted(double speed, std::pair<double, double> encoderRotations);
+  void AutoShiftIfPermitted();
 
  private:
   static int countForShiftEligibility;
-
+  void ShiftIfEligible(bool isEligible);
+  double speed;
+  double rotation;
 };
