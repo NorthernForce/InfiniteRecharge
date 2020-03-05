@@ -77,11 +77,8 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm());
 
   //Testing Buttons
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhileHeld(new TurnToAngle(180));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
-
-
 }
 
 std::pair<double, double> OI::GetDriveControls() {
