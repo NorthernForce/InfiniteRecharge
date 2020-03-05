@@ -53,7 +53,7 @@ void DriveWithJoystick::AutoShiftIfPermitted() {
 }
 
 void DriveWithJoystick::ShiftIfEligible(bool isEligible) {
-  bool isDrivingStraight = (speed > 0.75 && abs(rotation) < 0.15);
+  bool isDrivingStraight = (abs(speed) > 0.75 && abs(rotation) < 0.15);
   if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded() == true)
     ShiftGear(ShiftGear::Gear::Low);
   else
