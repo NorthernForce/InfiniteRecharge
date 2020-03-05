@@ -35,33 +35,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-  cameraThread.reset(new std::thread {
-    
-  });
-}
-
-void Robot::CameraInit() {
-    cv::Mat frame;
-    cv::VideoCapture cap;
-    int deviceID = 0;
-
-    cap.open(deviceID);
-    if (!cap.isOpened()) {
-        std::cerr << "ERROR! Unable to open camera\n";
-    }
-    for (;;)
-    {
-        cap.read(frame);
-        if (frame.empty()) {
-            std::cerr << "ERROR! blank frame grabbed\n";
-            break;
-        }
-
-        cv::imshow("Live", frame);
-        if (cv::waitKey(5) >= 0)
-            break;
-    }
-    // the camera will be deinitialized automatically in VideoCapture destructor
+  cameraThread.reset(new std::thread(CameraInit));
 }
 
 /**
@@ -113,6 +87,29 @@ void Robot::TeleopPeriodic() {}
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {}
+
+void Robot::CameraInit() {
+  cv::Mat frame;
+  cv::VideoCapture cap;
+  int deviceID = 0;
+
+  cap.open(deviceID);
+  if (!cap.isOpened()) {
+      std::cerr << "ERROR! Unable to open camera\n";
+  }
+  for (;;)
+  {
+      cap.read(frame);
+      if (frame.empty()) {
+          std::cerr << "ERROR! blank frame grabbed\n";
+          break;
+      }
+
+      cv::imshow("Live", frame);
+      if (cv::waitKey(5) >= 0)
+          break;
+  }
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
