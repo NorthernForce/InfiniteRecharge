@@ -33,6 +33,7 @@
 #include "commands/Climb.h"
 #include "commands/RunSpark9.h"
 #include "commands/ResetCoordinates.h"
+#include "commands/TuneRpmPid.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -74,7 +75,10 @@ void OI::MapControllerButtons() {
 
   //Testing Buttons
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
+
+
 }
 
 std::pair<double, double> OI::GetDriveControls() {
