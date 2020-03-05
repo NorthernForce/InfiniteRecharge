@@ -45,3 +45,4 @@ bool IndexPowerCells::IsFinished() {
   else {
   return false; 
 }
+}
