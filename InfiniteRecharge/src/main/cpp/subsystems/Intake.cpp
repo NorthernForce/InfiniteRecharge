@@ -98,6 +98,7 @@ void Intake::SetArmDown() {
 
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
+    std::cout << armSpark->GetEncoder.GetEncoder() << std::endl;
 }
 
 double Intake::GetArmPosition() {
