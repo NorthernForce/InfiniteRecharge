@@ -70,7 +70,7 @@ void Shooter::ShooterDown() {
 }
 
 double Shooter::RpmPidLoop(double targetRpm) {
-  rpmError = targetRpm - Shooter::GetRPM();
+  rpmError = targetRpm - GetRPM();
   rpmP = targetRpm / 2500;
 
   if(rpmError < targetRpm * 0.5)
@@ -104,7 +104,11 @@ void Shooter::TuneRpmPid_P() {
       rpmP += originP * pow(2, -accuracy) ;
     else if (error < -10)
       rpmP -= originP * pow(2,-accuracy);
-    
+
+    shooterSpark->Set(0.0);
+
+    while(GetRPM() > 50) {}
+
     accuracy++;
   }
   
