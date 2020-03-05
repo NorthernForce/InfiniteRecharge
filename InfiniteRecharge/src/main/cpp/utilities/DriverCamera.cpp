@@ -9,7 +9,7 @@
 
 DriverCamera::DriverCamera(std::string name, int width, int height, int fps) {
 
-    frc::CameraServer::GetInstance()->StartAutomaticCapture(name, 0);
+    frc::CameraServer::GetInstance()->StartAutomaticCapture(name, 1);
     camera = cs::UsbCamera(name, 0);
     camera.SetResolution(width, height);
     camera.SetFPS(fps);
