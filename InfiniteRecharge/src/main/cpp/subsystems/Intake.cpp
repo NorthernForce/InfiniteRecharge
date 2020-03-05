@@ -44,8 +44,46 @@ void Intake::InitBallPositionSensors() {
 void Intake::SetInvertedFollower() {
     followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
+
 void Intake::Periodic() {
    InventoryPowerCells();
+   if (GetInventory(0) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 0 full\n";
+   }
+   else {
+       std::cout << "Position 0 empty\n";
+   }
+   if (GetInventory(1) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 1 full\n";
+   }
+   else {
+       std::cout << "Position 1 empty\n";
+   }
+   if (GetInventory(2) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 2 full\n";
+   }
+   else {
+       std::cout << "Position 2 empty\n";
+   }
+   if (GetInventory(3) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 3 full\n";
+   }
+   else {
+       std::cout << "Position 3 empty\n";
+   }
+   if (GetInventory(4) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 4 full\n";
+   }
+   else {
+       std::cout << "Position 4 empty\n";
+   }
+   if (GetInventory(5) == Intake::StorageState::PRESENT) {
+       std::cout << "Position 5 full\n";
+   }
+   else {
+       std::cout << "Position 5 empty\n";
+   }
+   
 }
 
 void Intake::TakeInPowerCell() {
