@@ -23,4 +23,9 @@ class ToggleArm
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+ private:
+  double currentEncoderPos;
+  double previousEncoderPos;
+
 };

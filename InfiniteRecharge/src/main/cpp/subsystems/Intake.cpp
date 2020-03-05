@@ -16,13 +16,14 @@ Intake::Intake() {
     InitMotorControllers();
     InitBallPositionSensors();
     SetInvertedFollower();
-    currentArmState = ArmState::armIsDown;
+    currentArmState = ArmState::armIsUp;
 }
 
 void Intake::InitMotorControllers() {
     intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
     armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
     armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    armSpark->SetSmartCurrentLimit(40);
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
@@ -60,10 +61,11 @@ void Intake::Stop() {
 }
 
 void Intake::SetArmUp() {
-    double tolerance = 0.1;
+    double tolerance = 3;
     if (currentArmState == ArmState::armIsDown) {
-        armSpark->Set(-0.25);
-        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= -1.666667)  // this number is likely incorrect
+        armSpark->Set(-0.8);
+        double armEncoderPos = armSpark->GetEncoder().GetPosition();
+        if (abs(armEncoderPos) + tolerance >= -49 && abs(armEncoderPos) + tolerance < 0)  // this number is likely incorrect
             currentArmState = ArmState::armIsUp;
         else
             currentArmState = ArmState::armIsDown;
@@ -72,23 +74,26 @@ void Intake::SetArmUp() {
 }
 
 void Intake::SetArmDown() {
-    double tolerance = 0.3;
-    if (currentArmState == ArmState::armIsUp) {
-        armSpark->Set(0.1);
-        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
-            currentArmState = ArmState::armIsDown;
-            armSpark->GetEncoder().SetPosition(0);
-        }
-        else
-            currentArmState = ArmState::armIsUp;
+    double tolerance = 3;
+    armSpark->Set(0.3);
+    if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
+        currentArmState = ArmState::armIsDown;
+        armSpark->GetEncoder().SetPosition(0);
         armSpark->Set(0);
     }
+    else
+        currentArmState = ArmState::armIsUp;
 }
 
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
 }
 
+double Intake::GetArmPosition() {
+    return armSpark->GetEncoder().GetPosition();
+}
+//-442
+//-393
 ArmState Intake::GetArmState() {
     return currentArmState;
 }
