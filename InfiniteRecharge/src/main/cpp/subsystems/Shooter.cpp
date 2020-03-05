@@ -14,6 +14,7 @@ Shooter::Shooter() {
   shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
   pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
   shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
+  timer.reset(new frc::Timer());
 
   pidController->SetP(p);
   pidController->SetI(i);
@@ -69,7 +70,7 @@ void Shooter::ShooterDown() {
 }
 
 double Shooter::RpmPidLoop(double targetRpm) {
-  rpmError = targetRpm - Shooter::GetRPM();
+  rpmError = targetRpm - GetRPM();
   rpmP = targetRpm / 2500;
 
   if(rpmError < targetRpm * 0.5)
@@ -85,4 +86,31 @@ double Shooter::RpmPidLoop(double targetRpm) {
     speed = 1.0;
 
   return speed;
+}
+
+void Shooter::TuneRpmPid_P() {
+  double originP = rpmP;
+  double accuracy = 1;
+  for (int i; i < 10; i++) {
+    timer->Stop();
+    timer->Reset();
+    timer->Start();
+    while ((timer->Get() < 6) && (error > 0))
+      RpmPidLoop(1000);
+
+    if (timer->Get() >= 6)
+      i = 10;
+    else if (error > 10)
+      rpmP += originP * pow(2, -accuracy) ;
+    else if (error < -10)
+      rpmP -= originP * pow(2,-accuracy);
+
+    shooterSpark->Set(0.0);
+
+    while(GetRPM() > 50) {}
+
+    accuracy++;
+  }
+  
+  std::cout << rpmP;
 }
