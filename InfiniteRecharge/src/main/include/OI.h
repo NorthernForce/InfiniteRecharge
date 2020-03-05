@@ -49,6 +49,9 @@ class OI {
         left         = 270,
         left_up      = 315
     };
+    const static auto leftHand = frc::XboxController::JoystickHand::kLeftHand;
+    const static auto rightHand = frc::XboxController::JoystickHand::kRightHand;
+
  private:
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);

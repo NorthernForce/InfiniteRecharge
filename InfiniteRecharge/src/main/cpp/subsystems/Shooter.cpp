@@ -7,6 +7,7 @@
 
 #include "subsystems/Shooter.h"
 #include "Constants.h"
+#include "RobotContainer.h"
 
 double Shooter::rampRate;
 

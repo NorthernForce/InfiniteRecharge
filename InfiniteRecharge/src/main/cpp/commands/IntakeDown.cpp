@@ -18,11 +18,13 @@ void IntakeDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeDown::Execute() {
-  RobotContainer::intake->SetArm(-0.7);
+  RobotContainer::intake->SetArm(0.35);
 }
 
 // Called once the command ends or is interrupted.
-void IntakeDown::End(bool interrupted) {}
+void IntakeDown::End(bool interrupted) {
+  RobotContainer::intake->SetArm(0);
+}
 
 // Returns true when the command should end.
 bool IntakeDown::IsFinished() { return false; }

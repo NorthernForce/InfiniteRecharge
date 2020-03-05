@@ -98,7 +98,7 @@ void Intake::SetArmDown() {
 
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
-    std::cout << GetArmPosition() << '\n';
+    std::cout << "Arm Position" << GetArmPosition() << '\n';
 }
 
 double Intake::GetArmPosition() {
@@ -110,7 +110,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.8);
+    primaryConveyorSpark->Set(-0.4);
 }
 
 void Intake::StopConveyor() {
