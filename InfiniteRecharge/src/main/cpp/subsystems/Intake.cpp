@@ -17,6 +17,7 @@ Intake::Intake() {
     InitBallPositionSensors();
     SetInvertedFollower();
     currentArmState = ArmState::armIsUp;
+
 }
 
 void Intake::InitMotorControllers() {
@@ -47,43 +48,42 @@ void Intake::SetInvertedFollower() {
 
 void Intake::Periodic() {
    InventoryPowerCells();
-   if (GetInventory(0) == Intake::StorageState::PRESENT) {
+   if (GetInventory(0) == StorageState::PRESENT) {
        std::cout << "Position 0 full\n";
    }
    else {
        std::cout << "Position 0 empty\n";
    }
-   if (GetInventory(1) == Intake::StorageState::PRESENT) {
+   if (GetInventory(1) == StorageState::PRESENT) {
        std::cout << "Position 1 full\n";
    }
    else {
        std::cout << "Position 1 empty\n";
    }
-   if (GetInventory(2) == Intake::StorageState::PRESENT) {
+   if (GetInventory(2) == StorageState::PRESENT) {
        std::cout << "Position 2 full\n";
    }
    else {
        std::cout << "Position 2 empty\n";
    }
-   if (GetInventory(3) == Intake::StorageState::PRESENT) {
+   if (GetInventory(3) == StorageState::PRESENT) {
        std::cout << "Position 3 full\n";
    }
    else {
        std::cout << "Position 3 empty\n";
    }
-   if (GetInventory(4) == Intake::StorageState::PRESENT) {
+   if (GetInventory(4) == StorageState::PRESENT) {
        std::cout << "Position 4 full\n";
    }
    else {
        std::cout << "Position 4 empty\n";
    }
-   if (GetInventory(5) == Intake::StorageState::PRESENT) {
+   if (GetInventory(5) == StorageState::PRESENT) {
        std::cout << "Position 5 full\n";
    }
    else {
        std::cout << "Position 5 empty\n";
    }
-   
 }
 
 void Intake::TakeInPowerCell() {
