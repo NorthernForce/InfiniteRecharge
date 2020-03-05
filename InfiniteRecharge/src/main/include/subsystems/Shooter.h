@@ -25,6 +25,7 @@ class Shooter : public frc2::SubsystemBase {
   void ShooterDown();
   double RpmPidLoop(double targetRPM);
   void TuneRpmPid_P();
+  void ShootByDist();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
