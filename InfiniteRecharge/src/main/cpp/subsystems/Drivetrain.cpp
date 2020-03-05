@@ -40,7 +40,7 @@ void Drivetrain::ConfigureAllControllers() {
 }
 
 void Drivetrain::Drive(double speed, double rotation) {
-    robotDrive->ArcadeDrive(speed, rotation);
+    robotDrive->ArcadeDrive(speed, rotation * 0.85);
 }
 
 void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
