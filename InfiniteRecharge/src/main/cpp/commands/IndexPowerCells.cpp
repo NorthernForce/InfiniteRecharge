@@ -22,7 +22,7 @@ void IndexPowerCells::Initialize() {
 void IndexPowerCells::Execute() {
   if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
     RobotContainer::intake->RunConveyor();
-    std::cout << "running conveyor\n";
+    //std::cout << "running conveyor\n";
   } 
   else if (RobotContainer::intake->powerCellCount >= 5) {
     RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);

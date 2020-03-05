@@ -48,11 +48,13 @@ void Intake::SetInvertedFollower() {
 void Intake::Periodic() {
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
-        if (GetInventory(i) == StorageState::PRESENT)
-            std::cout << "Position " << i <<  " full\n";
-        else
-            std::cout << "Position " << i <<  " empty\n";
+        if (GetInventory(i) == StorageState::PRESENT) {
+            //std::cout << "Position " << i <<  " full\n";
     }
+        else {
+            //std::cout << "Position " << i <<  " empty\n";
+        }
+   }
 }
 
 void Intake::TakeInPowerCell() {
