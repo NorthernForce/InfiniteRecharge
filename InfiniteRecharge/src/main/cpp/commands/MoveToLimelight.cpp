@@ -7,6 +7,7 @@
 
 #include "commands/MoveToLimelight.h"
 #include "commands/TurnToAngle.h"
+#include <iostream>
 
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
