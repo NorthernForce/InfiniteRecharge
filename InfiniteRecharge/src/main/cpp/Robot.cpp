@@ -9,8 +9,9 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <cameraserver/CameraServer.h>
+#include <string>
 
-#include "utilities/DriverCamera.h"
 #include "Constants.h"
 #include "OI.h"
 
@@ -32,7 +33,11 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-  driverCamera.reset(new DriverCamera("Driver", 640, 480, 30));
+  std::string name = "driver";
+  frc::CameraServer::GetInstance()->StartAutomaticCapture("Driver", 1);
+  cs::UsbCamera camera = cs::UsbCamera(name, 0);
+    camera.SetResolution(640, 480);
+    camera.SetFPS(30);
 }
 
 /**

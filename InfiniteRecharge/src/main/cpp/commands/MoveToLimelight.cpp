@@ -24,7 +24,7 @@ void MoveToLimelight::Execute() {
   limeLightOffset = RobotContainer::limelight->GetXOffset();
   isTargetThere = RobotContainer::limelight->IsTargetThere();
   if (isTargetThere == true) {
-    turnToAngle->TurnInLoop(limeLightOffset);
+    TurnToAngle(limeLightOffset);
   }
 }
 

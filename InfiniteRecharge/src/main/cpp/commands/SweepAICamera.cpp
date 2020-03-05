@@ -48,9 +48,9 @@ void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
 void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
   int robotAng = RobotContainer::imu->GetRotation();
   if (servoDir == 'l')
-    turnToAngle->TurnInLoop(robotAng-servoAng);
+    TurnToAngle(robotAng-servoAng);
   else if (servoDir == 'r')
-    turnToAngle->TurnInLoop(robotAng+servoAng);
+    TurnToAngle(robotAng+servoAng);
 }
 
 // Called once the command ends or is interrupted.

@@ -10,7 +10,6 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include "utilities/DriverCamera.h"
 
 #include "RobotContainer.h"
 
@@ -33,5 +32,4 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<RobotContainer> container;
   std::unique_ptr<frc2::Command> autonomousCommand;
   frc::SendableChooser<frc2::Command*> autonomousChooser;
-  std::shared_ptr<DriverCamera> driverCamera;
 };

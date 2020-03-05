@@ -79,16 +79,12 @@ void OI::MapControllerButtons() {
 
 
   //Testing Buttons
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhileHeld(new TurnToAngle(180));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl()); need color sensor that we asked for long ago
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
     //frc2::Button([this, manipLtTriggerAxis] { return manipLtTriggerAxis->Get(); }).WhenPressed(new IndexPowerCells()); Don't need until our indexing gets messed up again
     // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point
-
-
-
 }
 
 std::pair<double, double> OI::GetDriveControls() {
