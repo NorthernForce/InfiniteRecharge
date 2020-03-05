@@ -56,8 +56,8 @@ void OI::InitControllers() {
 
 void OI::MapControllerButtons() {
   //Driver Controller
-    frc2::Button([this] { return driverController->GetRawAxis(leftHand); }).WhileHeld(new ShootByDist());
-    frc2::Button([this] { return driverController->GetRawAxis(rightHand); }).WhenPressed(new PushOutPowerCell());
+    frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
+    frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new MoveToLimelight());
@@ -65,8 +65,8 @@ void OI::MapControllerButtons() {
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToPowercell());
 
   //Manipulator Controller
-    frc2::Button([this] { return (driverController->GetTriggerAxis(leftHand) > 0.5); }).WhileHeld(new ShootByDist());
-    frc2::Button([this] { return (driverController->GetTriggerAxis(rightHand) > 0.5); }).WhenPressed(new PushOutPowerCell());
+    frc2::Button([this] { return (driverController->GetTriggerAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
+    frc2::Button([this] { return (driverController->GetTriggerAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
