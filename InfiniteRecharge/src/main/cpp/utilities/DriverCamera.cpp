@@ -7,9 +7,9 @@
 
 #include "utilities/DriverCamera.h"
 
-DriverCamera::DriverCamera(std::string name, std::string devPath, int width, int height, int fps) {
+DriverCamera::DriverCamera(std::string name, int width, int height, int fps) {
 
-    frc::CameraServer::GetInstance()->StartAutomaticCapture(name, devPath);
+    frc::CameraServer::GetInstance()->StartAutomaticCapture(name, 0);
     camera = cs::UsbCamera(name, 0);
     camera.SetResolution(width, height);
     camera.SetFPS(fps);

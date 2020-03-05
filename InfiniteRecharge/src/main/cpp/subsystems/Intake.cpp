@@ -30,7 +30,6 @@ void Intake::InitMotorControllers() {
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
 
     intakeTalon->ConfigPeakCurrentLimit(5);
-    intakeTalon->ConfigPeakOutputForward(1);
 }
 
 void Intake::InitBallPositionSensors() {
@@ -47,43 +46,13 @@ void Intake::SetInvertedFollower() {
 }
 
 void Intake::Periodic() {
-   InventoryPowerCells();
-   if (GetInventory(0) == StorageState::PRESENT) {
-       std::cout << "Position 0 full\n";
-   }
-   else {
-       std::cout << "Position 0 empty\n";
-   }
-   if (GetInventory(1) == StorageState::PRESENT) {
-       std::cout << "Position 1 full\n";
-   }
-   else {
-       std::cout << "Position 1 empty\n";
-   }
-   if (GetInventory(2) == StorageState::PRESENT) {
-       std::cout << "Position 2 full\n";
-   }
-   else {
-       std::cout << "Position 2 empty\n";
-   }
-   if (GetInventory(3) == StorageState::PRESENT) {
-       std::cout << "Position 3 full\n";
-   }
-   else {
-       std::cout << "Position 3 empty\n";
-   }
-   if (GetInventory(4) == StorageState::PRESENT) {
-       std::cout << "Position 4 full\n";
-   }
-   else {
-       std::cout << "Position 4 empty\n";
-   }
-   if (GetInventory(5) == StorageState::PRESENT) {
-       std::cout << "Position 5 full\n";
-   }
-   else {
-       std::cout << "Position 5 empty\n";
-   }
+    InventoryPowerCells();
+    for(int i=0; i<6; i++) {
+        if (GetInventory(i) == StorageState::PRESENT)
+            std::cout << "Position " << i <<  " full\n";
+        else
+            std::cout << "Position " << i <<  " empty\n";
+    }
 }
 
 void Intake::TakeInPowerCell() {
@@ -103,7 +72,7 @@ void Intake::SetArmUp() {
     if (currentArmState == ArmState::armIsDown) {
         armSpark->Set(-0.8);
         double armEncoderPos = armSpark->GetEncoder().GetPosition();
-        if (abs(armEncoderPos) + tolerance >= -49 && abs(armEncoderPos) + tolerance < 0)  // this number is likely incorrect
+        if (abs(armEncoderPos) + tolerance >= 49 && abs(armEncoderPos) + tolerance > 0)
             currentArmState = ArmState::armIsUp;
         else
             currentArmState = ArmState::armIsDown;
@@ -113,14 +82,16 @@ void Intake::SetArmUp() {
 
 void Intake::SetArmDown() {
     double tolerance = 3;
-    armSpark->Set(0.3);
-    if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
-        currentArmState = ArmState::armIsDown;
-        armSpark->GetEncoder().SetPosition(0);
-        armSpark->Set(0);
+    armSpark->Set(0.5);
+    if (currentArmState == ArmState::armIsUp) {
+        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
+            currentArmState = ArmState::armIsDown;
+            armSpark->GetEncoder().SetPosition(0);
+            armSpark->Set(0);
+        }
+        else
+            currentArmState = ArmState::armIsUp;
     }
-    else
-        currentArmState = ArmState::armIsUp;
 }
 
 void Intake::SetArm(double speed) {
@@ -130,8 +101,7 @@ void Intake::SetArm(double speed) {
 double Intake::GetArmPosition() {
     return armSpark->GetEncoder().GetPosition();
 }
-//-442
-//-393
+
 ArmState Intake::GetArmState() {
     return currentArmState;
 }

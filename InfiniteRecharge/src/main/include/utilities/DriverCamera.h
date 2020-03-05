@@ -12,7 +12,7 @@
 
 class DriverCamera {
  public:
-  DriverCamera(std::string name, std::string devPath, int width, int height, int fps);
+  DriverCamera(std::string name, int width, int height, int fps);
 
  private:
   cs::UsbCamera camera;

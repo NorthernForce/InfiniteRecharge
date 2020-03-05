@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ToggleArm.h"
-#include <iostream>
 
 ToggleArm::ToggleArm() {
   AddRequirements(RobotContainer::intake.get());
@@ -14,13 +13,15 @@ ToggleArm::ToggleArm() {
 
 // Called when the command is initially scheduled.
 void ToggleArm::Initialize() {
-
+  RobotContainer::intake->SetArm(0.5);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ToggleArm::Execute() {
   currentEncoderPos = RobotContainer::intake->GetArmPosition();
   if (currentEncoderPos != previousEncoderPos)
+    RobotContainer::intake->SetArm(0);
+  else
     RobotContainer::intake->SetArm(0.5);
   previousEncoderPos = currentEncoderPos;
 }

@@ -50,7 +50,6 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
 
 void Shooter::Shoot() {
   shooterSpark->Set(GetSpeedFromPID(p, i, d));
- // pidController->SetReference(0.8, rev::ControlType::kSmartMotion); //code to try and use the pid loop, might be wrong
 }
 
 void Shooter::SetSpeed(double speed) {
@@ -91,7 +90,7 @@ double Shooter::RpmPidLoop(double targetRpm) {
 void Shooter::TuneRpmPid_P() {
   double originP = rpmP;
   double accuracy = 1;
-  for (int i; i < 10; i++) {
+  for (int i=0; i < 10; i++) {
     timer->Stop();
     timer->Reset();
     timer->Start();
