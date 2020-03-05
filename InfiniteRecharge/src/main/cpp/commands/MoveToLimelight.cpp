@@ -7,6 +7,7 @@
 
 #include "commands/MoveToLimelight.h"
 #include "commands/TurnToAngle.h"
+#include <iostream>
 
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -23,6 +24,8 @@ void MoveToLimelight::Initialize() {
 void MoveToLimelight::Execute() {
   limeLightOffset = RobotContainer::limelight->GetXOffset();
   isTargetThere = RobotContainer::limelight->IsTargetThere();
+  std::cout << "is target there: " << isTargetThere << std::endl;
+  std::cout << "limelight offset: " << limeLightOffset << std::endl;
   if (isTargetThere == true) {
     TurnToAngle(limeLightOffset);
   }

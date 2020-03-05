@@ -98,7 +98,7 @@ void Intake::SetArmDown() {
 
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
-    std::cout << GetArmPosition() << '\n';
+    std::cout << "Arm Position" << GetArmPosition() << '\n';
 }
 
 double Intake::GetArmPosition() {
