@@ -7,6 +7,7 @@
 
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include <frc2/command/SequentialCommandGroup.h>
+#include <iostream>
 
 #include "commands/TurnToAngle.h"
 #include "commands/IntakeDown.h"
@@ -14,6 +15,7 @@
 #include "commands/IntakeUp.h"
 
 InFrontOfOurTrench::InFrontOfOurTrench() {
+  std::cout << "Your auto is a failure" << std::endl,
   frc2::SequentialCommandGroup {
     TurnToAngle(180),
     IntakeDown(),

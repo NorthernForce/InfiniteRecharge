@@ -48,15 +48,17 @@ void Intake::SetInvertedFollower() {
 void Intake::Periodic() {
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
-        if (GetInventory(i) == StorageState::PRESENT)
-            std::cout << "Position " << i <<  " full\n";
-        else
-            std::cout << "Position " << i <<  " empty\n";
+        if (GetInventory(i) == StorageState::PRESENT) {
+            //std::cout << "Position " << i <<  " full\n";
     }
+        else {
+            //std::cout << "Position " << i <<  " empty\n";
+        }
+   }
 }
 
 void Intake::TakeInPowerCell() {
-    intakeTalon->Set(-0.5);
+    intakeTalon->Set(0.5);
 }
 
 void Intake::PushOutPowerCell() {
@@ -96,6 +98,7 @@ void Intake::SetArmDown() {
 
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
+    std::cout << armSpark->GetEncoder.GetEncoder() << std::endl;
 }
 
 double Intake::GetArmPosition() {

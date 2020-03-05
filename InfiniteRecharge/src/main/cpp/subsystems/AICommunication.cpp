@@ -23,5 +23,5 @@ double AICommunication::GetNumber(std::string key) {
 // This method will be called once per scheduler run
 void AICommunication::Periodic() {
     auto aiCamOff = GetValueArray(powercellOffsetInCam);
-    std::cout << aiCamOff[0] << ", " << aiCamOff[1] << '\n';
+    //std::cout << aiCamOff[0] << ", " << aiCamOff[1] << '\n';
 }
