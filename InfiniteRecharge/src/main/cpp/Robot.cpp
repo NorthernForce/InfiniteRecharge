@@ -92,6 +92,8 @@ void Robot::CameraInit() {
   cv::Mat frame;
   cv::VideoCapture cap;
   int deviceID = 0;
+  cap.set(cv::CAP_PROP_FRAME_HEIGHT, 360);
+  cap.set(cv::CAP_PROP_FRAME_WIDTH, 480);
 
   cap.open(deviceID);
   if (!cap.isOpened()) {
