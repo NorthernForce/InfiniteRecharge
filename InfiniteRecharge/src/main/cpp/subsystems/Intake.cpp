@@ -56,11 +56,11 @@ void Intake::Periodic() {
 }
 
 void Intake::TakeInPowerCell() {
-    intakeTalon->Set(0.5);
+    intakeTalon->Set(-0.5);
 }
 
 void Intake::PushOutPowerCell() {
-    intakeTalon->Set(-0.5);
+    intakeTalon->Set(0.5);
 }
 
 void Intake::Stop() {
