@@ -54,12 +54,6 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    auto manipRtTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::rt_trigger);
-    auto manipLtTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::lt_trigger);
-
-    auto driveRtTriggerAxis = new SimpleAxis(driverController, XboxAxis::rt_trigger);
-    auto driveLtTriggerAxis = new SimpleAxis(driverController, XboxAxis::lt_trigger);
-
   //Driver Controller
     frc2::Button([this, driveLtTriggerAxis]  { return driveLtTriggerAxis->Get(); }).WhileHeld(new ;
     frc2::Button([this, driveRtTriggerAxis] { return driveRtTriggerAxis->Get(); }).WhenPressed(new PushOutPowerCell());
@@ -70,6 +64,8 @@ void OI::MapControllerButtons() {
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToPowercell());
 
   //Manipulator Controller
+    frc2::Button([this] { return (driverController->GetTriggerAxis(leftHand) > 0.5); }).WhileHeld(new ShootCell());
+    frc2::Button([this] { return (driverController->GetTriggerAxis(rightHand) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
