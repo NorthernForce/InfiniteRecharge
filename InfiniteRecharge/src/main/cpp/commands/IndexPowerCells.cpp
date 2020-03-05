@@ -5,41 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/IntakePowerCell.h"
-#include <iostream>
+#include "commands/IndexPowerCells.h"
 
-IntakePowerCell::IntakePowerCell() {
+IndexPowerCells::IndexPowerCells() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {
+void IndexPowerCells::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
 }
 
+
 // Called repeatedly when this Command is scheduled to run
-void IntakePowerCell::Execute() {
-  RobotContainer::intake->TakeInPowerCell();
+void IndexPowerCells::Execute() {
   if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
     RobotContainer::intake->RunConveyor();
     //std::cout << "running conveyor\n";
-  }
-  if (RobotContainer::intake->powerCellCount >= 5) {
-    RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
+  } 
+  else if (RobotContainer::intake->powerCellCount >= 5) {
+    RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);
     RobotContainer::intake->Stop();
     RobotContainer::intake->StopConveyor();
-  }
+  } 
 }
 
 // Called once the command ends or is interrupted.
-void IntakePowerCell::End(bool interrupted) {
+void IndexPowerCells::End(bool interrupted) {
   RobotContainer::intake->Stop();
   RobotContainer::intake->StopConveyor();
 }
 
 // Returns true when the command should end.
-bool IntakePowerCell::IsFinished() {
+bool IndexPowerCells::IsFinished() { 
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT)
     return true;
   else

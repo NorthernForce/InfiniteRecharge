@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include <string>
 
 namespace Constants {
     const int driverController_id = 0;
@@ -24,9 +23,7 @@ namespace Constants {
 
     const double ultrasonicDistFromRoboCent = 14; 
 
-    const double degreesToRadians = 3.141592653589793/180; 
-
-    const std::string driverCameraPath;
+    const double degreesToRadians = 3.141592653589793/180;
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;

@@ -11,10 +11,18 @@
 #include <frc2/command/CommandHelper.h>
 #include "RobotContainer.h"
 
-class ToggleArm
-    : public frc2::CommandHelper<frc2::CommandBase, ToggleArm> {
+
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class IndexPowerCells
+    : public frc2::CommandHelper<frc2::CommandBase, IndexPowerCells> {
  public:
-  ToggleArm();
+  IndexPowerCells();
 
   void Initialize() override;
 
@@ -24,8 +32,6 @@ class ToggleArm
 
   bool IsFinished() override;
 
- private:
-  double currentEncoderPos;
-  double previousEncoderPos;
-
+  private:
+    int emptyPosition;
 };

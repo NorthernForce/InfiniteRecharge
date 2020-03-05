@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/IntakeDown.h"
+#include "RobotContainer.h"
 
 IntakeDown::IntakeDown() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -17,7 +18,7 @@ void IntakeDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeDown::Execute() {
-  RobotContainer::intake->SetArmDown();
+  RobotContainer::intake->SetArm(-0.7);
 }
 
 // Called once the command ends or is interrupted.

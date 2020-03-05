@@ -43,6 +43,7 @@ class Intake : public frc2::SubsystemBase {
   void SetArmUp();
   void SetArmDown();
   void SetArm(double speed);
+  double GetArmPosition();
   ArmState GetArmState();
   void RunConveyor();
   void StopConveyor();

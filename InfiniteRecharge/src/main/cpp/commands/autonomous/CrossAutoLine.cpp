@@ -8,9 +8,13 @@
 #include "commands/autonomous/CrossAutoLine.h"
 #include <frc2/command/SequentialCommandGroup.h>
 #include "commands/AutoDrive.h"
+#include <iostream>
 
 CrossAutoLine::CrossAutoLine() {
+      std::cout << "I'm working" << std::endl,
   frc2::SequentialCommandGroup {
-    AutoDrive(144)
+    AutoDrive(144),
   }; 
+      std::cout << "I'm working end" << std::endl;
+
 }

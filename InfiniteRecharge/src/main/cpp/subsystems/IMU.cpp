@@ -31,6 +31,7 @@ void IMU::Periodic() {
         accelerationRateTimer->Reset();
         accelerationRateTimer->Start();
     }
+    std::cout << "currentrot: " << GetRotation() << "\n";
 }
 
 double IMU::GetRollAngle() {

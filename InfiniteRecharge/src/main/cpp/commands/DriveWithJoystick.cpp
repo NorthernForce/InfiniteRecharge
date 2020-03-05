@@ -48,14 +48,20 @@ void DriveWithJoystick::AutoShiftIfPermitted() {
 
   if (isEligibleForShift) {
     ShiftIfEligible(isEligibleForShift);
+    std::cout << "Eligible for shift!\n";
   }
   countForShiftEligibility++;
 }
 
 void DriveWithJoystick::ShiftIfEligible(bool isEligible) {
-  bool isDrivingStraight = (speed > 0.75 && abs(rotation) < 0.1) ? true : false;
-  if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded() == true)
-      ShiftGear(ShiftGear::Gear::Low);
-    else
-      ShiftGear(ShiftGear::Gear::High);
+  bool isDrivingStraight = (abs(speed) > 0.75 && abs(rotation) < 0.15);
+  if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded() == true) {
+    ShiftGear(ShiftGear::Gear::Low);
+    std::cout << "shiftgear low\n";
+  }
+  else {
+    ShiftGear(ShiftGear::Gear::High);
+    std::cout << "shiftgear high\n";
+  }
+  countForShiftEligibility = 0;
 }

@@ -13,26 +13,23 @@ ToggleArm::ToggleArm() {
 
 // Called when the command is initially scheduled.
 void ToggleArm::Initialize() {
-
+  RobotContainer::intake->SetArm(0.5);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ToggleArm::Execute() {
-  auto controller = RobotContainer::oi->manipulatorController;
-  if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp) {
-    RobotContainer::intake->SetArmDown();
-    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsUp)
-      RobotContainer::oi->SetControllerRumble(controller.get(), 1);
-  }
-  else {
-    RobotContainer::intake->SetArmUp();
-    if (RobotContainer::intake->GetArmState() == Intake::ArmState::armIsDown)
-      RobotContainer::oi->SetControllerRumble(controller.get(), 1);
-  }
+  currentEncoderPos = RobotContainer::intake->GetArmPosition();
+  if (currentEncoderPos != previousEncoderPos)
+    RobotContainer::intake->SetArm(0);
+  else
+    RobotContainer::intake->SetArm(0.5);
+  previousEncoderPos = currentEncoderPos;
 }
 
 // Called once the command ends or is interrupted.
-void ToggleArm::End(bool interrupted) {}
+void ToggleArm::End(bool interrupted) {
+  RobotContainer::intake->SetArm(0);
+}
 
 // Returns true when the command should end.
 bool ToggleArm::IsFinished() { return false; }

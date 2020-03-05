@@ -1,6 +1,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Command.h>
-#include "frc2/command/button/Button.h"
+#include <frc2/command/button/Button.h>
+#include <frc2/command/button/Trigger.h>
 #include "OI.h"
 #include "Constants.h"
 
@@ -34,6 +35,9 @@
 #include "commands/RunSpark9.h"
 #include "commands/ResetCoordinates.h"
 #include "commands/TuneRpmPid.h"
+#include "commands/IndexPowerCells.h"
+#include "commands/IntakeUp.h"
+#include "commands/IntakeDown.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -50,35 +54,31 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    auto manipRtTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::rt_trigger);
-    auto manipLtTriggerAxis = new SimpleAxis(manipulatorController, XboxAxis::lt_trigger);
-
-    auto driveRtTriggerAxis = new SimpleAxis(driverController, XboxAxis::rt_trigger);
-    auto driveLtTriggerAxis = new SimpleAxis(driverController, XboxAxis::lt_trigger);
-
   //Driver Controller
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new MoveToLimelight());
-    frc2::Button([this, manipLtTriggerAxis]  { return manipLtTriggerAxis->Get(); }).WhileHeld(new ShootCell());
-    frc2::Button([this, manipRtTriggerAxis] { return manipRtTriggerAxis->Get(); }).WhenPressed(new IntakePowerCell());
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::B_button); }).WhileHeld(new IntakePowerCell());
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToPowercell());
 
   //Manipulator Controller
-    frc2::Button([this, driveLtTriggerAxis]  { return driveLtTriggerAxis->Get(); }).WhileHeld(new ShootCell());
-    frc2::Button([this, driveRtTriggerAxis] { return driveRtTriggerAxis->Get(); }).WhenPressed(new PushOutPowerCell());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
+    frc2::Button([this] { return (driverController->GetTriggerAxis(leftHand) > 0.5); }).WhileHeld(new ShootCell());
+    frc2::Button([this] { return (driverController->GetTriggerAxis(rightHand) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new IntakeDown());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IntakeUp());
+
+
 
   //Testing Buttons
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new TurnToAngle(180));
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhileHeld(new TurnToAngle(180));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
-
-
+    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl()); need color sensor that we asked for long ago
+    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
+    //frc2::Button([this, manipLtTriggerAxis] { return manipLtTriggerAxis->Get(); }).WhenPressed(new IndexPowerCells()); Don't need until our indexing gets messed up again
+    // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point
 }
 
 std::pair<double, double> OI::GetDriveControls() {
