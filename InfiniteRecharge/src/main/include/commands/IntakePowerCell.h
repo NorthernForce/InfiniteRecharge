@@ -31,4 +31,7 @@ class IntakePowerCell
 
   bool IsFinished() override;
 
+ private:
+  int emptyPosition;
+
 };

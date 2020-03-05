@@ -6,19 +6,17 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include <frc/GenericHID.h>
+#include <frc/XboxController.h>
 #include <frc2/command/button/Button.h>
 #include <frc2/command/Command.h>
 
 
 class SimpleButton {
  public:
-  SimpleButton(frc::GenericHID* controller, int button);
-  frc2::Button WhenPressed(frc2::Command*);
-  frc2::Button WhenReleased(frc2::Command*);
-  frc2::Button WhileHeld(frc2::Command*);
+  SimpleButton(std::shared_ptr<frc::XboxController> controller, int button);
+  bool Get();
 
  private:
-  frc::GenericHID* m_controller;
+  std::shared_ptr<frc::XboxController> m_controller;
   int m_button;
 };

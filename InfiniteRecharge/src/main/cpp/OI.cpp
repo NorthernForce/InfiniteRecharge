@@ -1,6 +1,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Command.h>
-#include "frc2/command/button/Button.h"
+#include <frc2/command/button/Button.h>
+#include <frc2/command/button/Trigger.h>
 #include "OI.h"
 #include "Constants.h"
 

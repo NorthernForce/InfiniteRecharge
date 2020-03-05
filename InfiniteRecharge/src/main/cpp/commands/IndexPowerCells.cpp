@@ -20,7 +20,6 @@ void IndexPowerCells::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IndexPowerCells::Execute() {
-   
   if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
     RobotContainer::intake->RunConveyor();
     std::cout << "running conveyor\n";
@@ -33,16 +32,15 @@ void IndexPowerCells::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void IndexPowerCells::End(bool interrupted) {}
+void IndexPowerCells::End(bool interrupted) {
+  RobotContainer::intake->Stop();
+  RobotContainer::intake->StopConveyor();
+}
 
 // Returns true when the command should end.
 bool IndexPowerCells::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->Stop();
-    RobotContainer::intake->StopConveyor();
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT)
     return true;
-  }
-  else {
-  return false; 
-}
+  else
+    return false; 
 }
