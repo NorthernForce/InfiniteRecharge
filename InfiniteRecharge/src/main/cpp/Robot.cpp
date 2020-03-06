@@ -22,6 +22,8 @@
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
 
+#include <opencv2/opencv.hpp>
+
 
 void Robot::RobotInit() {
   container.reset(new RobotContainer());
@@ -33,11 +35,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-  std::string name = "driver";
-  frc::CameraServer::GetInstance()->StartAutomaticCapture("Driver", 1);
-  cs::UsbCamera camera = cs::UsbCamera(name, 0);
-    camera.SetResolution(640, 480);
-    camera.SetFPS(30);
+  cameraThread.reset(new std::thread(CameraInit));
 }
 
 /**
@@ -89,6 +87,31 @@ void Robot::TeleopPeriodic() {}
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {}
+
+void Robot::CameraInit() {
+  cv::Mat frame;
+  cv::VideoCapture cap;
+  int deviceID = 0;
+  cap.set(cv::CAP_PROP_FRAME_HEIGHT, 360);
+  cap.set(cv::CAP_PROP_FRAME_WIDTH, 480);
+
+  cap.open(deviceID);
+  if (!cap.isOpened()) {
+      std::cerr << "ERROR! Unable to open camera\n";
+  }
+  for (;;)
+  {
+      cap.read(frame);
+      if (frame.empty()) {
+          std::cerr << "ERROR! blank frame grabbed\n";
+          break;
+      }
+
+      cv::imshow("Live", frame);
+      if (cv::waitKey(5) >= 0)
+          break;
+  }
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
