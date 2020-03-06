@@ -27,7 +27,8 @@
 
 void Robot::RobotInit() {
   container.reset(new RobotContainer());
-
+////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
+/*
   autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
   autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
   autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
@@ -36,6 +37,14 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
   cameraThread.reset(new std::thread(CameraInit));
+  */
+    chooserAuto = new frc::SendableChooser<std::string>;
+    chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
+    chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
+    chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
+    chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
+    chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
+    frc::SmartDashboard::PutData(chooserAuto);
 }
 
 /**
@@ -62,9 +71,33 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+/*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
       autonomousCommand->Schedule();
+*/
+////TODO: Figure out if this should go in periodic or Init
+  chooserAutoSelected = chooserAuto->GetSelected();
+
+        if (chooserAutoSelected == "CrossAutoLine") {
+        new CrossAutoLine;
+    }
+    else if (chooserAutoSelected == "DoNothing") {
+       new DoNothing;
+    }
+    else if (chooserAutoSelected == "InFrontOfGoal") {
+       new InFrontOfGoal;
+    }
+    else if (chooserAutoSelected == "InFrontOfFoesTrench") {
+      new InFrontOfFoesTrench;
+    }
+    else if (chooserAutoSelected == "InFrontOfOurTrench") {
+      new InFrontOfOurTrench;
+    }
+    else {
+      new DoNothing;
+    }
+
 }
 
 void Robot::AutonomousPeriodic() {
