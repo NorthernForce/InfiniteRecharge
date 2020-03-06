@@ -43,6 +43,10 @@ void WackyWheel::FindColor() {
       colorChar = 'N';
 }
 
+void WackyWheel::ManualSpin() {
+  spinnerTalon->Set(0.2);
+}
+
 void WackyWheel::GoToFMSColor() {
   if (colorChar != desiredColor) {
     if((colorChar ==  'Y') && (desiredColor == 'R'))

@@ -29,6 +29,7 @@ class WackyWheel : public frc2::SubsystemBase {
   void AddColorMatches();
   void GoToFMSColor();
   void Rotate(int rotations=4);
+  void ManualSpin();
 
  private:
 
