@@ -110,7 +110,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.4);
+    primaryConveyorSpark->Set(-0.3);
 }
 
 void Intake::StopConveyor() {

@@ -62,11 +62,11 @@ int Shooter::GetRPM() {
 }
 
 void Shooter::ShooterUp() {
-  shooterShifter->Set(shiftOff);
+  shooterShifter->Set(shiftOn); 
 }
 
 void Shooter::ShooterDown() {
-  shooterShifter->Set(shiftOn);
+  shooterShifter->Set(shiftOff);
 }
 
 double Shooter::RpmPidLoop(double targetRpm) {

@@ -32,5 +32,5 @@ class ShootByDist
 
  private:
   double rpm;
-
+  double m_threshold;
 };

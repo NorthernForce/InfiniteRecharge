@@ -24,19 +24,19 @@ void ShootByDist::Initialize() {
 }
 
 void ShootByDist::Execute() {
-
-    RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyor();
-    }
-    else {
-      if (RobotContainer::shooter->GetRPM() >= rpm) // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+      RobotContainer::shooter->Shoot();
+      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
         RobotContainer::intake->RunConveyor();
-      else 
-        RobotContainer::intake->StopConveyor();
+      }
+      else {
+        if (RobotContainer::shooter->GetRPM() >= 3600) // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+          RobotContainer::intake->RunConveyor();
+        else 
+          RobotContainer::intake->StopConveyor();
+      }
+      // std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
     }
-    // std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
-}
+
 
 void ShootByDist::End(bool interrupted) {
   RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off, also is this set to coast?
