@@ -39,7 +39,6 @@ class Ultrasonic : public frc2::SubsystemBase {
   bool ultrasonicState;
 
   std::shared_ptr<frc::AnalogInput> analogUltrasonic;
-
   //std::shared_ptr<frc::DigitalOutput> ctrl;
 
   const static bool ultrasonicOn = true;

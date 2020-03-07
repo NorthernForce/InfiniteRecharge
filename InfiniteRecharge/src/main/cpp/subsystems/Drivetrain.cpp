@@ -87,3 +87,11 @@ void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
+
+void Drivetrain::SimpleTurnToAngle(double limelightOffset) {
+    if (limelightOffset < 0) {
+        rightPrimarySpark->Set(0.3);
+    } else if (limelightOffset > 0) {
+        leftPrimarySpark->Set(0.3);
+    }
+}
