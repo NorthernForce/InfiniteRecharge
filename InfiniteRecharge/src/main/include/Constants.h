@@ -50,7 +50,7 @@ namespace Constants {
     }
 
     namespace Shifting {
-        const double lowMultiplier = 0;
+        const double lowMultiplier = 4.286;
         const double highMultiplier = 1.39383333333333333333;
     }
 
