@@ -36,4 +36,7 @@ class Robot : public frc::TimedRobot {
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
   frc::SendableChooser<std::string> *chooserAuto;
   std::string chooserAutoSelected;
+
+  bool reachedEncoderPos = false;
+  bool readyToShoot = false;
 };

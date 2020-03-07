@@ -17,7 +17,7 @@ void Climb::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void Climb::Execute() {
   if (abs(m_speed()) > 0.3) {
-    RobotContainer::climber->SetLifter(m_speed());
+    RobotContainer::climber->SetLifter(abs(m_speed()));
   }
 }
 

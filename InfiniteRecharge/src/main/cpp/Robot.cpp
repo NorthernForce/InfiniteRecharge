@@ -107,10 +107,44 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
-  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
+  RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35) {
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+    reachedEncoderPos = true;
+  }
 
+  if (reachedEncoderPos == true) {
+    RobotContainer::shooter->ShooterUp();
+    RobotContainer::intake->SetArmDown();
+    readyToShoot = true;
+  }
+
+  if (readyToShoot == true) {
+    //RobotContainer::shooter->ConfigureSpark(ramp); //need this??? put it in init??
+    RobotContainer::shooter->Shoot();
+    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+        RobotContainer::intake->RunConveyor();
+     }
+    else {
+      RobotContainer::intake->StopConveyor();
+    }
+
+    if (RobotContainer::shooter->GetRPM() >= 2000) { 
+        RobotContainer::intake->ConveyorSetSpeed(-0.65);
+      }
+    else {
+        RobotContainer::intake->StopConveyor();
+      }
+  }
+
+/*
+    1) make it drive backwards
+    2) make it go to position to shoot from
+    3) make piston go up
+    4) make arm go down
+    5) start shooter
+    4) shoot 
+*/
 }
 
 void Robot::TeleopInit() {
