@@ -31,6 +31,7 @@
 #include "commands/RunIntakeMotor.h"
 #include "commands/Climb.h"
 #include "commands/ShootByDist.h"
+#include "commands/ManualWackyWheel.h"
 
 #include "commands/ResetCoordinates.h"
 #include "commands/TuneRpmPid.h"
@@ -76,7 +77,8 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakeDown());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
+    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
+    frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new ManualWackyWheel());
 
 
 
