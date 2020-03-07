@@ -22,8 +22,7 @@
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
 
-#include <opencv2/opencv.hpp>
-
+#include <cameraserver/CameraServer.h>
 
 void Robot::RobotInit() {
   container.reset(new RobotContainer());
@@ -43,6 +42,8 @@ void Robot::RobotInit() {
   chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
+
+  CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
