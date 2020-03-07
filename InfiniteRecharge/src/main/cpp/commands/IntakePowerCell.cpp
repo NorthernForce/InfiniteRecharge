@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/IntakePowerCell.h"
+#include "OI.h"
+#include "RobotContainer.h"
 #include <iostream>
 
 IntakePowerCell::IntakePowerCell() {
@@ -21,18 +23,21 @@ void IntakePowerCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
-  RobotContainer::intake->TakeInPowerCell();
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
-    RobotContainer::intake->RunConveyor();
-    zeroHasBeenTriggered = true;
-  }
-  if (RobotContainer::intake->powerCellCount >= 5) {
-    RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
-    RobotContainer::intake->Stop();
-    RobotContainer::intake->StopConveyor();
-  }
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->StopConveyor();
+  double ltTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::lt_trigger);
+  if(ltTriggerAxis > 0.5){
+    RobotContainer::intake->TakeInPowerCell();
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
+      RobotContainer::intake->RunConveyor();
+      zeroHasBeenTriggered = true;
+    }
+    if (RobotContainer::intake->powerCellCount >= 5) {
+      RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
+      RobotContainer::intake->Stop();
+      RobotContainer::intake->StopConveyor();
+    }
+    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+      RobotContainer::intake->StopConveyor();
+    }
   }
 }
 

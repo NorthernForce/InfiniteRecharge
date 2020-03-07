@@ -28,10 +28,10 @@
 #include "commands/AimShooterUp.h"
 #include "commands/AimShooterDown.h"
 #include "commands/MoveToLimelight.h"
-#include "commands/RunIntakeMotor.h"
 #include "commands/Climb.h"
 #include "commands/ShootByDist.h"
 #include "commands/ManualWackyWheel.h"
+#include "commands/StopIntake.h"
 
 #include "commands/ResetCoordinates.h"
 #include "commands/TuneRpmPid.h"
@@ -58,16 +58,17 @@ void OI::MapControllerButtons() {
 
   //Driver Controller
     // SimpleButton(driverController, Xbox::A_button).WhenPressed(new IntakePowerCell());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new ShootCell());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhenPressed(new PushOutPowerCell());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
-    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::lt_trigger)); }).WhileHeld(new ShootCell());
-    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new PushOutPowerCell());
+    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
+    frc2::Button([this] {return (driverController->GetRawButton(Xbox::B_button)); }).WhileHeld(new PushOutPowerCell());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new MoveToLimelight());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::B_button); }).WhileHeld(new IntakePowerCell());
+    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::lt_trigger)); }).WhileHeld(new IntakePowerCell());
+    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::lt_trigger)); }).WhenReleased(new StopIntake());
+    
 
    // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
 

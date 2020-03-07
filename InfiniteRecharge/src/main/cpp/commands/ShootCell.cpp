@@ -7,6 +7,7 @@
 
 #include "commands/ShootCell.h"
 #include <frc/DriverStation.h>
+#include "OI.h"
 #include "RobotContainer.h"
 #include <iostream>
 
@@ -21,8 +22,8 @@ void ShootCell::Initialize() {
 }
 
 void ShootCell::Execute() {
-  double ltTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(Xbox::lt_trigger);
-  if (ltTriggerAxis > 0.5) {
+  double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
+  if (rtTriggerAxis > 0.5) {
      RobotContainer::shooter->Shoot();
      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
        RobotContainer::intake->RunConveyor();

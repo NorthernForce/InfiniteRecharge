@@ -5,28 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/RunIntakeMotor.h"
-#include <iostream>
+#include "commands/StopIntake.h"
+#include "RobotContainer.h"
+#include "OI.h"
 
-RunIntakeMotor::RunIntakeMotor() {
+StopIntake::StopIntake() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
-void RunIntakeMotor::Initialize() {}
+void StopIntake::Initialize() {
+  RobotContainer::intake->Stop();
+}
 
 // Called repeatedly when this Command is scheduled to run
-void RunIntakeMotor::Execute() {
-    RobotContainer::intake->TakeInPowerCell();
-    RobotContainer::intake->RunConveyor();
-}
+void StopIntake::Execute() {}
 
 // Called once the command ends or is interrupted.
-void RunIntakeMotor::End(bool interrupted) {
-  RobotContainer::intake->Stop();
-  RobotContainer::intake->StopConveyor();
-}
+void StopIntake::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool RunIntakeMotor::IsFinished() { return false; }
+bool StopIntake::IsFinished() { return false; }
