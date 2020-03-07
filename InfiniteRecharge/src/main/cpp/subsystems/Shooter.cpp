@@ -38,9 +38,8 @@ void Shooter::ConfigureSpark(double ramp) {
 }
 
 double Shooter::GetSpeedFromPID(double p, double i, double d) {
-  error = 0.8;
-  if (error == 0)
-    integral = 0;
+  // error = 0.8;
+  error = GetError();
 
   integral += error * 20;
   derivative = (error - errorPrior) / 20;
