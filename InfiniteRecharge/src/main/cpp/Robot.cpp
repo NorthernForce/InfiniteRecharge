@@ -21,6 +21,7 @@
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
+#include "commands/autonomous/SimpleCrossAutoLine.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -39,6 +40,7 @@ void Robot::RobotInit() {
   chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
   chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
+  chooserAuto->AddOption("Chooser::Auto::SimpleCrossAutoLine", "SimpleCrossAutoLine");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);

@@ -81,6 +81,13 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
     return std::make_pair(leftSideRotations, rightSideRotations);
 }
 
+void Drivetrain::SimpleDriveWithEncoder(double desiredEncoder) {
+    if(leftPrimarySpark->GetEncoder().GetPosition() <= desiredEncoder) {
+        leftPrimarySpark->Set(0.5);
+        rightPrimarySpark->Set(0.5);
+    }
+}
+
 void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);
