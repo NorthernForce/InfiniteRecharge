@@ -21,23 +21,25 @@ void ShootCell::Initialize() {
 }
 
 void ShootCell::Execute() {
+  double ltTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(Xbox::lt_trigger);
+  if (ltTriggerAxis > 0.5) {
+     RobotContainer::shooter->Shoot();
+     if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+       RobotContainer::intake->RunConveyor();
+     }
+      else {
+        RobotContainer::intake->StopConveyor();
+      }
 
-    RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyor();
-    }
-    else {
-      RobotContainer::intake->StopConveyor();
-    }
-
-    //std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
-    
-    if (RobotContainer::shooter->GetRPM() >= 3500) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
-      RobotContainer::intake->RunConveyor();
-    }
-    else {
-      RobotContainer::intake->StopConveyor();
-    }
+      //std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
+      
+      if (RobotContainer::shooter->GetRPM() >= 3500) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+        RobotContainer::intake->RunConveyor();
+      }
+      else {
+        RobotContainer::intake->StopConveyor();
+      }
+  }
 }
 
 void ShootCell::End(bool interrupted) {
