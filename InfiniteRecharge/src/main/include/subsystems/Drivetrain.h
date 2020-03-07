@@ -25,6 +25,7 @@ class Drivetrain : public frc2::SubsystemBase {
   std::pair<double, double> GetEncoderRotations();
   void SetEncoderPosition(double position);
   void SimpleDriveWithEncoder(double desiredEncoder);
+  void SimpleTurnToAngle(double limeLightOffset);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
