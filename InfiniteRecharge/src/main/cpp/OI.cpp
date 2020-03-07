@@ -40,6 +40,9 @@
 #include "commands/IntakeDown.h"
 #include "commands/DecreaseShooterRPM.h"
 #include "commands/IncreaseShooterRPM.h"
+#include "commands/ManualIntake.h"
+#include "commands/ManualShooter.h"
+#include "commands/ManualConveyor.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -56,8 +59,6 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-
-
   //Driver Controller
     // SimpleButton(driverController, Xbox::A_button).WhenPressed(new IntakePowerCell());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
@@ -74,11 +75,11 @@ void OI::MapControllerButtons() {
   //Manipulator Controller
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakeDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ManualShooter());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualIntake());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhileHeld(new ManualConveyor());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new IncreaseShooterRPM());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new DecreaseShooterRPM());
 
