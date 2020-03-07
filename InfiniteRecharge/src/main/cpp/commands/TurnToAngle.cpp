@@ -25,6 +25,7 @@ TurnToAngle::TurnToAngle(double target) {
 // Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
   currentAngle = RobotContainer::imu->GetRotation();
+  totalTargetAngle = currentAngle + targetAngle;
   integral = 0;
 }
 
@@ -41,19 +42,6 @@ void TurnToAngle::Execute() {
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
 }
-
-// void TurnToAngle::TurnInLoop(double target) {
-//   double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
-//   double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
-//   double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
-
-//   double rotationRaw = GetRotationFromPID(p,i,d);
-//   double rotationLimited = LimitMaxTurnSpeed(rotationRaw);
-//   std::cout << "rotlim: " << rotationLimited << "\n";
-
-//   auto driveControls = RobotContainer::oi->GetDriveControls();
-//   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
-// }
 
 void TurnToAngle::End(bool interrupted) {
   RobotContainer::drivetrain->Drive(0,0);
@@ -78,15 +66,15 @@ bool TurnToAngle::IsFinished() {
 }
 
 double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
-  error = (targetAngle - currentAngle);
+  error = (RobotContainer::imu->GetRotation() - totalTargetAngle) / 180;
   if (error == 0)
     integral = 0;
 
-  integral += error;
-  derivative = (error - errorPrior);
+  integral += error * defaultPeriodInMs;
+  derivative = (error - errorPrior) / defaultPeriodInMs;
   double rotation = p*error + i*integral + d*derivative;
   errorPrior = error;
-  return (rotation/180);
+  return rotation;
 }
 
 double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {
