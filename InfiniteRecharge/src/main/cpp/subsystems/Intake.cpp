@@ -24,7 +24,7 @@ void Intake::InitMotorControllers() {
     intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
     armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
     armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    armSpark->SetSmartCurrentLimit(40);
+    armSpark->SetSmartCurrentLimit(60);
 
     primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
     followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));

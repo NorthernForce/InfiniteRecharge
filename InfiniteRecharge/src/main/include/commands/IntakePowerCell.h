@@ -33,5 +33,5 @@ class IntakePowerCell
 
  private:
   int emptyPosition;
-
+  bool zeroHasBeenTriggered;
 };

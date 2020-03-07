@@ -16,6 +16,7 @@ IntakePowerCell::IntakePowerCell() {
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
+  zeroHasBeenTriggered = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -23,11 +24,14 @@ void IntakePowerCell::Execute() {
   RobotContainer::intake->TakeInPowerCell();
   if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
     RobotContainer::intake->RunConveyor();
-    //std::cout << "running conveyor\n";
+    zeroHasBeenTriggered = true;
   }
   if (RobotContainer::intake->powerCellCount >= 5) {
     RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
     RobotContainer::intake->Stop();
+    RobotContainer::intake->StopConveyor();
+  }
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->StopConveyor();
   }
 }
@@ -40,7 +44,7 @@ void IntakePowerCell::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT)
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true)
     return true;
   else
     return false; 

@@ -35,16 +35,14 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-
-  cameraThread.reset(new std::thread(CameraInit));
-  */
-    chooserAuto = new frc::SendableChooser<std::string>;
-    chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
-    chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
-    chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
-    chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
-    chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
-    frc::SmartDashboard::PutData(chooserAuto);
+*/
+  chooserAuto = new frc::SendableChooser<std::string>;
+  chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
+  chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
+  frc::SmartDashboard::PutData(chooserAuto);
 }
 
 /**
@@ -120,31 +118,6 @@ void Robot::TeleopPeriodic() {}
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {}
-
-void Robot::CameraInit() {
-  cv::Mat frame;
-  cv::VideoCapture cap;
-  int deviceID = 0;
-  cap.set(cv::CAP_PROP_FRAME_HEIGHT, 360);
-  cap.set(cv::CAP_PROP_FRAME_WIDTH, 480);
-
-  cap.open(deviceID);
-  if (!cap.isOpened()) {
-      std::cerr << "ERROR! Unable to open camera\n";
-  }
-  for (;;)
-  {
-      cap.read(frame);
-      if (frame.empty()) {
-          std::cerr << "ERROR! blank frame grabbed\n";
-          break;
-      }
-
-      cv::imshow("Live", frame);
-      if (cv::waitKey(5) >= 0)
-          break;
-  }
-}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
