@@ -61,6 +61,10 @@ int Shooter::GetRPM() {
   return shooterSpark->GetEncoder().GetVelocity();
 }
 
+void Shooter::AddToShooterRPM(int change) {
+  shooterRPM += change;
+}
+
 void Shooter::ShooterUp() {
   shooterShifter->Set(shiftOn); 
 }

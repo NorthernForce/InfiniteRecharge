@@ -24,7 +24,7 @@ void IndexPowerCells::Execute() {
     RobotContainer::intake->RunConveyor();
     //std::cout << "running conveyor\n";
   } 
-  else if (RobotContainer::intake->powerCellCount >= 5) {
+  else if (RobotContainer::intake->GetPowerCellCount() >= 5) {
     RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);
     RobotContainer::intake->Stop();
     RobotContainer::intake->StopConveyor();

@@ -65,6 +65,10 @@ void Intake::PushOutPowerCell() {
     intakeTalon->Set(-0.5);
 }
 
+int Intake::GetPowerCellCount() {
+    return powerCellCount;
+}
+
 void Intake::Stop() {
     intakeTalon->Set(0);
 }

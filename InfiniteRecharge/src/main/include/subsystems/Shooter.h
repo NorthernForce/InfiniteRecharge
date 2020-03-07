@@ -21,6 +21,7 @@ class Shooter : public frc2::SubsystemBase {
   double GetSpeedFromPID(double p, double i, double d);
   void SetSpeed(double speed);
   int GetRPM();
+  void AddToShooterRPM(int change);
   void ShooterUp();
   void ShooterDown();
   double RpmPidLoop(double targetRPM);
@@ -55,5 +56,5 @@ class Shooter : public frc2::SubsystemBase {
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   static double rampRate;
-
+  int shooterRPM;
 };
