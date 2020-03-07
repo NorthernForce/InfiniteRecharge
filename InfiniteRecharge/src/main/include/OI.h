@@ -3,6 +3,7 @@
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc2/command/button/Button.h>
 
 class OI {
  public:
@@ -55,4 +56,6 @@ class OI {
  private:
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
+    frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, int btn);
+    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold);
 };

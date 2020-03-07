@@ -34,7 +34,6 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<RobotContainer> container;
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
-  std::shared_ptr<std::thread> cameraThread;
   frc::SendableChooser<std::string> *chooserAuto;
   std::string chooserAutoSelected;
 };
