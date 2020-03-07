@@ -60,8 +60,8 @@ void OI::MapControllerButtons() {
     // SimpleButton(driverController, Xbox::A_button).WhenPressed(new IntakePowerCell());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
-    frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
-    frc2::Button([this] {return (driverController->GetRawButton(Xbox::B_button)); }).WhileHeld(new PushOutPowerCell());
+    frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
+    frc2::Button([this] { return (driverController->GetRawButton(Xbox::B_button)); }).WhileHeld(new PushOutPowerCell());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new IntakePowerCell());
@@ -77,6 +77,8 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ManualShooter());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualIntake());
+    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new AimShooterUp());
+    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new AimShooterDown());
 
     //frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new ManualWackyWheel());
 
@@ -128,4 +130,4 @@ frc2::Button OI::SimpleButton(std::shared_ptr<frc::GenericHID> controller, int b
 
 frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold) {
   return frc2::Button([this, controller, axis, threshold] { return controller->GetRawAxis(axis) > threshold; });
-} 
+}

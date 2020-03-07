@@ -21,7 +21,7 @@ namespace Constants {
     const double camDistFromRoboFrontCent = 9;
     const double camDistFromRoboSideCent = 9;
 
-    const double ultrasonicDistFromRoboCent = 14; 
+    const double ultrasonicDistFromRoboCent = 14;
 
     const double pi = 3.141592653589793;
     const double degreesToRadians = pi/180;
