@@ -49,10 +49,10 @@ void Intake::Periodic() {
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
         if (GetInventory(i) == StorageState::PRESENT) {
-            //std::cout << "Position " << i <<  " full\n";
+          //  std::cout << "Position " << i <<  " full\n";
     }
         else {
-            //std::cout << "Position " << i <<  " empty\n";
+          //  std::cout << "Position " << i <<  " empty\n";
         }
    }
 }
@@ -62,7 +62,7 @@ void Intake::TakeInPowerCell() {
 }
 
 void Intake::PushOutPowerCell() {
-    intakeTalon->Set(0.5);
+    intakeTalon->Set(-0.5);
 }
 
 void Intake::Stop() {

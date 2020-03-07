@@ -21,6 +21,7 @@
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
+#include "commands/autonomous/SimpleCrossAutoLine.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -39,6 +40,7 @@ void Robot::RobotInit() {
   chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
   chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
+  chooserAuto->AddOption("Chooser::Auto::SimpleCrossAutoLine", "SimpleCrossAutoLine");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
@@ -76,6 +78,7 @@ void Robot::AutonomousInit() {
       autonomousCommand->Schedule();
 */
 ////TODO: Figure out if this should go in periodic or Init
+  /*
   chooserAutoSelected = chooserAuto->GetSelected();
 
         if (chooserAutoSelected == "CrossAutoLine") {
@@ -96,10 +99,17 @@ void Robot::AutonomousInit() {
     else {
       new DoNothing;
     }
-
+*/
+  RobotContainer::drivetrain->SetEncoderPosition(0);
 }
 
+
 void Robot::AutonomousPeriodic() {
+  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.4, 0.4);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 50)
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+
 }
 
 void Robot::TeleopInit() {

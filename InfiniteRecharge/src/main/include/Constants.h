@@ -23,7 +23,8 @@ namespace Constants {
 
     const double ultrasonicDistFromRoboCent = 14; 
 
-    const double degreesToRadians = 3.141592653589793/180;
+    const double pi = 3.141592653589793;
+    const double degreesToRadians = pi/180;
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;

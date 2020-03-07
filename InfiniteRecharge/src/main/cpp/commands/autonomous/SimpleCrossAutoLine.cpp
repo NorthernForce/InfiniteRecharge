@@ -5,27 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PushOutPowerCell.h"
+#include "commands/autonomous/SimpleCrossAutoLine.h"
+#include "RobotContainer.h"
 
-PushOutPowerCell::PushOutPowerCell() {
+SimpleCrossAutoLine::SimpleCrossAutoLine() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::intake.get());
+  AddRequirements(RobotContainer::drivetrain.get());
 }
 
 // Called when the command is initially scheduled.
-void PushOutPowerCell::Initialize() {}
+void SimpleCrossAutoLine::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void PushOutPowerCell::Execute() {
-  RobotContainer::intake->PushOutPowerCell();
+void SimpleCrossAutoLine::Execute() {
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.5, 0.5);
 }
 
 // Called once the command ends or is interrupted.
-void PushOutPowerCell::End(bool interrupted) {
-  RobotContainer::intake->Stop();
-}
+void SimpleCrossAutoLine::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool PushOutPowerCell::IsFinished() { return false; } 
-
-
+bool SimpleCrossAutoLine::IsFinished() { return false; }

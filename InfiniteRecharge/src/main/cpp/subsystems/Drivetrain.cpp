@@ -43,7 +43,7 @@ void Drivetrain::Drive(double speed, double rotation) {
 }
 
 void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
-    leftPrimarySpark->Set(leftSpeed);
+    leftPrimarySpark->Set(-leftSpeed);
     rightPrimarySpark->Set(rightSpeed);
 }
 
@@ -74,6 +74,13 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
     double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
     double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
     return std::make_pair(leftSideRotations, rightSideRotations);
+}
+
+void Drivetrain::SimpleDriveWithEncoder(double desiredEncoder) {
+    if(leftPrimarySpark->GetEncoder().GetPosition() <= desiredEncoder) {
+        leftPrimarySpark->Set(0.5);
+        rightPrimarySpark->Set(0.5);
+    }
 }
 
 void Drivetrain::SetEncoderPosition(double position) {

@@ -7,6 +7,7 @@
 
 #include "subsystems/Ultrasonic.h"
 #include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 //all digital stuff is commented out
 Ultrasonic::Ultrasonic() {
@@ -20,9 +21,13 @@ void Ultrasonic::Periodic() {
         distance = analogUltrasonic->GetValue() * ValueToInches;
         std::cout << distance << "\n";
     }
-    else
+    else {
         distance = 0;
+    }
+    frc::SmartDashboard::PutNumber("Ultrasonic distance: ", distance);
+
 }
+
 
 bool Ultrasonic::IsObstacleAt(int targetDistance) {
     if(distance < targetDistance) {
