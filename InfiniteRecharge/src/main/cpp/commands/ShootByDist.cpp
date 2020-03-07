@@ -10,7 +10,6 @@
 
 ShootByDist::ShootByDist() {
   AddRequirements(RobotContainer::shooter.get());
-  AddRequirements(RobotContainer::ultrasonic.get());
   AddRequirements(RobotContainer::intake.get());
 }
 

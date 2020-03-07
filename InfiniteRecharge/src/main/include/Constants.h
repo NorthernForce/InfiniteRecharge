@@ -12,7 +12,7 @@ namespace Constants {
     const int manipulatorController_id = 1;
 
     const int PCMCanBusID = 15;
-    const int ultrasonicRangeFinder = 0;
+    const int ultrasonicRangeFinder = 1;
 
     const double roboWidth = 29;
     const double roboLength = 30.5;
@@ -21,7 +21,7 @@ namespace Constants {
     const double camDistFromRoboFrontCent = 9;
     const double camDistFromRoboSideCent = 9;
 
-    const double ultrasonicDistFromRoboCent = 14; 
+    const double ultrasonicDistFromRoboCent = 14;
 
     const double pi = 3.141592653589793;
     const double degreesToRadians = pi/180;
