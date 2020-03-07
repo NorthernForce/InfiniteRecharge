@@ -106,9 +106,8 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
-  RobotContainer::driveShifter->Shift(DriveShifter::Gear::Low);
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.8, 0.8);
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 
