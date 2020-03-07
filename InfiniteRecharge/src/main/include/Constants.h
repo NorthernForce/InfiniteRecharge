@@ -12,7 +12,7 @@ namespace Constants {
     const int manipulatorController_id = 1;
 
     const int PCMCanBusID = 15;
-    const int ultrasonicRangeFinder = 0;
+    const int ultrasonicRangeFinder = 1;
 
     const double roboWidth = 29;
     const double roboLength = 30.5;
@@ -50,7 +50,7 @@ namespace Constants {
     }
 
     namespace Shifting {
-        const double lowMultiplier = 0;
+        const double lowMultiplier = 4.286;
         const double highMultiplier = 1.39383333333333333333;
     }
 

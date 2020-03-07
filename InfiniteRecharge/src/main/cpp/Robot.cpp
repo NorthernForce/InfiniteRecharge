@@ -22,6 +22,7 @@
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
+#include "subsystems/DriveShifter.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -105,9 +106,10 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  RobotContainer::driveShifter->Shift(DriveShifter::Gear::Low);
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.4, 0.4);
-  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 50)
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.8, 0.8);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 
 }
