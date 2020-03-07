@@ -12,7 +12,6 @@
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::limelight.get());
-  turnToAngle.reset(new TurnToAngle());
 }
 
 // Called when the command is initially scheduled.
@@ -27,7 +26,7 @@ void MoveToLimelight::Execute() {
   std::cout << "is target there: " << isTargetThere << std::endl;
   std::cout << "limelight offset: " << limeLightOffset << std::endl;
   if (isTargetThere == true) {
-    TurnToAngle(limeLightOffset);
+    RobotContainer::drivetrain->SimpleTurnToAngle(limeLightOffset);
   }
 }
 

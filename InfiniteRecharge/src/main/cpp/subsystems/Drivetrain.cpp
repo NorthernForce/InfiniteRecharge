@@ -7,7 +7,6 @@
 
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {    
     leftPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless));
@@ -49,11 +48,7 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 }
 
 // This method will be called once per scheduler run
-void Drivetrain::Periodic() {
-    // frc::SmartDashboard::PutNumber("Set Encoder Position: ", 0);
-    // double position = frc::SmartDashboard::GetNumber("Set Encoder Position: ", 0);
-    // SetEncoderPosition(position);
-}
+void Drivetrain::Periodic() {}
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake
 void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
@@ -91,4 +86,12 @@ void Drivetrain::SimpleDriveWithEncoder(double desiredEncoder) {
 void Drivetrain::SetEncoderPosition(double position) {
     leftPrimarySpark->GetEncoder().SetPosition(position);
     rightPrimarySpark->GetEncoder().SetPosition(position);
+}
+
+void Drivetrain::SimpleTurnToAngle(double limelightOffset) {
+    if (limelightOffset < 0) {
+        rightPrimarySpark->Set(0.3);
+    } else if (limelightOffset > 0) {
+        leftPrimarySpark->Set(0.3);
+    }
 }
