@@ -78,6 +78,7 @@ void Robot::AutonomousInit() {
       autonomousCommand->Schedule();
 */
 ////TODO: Figure out if this should go in periodic or Init
+  /*
   chooserAutoSelected = chooserAuto->GetSelected();
 
         if (chooserAutoSelected == "CrossAutoLine") {
@@ -98,10 +99,17 @@ void Robot::AutonomousInit() {
     else {
       new DoNothing;
     }
-
+*/
+  RobotContainer::drivetrain->SetEncoderPosition(0);
 }
 
+
 void Robot::AutonomousPeriodic() {
+  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.4, 0.4);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 50)
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+
 }
 
 void Robot::TeleopInit() {

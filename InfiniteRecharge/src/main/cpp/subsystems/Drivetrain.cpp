@@ -44,7 +44,7 @@ void Drivetrain::Drive(double speed, double rotation) {
 }
 
 void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
-    leftPrimarySpark->Set(leftSpeed);
+    leftPrimarySpark->Set(-leftSpeed);
     rightPrimarySpark->Set(rightSpeed);
 }
 

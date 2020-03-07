@@ -21,7 +21,9 @@ void PushOutPowerCell::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void PushOutPowerCell::End(bool interrupted) {}
+void PushOutPowerCell::End(bool interrupted) {
+  RobotContainer::intake->Stop();
+}
 
 // Returns true when the command should end.
 bool PushOutPowerCell::IsFinished() { return false; } 
