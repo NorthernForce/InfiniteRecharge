@@ -5,23 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/TuneRpmPid.h"
+#include "commands/IncreaseShooterRPM.h"
 #include "RobotContainer.h"
 
-TuneRpmPid::TuneRpmPid() {
+IncreaseShooterRPM::IncreaseShooterRPM() {
   AddRequirements(RobotContainer::shooter.get());
 }
 
 // Called when the command is initially scheduled.
-void TuneRpmPid::Initialize() {
-  RobotContainer::shooter->TuneRpmPid_P();
+void IncreaseShooterRPM::Initialize() {
+  RobotContainer::shooter->AddToShooterRPM(250);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void TuneRpmPid::Execute() {}
+void IncreaseShooterRPM::Execute() {}
 
 // Called once the command ends or is interrupted.
-void TuneRpmPid::End(bool interrupted) {}
+void IncreaseShooterRPM::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool TuneRpmPid::IsFinished() { return true; }
+bool IncreaseShooterRPM::IsFinished() { return true; }

@@ -30,8 +30,6 @@ class Intake : public frc2::SubsystemBase {
   const int noEmptyPositionFound = -1;
   const int noFullPositionFound = -1;
 
-  int powerCellCount = 0;
-
   Intake();
   void InitMotorControllers();
   void InitBallPositionSensors();
@@ -39,6 +37,7 @@ class Intake : public frc2::SubsystemBase {
   void SetInvertedFollower();
   void TakeInPowerCell();
   void PushOutPowerCell();
+  int GetPowerCellCount();
   void Stop();
   void SetArmUp();
   void SetArmDown();
@@ -78,4 +77,5 @@ class Intake : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
 
   bool ballOccupancy[6];
+  int powerCellCount = 0;
 };

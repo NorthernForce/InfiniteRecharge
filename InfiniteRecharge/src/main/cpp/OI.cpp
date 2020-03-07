@@ -38,6 +38,8 @@
 #include "commands/IndexPowerCells.h"
 #include "commands/IntakeUp.h"
 #include "commands/IntakeDown.h"
+#include "commands/DecreaseShooterRPM.h"
+#include "commands/IncreaseShooterRPM.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -76,12 +78,10 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ResetCoordinates());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakeDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
-    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new AimShooterUp());
-    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new AimShooterDown());
+    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new IncreaseShooterRPM());
+    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new DecreaseShooterRPM());
 
     //frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new ManualWackyWheel());
-
-
 
   //Testing Buttons
     //frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhileHeld(new TurnToAngle(180));

@@ -17,10 +17,10 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class ShootByDist
-    : public frc2::CommandHelper<frc2::CommandBase, ShootByDist> {
+class IncreaseShooterRPM
+    : public frc2::CommandHelper<frc2::CommandBase, IncreaseShooterRPM> {
  public:
-  ShootByDist();
+  IncreaseShooterRPM();
 
   void Initialize() override;
 
@@ -29,7 +29,4 @@ class ShootByDist
   void End(bool interrupted) override;
 
   bool IsFinished() override;
-
- private:
-  double m_threshold;
 };
