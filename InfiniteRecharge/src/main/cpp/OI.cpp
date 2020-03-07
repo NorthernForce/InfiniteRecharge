@@ -58,7 +58,6 @@ void OI::MapControllerButtons() {
 
   //Driver Controller
     // SimpleButton(driverController, Xbox::A_button).WhenPressed(new IntakePowerCell());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::X_button); }).WhenPressed(new PushOutPowerCell());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] {return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
@@ -68,8 +67,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new IntakePowerCell());
     
 
-   // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
-
+    // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToPowercell());
 
   //Manipulator Controller
