@@ -23,8 +23,6 @@ void IntakePowerCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
-  double ltTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::lt_trigger);
-  if(ltTriggerAxis > 0.5){
     RobotContainer::intake->TakeInPowerCell();
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
       RobotContainer::intake->RunConveyor();
@@ -37,7 +35,7 @@ void IntakePowerCell::Execute() {
     }
     if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
       RobotContainer::intake->StopConveyor();
-    }
+    
   }
 }
 
