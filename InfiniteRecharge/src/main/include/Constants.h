@@ -8,46 +8,61 @@
 #pragma once
 
 namespace Constants {
-    namespace Drivetrain {
-        const int leftPrimary = 4;
-        const int leftFollower1 = 6;
-        const int leftFollower2 = 2;
+    const int driverController_id = 0;
+    const int manipulatorController_id = 1;
 
-        const int rightPrimary = 5;
-        const int rightFollower1 = 1;
-        const int rightFollower2 = 3;
+    const int PCMCanBusID = 15;
+    const int ultrasonicRangeFinder = 0;
 
-        namespace Gear {
-            const double low = 60/14;
-            const double high = 40/34;
-        }
-        const int motorCPR = 42;
-        const double wheelCPR_low = motorCPR * Gear::low;
-        const double wheelCPR_high = motorCPR * Gear::high;
+    const double roboWidth = 29;
+    const double roboLength = 30.5;
+    const double bumperThickness = 3;
+
+    const double camDistFromRoboFrontCent = 9;
+    const double camDistFromRoboSideCent = 9;
+
+    const double ultrasonicDistFromRoboCent = 14; 
+
+    const double degreesToRadians = 3.141592653589793/180;
+    
+    namespace MotorIDs {
+        const int driveLeftPrimary = 5;
+        const int driveLeftFollower1 = 1;
+        const int driveLeftFollower2 = 3;
+        const int driveRightPrimary = 6;
+        const int driveRightFollower1 = 2;
+        const int driveRightFollower2 = 4;
+
+        const int shooter = 8;
+        const int wackyWheel = 11; 
+
+        const int intake = 13;  
+
+        const int intakeArm = 9;
+        const int conveyor1 = 10;
+        const int conveyor2 = 12;
+
+        const int climberArm = 7;
+
+        const int panServoPWM = 7;
+        const int tiltServoPWM = 8;
     }
 
-    namespace OI {
-        const int driverController_id = 0;
-        const int manipulatorController_id = 1;
+    namespace Shifting {
+        const double lowMultiplier = 0;
+        const double highMultiplier = 1.39383333333333333333;
     }
 
-    namespace PCM {
-        const int PCMCanBusID = 11;
-    }
+    namespace DigitalPort { 
+        const int ballPort0 = 0; 
+        const int ballPort1 = 1;
+        const int ballPort2 = 2;
+        const int ballPort3 = 3;
+        const int ballPort4 = 4;
+        const int ballPort5 = 5;
 
-<<<<<<< Updated upstream
-    namespace Servo {
-        const int panServo = 0;
-        const int tiltServo = 1;
-    }
-
-    namespace Ultrasonic {
-        const int ultrasonicRangeFinder = 0; // analog port 0
+        const int redRGB = 10;
+        const int greenRGB = 11;
+        const int blueRGB = 12;
     }
 }
-=======
-    namespace Navigation {
-        const int targetDistanceSensor_id = 0;
-    }
-}
->>>>>>> Stashed changes

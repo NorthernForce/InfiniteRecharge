@@ -9,15 +9,15 @@
 #include "Constants.h"
 
 Drivetrain::Drivetrain() {    
-    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::leftPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::leftFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::Drivetrain::rightPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::Drivetrain::rightFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower1, rev::CANSparkMax::MotorType::kBrushless));
+    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless));
+    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightPrimary, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower1, rev::CANSparkMax::MotorType::kBrushless));
+    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless));
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
-    SetupControllers();
+    ConfigureAllControllers();
 
     robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
 }
@@ -29,7 +29,7 @@ void Drivetrain::SetInvertedFollowers() {
     rightFollowerSpark2->Follow(*rightPrimarySpark, true);
 }
 
-void Drivetrain::SetupControllers() {
+void Drivetrain::ConfigureAllControllers() {
     ConfigureController(*leftPrimarySpark);
     ConfigureController(*leftFollowerSpark1);
     ConfigureController(*leftFollowerSpark2);
@@ -39,7 +39,12 @@ void Drivetrain::SetupControllers() {
 }
 
 void Drivetrain::Drive(double speed, double rotation) {
-    robotDrive->ArcadeDrive(speed, rotation);
+    robotDrive->ArcadeDrive(speed, rotation * 0.85);
+}
+
+void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
+    leftPrimarySpark->Set(leftSpeed);
+    rightPrimarySpark->Set(rightSpeed);
 }
 
 // This method will be called once per scheduler run
@@ -58,23 +63,17 @@ void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
 }
 
 double Drivetrain::GetLeftRPM() {
-    return leftPrimarySpark->GetEncoder().GetVelocity();
+    return leftPrimarySpark->GetEncoder().GetVelocity() * -1;
 }
 
 double Drivetrain::GetRightRPM() {
-    return rightPrimarySpark->GetEncoder().GetVelocity() * Constants::Encoders::rotationMultiplier * -1;
+    return rightPrimarySpark->GetEncoder().GetVelocity() * -1;
 }
 
 std::pair<double, double> Drivetrain::GetEncoderRotations() {
     double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
     double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
     return std::make_pair(leftSideRotations, rightSideRotations);
-}
-
-std::pair<double, double> Drivetrain::GetEncoderCounts() {
-    double leftSideCounts = GetEncoderRotations().first / Constants::Encoders::motorCPR ;
-    double rightSideCounts = GetEncoderRotations().second / Constants::Encoders::motorCPR;
-    return std::make_pair(leftSideCounts, rightSideCounts);
 }
 
 void Drivetrain::SetEncoderPosition(double position) {

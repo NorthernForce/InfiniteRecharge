@@ -9,6 +9,8 @@
 
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
+#include <frc/smartdashboard/SendableChooser.h>
+#include <thread>
 
 #include "RobotContainer.h"
 
@@ -23,10 +25,15 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
+  static void CameraInit();
 
  private:
   // Have it null by default so that if testing teleop it
   // doesn't have undefined behavior and potentially crash.
   
   std::shared_ptr<RobotContainer> container;
+  //std::unique_ptr<frc2::Command> autonomousCommand;
+  //frc::SendableChooser<frc2::Command*> autonomousChooser;
+  frc::SendableChooser<std::string> *chooserAuto;
+  std::string chooserAutoSelected;
 };

@@ -6,13 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/DriveWithJoystick.h"
+#include "commands/ShiftGear.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "subsystems/Drivetrain.h"
 
-DriveWithJoystick::DriveWithJoystick(std::function<double()> speed, std::function<double()> rotation)
-  :  m_speed(speed), m_rotation(rotation) {
-    SetName("DriveWithJoystick");
-    AddRequirements(RobotContainer::drivetrain.get());
+int DriveWithJoystick::countForShiftEligibility;
+
+DriveWithJoystick::DriveWithJoystick() {
+  SetName("DriveWithJoystick");
+  AddRequirements(RobotContainer::drivetrain.get());
+  AddRequirements(RobotContainer::imu.get());
 }
 
 // Called when the command is initially scheduled.
@@ -20,15 +23,45 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  double driveSpeedMultiplier = RobotContainer::oi->getDriveSpeedMultiplier();
-  RobotContainer::drivetrain->Drive(m_speed() * driveSpeedMultiplier, m_rotation() * driveSpeedMultiplier);
+  auto driveControls = RobotContainer::oi->GetDriveControls();
+  speed = driveControls.first;
+  rotation = driveControls.second;
+  RobotContainer::drivetrain->Drive(speed, rotation);
+
+  AutoShiftIfPermitted();
 }
 
 // Called once the command ends or is interrupted.
 void DriveWithJoystick::End(bool interrupted) {
-////TODO: Review whether we want to stop the Drive if this is just Interrupted, If (interrupted == false) ...///
   RobotContainer::drivetrain->Drive(0, 0);
 }
 
 // Returns true when the command should end.
 bool DriveWithJoystick::IsFinished() { return false; }
+
+void DriveWithJoystick::AutoShiftIfPermitted() {
+  double positiveAcceleration = abs(RobotContainer::imu->GetAcceleration());
+  bool isEligibleForShift;
+
+  if (positiveAcceleration > 0.1 && countForShiftEligibility >= 25)
+    isEligibleForShift = true;
+
+  if (isEligibleForShift) {
+    ShiftIfEligible(isEligibleForShift);
+    std::cout << "Eligible for shift!\n";
+  }
+  countForShiftEligibility++;
+}
+
+void DriveWithJoystick::ShiftIfEligible(bool isEligible) {
+  bool isDrivingStraight = (abs(speed) > 0.75 && abs(rotation) < 0.15);
+  if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded() == true) {
+    ShiftGear(ShiftGear::Gear::Low);
+    std::cout << "shiftgear low\n";
+  }
+  else {
+    ShiftGear(ShiftGear::Gear::High);
+    std::cout << "shiftgear high\n";
+  }
+  countForShiftEligibility = 0;
+}

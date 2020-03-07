@@ -10,6 +10,9 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc/AnalogInput.h>
 #include "Constants.h"
+//#include <frc/DigitalOutput.h>
+
+//all digital stuff is commented out
 
 class Ultrasonic : public frc2::SubsystemBase {
  public:
@@ -23,18 +26,21 @@ class Ultrasonic : public frc2::SubsystemBase {
   double GetDistance();
   void Enable();
   void Disable();
+  bool IsObstacleAt(int targetDistance);
 
+  double distance;
+  bool isObstacleDetected;
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
   static constexpr double ValueToInches = 0.125;
 
-  double distance;
-
   bool ultrasonicState;
 
-  frc::AnalogInput analogUltrasonic{Constants::Ultrasonic::ultrasonicRangeFinder};
+  std::shared_ptr<frc::AnalogInput> analogUltrasonic;
+
+  //std::shared_ptr<frc::DigitalOutput> ctrl;
 
   const static bool ultrasonicOn = true;
   const static bool ultrasonicOff = false;

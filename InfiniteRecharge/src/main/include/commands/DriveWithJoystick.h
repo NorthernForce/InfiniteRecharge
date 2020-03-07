@@ -14,18 +14,16 @@
 class DriveWithJoystick
     : public frc2::CommandHelper<frc2::CommandBase, DriveWithJoystick> {
  public:
-  DriveWithJoystick(std::function<double()> speed, std::function<double()> rotation);
-
+  DriveWithJoystick();
   void Initialize() override;
-
   void Execute() override;
-
   void End(bool interrupted) override;
-
   bool IsFinished() override;
+  void AutoShiftIfPermitted();
 
  private:
-  std::function<double()> m_speed;
-  std::function<double()> m_rotation;
-
+  static int countForShiftEligibility;
+  void ShiftIfEligible(bool isEligible);
+  double speed;
+  double rotation;
 };

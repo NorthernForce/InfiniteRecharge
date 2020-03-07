@@ -16,13 +16,20 @@ std::shared_ptr<PCM> RobotContainer::pcm;
 std::shared_ptr<IMU> RobotContainer::imu;
 std::shared_ptr<Navigation> RobotContainer::navigation;
 std::shared_ptr<CameraMount> RobotContainer::cameraMount;
+std::shared_ptr<AICommunication> RobotContainer::aiComms;
 std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
+std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
+std::shared_ptr<Intake> RobotContainer::intake;
+std::shared_ptr<Shooter> RobotContainer::shooter;
+std::shared_ptr<Climber> RobotContainer::climber;
+std::shared_ptr<WackyWheel> RobotContainer::wackyWheel;
+std::shared_ptr<Limelight> RobotContainer::limelight;
 
 RobotContainer::RobotContainer() {
   oi.reset(new OI());
   InitSubsystems();
-  InitDefaultCommands();
   oi->MapControllerButtons();
+  InitDefaultCommands();
 }
 
 void RobotContainer::InitSubsystems() {
@@ -31,14 +38,26 @@ void RobotContainer::InitSubsystems() {
   driveShifter.reset(new DriveShifter);
   imu.reset(new IMU);
   navigation.reset(new Navigation);
+  aiComms.reset(new AICommunication);
   aiVisionTargetting.reset(new AIVisionTargetting);
   cameraMount.reset(new CameraMount);
   ultrasonic.reset(new Ultrasonic);
+  intake.reset(new Intake);
+  shooter.reset(new Shooter);
+  climber.reset(new Climber);
+  limelight.reset(new Limelight);
 }
 
 void RobotContainer::InitDefaultCommands() {
-  drivetrain->SetDefaultCommand(DriveWithJoystick(
-    [this] { return oi->driverController->GetY(frc::XboxController::kLeftHand); },
-    [this] { return oi->driverController->GetX(frc::XboxController::kRightHand) *-1; }
+  drivetrain->SetDefaultCommand(DriveWithJoystick());
+
+  climber->SetDefaultCommand(Climb( 
+    [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
   ));
+
+  cameraMount->SetDefaultCommand(SweepAICamera());
+}
+
+void RobotContainer::InitAutonomousCommands() {
+
 }

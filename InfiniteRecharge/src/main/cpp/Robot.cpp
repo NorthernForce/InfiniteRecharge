@@ -9,11 +9,41 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <cameraserver/CameraServer.h>
+#include <string>
+
+#include "Constants.h"
+#include "OI.h"
+
+#include "commands/InventoryPowerCells.h"
+#include "commands/autonomous/CrossAutoLine.h"
+#include "commands/autonomous/InFrontOfGoal.h"
+#include "commands/autonomous/InFrontOfOurTrench.h"
+#include "commands/autonomous/InFrontOfFoesTrench.h"
+#include "commands/autonomous/DoNothing.h"
+
+#include <cameraserver/CameraServer.h>
 
 void Robot::RobotInit() {
-
   container.reset(new RobotContainer());
+////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
+/*
+  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+*/
+  chooserAuto = new frc::SendableChooser<std::string>;
+  chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
+  chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
+  chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
+  frc::SmartDashboard::PutData(chooserAuto);
 
+  CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -40,10 +70,37 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  
+/*
+	autonomousCommand.reset(autonomousChooser.GetSelected());
+  if(autonomousCommand != nullptr)
+      autonomousCommand->Schedule();
+*/
+////TODO: Figure out if this should go in periodic or Init
+  chooserAutoSelected = chooserAuto->GetSelected();
+
+        if (chooserAutoSelected == "CrossAutoLine") {
+        new CrossAutoLine;
+    }
+    else if (chooserAutoSelected == "DoNothing") {
+       new DoNothing;
+    }
+    else if (chooserAutoSelected == "InFrontOfGoal") {
+       new InFrontOfGoal;
+    }
+    else if (chooserAutoSelected == "InFrontOfFoesTrench") {
+      new InFrontOfFoesTrench;
+    }
+    else if (chooserAutoSelected == "InFrontOfOurTrench") {
+      new InFrontOfOurTrench;
+    }
+    else {
+      new DoNothing;
+    }
+
 }
 
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when

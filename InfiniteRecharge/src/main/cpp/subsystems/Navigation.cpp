@@ -10,29 +10,46 @@
 
 Navigation::Navigation() {}
 
+
+////TODO: Need to calculate position
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
-    averageSpeedInRPM = ((RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM()) / 2);
-    std::cout << "Distance travelled- L: " << GetInchesTravelled().first << '\n';
-    std::cout << "Distance travelled- R: " << GetInchesTravelled().second << '\n';
-    std::cout << "Encoder Position- L: " << RobotContainer::drivetrain->GetEncoderRotations().first << '\n';
-    std::cout << "Encoder Position- R: " << RobotContainer::drivetrain->GetEncoderRotations().second << '\n';
+    averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    Navigation::CoordinatePosition();
+    // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
-    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first;
-    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second;
+    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
+    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
+    previousLeftEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
+    previousRightEncoder = RobotContainer::drivetrain->GetEncoderRotations().second;
     double leftDistance;
     double rightDistance;
 
-    if (RobotContainer::driveShifter->GetGearAsInt() == 1) {
-        leftDistance = leftEncoderPos * 71.52305;
-        rightDistance = rightEncoderPos * 71.52305;
+    if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::High) {
+        leftDistance = leftEncoderPos * Constants::Shifting::highMultiplier;
+        rightDistance = rightEncoderPos * Constants::Shifting::highMultiplier;
     }
     else {
-        leftDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
-        rightDistance = (Constants::Drivetrain::Gear::low * leftEncoderPos) / Constants::Encoders::wheelCircum;
+        leftDistance = leftEncoderPos * Constants::Shifting::lowMultiplier;
+        rightDistance = rightEncoderPos * Constants::Shifting::lowMultiplier;
     }
     return std::make_pair(leftDistance, rightDistance);
+}
+
+void Navigation::ResetPosition() {
+  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * 0.996194698092 * abs(cos(robotAngleDifference));
+  yPosition = RobotContainer::ultrasonic->GetDistance();
+}
+
+void Navigation::CoordinatePosition() {
+    double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+    xPosition +=  averageInches * sin(-robotAngleDifference);
+    yPosition += averageInches * cos(-robotAngleDifference);
+}
+
+std::pair<double, double> Navigation::GetCoordinatePosition() {
+    return std::make_pair(xPosition, yPosition);
 }
