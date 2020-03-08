@@ -10,7 +10,7 @@
 
 ShootLowGoal::ShootLowGoal() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::shooter.get())
+  AddRequirements(RobotContainer::shooter.get());
 }
 
 // Called when the command is initially scheduled.
