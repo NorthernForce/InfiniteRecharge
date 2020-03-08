@@ -27,7 +27,7 @@ void IntakePowerCell::Execute() {
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
       RobotContainer::intake->RunConveyor();
       zeroHasBeenTriggered = true;
-      std::cout << "in if statement for conveyor\n";
+      //std::cout << "in if statement for conveyor\n";
     }
     // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
     //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);

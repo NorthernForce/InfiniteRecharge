@@ -90,8 +90,8 @@ void Drivetrain::SetEncoderPosition(double position) {
 
 void Drivetrain::SimpleTurnToAngle(double limelightOffset) {
     if (limelightOffset < 0) {
-        rightPrimarySpark->Set(0.3);
+        rightPrimarySpark->Set(0.6);
     } else if (limelightOffset > 0) {
-        leftPrimarySpark->Set(0.3);
+        leftPrimarySpark->Set(0.6);
     }
 }
