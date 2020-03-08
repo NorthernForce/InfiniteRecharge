@@ -5,21 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/DecreaseShooterRPM.h"
+#include "commands/ReverseConveyor.h"
 #include "RobotContainer.h"
 
-DecreaseShooterRPM::DecreaseShooterRPM() {}
-
-// Called when the command is initially scheduled.
-void DecreaseShooterRPM::Initialize() {
-  RobotContainer::shooter->AddToShooterRPM(-250);
+ReverseConveyor::ReverseConveyor() {
+  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(RobotContainer::intake.get());
 }
 
+// Called when the command is initially scheduled.
+void ReverseConveyor::Initialize() {}
+
 // Called repeatedly when this Command is scheduled to run
-void DecreaseShooterRPM::Execute() {}
+void ReverseConveyor::Execute() {
+  RobotContainer::intake->ConveyorSetSpeed(-.3);
+}
 
 // Called once the command ends or is interrupted.
-void DecreaseShooterRPM::End(bool interrupted) {}
+void ReverseConveyor::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool DecreaseShooterRPM::IsFinished() { return true; }
+bool ReverseConveyor::IsFinished() { return false; }
