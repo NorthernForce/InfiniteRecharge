@@ -61,6 +61,10 @@ int Shooter::GetRPM() {
   return shooterSpark->GetEncoder().GetVelocity();
 }
 
+void Shooter::SetRPM(int rpm) {
+  shooterRPM = rpm;
+}
+
 int Shooter::GetError() {
   return GetRPM() - shooterRPM;
 }
