@@ -42,7 +42,6 @@ void ShootCellWithoutTrigger::Execute() {
       RobotContainer::intake->StopConveyor();
     }
   }
-}
 
 // Called once the command ends or is interrupted.
 void ShootCellWithoutTrigger::End(bool interrupted) {
