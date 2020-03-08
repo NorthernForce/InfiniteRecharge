@@ -30,7 +30,7 @@ class Robot : public frc::TimedRobot {
  private:
   // Have it null by default so that if testing teleop it
   // doesn't have undefined behavior and potentially crash.
-  
+  OI *oi;
   std::shared_ptr<RobotContainer> container;
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;

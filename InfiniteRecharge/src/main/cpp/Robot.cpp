@@ -22,6 +22,7 @@
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
+#include "commands/ShootCell.h"
 #include "subsystems/DriveShifter.h"
 
 #include <cameraserver/CameraServer.h>
@@ -37,14 +38,13 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
-  chooserAuto = new frc::SendableChooser<std::string>;
-  chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
-  chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
-  chooserAuto->AddOption("Chooser::Auto::SimpleCrossAutoLine", "SimpleCrossAutoLine");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
-  frc::SmartDashboard::PutData(chooserAuto);
+  oi = OI::getInstance();
+  oi->play.SetDefaultOption("CrossAutoLine", OI::Play::CrossAutoLine);
+  oi->play.AddOption("DoNothing", OI::Play::DoNothing);
+  oi->play.AddOption("InFrontOfFoesTrench", OI::Play::InFrontOfFoesTrench);
+  oi->play.AddOption("InFrontOfGoal", OI::Play::InFrontOfGoal);
+  oi->play.AddOption("SimpleCrossAutoLine", OI::Play::SimpleCrossAutoLine);
+  frc::SmartDashboard::PutData("Auto Play", &(oi->m_play));
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -106,10 +106,120 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  /*
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+  */
+ switch (oi->selectedPlay) {
+        case OI::Play::DoNothing:
+            switch (step) {
+                case 0:
+                    std::cout << "Doing nothing" << std::endl;
+                    ++step;
+                    break;
+                default:
+                    // DONE, nothing to do
+                    break;
+            }
+            break;
+        case OI::Play::CrossAutoLine:
+                    std::cout << "Driving off the line" << std::endl;
+                      auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+                      RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
+                      if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
+                        RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+                        ++step;
+             }
+            break;
+        case OI::Play::InFrontOfGoal:
+            autoShooterRpms = shooter->MaxRPM;  // FIXME: Set to real desired value
+            oi->selectedPlay = OI::Play::MIDDLESHOOT;
+            step = 0;
+            std::cout << "Switching to middle shoot" << std::endl;
+            break;
+        case OI::Play::MIDDLESHOOT:
+            switch (step) {
+                case 0:
+                  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+                  RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
+                  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
+                    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+                    ++step;
+                    break;
+                case 1:
+                    ShootCell();
+                        ++step;
+                    }
+                    break;
+                case 2:
+                    // FIXME: Probably can go faster
+                    #ifdef USE_PID_FOR_NEOS
+                    feeder->feederPID(-400.0);
+                    #endif // USE_PID_FOR_NEOS
+
+                    #ifndef USE_PID_FOR_NEOS
+                    feeder->setSpeed(-0.30);
+                    #endif // !USE_PID_FOR_NEOS
+
+                    feederTimer->Start();
+                    feederTimer->Reset();
+                    std::cout << "Sending balls up feeder" << std::endl;
+                    ++step;
+                    break;
+                case 3:
+                    // FIXME: How quickly can we do this... 1 second would be awesome if possible
+                    if (feederTimer->HasPeriodPassed(2.0)) {
+                        std::cout << "Stopping feeder" << std::endl;
+                        #ifdef USE_PID_FOR_NEOS
+                        feeder->feederPID(-400.0);
+                        #endif // USE_PID_FOR_NEOS
+
+                        #ifndef USE_PID_FOR_NEOS
+                        feeder->setSpeed(0.0);
+                        #endif // !USE_PID_FOR_NEOS
+                        ++step;
+                    }
+                    break;
+                case 4:
+                    #ifdef USE_PID_FOR_NEOS
+                    shooter->shooterPID(0.0);
+                    #endif // USE_PID_FOR_NEOS
+
+                    #ifndef USE_PID_FOR_NEOS
+                    shooter->setSpeed(0.0);
+                    #endif // ! USE_PID_FOR_NEOS
+
+                    ++step;
+                    break;
+                case 5:
+                    std::cout << "switching to move off line" << std::endl;
+                    step = 0;
+                    oi->selectedPlay = OI::Play::GETOFFTHELINE;
+                    break;
+                default:
+                    std::cout << "Sould never get here!!!!" << std::endl;
+                    break;
+            }
+            break;
+        case OI::Play::RIGHTSHOOT:
+            autoShooterRpms = shooter->MaxRPM;  // FIXME: Set to real desired value
+            oi->selectedPlay = OI::Play::MIDDLESHOOT;
+            step = 0;
+            std::cout << "Switching to middle shoot" << std::endl;
+            break;
+        default:
+            switch (step) {
+                case 0:
+                    std::cout << "Need to implement play: " << oi->selectedPlay << std::endl;
+                    ++step;
+                    break;
+                default:
+                    break;
+            }
+            break;
+    }
 
 }
 
