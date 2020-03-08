@@ -9,7 +9,7 @@
 
 ManualConveyor::ManualConveyor() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::intake.get());
+  // AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
@@ -17,7 +17,7 @@ void ManualConveyor::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualConveyor::Execute() {
-  RobotContainer::intake->RunConveyor();
+  RobotContainer::intake->ConveyorSetSpeed(-0.8);
 }
 
 // Called once the command ends or is interrupted.

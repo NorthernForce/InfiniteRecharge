@@ -23,19 +23,19 @@ void IntakePowerCell::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
-    RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
-      RobotContainer::intake->RunConveyor();
-      zeroHasBeenTriggered = true;
-      //std::cout << "in if statement for conveyor\n";
-    }
-    // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
-    //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
-    //   RobotContainer::intake->Stop();
-    //   RobotContainer::intake->StopConveyor();
-    // }
-    else if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-      RobotContainer::intake->StopConveyor();
+  RobotContainer::intake->TakeInPowerCell();
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
+    RobotContainer::intake->ConveyorSetSpeed(-0.45);
+    zeroHasBeenTriggered = true;
+    //std::cout << "in if statement for conveyor\n";
+  }
+  // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
+  //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
+  //   RobotContainer::intake->Stop();
+  //   RobotContainer::intake->StopConveyor();
+  // }
+  else if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+    RobotContainer::intake->StopConveyor();
   }
 }
 
