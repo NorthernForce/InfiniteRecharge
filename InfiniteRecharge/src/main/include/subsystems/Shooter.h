@@ -21,6 +21,7 @@ class Shooter : public frc2::SubsystemBase {
   double GetSpeedFromPID(double p, double i, double d);
   void SetSpeed(double speed);
   int GetRPM();
+  int GetError();
   void AddToShooterRPM(int change);
   void ShooterUp();
   void ShooterDown();
