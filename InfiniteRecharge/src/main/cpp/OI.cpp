@@ -81,7 +81,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakeDown());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ManualShooter());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::menu_button); }).WhileHeld(new ManualIntake());
+    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualIntake());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualConveyor());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new IncreaseShooterRPM());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new DecreaseShooterRPM());
