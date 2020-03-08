@@ -39,11 +39,11 @@ class Shooter : public frc2::SubsystemBase {
   std::shared_ptr<frc::Solenoid> shooterShifter;
   std::shared_ptr<frc::Timer> timer;
 
-  const double p = 1.8 * 0.8;
+  const double p = 1.3;
   double rpmP = 1.3;
-  const double i = 0.1;
+  const double i = 0;
   double rpmI = 0;
-  const double d = 0.0; 
+  const double d = 0; 
   double rpmD = 0;
   
   double error;
