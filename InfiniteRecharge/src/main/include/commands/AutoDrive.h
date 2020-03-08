@@ -20,7 +20,7 @@
 class AutoDrive
     : public frc2::CommandHelper<frc2::CommandBase, AutoDrive> {
  public:
-  AutoDrive(double inches, double leftSpeed=0.75, double rightSpeed=0.75);
+  AutoDrive(double inches, double leftSpeed=0.3, double rightSpeed=0.3);
   void Initialize() override;
   void CheckForAndFixNegatives();
   void Execute() override;
@@ -31,4 +31,6 @@ class AutoDrive
   double m_inches;
   double m_leftSpeed;
   double m_rightSpeed;
+  double encoderToTravel;
+  double averageDistance;
 };

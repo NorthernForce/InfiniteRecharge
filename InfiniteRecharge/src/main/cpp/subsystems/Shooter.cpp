@@ -49,7 +49,8 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
 }
 
 void Shooter::Shoot() {
-  shooterSpark->Set(GetSpeedFromPID(p, i, d));
+  // shooterSpark->Set(GetSpeedFromPID(p, i, d));
+  pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetSpeed(double speed) {

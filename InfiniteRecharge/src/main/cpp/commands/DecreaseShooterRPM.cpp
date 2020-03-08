@@ -8,9 +8,7 @@
 #include "commands/DecreaseShooterRPM.h"
 #include "RobotContainer.h"
 
-DecreaseShooterRPM::DecreaseShooterRPM() {
-  AddRequirements(RobotContainer::shooter.get());
-}
+DecreaseShooterRPM::DecreaseShooterRPM() {}
 
 // Called when the command is initially scheduled.
 void DecreaseShooterRPM::Initialize() {
