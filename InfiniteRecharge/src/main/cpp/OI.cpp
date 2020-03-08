@@ -32,7 +32,7 @@
 #include "commands/ShootByDist.h"
 #include "commands/ManualWackyWheel.h"
 #include "commands/StopIntake.h"
-
+#include "commands/ReverseConveyor.h"
 #include "commands/ResetCoordinates.h"
 #include "commands/TuneRpmPid.h"
 #include "commands/IndexPowerCells.h"
@@ -68,6 +68,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new IntakePowerCell());
+    frc2::Button([this] { return (driverController->GetRawButton(Xbox::X_button)); }).WhileHeld(new ReverseConveyor());
     //frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
 
 
