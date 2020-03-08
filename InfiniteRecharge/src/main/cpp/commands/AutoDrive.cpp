@@ -28,22 +28,21 @@ void AutoDrive::CheckForAndFixNegatives() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-  bool obstacle = RobotContainer::ultrasonic->IsObstacleAt(12);
-  double encoderToTravel = m_inches * Constants::Shifting::highMultiplier;
-  double averageDistance = (RobotContainer::drivetrain->GetEncoderRotations().first + RobotContainer::drivetrain->GetEncoderRotations().second)/2;
-
-  if((obstacle == false) && (averageDistance < encoderToTravel))
-      RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
-  else if ((obstacle == true) && (averageDistance < encoderToTravel))
-      RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
-  else {
-      RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
-      IsFinished();
-  }
+  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+  encoderToTravel = m_inches * Constants::Shifting::highMultiplier;
+  averageDistance = (encoderRotations.first + encoderRotations.second)/2;
+  RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
 }
 
 // Called once the command ends or is interrupted.
-void AutoDrive::End(bool interrupted) {}
+void AutoDrive::End(bool interrupted) {
+  RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+}
 
 // Returns true when the command should end.
-bool AutoDrive::IsFinished() { return true; }
+bool AutoDrive::IsFinished() {
+  if (averageDistance < encoderToTravel)
+    return true;
+  else
+    return false;
+}
