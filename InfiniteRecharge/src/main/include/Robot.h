@@ -27,6 +27,7 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   static void CameraInit();
 
+/*
   enum AutoPlayCommands {
     CrossAutoLine,
     DoNothing,
@@ -35,6 +36,7 @@ class Robot : public frc::TimedRobot {
     InFrontOfOurTrench,
     SimpleCrossAutoLine
     };
+*/
 
  private:
   // Have it null by default so that if testing teleop it

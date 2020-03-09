@@ -37,7 +37,8 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-*/
+
+
 
   autonomousChooser.SetDefaultOption("CrossAutoLine", AutoPlayCommands::CrossAutoLine);
   autonomousChooser.AddOption("DoNothing", AutoPlayCommands::DoNothing);
@@ -45,6 +46,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("InFrontOfGoal", AutoPlayCommands::InFrontOfGoal);
   autonomousChooser.AddOption("SimpleCrossAutoLine", AutoPlayCommands::SimpleCrossAutoLine);
   frc::SmartDashboard::PutData("Auto Play", &(autonomousChooser));
+  */
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -100,7 +102,7 @@ void Robot::AutonomousInit() {
     }
 */
   RobotContainer::drivetrain->SetEncoderPosition(0);
-  AutoPlayCommands startPosition = autonomousChooser.GetSelected();
+  //AutoPlayCommands startPosition = autonomousChooser.GetSelected();
 
 }
 
@@ -112,12 +114,13 @@ void Robot::AutonomousPeriodic() {
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
   */
- switch (startPosition) {
-  case SimpleCrossAutoLine:
-    SimpleCrossAutoLine->schedule();
-  case CrossAutoLine:
+ //switch (startPosition) {
+  //case SimpleCrossAutoLine:
+ // case CrossAutoLine:
     // etc...
-  case DoNothing:
+ // case DoNothing:
+    SimpleCrossAutoLine->schedule();
+
   
 }
 }
