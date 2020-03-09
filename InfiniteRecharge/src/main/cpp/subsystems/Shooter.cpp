@@ -39,8 +39,8 @@ void Shooter::ConfigureSpark(double ramp) {
 }
 
 double Shooter::GetSpeedFromPID(double p, double i, double d) {
-  // error = 0.8;
-  error = GetError();
+  error = 0.8;
+  // error = GetError();
 
   integral += error * 20;
   derivative = (error - errorPrior) / 20;
@@ -50,8 +50,8 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
 }
 
 void Shooter::Shoot() {
-  // shooterSpark->Set(GetSpeedFromPID(p, i, d));
-  pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
+  shooterSpark->Set(GetSpeedFromPID(p, i, d));
+  // pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetSpeed(double speed) {
