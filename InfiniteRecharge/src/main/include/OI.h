@@ -51,18 +51,8 @@ class OI {
         left_up      = 315
     };
 
-        enum Play {
-        CrossAutoLine,
-        DoNothing,
-        InFrontOfFoesTrench,
-        InFrontOfGoal,
-        InFrontOfOurTrench,
-        SimpleCrossAutoLine
-    };
     const static auto leftHand = frc::XboxController::JoystickHand::kLeftHand;
     const static auto rightHand = frc::XboxController::JoystickHand::kRightHand;
-    frc::SendableChooser<Play> play;
-
 
  private:
     double GetDriveSpeedMultiplier();

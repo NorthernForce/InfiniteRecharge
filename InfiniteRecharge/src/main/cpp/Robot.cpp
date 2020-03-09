@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <cameraserver/CameraServer.h>
@@ -24,29 +23,28 @@
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "commands/ShootCell.h"
 #include "subsystems/DriveShifter.h"
-#include "commands/createAutonomousCommands/CreateAutoPrintLine.h"
 
 #include <cameraserver/CameraServer.h>
 
 void Robot::RobotInit() {
   container.reset(new RobotContainer());
-////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
 
+////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
+/*
   autonomousChooser.SetDefaultOption("1) Cross auto line", new CreateAutoPrintLine());
   autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
   autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
   autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-/*
-  oi = OI::getInstance();
-  oi->play.SetDefaultOption("CrossAutoLine", OI::Play::CrossAutoLine);
-  oi->play.AddOption("DoNothing", OI::Play::DoNothing);
-  oi->play.AddOption("InFrontOfFoesTrench", OI::Play::InFrontOfFoesTrench);
-  oi->play.AddOption("InFrontOfGoal", OI::Play::InFrontOfGoal);
-  oi->play.AddOption("SimpleCrossAutoLine", OI::Play::SimpleCrossAutoLine);
-  frc::SmartDashboard::PutData("Auto Play", &(oi->m_play));
 */
+
+  autonomousChooser.SetDefaultOption("CrossAutoLine", AutoPlayCommands::CrossAutoLine);
+  autonomousChooser.AddOption("DoNothing", AutoPlayCommands::DoNothing);
+  autonomousChooser.AddOption("InFrontOfFoesTrench", AutoPlayCommands::InFrontOfFoesTrench);
+  autonomousChooser.AddOption("InFrontOfGoal", AutoPlayCommands::InFrontOfGoal);
+  autonomousChooser.AddOption("SimpleCrossAutoLine", AutoPlayCommands::SimpleCrossAutoLine);
+  frc::SmartDashboard::PutData("Auto Play", &(autonomousChooser));
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -79,9 +77,7 @@ void Robot::AutonomousInit() {
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
       autonomousCommand->Schedule();
-*/
-////TODO: Figure out if this should go in periodic or Init
-  /*
+
   chooserAutoSelected = chooserAuto->GetSelected();
 
         if (chooserAutoSelected == "CrossAutoLine") {
@@ -104,6 +100,8 @@ void Robot::AutonomousInit() {
     }
 */
   RobotContainer::drivetrain->SetEncoderPosition(0);
+  AutoPlayCommands startPosition = autonomousChooser.GetSelected();
+
 }
 
 
