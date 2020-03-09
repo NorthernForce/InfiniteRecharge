@@ -21,15 +21,11 @@ InFrontOfFoesTrench::InFrontOfFoesTrench() {
     AutoDrive(72),
     IntakeDown(),
 
-  };
-
-  frc2::ParallelCommandGroup {
-    IntakePowerCell(),
-    AutoDrive(40),
+    frc2::ParallelCommandGroup {
+      IntakePowerCell(),
+      AutoDrive(40), 
+    },
     
-  };
-
-  frc2::SequentialCommandGroup {
     TurnToAngle(180),
     AutoDrive(90),
   };

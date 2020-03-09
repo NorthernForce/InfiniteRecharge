@@ -7,12 +7,12 @@
 
 #include "commands/MoveToLimelight.h"
 #include "commands/TurnToAngle.h"
+#include <frc2/command/Command.h>
 #include <iostream>
 
 MoveToLimelight::MoveToLimelight() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::limelight.get());
-  turnToAngle.reset(new TurnToAngle());
 }
 
 // Called when the command is initially scheduled.
@@ -28,7 +28,9 @@ void MoveToLimelight::Execute() {
   std::cout << "limelight offset: " << limeLightOffset << std::endl;
   if (isTargetThere == true) {
     //RobotContainer::drivetrain->SimpleTurnToAngle(limeLightOffset);
-    TurnToAngle(limeLightOffset);
+    frc2::Command* turnToLimelight = new TurnToAngle(limeLightOffset);
+    if (!turnToLimelight->IsScheduled())
+      turnToLimelight->Schedule();
   }
 }
 
