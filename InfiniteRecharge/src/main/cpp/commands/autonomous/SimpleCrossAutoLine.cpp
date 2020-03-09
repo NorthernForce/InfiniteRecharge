@@ -18,7 +18,10 @@ void SimpleCrossAutoLine::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SimpleCrossAutoLine::Execute() {
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.5, 0.5);
+  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+  RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 }
 
 // Called once the command ends or is interrupted.

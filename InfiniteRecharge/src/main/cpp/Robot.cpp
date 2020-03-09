@@ -112,6 +112,14 @@ void Robot::AutonomousPeriodic() {
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
   */
+ switch (startPosition) {
+  case SimpleCrossAutoLine:
+    SimpleCrossAutoLine->schedule();
+  case CrossAutoLine:
+    // etc...
+  case DoNothing:
+  
+}
 }
 
 void Robot::TeleopInit() {
