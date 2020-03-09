@@ -8,17 +8,19 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <string>
 
-class AICommunication : public frc2::SubsystemBase {
+class SmartShooting : public frc2::SubsystemBase {
  public:
-  AICommunication();
-  std::vector<double> GetValueArray(std::string key);
-  double GetNumber(std::string key);
-  double GetInfaredDistance();
+  SmartShooting();
   void Periodic();
-  const std::string powercellOffsetInCam =  "PC Offset in AI Cam:";
-  const std::string distanceToPcFromCam = "Distance to PC from Cam:";
+  bool ShooterIsOn();
+  bool ShooterIsUp();
+  double GetDistance();
+  void ControlDistance();
+  double WantedShooterRPM();
+  void ControlShooterRPM();
 
  private:
+  // Components (e.g. motor controllers and sensors) should generally be
+  // declared private and exposed only through public methods.
 };

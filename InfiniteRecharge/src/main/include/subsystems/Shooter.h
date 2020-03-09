@@ -26,6 +26,7 @@ class Shooter : public frc2::SubsystemBase {
   void AddToShooterRPM(int change);
   void ShooterUp();
   void ShooterDown();
+  bool GetState();
   double RpmPidLoop(double targetRPM);
   void TuneRpmPid_P();
   void ShootByDist();

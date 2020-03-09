@@ -20,6 +20,10 @@ double AICommunication::GetNumber(std::string key) {
     return frc::SmartDashboard::GetNumber(key, 0);
 }
 
+double AICommunication::GetInfaredDistance() {
+    return frc::SmartDashboard::GetNumber(distanceToPcFromCam, -6969);
+}
+
 // This method will be called once per scheduler run
 void AICommunication::Periodic() {
     auto aiCamOff = GetValueArray(powercellOffsetInCam);

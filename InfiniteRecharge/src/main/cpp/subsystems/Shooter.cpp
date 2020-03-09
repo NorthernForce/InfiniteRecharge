@@ -81,6 +81,10 @@ void Shooter::ShooterDown() {
   shooterShifter->Set(shiftOff);
 }
 
+bool Shooter::GetState() {
+  return shooterShifter->Get();
+}
+
 double Shooter::RpmPidLoop(double targetRpm) {
   rpmError = targetRpm - GetRPM();
   rpmP = targetRpm / 2500;
