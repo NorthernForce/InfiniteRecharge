@@ -38,7 +38,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 
-
+*/
 
   autonomousChooser.SetDefaultOption("CrossAutoLine", AutoPlayCommands::CrossAutoLine);
   autonomousChooser.AddOption("DoNothing", AutoPlayCommands::DoNothing);
@@ -46,7 +46,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("InFrontOfGoal", AutoPlayCommands::InFrontOfGoal);
   autonomousChooser.AddOption("SimpleCrossAutoLine", AutoPlayCommands::SimpleCrossAutoLine);
   frc::SmartDashboard::PutData("Auto Play", &(autonomousChooser));
-  */
+  
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -75,6 +75,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+  frc2::CommandScheduler::GetInstance().Run();
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -116,14 +117,14 @@ void Robot::AutonomousPeriodic() {
   */
  //switch (startPosition) {
   //case SimpleCrossAutoLine:
- // case CrossAutoLine:
+  //case CrossAutoLine:
     // etc...
  // case DoNothing:
     SimpleCrossAutoLine->schedule();
 
   
 }
-}
+
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when
