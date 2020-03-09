@@ -15,11 +15,13 @@ double TurnToAngle::targetAngle;
 TurnToAngle::TurnToAngle(double target) {
   AddRequirements(RobotContainer::drivetrain.get());
   AddRequirements(RobotContainer::imu.get());
-  targetAngle = target;
 
   frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
   frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
   frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
+  
+  if (target != 0)
+    targetAngle = target;
 }
 
 // Called when the command is initially scheduled.
@@ -27,6 +29,10 @@ void TurnToAngle::Initialize() {
   currentAngle = RobotContainer::imu->GetRotation();
   totalTargetAngle = currentAngle + targetAngle;
   integral = 0;
+}
+
+void TurnToAngle::SetAngle(double angle) {
+  targetAngle = angle;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -37,15 +43,14 @@ void TurnToAngle::Execute() {
 
   double rotationRaw = GetRotationFromPID(p,i,d);
   double rotationLimited = LimitMaxTurnSpeed(rotationRaw);
-  std::cout << "rotlim: " << rotationLimited << "\n";
+  std::cout << "running tta\n";
+  std::cout << "rotationlim: " << rotationLimited << '\n';
   
   auto driveControls = RobotContainer::oi->GetDriveControls();
   RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
 }
 
-void TurnToAngle::End(bool interrupted) {
-  RobotContainer::drivetrain->Drive(0,0);
-}
+void TurnToAngle::End(bool interrupted) {}
 
 bool TurnToAngle::CheckIfFinished() {
   if ((targetAngle >= 0) && (currentAngle >= targetAngle))
@@ -74,7 +79,7 @@ double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
   derivative = (error - errorPrior) / defaultPeriodInMs;
   double rotation = p*error + i*integral + d*derivative;
   errorPrior = error;
-  return rotation;
+  return rotation*3;
 }
 
 double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {

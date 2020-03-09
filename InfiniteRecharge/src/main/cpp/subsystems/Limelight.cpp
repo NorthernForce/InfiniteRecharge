@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Limelight.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 Limelight::Limelight() {
     table->PutNumber("camMode", 0);
@@ -13,7 +14,9 @@ Limelight::Limelight() {
 }
 
 // This method will be called once per scheduler run
-void Limelight::Periodic() {}
+void Limelight::Periodic() {
+    frc::SmartDashboard::PutNumber("Limelight OffsetX: ", GetXOffset());
+}
 
 double Limelight::GetXOffset() {
     double targetOffsetAngleX = table->GetNumber("tx",0);
