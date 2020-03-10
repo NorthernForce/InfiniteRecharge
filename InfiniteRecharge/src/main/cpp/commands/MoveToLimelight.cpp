@@ -8,6 +8,7 @@
 #include "commands/MoveToLimelight.h"
 #include "commands/TurnToAngle.h"
 #include <frc2/command/Command.h>
+#include <frc2/command/ScheduleCommand.h>
 #include <iostream>
 
 MoveToLimelight::MoveToLimelight() {
@@ -18,6 +19,7 @@ MoveToLimelight::MoveToLimelight() {
 // Called when the command is initially scheduled.
 void MoveToLimelight::Initialize() {
   RobotContainer::limelight->PutNumberToTable("ledMode", 3);
+  turnToLimelight = new TurnToAngle();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -26,11 +28,12 @@ void MoveToLimelight::Execute() {
   isTargetThere = RobotContainer::limelight->IsTargetThere();
   std::cout << "is target there: " << isTargetThere << std::endl;
   std::cout << "limelight offset: " << limeLightOffset << std::endl;
+
   if (isTargetThere == true) {
-    //RobotContainer::drivetrain->SimpleTurnToAngle(limeLightOffset);
-    frc2::Command* turnToLimelight = new TurnToAngle(limeLightOffset);
-    if (!turnToLimelight->IsScheduled())
+    if (!turnToLimelight->IsScheduled()) {
+      turnToLimelight->SetAngle(limeLightOffset);
       turnToLimelight->Schedule();
+    }
   }
 }
 

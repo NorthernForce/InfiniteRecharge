@@ -39,8 +39,8 @@ void Shooter::ConfigureSpark(double ramp) {
 }
 
 double Shooter::GetSpeedFromPID(double p, double i, double d) {
-  // error = 0.8;
-  error = GetError();
+  error = 0.8;
+  // error = GetError();
 
 //// TODO: Explain This, it looks like you are trying to iomplement the PID Loop here...Is this being used?
   integral += error * 20;
@@ -51,8 +51,8 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
 }
 
 void Shooter::Shoot() {
-  // shooterSpark->Set(GetSpeedFromPID(p, i, d));
-  pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
+  shooterSpark->Set(GetSpeedFromPID(p, i, d));
+  // pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetSpeed(double speed) {

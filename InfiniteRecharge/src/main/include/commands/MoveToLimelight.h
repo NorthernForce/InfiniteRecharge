@@ -32,7 +32,7 @@ class MoveToLimelight
 
   bool IsFinished() override;
  private:
-  std::shared_ptr<TurnToAngle> turnToAngle;
   double limeLightOffset;
   bool isTargetThere;
+  TurnToAngle* turnToLimelight;
 };
