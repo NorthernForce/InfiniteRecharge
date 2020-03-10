@@ -28,7 +28,7 @@ void ShootByDist::Execute() {
         RobotContainer::intake->RunConveyor();
       }
       else {
-        if (RobotContainer::shooter->GetRPM() >= 3600) // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+        if (RobotContainer::shooter->GetTargetRPM() >= 3600) // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
           RobotContainer::intake->RunConveyor();
         else 
           RobotContainer::intake->StopConveyor();

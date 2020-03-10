@@ -12,7 +12,9 @@ IncreaseShooterRPM::IncreaseShooterRPM() {}
 
 // Called when the command is initially scheduled.
 void IncreaseShooterRPM::Initialize() {
-  RobotContainer::shooter->AddToShooterRPM(250);
+  int currentRPM = RobotContainer::shooter->GetCurrentRPM();
+  int targetRPM = currentRPM + 250;
+  RobotContainer::shooter->SetTargetRPM(targetRPM);
 }
 
 // Called repeatedly when this Command is scheduled to run

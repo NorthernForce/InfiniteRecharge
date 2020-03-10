@@ -15,20 +15,19 @@
 class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
-  void Shoot();
   void Periodic();
-  void ConfigureSpark(double ramp=rampRate);  
+  void ConfigureSpark(double ramp=rampRate);
+  void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
+  void Shoot();
   void SetSpeed(double speed);
-  int GetRPM();
-  void SetRPM(int rpm);
+  int GetCurrentRPM();
+  void SetCurrentRPM(int rpm);
+  int GetTargetRPM();
+  void SetTargetRPM(int rpm);
   int GetError();
-  void AddToShooterRPM(int change);
   void ShooterUp();
   void ShooterDown();
-  double RpmPidLoop(double targetRPM);
-  void TuneRpmPid_P();
-  void ShootByDist();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
@@ -45,7 +44,8 @@ class Shooter : public frc2::SubsystemBase {
   double rpmI = 0.01;
   const double d = 0.3; 
   double rpmD = 0;
-  const double f = 1.0;
+  const double ff = 1.0;
+  const int maxI = 100;
   
   double error;
   double rpmError;
@@ -59,5 +59,6 @@ class Shooter : public frc2::SubsystemBase {
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   static double rampRate;
-  int shooterRPM = 2200;
+  int targetRPM = 2200;
+  double idlePercentage = 0.6; //units are decimals from 0-1
 };

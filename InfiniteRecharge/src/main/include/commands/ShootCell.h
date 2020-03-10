@@ -9,6 +9,8 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "RobotContainer.h"
 
 /**
  * An example command.
@@ -25,4 +27,6 @@ class ShootCell
   void Execute() override;
   void End(bool interrupted) override;
   bool IsFinished() override;
+ private:
+  double targetRPM = frc::SmartDashboard::GetNumber("Shooter target RPM: ", 0);
 };
