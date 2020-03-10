@@ -14,7 +14,7 @@ TuneRpmPid::TuneRpmPid() {
 
 // Called when the command is initially scheduled.
 void TuneRpmPid::Initialize() {
-  RobotContainer::shooter->TuneRpmPid_P();
+  // RobotContainer::shooter->TuneRpmPid_P(); // removed for testing
 }
 
 // Called repeatedly when this Command is scheduled to run
