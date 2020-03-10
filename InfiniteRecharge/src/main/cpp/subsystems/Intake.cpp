@@ -86,6 +86,8 @@ void Intake::SetArmUp() {
     }
 }
 
+
+////TODO: Set Camera to low position before the arm is commanded
 void Intake::SetArmDown() {
     double tolerance = 3;
     armSpark->Set(0.5);
@@ -100,6 +102,7 @@ void Intake::SetArmDown() {
     }
 }
 
+////TODO: Block until Camera is safe
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
     std::cout << "Arm Position" << GetArmPosition() << '\n';
@@ -121,6 +124,7 @@ void Intake::ConveyorSetSpeed(double speed) {
     primaryConveyorSpark->Set(speed);
 }
 
+////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }

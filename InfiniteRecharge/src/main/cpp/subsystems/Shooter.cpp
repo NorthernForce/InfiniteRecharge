@@ -42,6 +42,7 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
   // error = 0.8;
   error = GetError();
 
+//// TODO: Explain This, it looks like you are trying to iomplement the PID Loop here...Is this being used?
   integral += error * 20;
   derivative = (error - errorPrior) / 20;
   double speed = p*error + i*integral + d*derivative;
@@ -94,12 +95,14 @@ double Shooter::RpmPidLoop(double targetRpm) {
   
   rpmDerivative = rpmErrorPrior - rpmError;
 
+////TODO: Explain this.
   double speed = (rpmP * rpmError + rpmI * rpmIntegral + rpmD * rpmDerivative)/5000;
   if (speed > 1.0)
     speed = 1.0;
 
   return speed;
 }
+
 
 void Shooter::TuneRpmPid_P() {
   double originP = rpmP;
