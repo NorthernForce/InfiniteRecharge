@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include "commands/autonomous/SimpleCrossAutoLine.h"
 #include <thread>
 
 #include "RobotContainer.h"
@@ -35,5 +36,6 @@ class Robot : public frc::TimedRobot {
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
   frc::SendableChooser<std::string> *chooserAuto;
+  SimpleCrossAutoLine* SimpleDriveForward;
   std::string chooserAutoSelected;
 };

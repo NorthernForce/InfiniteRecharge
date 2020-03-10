@@ -73,6 +73,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+SimpleDriveForward = new SimpleCrossAutoLine();
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -106,10 +107,16 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  if (!SimpleDriveForward->IsScheduled()) {
+        SimpleDriveForward->Schedule();
+      }
+      
+  /*
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+  */
 
 }
 

@@ -25,19 +25,18 @@ void ShootCell::Execute() {
   double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
   if (rtTriggerAxis > 0.5) {
     RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyor();
-    }
-    else {
-      RobotContainer::intake->StopConveyor();
-    }
 
     //std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
     if (RobotContainer::shooter->GetRPM() > 2200) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
       RobotContainer::intake->ConveyorSetSpeed(-0.65);
     }
     else {
-      RobotContainer::intake->StopConveyor();
+      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+      RobotContainer::intake->RunConveyor();
+    }
+      else {
+        RobotContainer::intake->StopConveyor();
+      }
     }
   }
 }

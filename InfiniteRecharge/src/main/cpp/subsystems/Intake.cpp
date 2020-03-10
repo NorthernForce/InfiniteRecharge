@@ -58,7 +58,7 @@ void Intake::Periodic() {
 }
 
 void Intake::TakeInPowerCell() {
-    intakeTalon->Set(0.7);
+    intakeTalon->Set(0.6);
 }
 
 void Intake::PushOutPowerCell() {
@@ -114,7 +114,7 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.3);
+    primaryConveyorSpark->Set(-0.4);
 }
 
 void Intake::ConveyorSetSpeed(double speed) {
