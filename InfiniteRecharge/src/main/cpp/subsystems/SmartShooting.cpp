@@ -41,7 +41,3 @@ double SmartShooting::WantedShooterRPM() {
     double wantedRPM = (0)*d + (0)/d + (0)*dSquared + (0)/dSquared + (0)*dCubed + (0)/dCubed + (0)*dQuad + (0)/dQuad;
     return wantedRPM;
 }
-
-void SmartShooting::ControlShooterRPM() {
-
-}

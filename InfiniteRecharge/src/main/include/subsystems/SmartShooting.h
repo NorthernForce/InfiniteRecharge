@@ -18,7 +18,6 @@ class SmartShooting : public frc2::SubsystemBase {
   double GetDistance();
   void ControlDistance();
   double WantedShooterRPM();
-  void ControlShooterRPM();
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
