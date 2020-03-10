@@ -117,6 +117,10 @@ void Intake::RunConveyor() {
     primaryConveyorSpark->Set(-0.3);
 }
 
+void Intake::RunConveyorToShoot() {
+    primaryConveyorSpark->Set(-0.8);
+}
+
 void Intake::ConveyorSetSpeed(double speed) {
     primaryConveyorSpark->Set(speed);
 }
