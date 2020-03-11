@@ -21,6 +21,9 @@ void IntakePowerCell::Initialize() {
   zeroHasBeenTriggered = false;
 }
 
+//***************************************************************************
+////TODO: NEED to check if Pos. 5 is empty before starting Intake!!
+//****************************************************************************
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
     RobotContainer::intake->TakeInPowerCell();
