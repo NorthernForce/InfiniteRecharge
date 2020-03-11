@@ -25,6 +25,8 @@ namespace Constants {
 
     const double pi = 3.141592653589793;
     const double degreesToRadians = pi/180;
+
+    const int XResetMultiplier = 0.996194698092;
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;
@@ -47,6 +49,7 @@ namespace Constants {
 
         const int panServoPWM = 7;
         const int tiltServoPWM = 8;
+
     }
 
     namespace Shifting {

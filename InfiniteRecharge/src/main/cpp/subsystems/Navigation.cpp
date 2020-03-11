@@ -7,6 +7,7 @@
 
 #include "subsystems/Navigation.h"
 #include "RobotContainer.h"
+#include "Constants.h"
 
 Navigation::Navigation() {}
 
@@ -39,9 +40,8 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     return std::make_pair(leftDistance, rightDistance);
 }
 
-////TODO: make Scaling Factor a Constant Parameter
 void Navigation::ResetPosition() {
-  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * 0.996194698092 * abs(cos(robotAngleDifference));
+  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * NavXScaling * abs(cos(robotAngleDifference));
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 
