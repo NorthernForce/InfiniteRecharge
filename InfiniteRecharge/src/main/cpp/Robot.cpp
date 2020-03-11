@@ -83,7 +83,7 @@ SimpleDriveForward = new SimpleCrossAutoLine();
   /*
   chooserAutoSelected = chooserAuto->GetSelected();
 
-        if (chooserAutoSelected == "CrossAutoLine") {
+    if (chooserAutoSelected == "CrossAutoLine") {
         new CrossAutoLine;
     }
     else if (chooserAutoSelected == "DoNothing") {
@@ -108,12 +108,10 @@ SimpleDriveForward = new SimpleCrossAutoLine();
 
 void Robot::AutonomousPeriodic() {
   if (!SimpleDriveForward->IsScheduled()) {
-        SimpleDriveForward->Schedule();
-      }
-    SimpleDriveForward->OnCommandFinish() {
-      printf("I'm working ???????????????????????????????????????????????????????????? \n");
-    }
-
+    SimpleDriveForward->Schedule();
+    printf("I'm working????? \n");
+  }
+    
   /*
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
