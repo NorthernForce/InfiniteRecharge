@@ -143,6 +143,18 @@ StorageState Intake::GetInventory(int position) {
     return powerCellPosition[position];
 }
 
+bool Intake::IsConveyorEmpty() {
+    int emptyCounter = 0;
+    bool isEmpty;
+    for (int pos=0; pos<6; pos++) {
+        if (GetInventory(pos) == Intake::StorageState::EMPTY)
+            emptyCounter++;
+    if (emptyCounter == 6)
+        isEmpty = true;
+    }
+    return isEmpty;
+}
+
 //Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;

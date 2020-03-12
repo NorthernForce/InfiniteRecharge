@@ -73,7 +73,6 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-SimpleDriveForward = new SimpleCrossAutoLine();
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -107,10 +106,33 @@ SimpleDriveForward = new SimpleCrossAutoLine();
 
 
 void Robot::AutonomousPeriodic() {
-  if (!SimpleDriveForward->IsScheduled()) {
-    SimpleDriveForward->Schedule();
+
+  int autoCounter = 0;
+  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter = 0)) {
+    autoMoveToLimelight->Schedule();
+    autoCounter++;
+  }
+
+  if((!autoShooter->IsScheduled()) && (autoCounter = 1)) {
+    while((RobotContainer::intake->IsConveyorEmpty()) == false) {
+      autoShooter->Schedule();
+      autoCounter++;
+    }
+  }
+
+    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter = 2)) {
+    autoTurnToAngle->SetAngle(-90);
+    autoTurnToAngle->Schedule();
+    autoCounter++;
+  }
+
+  if ((!simpleDriveForward->IsScheduled()) && (autoCounter = 3)) {
+    simpleDriveForward->Schedule();
+    autoCounter++;
     printf("I'm working????? \n");
   }
+  
+
     
   /*
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
