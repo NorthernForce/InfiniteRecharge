@@ -27,6 +27,4 @@ class ShootCell
   void Execute() override;
   void End(bool interrupted) override;
   bool IsFinished() override;
- private:
-  double targetRPM = frc::SmartDashboard::GetNumber("Shooter target RPM: ", 0);
 };

@@ -21,21 +21,21 @@ void ShootCell::Initialize() {
 }
 
 void ShootCell::Execute() {
-  double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
-  if (rtTriggerAxis > 0.5) {
-    RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyorToShoot();
-    }
-    else {
-      if (RobotContainer::shooter->GetError() < 100)
-        RobotContainer::intake->RunConveyorToShoot();
-      else
-        RobotContainer::intake->StopConveyor();
-    }
-  }
-}
+  std::cout << "error: " << RobotContainer::shooter->GetError() << '\n';
+  std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
+  std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
 
+  RobotContainer::shooter->Shoot();
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+    RobotContainer::intake->RunConveyor();
+  }
+  else {
+    if (RobotContainer::shooter->GetError() < 100)
+      RobotContainer::intake->RunConveyorToShoot();
+    else
+      RobotContainer::intake->StopConveyor();
+  }
+}  
 void ShootCell::End(bool interrupted) {
   RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off
   RobotContainer::intake->StopConveyor(); 
