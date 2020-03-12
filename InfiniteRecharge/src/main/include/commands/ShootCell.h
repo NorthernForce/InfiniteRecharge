@@ -25,4 +25,7 @@ class ShootCell
   void Execute() override;
   void End(bool interrupted) override;
   bool IsFinished() override;
+
+ private:
+  int conveyorBackwardsCounter = 0;
 };
