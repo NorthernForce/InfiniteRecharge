@@ -19,7 +19,8 @@ Shooter::Shooter() {
 
   pidController->SetP(p);
   pidController->SetI(i);
-  pidController->SetD(d); 
+  pidController->SetD(d);
+  pidController->SetFF(f); 
 
   ConfigureSpark(.2);
 }
@@ -39,9 +40,9 @@ void Shooter::ConfigureSpark(double ramp) {
 
 double Shooter::GetSpeedFromPID(double p, double i, double d) {
   error = 0.8;
-  if (error == 0)
-    integral = 0;
+  // error = GetError();
 
+//// TODO: Explain This, it looks like you are trying to iomplement the PID Loop here...Is this being used?
   integral += error * 20;
   derivative = (error - errorPrior) / 20;
   double speed = p*error + i*integral + d*derivative;
@@ -51,6 +52,7 @@ double Shooter::GetSpeedFromPID(double p, double i, double d) {
 
 void Shooter::Shoot() {
   shooterSpark->Set(GetSpeedFromPID(p, i, d));
+  // pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetSpeed(double speed) {
@@ -59,6 +61,14 @@ void Shooter::SetSpeed(double speed) {
 
 int Shooter::GetRPM() {
   return shooterSpark->GetEncoder().GetVelocity();
+}
+
+void Shooter::SetRPM(int rpm) {
+  shooterRPM = rpm;
+}
+
+int Shooter::GetError() {
+  return GetRPM() - shooterRPM;
 }
 
 void Shooter::AddToShooterRPM(int change) {
@@ -85,12 +95,14 @@ double Shooter::RpmPidLoop(double targetRpm) {
   
   rpmDerivative = rpmErrorPrior - rpmError;
 
+////TODO: Explain this.
   double speed = (rpmP * rpmError + rpmI * rpmIntegral + rpmD * rpmDerivative)/5000;
   if (speed > 1.0)
     speed = 1.0;
 
   return speed;
 }
+
 
 void Shooter::TuneRpmPid_P() {
   double originP = rpmP;

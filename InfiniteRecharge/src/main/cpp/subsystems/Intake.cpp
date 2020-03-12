@@ -58,7 +58,7 @@ void Intake::Periodic() {
 }
 
 void Intake::TakeInPowerCell() {
-    intakeTalon->Set(0.5);
+    intakeTalon->Set(0.6);
 }
 
 void Intake::PushOutPowerCell() {
@@ -86,6 +86,8 @@ void Intake::SetArmUp() {
     }
 }
 
+
+////TODO: Set Camera to low position before the arm is commanded
 void Intake::SetArmDown() {
     double tolerance = 3;
     armSpark->Set(0.5);
@@ -100,6 +102,7 @@ void Intake::SetArmDown() {
     }
 }
 
+////TODO: Block until Camera is safe
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
     std::cout << "Arm Position" << GetArmPosition() << '\n';
@@ -114,13 +117,14 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.3);
+    primaryConveyorSpark->Set(-0.4);
 }
 
 void Intake::ConveyorSetSpeed(double speed) {
     primaryConveyorSpark->Set(speed);
 }
 
+////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }
@@ -137,6 +141,18 @@ void Intake::InventoryPowerCells() {
 //Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 
 StorageState Intake::GetInventory(int position) {
     return powerCellPosition[position];
+}
+
+bool Intake::IsConveyorEmpty() {
+    int emptyCounter = 0;
+    bool isEmpty;
+    for (int pos=0; pos<6; pos++) {
+        if (GetInventory(pos) == Intake::StorageState::EMPTY)
+            emptyCounter++;
+    if (emptyCounter == 6)
+        isEmpty = true;
+    }
+    return isEmpty;
 }
 
 //Return the First Position in the Conveyor Storage that is empty (no PC).

@@ -82,7 +82,7 @@ void Robot::AutonomousInit() {
   /*
   chooserAutoSelected = chooserAuto->GetSelected();
 
-        if (chooserAutoSelected == "CrossAutoLine") {
+    if (chooserAutoSelected == "CrossAutoLine") {
         new CrossAutoLine;
     }
     else if (chooserAutoSelected == "DoNothing") {
@@ -106,36 +106,40 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+
+  int autoCounter = 0;
+  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter = 0)) {
+    autoMoveToLimelight->Schedule();
+    autoCounter++;
+  }
+
+  if((!autoShooter->IsScheduled()) && (autoCounter = 1)) {
+    while((RobotContainer::intake->IsConveyorEmpty()) == false) {
+      autoShooter->Schedule();
+      autoCounter++;
+    }
+  }
+
+    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter = 2)) {
+    autoTurnToAngle->SetAngle(-90);
+    autoTurnToAngle->Schedule();
+    autoCounter++;
+  }
+
+  if ((!simpleDriveForward->IsScheduled()) && (autoCounter = 3)) {
+    simpleDriveForward->Schedule();
+    autoCounter++;
+    printf("I'm working????? \n");
+  }
+  
+
+    
+  /*
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35) {
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
-    reachedEncoderPos = true;
-  }
-
-  if (reachedEncoderPos == true) {
-    RobotContainer::shooter->ShooterUp();
-    RobotContainer::intake->SetArmDown();
-    readyToShoot = true;
-  }
-
-  if (readyToShoot == true) {
-    //RobotContainer::shooter->ConfigureSpark(ramp); //need this??? put it in init??
-    RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-        RobotContainer::intake->RunConveyor();
-     }
-    else {
-      RobotContainer::intake->StopConveyor();
-    }
-
-    if (RobotContainer::shooter->GetRPM() >= 2000) { 
-        RobotContainer::intake->ConveyorSetSpeed(-0.65);
-      }
-    else {
-        RobotContainer::intake->StopConveyor();
-      }
-  }
+  */
 
 /*
     1) make it drive backwards

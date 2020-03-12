@@ -7,6 +7,7 @@
 
 #include "subsystems/Navigation.h"
 #include "RobotContainer.h"
+#include "Constants.h"
 
 Navigation::Navigation() {}
 
@@ -40,7 +41,7 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
 }
 
 void Navigation::ResetPosition() {
-  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * 0.996194698092 * abs(cos(robotAngleDifference));
+  xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * NavXScaling * abs(cos(robotAngleDifference));
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 

@@ -47,6 +47,7 @@ class Intake : public frc2::SubsystemBase {
   void RunConveyor();
   void StopConveyor();
   void ConveyorSetSpeed(double speed);
+  bool IsConveyorEmpty();
 
   //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition
   void InventoryPowerCells(); ///set array and then set a counter

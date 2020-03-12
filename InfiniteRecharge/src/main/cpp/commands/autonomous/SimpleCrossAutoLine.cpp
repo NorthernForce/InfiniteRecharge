@@ -18,7 +18,7 @@ void SimpleCrossAutoLine::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SimpleCrossAutoLine::Execute() {
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.5, 0.5);
+  RobotContainer::drivetrain->SimpleDriveWithEncoder(30);
 }
 
 // Called once the command ends or is interrupted.
