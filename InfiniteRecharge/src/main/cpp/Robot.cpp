@@ -38,12 +38,12 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
   chooserAuto = new frc::SendableChooser<std::string>;
-  chooserAuto->SetDefaultOption("Chooser::Auto::DoNothing", "DoNothing");
-  chooserAuto->AddOption("Chooser::Auto::CrossAutoLine", "CrossAutoLine");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfGoal", "InFrontOfGoal");
-  chooserAuto->AddOption("Chooser::Auto::SimpleCrossAutoLine", "SimpleCrossAutoLine");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfOurTrench", "InFrontOfOurTrench");
-  chooserAuto->AddOption("Chooser::Auto::InFrontOfFoesTrench", "InFrontOfFoesTrench");
+  chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
+  chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
+  chooserAuto->AddOption("InFrontOfGoal", "InFrontOfGoal");
+  chooserAuto->AddOption("SimpleCrossAutoLine", "SimpleCrossAutoLine");
+  chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
+  chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
 
   CameraServer::GetInstance()->StartAutomaticCapture();
@@ -106,35 +106,36 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  ////TODO: Make any of this work
 
   int autoCounter = 0;
-  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter = 0)) {
+  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter == 0)) {
     autoMoveToLimelight->Schedule();
     autoCounter++;
   }
 
-  if((!autoShooter->IsScheduled()) && (autoCounter = 1)) {
+  if((!autoShooter->IsScheduled()) && (autoCounter == 1)) {
     while((RobotContainer::intake->IsConveyorEmpty()) == false) {
       autoShooter->Schedule();
       autoCounter++;
     }
   }
 
-    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter = 2)) {
+    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 2)) {
     autoTurnToAngle->SetAngle(-90);
     autoTurnToAngle->Schedule();
     autoCounter++;
   }
 
-  if ((!simpleDriveForward->IsScheduled()) && (autoCounter = 3)) {
+  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 3)) {
     simpleDriveForward->Schedule();
     autoCounter++;
     printf("I'm working????? \n");
   }
   
 
-    
-  /*
+  
+  /* Working autonomous code
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
