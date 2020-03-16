@@ -33,5 +33,7 @@ class IntakePowerCell
 
  private:
   int emptyPosition;
+  int conveyorBackwardsCounter;
   bool zeroHasBeenTriggered;
+
 };

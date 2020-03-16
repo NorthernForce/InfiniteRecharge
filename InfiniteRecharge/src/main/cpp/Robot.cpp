@@ -137,11 +137,19 @@ void Robot::AutonomousPeriodic() {
   
   /* Working autonomous code
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(0.2, 0.2);
-  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35)
+  RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35) {
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
   */
 
+/*
+    1) make it drive backwards
+    2) make it go to position to shoot from
+    3) make piston go up
+    4) make arm go down
+    5) start shooter
+    4) shoot 
+*/
 }
 
 void Robot::TeleopInit() {

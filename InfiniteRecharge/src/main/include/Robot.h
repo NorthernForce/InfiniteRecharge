@@ -44,4 +44,7 @@ class Robot : public frc::TimedRobot {
   TurnToAngle* autoTurnToAngle;
   ShootCell* autoShooter;
   std::string chooserAutoSelected;
+
+  bool reachedEncoderPos = false;
+  bool readyToShoot = false;
 };

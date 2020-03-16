@@ -34,7 +34,6 @@
 #include "commands/StopIntake.h"
 #include "commands/ReverseConveyor.h"
 #include "commands/ResetCoordinates.h"
-#include "commands/TuneRpmPid.h"
 #include "commands/IndexPowerCells.h"
 #include "commands/IntakeUp.h"
 #include "commands/IntakeDown.h"
@@ -91,7 +90,6 @@ void OI::MapControllerButtons() {
 
   //Testing Buttons
     frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TurnToAngle(180));
-    //frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl()); need color sensor that we asked for long ago
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
     // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point

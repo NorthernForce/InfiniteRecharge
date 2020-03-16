@@ -8,125 +8,96 @@
 #include "subsystems/Shooter.h"
 #include "Constants.h"
 #include "RobotContainer.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 double Shooter::rampRate;
 
 Shooter::Shooter() {
-  shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
-  pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
-  shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
-  timer.reset(new frc::Timer());
+    shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
+    pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
+    shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
+    timer.reset(new frc::Timer());
 
-  pidController->SetP(p);
-  pidController->SetI(i);
-  pidController->SetD(d);
-  pidController->SetFF(f); 
+    pidController->SetP(p);
+    pidController->SetI(i);
+    pidController->SetD(d);
+    pidController->SetFF(ff); 
+    pidController->SetIMaxAccum(maxI);
 
-  ConfigureSpark(.2);
+    ConfigureSpark(.2);
+    frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
+    frc::SmartDashboard::PutNumber("shooter P: ", p);
+    frc::SmartDashboard::PutNumber("shooter I: ", i);
+    frc::SmartDashboard::PutNumber("shooter D: ", d);
+    frc::SmartDashboard::PutNumber("shooter KK: ", ff);
+    frc::SmartDashboard::PutNumber("shooter Max I: ", maxI);
 }
 
 // This method will be called once per scheduler run
-void Shooter::Periodic() {}
+void Shooter::Periodic() {
+    targetRPM = frc::SmartDashboard::GetNumber("Shooter target RPM: ", targetRPM);
+    p = frc::SmartDashboard::GetNumber("shooter P: ", p);
+    i = frc::SmartDashboard::GetNumber("shooter I: ", i);
+    d = frc::SmartDashboard::GetNumber("shooter D: ", d);
+    ff = frc::SmartDashboard::GetNumber("shooter KK: ", ff);
+}
 
 void Shooter::ConfigureSpark(double ramp) {
-  auto &controller = *shooterSpark;
-  rampRate = ramp;
-  controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
-  controller.SetSmartCurrentLimit(currentLimit);
-  controller.SetClosedLoopRampRate(ramp);
-  controller.SetOpenLoopRampRate(ramp);
-  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    auto &controller = *shooterSpark; //nice
+    rampRate = ramp;
+    controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
+    controller.SetSmartCurrentLimit(currentLimit);
+    controller.SetClosedLoopRampRate(rampRate);
+    controller.SetOpenLoopRampRate(rampRate);
+    controller.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+}
+
+void Shooter::IdleShooter() {
+    pidController->SetReference(targetRPM * idlePercentage / 100, rev::ControlType::kVelocity);
 }
 
 double Shooter::GetSpeedFromPID(double p, double i, double d) {
-  error = 0.8;
-  // error = GetError();
+    error = GetError();
 
-//// TODO: Explain This, it looks like you are trying to iomplement the PID Loop here...Is this being used?
-  integral += error * 20;
-  derivative = (error - errorPrior) / 20;
-  double speed = p*error + i*integral + d*derivative;
-  errorPrior = error;
-  return speed;
+    integral += error * 20;
+    derivative = (error - errorPrior) / 20;
+    double speed = p*error + i*integral + d*derivative;
+    errorPrior = error;
+    return speed;
 }
 
 void Shooter::Shoot() {
-  shooterSpark->Set(GetSpeedFromPID(p, i, d));
-  // pidController->SetReference(shooterRPM, rev::ControlType::kVelocity);
+    pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetSpeed(double speed) {
-  shooterSpark->Set(speed);
+    shooterSpark->Set(speed);
 }
 
-int Shooter::GetRPM() {
-  return shooterSpark->GetEncoder().GetVelocity();
+int Shooter::GetCurrentRPM() {
+    return shooterSpark->GetEncoder().GetVelocity();
 }
 
-void Shooter::SetRPM(int rpm) {
-  shooterRPM = rpm;
+void Shooter::SetCurrentRPM(int rpm) {
+    pidController->SetReference(rpm, rev::ControlType::kVelocity);
+}
+
+int Shooter::GetTargetRPM() {
+    return targetRPM;
+}
+
+void Shooter::SetTargetRPM(int rpm) {
+    targetRPM = rpm;
 }
 
 int Shooter::GetError() {
-  return GetRPM() - shooterRPM;
-}
-
-void Shooter::AddToShooterRPM(int change) {
-  shooterRPM += change;
+    return targetRPM - GetCurrentRPM();
 }
 
 void Shooter::ShooterUp() {
-  shooterShifter->Set(shiftOn); 
+    shooterShifter->Set(shiftOn); 
 }
 
 void Shooter::ShooterDown() {
-  shooterShifter->Set(shiftOff);
-}
-
-double Shooter::RpmPidLoop(double targetRpm) {
-  rpmError = targetRpm - GetRPM();
-  rpmP = targetRpm / 2500;
-
-  if(rpmError < targetRpm * 0.5)
-    rpmIntegral += rpmError;
-  
-  if(rpmI > 1000)
-    rpmIntegral = 500;
-  
-  rpmDerivative = rpmErrorPrior - rpmError;
-
-////TODO: Explain this.
-  double speed = (rpmP * rpmError + rpmI * rpmIntegral + rpmD * rpmDerivative)/5000;
-  if (speed > 1.0)
-    speed = 1.0;
-
-  return speed;
-}
-
-
-void Shooter::TuneRpmPid_P() {
-  double originP = rpmP;
-  double accuracy = 1;
-  for (int i=0; i < 10; i++) {
-    timer->Stop();
-    timer->Reset();
-    timer->Start();
-    while ((timer->Get() < 6) && (error > 0))
-      RpmPidLoop(1000);
-
-    if (timer->Get() >= 6)
-      i = 10;
-    else if (error > 10)
-      rpmP += originP * pow(2, -accuracy) ;
-    else if (error < -10)
-      rpmP -= originP * pow(2,-accuracy);
-
-    shooterSpark->Set(0.0);
-
-    while(GetRPM() > 50) {}
-
-    accuracy++;
-  }
-  
-  std::cout << rpmP;
+    shooterShifter->Set(shiftOff);
 }
