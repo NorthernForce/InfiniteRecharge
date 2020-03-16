@@ -50,6 +50,7 @@ std::shared_ptr<frc::XboxController> OI::manipulatorController;
 OI::OI() {
     frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
     frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
+    frc::SmartDashboard::PutNumber("Shooter RPM: ", 0.5);    
     InitControllers();
 }
 
@@ -106,6 +107,11 @@ std::pair<double, double> OI::GetDriveControls() {
 double OI::GetShooterRampRate() {
     double shootRampRateMultiplier = frc::SmartDashboard::GetNumber("Shooter Ramp Rate:", 0.2);
     return CheckAndLimitValue(shootRampRateMultiplier);
+}
+
+double OI::GetShooterRPM() {
+  double shooterRPM = frc::SmartDashboard::GetNumber("Shooter RPM: ", 0.5);
+  return CheckAndLimitValue(shooterRPM);
 }
 
 double OI::GetDriveSpeedMultiplier() {
