@@ -27,10 +27,10 @@ void IntakePowerCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
-      RobotContainer::intake->RunConveyor();
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+      RobotContainer::intake->ConveyorSetSpeed(-0.50);
       zeroHasBeenTriggered = true;
-      //std::cout << "in if statement for conveyor\n";
+
     }
     // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
     //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
@@ -38,7 +38,15 @@ void IntakePowerCell::Execute() {
     //   RobotContainer::intake->StopConveyor();
     // }
     else if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-      RobotContainer::intake->StopConveyor();
+      
+      //move conveyor  backwards to try and brake faster 
+      RobotContainer::intake->ConveyorSetSpeed(0.4);
+      conveyorBackwardsCounter++;
+
+      if (conveyorBackwardsCounter >= 11) {
+        RobotContainer::intake->StopConveyor();
+        conveyorBackwardsCounter = 0;
+      }
   }
 }
 
