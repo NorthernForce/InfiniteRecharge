@@ -52,6 +52,7 @@ class OI {
     };
     const static auto leftHand = frc::XboxController::JoystickHand::kLeftHand;
     const static auto rightHand = frc::XboxController::JoystickHand::kRightHand;
+    double GetShooterRPM();
 
  private:
     double GetDriveSpeedMultiplier();

@@ -46,6 +46,8 @@ void Intake::SetInvertedFollower() {
 }
 
 void Intake::Periodic() {
+
+    //Outputs position states to driver station
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
         if (GetInventory(i) == StorageState::PRESENT) {
@@ -65,6 +67,7 @@ void Intake::PushOutPowerCell() {
     intakeTalon->Set(-0.5);
 }
 
+//power cell counting might not be working
 int Intake::GetPowerCellCount() {
     return powerCellCount;
 }
@@ -102,6 +105,7 @@ void Intake::SetArmDown() {
     }
 }
 
+//runs arm motors regardless of arm state
 ////TODO: Block until Camera is safe
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
@@ -129,6 +133,7 @@ void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);
 }
 
+//cycles through positions to get storage states
 void Intake::InventoryPowerCells() {
     for(int pos=0; pos<6; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
@@ -167,6 +172,7 @@ int Intake::GetFirstEmptyPosition() {
     return position;
 }
 
+//this method and the one above seem to be the same thing, do we need both?
 int Intake::LowestFullPosition() {
     int position = noFullPositionFound;
     for (int i = 1; i < 6; i++) {

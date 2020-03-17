@@ -34,7 +34,6 @@
 #include "commands/StopIntake.h"
 #include "commands/ReverseConveyor.h"
 #include "commands/ResetCoordinates.h"
-#include "commands/TuneRpmPid.h"
 #include "commands/IndexPowerCells.h"
 #include "commands/IntakeUp.h"
 #include "commands/IntakeDown.h"
@@ -50,6 +49,7 @@ std::shared_ptr<frc::XboxController> OI::manipulatorController;
 OI::OI() {
     frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
     frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
+    frc::SmartDashboard::PutNumber("Shooter RPM: ", 0.5);    
     InitControllers();
 }
 
@@ -90,7 +90,6 @@ void OI::MapControllerButtons() {
 
   //Testing Buttons
     frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TurnToAngle(180));
-    //frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new TuneRpmPid());
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl()); need color sensor that we asked for long ago
     //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
     // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point
@@ -106,6 +105,11 @@ std::pair<double, double> OI::GetDriveControls() {
 double OI::GetShooterRampRate() {
     double shootRampRateMultiplier = frc::SmartDashboard::GetNumber("Shooter Ramp Rate:", 0.2);
     return CheckAndLimitValue(shootRampRateMultiplier);
+}
+
+double OI::GetShooterRPM() {
+  double shooterRPM = frc::SmartDashboard::GetNumber("Shooter RPM: ", 0.5);
+  return CheckAndLimitValue(shooterRPM);
 }
 
 double OI::GetDriveSpeedMultiplier() {

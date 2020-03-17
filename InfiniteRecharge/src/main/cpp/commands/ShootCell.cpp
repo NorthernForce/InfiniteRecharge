@@ -8,7 +8,6 @@
 #include "commands/ShootCell.h"
 #include <frc/DriverStation.h>
 #include "OI.h"
-#include "RobotContainer.h"
 #include <iostream>
 
 ShootCell::ShootCell() {
@@ -22,32 +21,37 @@ void ShootCell::Initialize() {
 }
 
 void ShootCell::Execute() {
+  double shooterRPM = RobotContainer::oi->GetShooterRPM();
   double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
   if (rtTriggerAxis > 0.5) {
-    RobotContainer::shooter->Shoot();
+    RobotContainer::shooter->SetSpeed(shooterRPM);
 
     //std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
-    if (RobotContainer::shooter->GetRPM() > 2200) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
-      RobotContainer::intake->ConveyorSetSpeed(-0.4);
+    if (RobotContainer::shooter->GetRPM() > shooterRPM) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+      RobotContainer::intake->ConveyorSetSpeed(-0.75);
+    // outputs for tuning  
+    std::cout << "error: " << RobotContainer::shooter->GetError() << '\n';
+    std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
+    std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
+    RobotContainer::shooter->Shoot();
+    if (RobotContainer::shooter->GetError() > 100) {
+        RobotContainer::intake->ConveyorSetSpeed(-0.4);
     }
     else {
-      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->RunConveyor();
-    }
-      else {
-        conveyorBackwardsCounter++;
-
-        if (conveyorBackwardsCounter >= 10) {
-        RobotContainer::intake->StopConveyor();
-        conveyorBackwardsCounter = 0;
+        if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY)
+          RobotContainer::intake->RunConveyor();
+        else {
+          conveyorBackwardsCounter++;
+          if (conveyorBackwardsCounter >= 10) {
+            RobotContainer::intake->StopConveyor();
+            conveyorBackwardsCounter = 0;
         }
       }
     }
   }
 }
-
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off, also is this set to coast?
+  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off
   RobotContainer::intake->StopConveyor(); 
 }
 
