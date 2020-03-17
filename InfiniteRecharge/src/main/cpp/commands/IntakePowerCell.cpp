@@ -37,12 +37,15 @@ void IntakePowerCell::Execute() {
     //   RobotContainer::intake->Stop();
     //   RobotContainer::intake->StopConveyor();
     // }
+    
+    //stops conveyor when power cell has cleared pos 0
     else if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
       
-      //move conveyor  backwards to try and brake faster 
+      //move conveyor backward to try and brake faster 
       RobotContainer::intake->ConveyorSetSpeed(0.4);
       conveyorBackwardsCounter++;
 
+      //controls how long conveyor goes backward for
       if (conveyorBackwardsCounter >= 11) {
         RobotContainer::intake->StopConveyor();
         conveyorBackwardsCounter = 0;

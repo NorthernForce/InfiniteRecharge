@@ -34,6 +34,9 @@ class IntakePowerCell
  private:
   int emptyPosition;
   int conveyorBackwardsCounter = 0;
-  bool zeroHasBeenTriggered;
+
+  //position four sensor was too high up, in order to stop cells faster we made it based on pos 0 clearing
+  bool zeroHasBeenTriggered; 
+
 
 };

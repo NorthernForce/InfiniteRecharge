@@ -4,6 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+//NOTE: THIS IS NOT THE COMMAND WE ARE USING FOR INDEXING, it was just for testing separate parts - could delete now
 
 #include "commands/IndexPowerCells.h"
 
@@ -20,10 +21,12 @@ void IndexPowerCells::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IndexPowerCells::Execute() {
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) { //&& RobotContainer::intake->powerCellCount <= 5
+  //runs conveyor if there is a power cell in intake
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->RunConveyor();
     //std::cout << "running conveyor\n";
   } 
+  //stops conveyor and rumbles if there are already five power cells
   else if (RobotContainer::intake->GetPowerCellCount() >= 5) {
     RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);
     RobotContainer::intake->Stop();

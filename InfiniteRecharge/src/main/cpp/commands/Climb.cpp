@@ -16,7 +16,9 @@ void Climb::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void Climb::Execute() {
+  //runs off joystick given speed, deadband to allow for accidental touch
   if (abs(m_speed()) > 0.3) {
+    //absolute value of speed because they only want the climber to go up for now
     RobotContainer::climber->SetLifter(abs(m_speed()) / 2);
   }
   else {
