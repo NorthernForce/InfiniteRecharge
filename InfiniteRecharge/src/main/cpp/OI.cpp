@@ -107,11 +107,6 @@ double OI::GetShooterRampRate() {
     return CheckAndLimitValue(shootRampRateMultiplier);
 }
 
-double OI::GetShooterRPM() {
-  double shooterRPM = frc::SmartDashboard::GetNumber("Shooter RPM: ", 0.5);
-  return CheckAndLimitValue(shooterRPM);
-}
-
 double OI::GetDriveSpeedMultiplier() {
     double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
     return CheckAndLimitValue(speedMultiplier);
