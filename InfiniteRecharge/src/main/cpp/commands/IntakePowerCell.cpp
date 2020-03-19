@@ -10,6 +10,9 @@
 #include "RobotContainer.h"
 #include <iostream>
 
+const double conveyorRunSpeed = -0.50;
+const double conveyorBackwardSpeed = 0.4;
+
 IntakePowerCell::IntakePowerCell() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
@@ -26,31 +29,33 @@ void IntakePowerCell::Initialize() {
 //****************************************************************************
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
+  //stops conveyor when power cell has cleared pos 0
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+      
+    //move conveyor backward to try and brake faster 
+    RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
+    conveyorBackwardsCounter++;
+
+    //controls how long conveyor goes backward for
+    if (conveyorBackwardsCounter >= 11) {
+      RobotContainer::intake->StopConveyor();
+      conveyorBackwardsCounter = 0;
+    }
+  }
+
+  else {
     RobotContainer::intake->TakeInPowerCell();
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-      RobotContainer::intake->ConveyorSetSpeed(-0.50);
+      RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
       zeroHasBeenTriggered = true;
-
     }
-    // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
-    //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
-    //   RobotContainer::intake->Stop();
-    //   RobotContainer::intake->StopConveyor();
-    // }
-    
-    //stops conveyor when power cell has cleared pos 0
-    else if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-      
-      //move conveyor backward to try and brake faster 
-      RobotContainer::intake->ConveyorSetSpeed(0.4);
-      conveyorBackwardsCounter++;
-
-      //controls how long conveyor goes backward for
-      if (conveyorBackwardsCounter >= 11) {
-        RobotContainer::intake->StopConveyor();
-        conveyorBackwardsCounter = 0;
-      }
   }
+
+  // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
+  //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
+  //   RobotContainer::intake->Stop();
+  //   RobotContainer::intake->StopConveyor();
+  // }    
 }
 
 // Called once the command ends or is interrupted.

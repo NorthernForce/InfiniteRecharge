@@ -27,7 +27,7 @@ void ShootCell::Execute() {
     RobotContainer::shooter->SetSpeed(shooterRPM);
 
     //std::cout << "RPM: " << RobotContainer::shooter->GetRPM() << "\n";
-    if (RobotContainer::shooter->GetRPM() > shooterRPM) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
+    if (RobotContainer::shooter->GetCurrentRPM() > shooterRPM) { // try and tie that into the setpoint of the PID, there may be an acceptable range you want to use instead of a rigid number
       RobotContainer::intake->ConveyorSetSpeed(-0.75);
     // outputs for tuning  
     std::cout << "error: " << RobotContainer::shooter->GetError() << '\n';
@@ -45,6 +45,7 @@ void ShootCell::Execute() {
           if (conveyorBackwardsCounter >= 10) {
             RobotContainer::intake->StopConveyor();
             conveyorBackwardsCounter = 0;
+          }
         }
       }
     }

@@ -56,16 +56,6 @@ void Shooter::IdleShooter() {
     pidController->SetReference(targetRPM * idlePercentage / 100, rev::ControlType::kVelocity);
 }
 
-double Shooter::GetSpeedFromPID(double p, double i, double d) {
-    error = GetError();
-
-    integral += error * 20;
-    derivative = (error - errorPrior) / 20;
-    double speed = p*error + i*integral + d*derivative;
-    errorPrior = error;
-    return speed;
-}
-
 void Shooter::Shoot() {
     pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
 }

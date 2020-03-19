@@ -172,7 +172,6 @@ int Intake::GetFirstEmptyPosition() {
     return position;
 }
 
-//this method and the one above seem to be the same thing, do we need both?
 int Intake::LowestFullPosition() {
     int position = noFullPositionFound;
     for (int i = 1; i < 6; i++) {
