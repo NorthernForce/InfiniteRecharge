@@ -17,12 +17,12 @@ void ManualShooter::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualShooter::Execute() {
-  RobotContainer::shooter->SetSpeed(0.5);
+  RobotContainer::shooter->SetRawSpeed(0.5);
 }
 
 // Called once the command ends or is interrupted.
 void ManualShooter::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0.0);
+  RobotContainer::shooter->SetRawSpeed(0.0);
 }
 
 // Returns true when the command should end.

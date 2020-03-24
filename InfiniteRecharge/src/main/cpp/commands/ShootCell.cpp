@@ -45,7 +45,7 @@ void ShootCell::Execute() {
   }
 }
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off
+  RobotContainer::shooter->SetCurrentRPMTo(0); // consider adding an idle state where the rpm is lower than the target but not off
   RobotContainer::intake->StopConveyor(); 
 }
 

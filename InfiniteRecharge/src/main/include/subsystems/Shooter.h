@@ -20,9 +20,9 @@ class Shooter : public frc2::SubsystemBase {
   void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
   void Shoot();
-  void SetSpeed(double speed);
+  void SetRawSpeed(double speed);
   int GetCurrentRPM();
-  void SetCurrentRPM(int rpm);
+  void SetCurrentRPMTo(int rpm);
   int GetTargetRPM();
   void SetTargetRPM(int rpm);
   int GetError();
@@ -43,6 +43,8 @@ class Shooter : public frc2::SubsystemBase {
   double d = 0.3; 
   double ff = 1.0;
   const int maxI = 100;
+  const double maxOutput = 1;
+  const double minOutput = -1;
   
   double error;
   double integral;

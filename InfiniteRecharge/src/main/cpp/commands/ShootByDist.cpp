@@ -38,7 +38,7 @@ void ShootByDist::Execute() {
 
 
 void ShootByDist::End(bool interrupted) {
-  RobotContainer::shooter->SetSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off, also is this set to coast?
+  RobotContainer::shooter->SetRawSpeed(0);
   RobotContainer::intake->StopConveyor(); 
 }
 

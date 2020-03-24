@@ -23,23 +23,34 @@ Shooter::Shooter() {
     pidController->SetD(d);
     pidController->SetFF(ff); 
     pidController->SetIMaxAccum(maxI);
+    pidController->SetOutputRange(minOutput, maxOutput);
 
     ConfigureSpark(.2);
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
-    frc::SmartDashboard::PutNumber("shooter P: ", p);
-    frc::SmartDashboard::PutNumber("shooter I: ", i);
-    frc::SmartDashboard::PutNumber("shooter D: ", d);
-    frc::SmartDashboard::PutNumber("shooter KK: ", ff);
-    frc::SmartDashboard::PutNumber("shooter Max I: ", maxI);
+    frc::SmartDashboard::PutNumber("Shooter P: ", p);
+    frc::SmartDashboard::PutNumber("Shooter I: ", i);
+    frc::SmartDashboard::PutNumber("Shooter D: ", d);
+    frc::SmartDashboard::PutNumber("Shooter FF: ", ff);
 }
 
 // This method will be called once per scheduler run
 void Shooter::Periodic() {
     targetRPM = frc::SmartDashboard::GetNumber("Shooter target RPM: ", targetRPM);
-    p = frc::SmartDashboard::GetNumber("shooter P: ", p);
-    i = frc::SmartDashboard::GetNumber("shooter I: ", i);
-    d = frc::SmartDashboard::GetNumber("shooter D: ", d);
-    ff = frc::SmartDashboard::GetNumber("shooter KK: ", ff);
+    p = frc::SmartDashboard::GetNumber("Shooter P: ", p);
+    i = frc::SmartDashboard::GetNumber("Shooter I: ", i);
+    d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
+    ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
+
+    if (pidController->GetP() != p)
+        pidController->SetP(p);
+    if (pidController->GetI() != i)
+        pidController->SetI(i);
+    if (pidController->GetD() != d)
+        pidController->SetD(d);
+    if (pidController->GetIMaxAccum() != maxI)
+        pidController->SetIMaxAccum(maxI);
+    if (pidController->GetOutputMin() != minOutput || pidController->GetOutputMax() != maxOutput)
+        pidController->SetOutputRange(minOutput, maxOutput);   
 }
 
 void Shooter::ConfigureSpark(double ramp) {
@@ -53,14 +64,14 @@ void Shooter::ConfigureSpark(double ramp) {
 }
 
 void Shooter::IdleShooter() {
-    pidController->SetReference(targetRPM * idlePercentage / 100, rev::ControlType::kVelocity);
+    pidController->SetReference(targetRPM * idlePercentage, rev::ControlType::kVelocity);
 }
 
 void Shooter::Shoot() {
     pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
 }
 
-void Shooter::SetSpeed(double speed) {
+void Shooter::SetRawSpeed(double speed) {
     shooterSpark->Set(speed);
 }
 
@@ -68,7 +79,7 @@ int Shooter::GetCurrentRPM() {
     return shooterSpark->GetEncoder().GetVelocity();
 }
 
-void Shooter::SetCurrentRPM(int rpm) {
+void Shooter::SetCurrentRPMTo(int rpm) {
     pidController->SetReference(rpm, rev::ControlType::kVelocity);
 }
 
