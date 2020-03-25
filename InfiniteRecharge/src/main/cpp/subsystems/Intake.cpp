@@ -121,11 +121,29 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    primaryConveyorSpark->Set(-0.4);
+    //runs conveyor at faster speeds until position 4 is reached
+    if (GetInventory(4) == StorageState::PRESENT) {
+        primaryConveyorSpark->Set(-0.4);
+    }
+    else {
+        primaryConveyorSpark->Set(-0.55);
+    }
 }
 
 void Intake::ConveyorSetSpeed(double speed) {
-    primaryConveyorSpark->Set(speed);
+    // runs conveyor faster until postiion 4 is full
+    if (GetInventory(4) == StorageState::PRESENT) {
+        primaryConveyorSpark->Set(speed);
+   }
+    else {
+        //increases speed based on whether conveyor is moving forward or backward
+        if (speed < 0) {
+            primaryConveyorSpark->Set(speed - 0.15);
+       }
+       else {
+           primaryConveyorSpark->Set(speed + 0.15);
+       }
+   }
 }
 
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
