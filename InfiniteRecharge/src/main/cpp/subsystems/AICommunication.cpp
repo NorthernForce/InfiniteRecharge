@@ -11,6 +11,7 @@
 
 AICommunication::AICommunication() {}
 
+////TODO: Understand how this vector works/is structured
 std::vector<double> AICommunication::GetValueArray(std::string key) {
     auto data = frc::SmartDashboard::GetNumberArray(key, 0);
     return data;

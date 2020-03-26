@@ -11,7 +11,7 @@
 
 Navigation::Navigation() {}
 
-
+////TODO: reset starting angle to zero on init
 ////TODO: Need to calculate position
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
@@ -40,11 +40,13 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     return std::make_pair(leftDistance, rightDistance);
 }
 
+////TODO: Look into ai Comms not working
 void Navigation::ResetPosition() {
   xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam) * NavXScaling * abs(cos(robotAngleDifference));
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 
+////TODO: Look into how robot angle difference is determined
 void Navigation::CoordinatePosition() {
     double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
     xPosition +=  averageInches * sin(-robotAngleDifference);
