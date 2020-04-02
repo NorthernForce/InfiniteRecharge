@@ -30,17 +30,19 @@ void IntakePowerCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   //stops conveyor when power cell has cleared pos 0
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-      
-    //move conveyor backward to try and brake faster 
-    RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
-    conveyorBackwardsCounter++;
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10) {
 
     //controls how long conveyor goes backward for
-    if (conveyorBackwardsCounter >= 11) {
+    if (conveyorBackwardsCounter >= backwardCountLimit) {
       RobotContainer::intake->StopConveyor();
-      conveyorBackwardsCounter = 0;
+      //conveyorBackwardsCounter = 0;
     }
+
+    //move conveyor backward to try and brake faster 
+    if (conveyorBackwardsCounter == 0) {
+      RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
+    }
+    conveyorBackwardsCounter++;
   }
 
   else {
@@ -51,7 +53,10 @@ void IntakePowerCell::Execute() {
     }
   }
 
-  // if (RobotContainer::intake->GetPowerCellCount() >= 5) {
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+    conveyorBackwardsCounter = 0;
+  }
+  // if (RobotContainer::intake->GetPowerCellCount >= 5) {
   //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
   //   RobotContainer::intake->Stop();
   //   RobotContainer::intake->StopConveyor();
