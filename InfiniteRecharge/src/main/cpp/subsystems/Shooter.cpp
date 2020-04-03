@@ -10,8 +10,6 @@
 #include "RobotContainer.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-double Shooter::rampRate;
-
 Shooter::Shooter() {
     shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
     pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
@@ -25,7 +23,7 @@ Shooter::Shooter() {
     pidController->SetIMaxAccum(maxI);
     pidController->SetOutputRange(minOutput, maxOutput);
 
-    ConfigureSpark(.2);
+    ConfigureSpark();
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
     frc::SmartDashboard::PutNumber("Shooter P: ", p);
     frc::SmartDashboard::PutNumber("Shooter I: ", i);
@@ -53,9 +51,8 @@ void Shooter::Periodic() {
         pidController->SetOutputRange(minOutput, maxOutput);   
 }
 
-void Shooter::ConfigureSpark(double ramp) {
+void Shooter::ConfigureSpark() {
     auto &controller = *shooterSpark; //nice
-    rampRate = ramp;
     controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
     controller.SetSmartCurrentLimit(currentLimit);
     controller.SetClosedLoopRampRate(rampRate);
@@ -92,7 +89,7 @@ void Shooter::SetTargetRPM(int rpm) {
 }
 
 int Shooter::GetError() {
-    return targetRPM - GetCurrentRPM();
+    return abs(targetRPM - GetCurrentRPM());
 }
 
 void Shooter::ShooterUp() {

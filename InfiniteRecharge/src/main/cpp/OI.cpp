@@ -102,11 +102,6 @@ std::pair<double, double> OI::GetDriveControls() {
   return std::make_pair(speed*multiplier, rotation*multiplier);
 }
 
-double OI::GetShooterRampRate() {
-    double shootRampRateMultiplier = frc::SmartDashboard::GetNumber("Shooter Ramp Rate:", 0.2);
-    return CheckAndLimitValue(shootRampRateMultiplier);
-}
-
 double OI::GetDriveSpeedMultiplier() {
     double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
     return CheckAndLimitValue(speedMultiplier);
