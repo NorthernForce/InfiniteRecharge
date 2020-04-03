@@ -16,7 +16,7 @@ class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
   void Periodic();
-  void ConfigureSpark(double ramp=rampRate);
+  void ConfigureSpark();
   void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
   void Shoot();
@@ -53,7 +53,7 @@ class Shooter : public frc2::SubsystemBase {
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
-  static double rampRate;
+  const double rampRate = 0;
   int targetRPM = 2200;
   double idlePercentage = 0.6; //units are decimals from 0-1
 };

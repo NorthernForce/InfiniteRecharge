@@ -12,7 +12,6 @@ class OI {
     void MapControllerButtons();
     frc::SendableChooser<frc2::Command*> DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
-    double GetShooterRampRate();
     void SetControllerRumble(frc::XboxController *controller, double value=0, bool lightly=false);
 
     static std::shared_ptr<frc::XboxController> driverController;

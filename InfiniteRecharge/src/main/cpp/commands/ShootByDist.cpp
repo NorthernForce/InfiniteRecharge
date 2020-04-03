@@ -15,8 +15,6 @@ ShootByDist::ShootByDist() {
 
 // Called when the command is initially scheduled.
 void ShootByDist::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate();
-  RobotContainer::shooter->ConfigureSpark(ramp);
   // double d = RobotContainer::ultrasonic->GetDistance();
   // double speed = sqrt(-1*(d*d*-368.09)/(0.719185573395*(d-73.5)));
   // rpm = (60*speed)/37.6991118431;
