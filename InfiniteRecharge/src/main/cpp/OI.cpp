@@ -42,6 +42,7 @@
 #include "commands/ManualIntake.h"
 #include "commands/ManualShooter.h"
 #include "commands/ManualConveyor.h"
+#include "commands/ManualIntakeBackward.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -82,6 +83,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ManualShooter());
     frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ManualIntake());
+    frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::lt_trigger); }).WhileHeld(new ManualIntakeBackward());
     frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualConveyor());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new IncreaseShooterRPM());
     frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new DecreaseShooterRPM());
