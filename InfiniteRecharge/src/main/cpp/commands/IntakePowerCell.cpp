@@ -46,13 +46,15 @@ void IntakePowerCell::Execute() {
   }
 
   else {
+    //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
       zeroHasBeenTriggered = true;
     }
   }
-
+  
+  //makes it so the counter will only be reset if the ball is no longer in 5
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
     conveyorBackwardsCounter = 0;
   }
@@ -60,7 +62,16 @@ void IntakePowerCell::Execute() {
   //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
   //   RobotContainer::intake->Stop();
   //   RobotContainer::intake->StopConveyor();
-  // }    
+  // }  
+
+  ////TODO: Consider adding a check to make sure this isn't the first power cell to make sure cell will actually reach 0
+  ////TODO: find out if when the cell exits 0 is 1 triggered? (how close together are the positions?)
+
+  //checks to make sure that the power cell was intaked properly and runs conveyor backward if not
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+    RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
+  }
+
 }
 
 // Called once the command ends or is interrupted.
@@ -71,7 +82,8 @@ void IntakePowerCell::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true)
+  //makes sure ball has cleared 0 and there isnt a gap before stopping
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
