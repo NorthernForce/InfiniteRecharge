@@ -46,10 +46,14 @@ void IntakePowerCell::Execute() {
   }
 
   else {
+    ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT || RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
+    }
+    
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
       zeroHasBeenTriggered = true;
     }
   }
@@ -64,11 +68,8 @@ void IntakePowerCell::Execute() {
   //   RobotContainer::intake->StopConveyor();
   // }  
 
-  ////TODO: Consider adding a check to make sure this isn't the first power cell to make sure cell will actually reach 0
-  ////TODO: find out if when the cell exits 0 is 1 triggered? (how close together are the positions?)
-
-  //checks to make sure that the power cell was intaked properly and runs conveyor backward if not
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+  //will run conveyor backward if power cell wasn't intaked properly
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
 
