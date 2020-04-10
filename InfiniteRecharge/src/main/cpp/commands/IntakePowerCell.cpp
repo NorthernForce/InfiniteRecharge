@@ -21,7 +21,7 @@ IntakePowerCell::IntakePowerCell() {
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
-  zeroHasBeenTriggered = false;
+ // zeroHasBeenTriggered = false;
 }
 
 //***************************************************************************
@@ -53,9 +53,9 @@ void IntakePowerCell::Execute() {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
     }
     
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-      zeroHasBeenTriggered = true;
-    }
+    //  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+    //   zeroHasBeenTriggered = true;
+    // }
   }
   
   //makes it so the counter will only be reset if the ball is no longer in 5
@@ -83,8 +83,8 @@ void IntakePowerCell::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
-  //makes sure ball has cleared 0 and there isnt a gap before stopping
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY && zeroHasBeenTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
