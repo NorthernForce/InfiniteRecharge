@@ -29,6 +29,9 @@ void IntakePowerCell::Initialize() {
 //****************************************************************************
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
+  
+  std::cout << "Position " << emptyPosition <<  " full\n";
+
   //stops conveyor when power cell has cleared pos 0
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10) {
 
@@ -49,7 +52,7 @@ void IntakePowerCell::Execute() {
     ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT || RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
     }
     

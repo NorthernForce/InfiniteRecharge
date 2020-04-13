@@ -52,7 +52,7 @@ void Intake::Periodic() {
     for(int i=0; i<6; i++) {
         if (GetInventory(i) == StorageState::PRESENT) {
            std::cout << "Position " << i <<  " full\n";
-    }
+        }
         else {
            std::cout << "Position " << i <<  " empty\n";
         }
