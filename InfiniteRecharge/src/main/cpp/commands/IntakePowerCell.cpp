@@ -76,6 +76,10 @@ void IntakePowerCell::Execute() {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
 
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
+    emptyPositionTriggered = true;
+  }
+
 }
 
 // Called once the command ends or is interrupted.
@@ -87,7 +91,7 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
