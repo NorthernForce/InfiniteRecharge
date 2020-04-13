@@ -27,6 +27,9 @@ namespace Constants {
     const double degreesToRadians = pi/180;
 
     const int XResetMultiplier = 0.996194698092;
+
+    const int lowDriveMultiplier = -.7179821429;
+    const int highDriveMultiplier = -.269272619
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;
