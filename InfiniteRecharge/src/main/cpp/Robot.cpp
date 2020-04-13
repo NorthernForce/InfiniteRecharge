@@ -109,6 +109,19 @@ void Robot::AutonomousPeriodic() {
   ////TODO: Make any of this work
 
   int autoCounter = 0;
+  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 0)) {
+    simpleDriveForward->Schedule();
+    autoCounter++;
+    printf("I'm working????? \n");
+  }
+  /*
+  if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 1)) {
+    autoTurnToAngle->SetAngle(-90);
+    autoTurnToAngle->Schedule();
+    autoCounter++;
+  }
+  */
+  /*
   if((!autoMoveToLimelight->IsScheduled()) && (autoCounter == 0)) {
     autoMoveToLimelight->Schedule();
     autoCounter++;
@@ -132,7 +145,7 @@ void Robot::AutonomousPeriodic() {
     autoCounter++;
     printf("I'm working????? \n");
   }
-  
+  */
 
   
   /* Working autonomous code

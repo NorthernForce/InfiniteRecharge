@@ -80,8 +80,8 @@ std::pair<double, double> Drivetrain::GetEncoderRotations() {
 
 void Drivetrain::SimpleDriveWithEncoder(double desiredEncoder) {
     if(leftPrimarySpark->GetEncoder().GetPosition() <= desiredEncoder) {
-        leftPrimarySpark->Set(0.5);
-        rightPrimarySpark->Set(0.5);
+        leftPrimarySpark->Set(0.3);
+        rightPrimarySpark->Set(0.3);
     }
 }
 
