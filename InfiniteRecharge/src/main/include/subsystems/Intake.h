@@ -48,6 +48,8 @@ class Intake : public frc2::SubsystemBase {
   void RunConveyorToShoot();
   void StopConveyor();
   void ConveyorSetSpeed(double speed);
+  void NewRunConveyer(double speed = Constants::Intake::normal);
+  void NewIntake();
   bool IsConveyorEmpty();
 
   //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition
@@ -78,6 +80,8 @@ class Intake : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
 
+  bool zeroHasBeenTripped = false;
+  bool fourHasBeenTripped = false;
   bool ballOccupancy[6];
   int powerCellCount = 0;
 };

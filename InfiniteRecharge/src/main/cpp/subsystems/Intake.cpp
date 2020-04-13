@@ -146,6 +146,35 @@ void Intake::ConveyorSetSpeed(double speed) {
     }
 }
 
+void Intake::NewRunConveyer(double speed) {
+    primaryConveyorSpark->Set(speed);
+}
+
+void Intake::NewIntake() {
+    if (GetInventory(5) == StorageState::PRESENT) {
+        StopConveyor();
+        Stop();
+    }
+    else if (GetInventory(4) == StorageState::PRESENT) {
+        fourHasBeenTripped = true;
+    }
+    else if (GetInventory(0) == StorageState::PRESENT) {
+        zeroHasBeenTripped = true;
+        Stop();
+
+        if (fourHasBeenTripped) {
+            NewRunConveyer(Constants::Intake::slow);
+        }
+        else {
+            NewRunConveyer();
+        }
+    }
+    else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
+        StopConveyor();
+    }
+}
+
+
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
 void Intake::StopConveyor() {
     primaryConveyorSpark->Set(0);

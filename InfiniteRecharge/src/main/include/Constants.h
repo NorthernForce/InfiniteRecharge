@@ -52,6 +52,12 @@ namespace Constants {
 
     }
 
+    namespace Intake {
+        const int slow = -0.25;
+        const int normal = -0.45;
+        const int fast = -0.7;
+    }
+
     namespace Shifting {
         const double lowMultiplier = 4.286;
         const double highMultiplier = 1.39383333333333333333;
