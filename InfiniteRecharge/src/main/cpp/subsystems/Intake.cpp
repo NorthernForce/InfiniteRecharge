@@ -139,10 +139,10 @@ void Intake::ConveyorSetSpeed(double speed) {
         //increases speed based on whether conveyor is moving forward or backward
         if (speed < 0) {
             primaryConveyorSpark->Set(speed - 0.15);
-       }
-       else {
-           primaryConveyorSpark->Set(speed + 0.15);
-       }
+        }
+        else {
+            primaryConveyorSpark->Set(speed + 0.15);
+        }
     }
 }
 
@@ -150,10 +150,16 @@ void Intake::NewRunConveyer(double speed) {
     primaryConveyorSpark->Set(speed);
 }
 
-void Intake::NewIntake() {
+double Intake::GetConveyerSpeed() {
+    primaryConveyorSpark->Get();
+}
+
+bool Intake::NewIntake() {
+    bool stop;
     if (GetInventory(5) == StorageState::PRESENT) {
         StopConveyor();
         Stop();
+        stop = true;
     }
     else if (GetInventory(4) == StorageState::PRESENT) {
         fourHasBeenTripped = true;
@@ -171,7 +177,9 @@ void Intake::NewIntake() {
     }
     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
         StopConveyor();
+        stop = true;
     }
+    return stop;
 }
 
 

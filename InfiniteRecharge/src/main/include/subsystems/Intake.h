@@ -49,7 +49,8 @@ class Intake : public frc2::SubsystemBase {
   void StopConveyor();
   void ConveyorSetSpeed(double speed);
   void NewRunConveyer(double speed = Constants::Intake::normal);
-  void NewIntake();
+  double GetConveyerSpeed();
+  bool NewIntake();
   bool IsConveyorEmpty();
 
   //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition
