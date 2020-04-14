@@ -29,6 +29,9 @@ void IntakePowerCell::Initialize() {
 //****************************************************************************
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
+  
+  std::cout << "Empty Position " << emptyPosition <<  " full\n";
+
   //stops conveyor when power cell has cleared pos 0
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10) {
 
@@ -49,7 +52,7 @@ void IntakePowerCell::Execute() {
     ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT || RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
     }
     
@@ -73,6 +76,10 @@ void IntakePowerCell::Execute() {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
 
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
+    emptyPositionTriggered = true;
+  }
+
 }
 
 // Called once the command ends or is interrupted.
@@ -84,7 +91,7 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
