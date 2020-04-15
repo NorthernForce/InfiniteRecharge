@@ -43,6 +43,7 @@
 #include "commands/ManualShooter.h"
 #include "commands/ManualConveyor.h"
 #include "commands/ManualIntakeBackward.h"
+#include "commands/TrevinIntake.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -71,6 +72,7 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new IntakePowerCell());
     frc2::Button([this] { return (driverController->GetRawButton(Xbox::X_button)); }).WhileHeld(new ReverseConveyor());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TrevinIntake());
 
 
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
