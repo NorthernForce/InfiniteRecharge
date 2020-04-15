@@ -30,7 +30,12 @@ void IntakePowerCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   
-  std::cout << "Empty Position " << emptyPosition <<  " full\n";
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
+    std::cout << "Empty Position " << emptyPosition <<  " full\n";
+  }
+  else {
+    std::cout << "Empty Position " << emptyPosition <<  " empty\n";
+  }
 
   //stops conveyor when power cell has cleared pos 0
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10) {
