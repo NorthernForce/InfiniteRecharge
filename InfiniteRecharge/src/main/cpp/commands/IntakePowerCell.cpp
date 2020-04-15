@@ -30,6 +30,8 @@ void IntakePowerCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   
+  std::cout << "Empty Position is " << emptyPosition <<  "\n";
+
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     std::cout << "Empty Position " << emptyPosition <<  " full\n";
   }
