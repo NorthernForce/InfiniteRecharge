@@ -21,6 +21,7 @@ IntakePowerCell::IntakePowerCell() {
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
+  conveyorBackwardsCounter = 0;
  // zeroHasBeenTriggered = false;
 }
 
