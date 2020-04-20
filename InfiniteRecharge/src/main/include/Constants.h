@@ -56,7 +56,7 @@ namespace Constants {
     }
 
     namespace Intake {
-        const double slow = -0.25;
+        const double slow = -0.325;
         const double normal = -0.45;
         const double fast = -0.7;
     }
