@@ -21,6 +21,8 @@ IntakePowerCell::IntakePowerCell() {
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
+  conveyorBackwardsCounter = 0;
+  fiveReached = false;
  // zeroHasBeenTriggered = false;
 }
 
@@ -30,6 +32,8 @@ void IntakePowerCell::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   
+  std::cout << "Empty Position is " << emptyPosition <<  "\n";
+
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     std::cout << "Empty Position " << emptyPosition <<  " full\n";
   }
@@ -38,7 +42,7 @@ void IntakePowerCell::Execute() {
   }
 
   //stops conveyor when power cell has cleared pos 0
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10) {
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10 && fiveReached == false) {
 
     //controls how long conveyor goes backward for
     if (conveyorBackwardsCounter >= backwardCountLimit) {
@@ -65,11 +69,16 @@ void IntakePowerCell::Execute() {
     //   zeroHasBeenTriggered = true;
     // }
   }
-  
+  //tag to keep the conveyor from oscillating at five
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+    fiveReached = true;
+  }
+
   //makes it so the counter will only be reset if the ball is no longer in 5
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
     conveyorBackwardsCounter = 0;
   }
+
   // if (RobotContainer::intake->GetPowerCellCount >= 5) {
   //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
   //   RobotContainer::intake->Stop();

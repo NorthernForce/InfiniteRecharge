@@ -85,4 +85,5 @@ class Intake : public frc2::SubsystemBase {
   bool fourHasBeenTripped = false;
   bool ballOccupancy[6];
   int powerCellCount = 0;
+  double sparkSpeed;
 };

@@ -151,7 +151,8 @@ void Intake::NewRunConveyer(double speed) {
 }
 
 double Intake::GetConveyerSpeed() {
-    primaryConveyorSpark->Get();
+    sparkSpeed = primaryConveyorSpark->Get();
+    return sparkSpeed;
 }
 
 bool Intake::NewIntake() {
