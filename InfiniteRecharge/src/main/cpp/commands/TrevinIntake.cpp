@@ -24,7 +24,10 @@ void TrevinIntake::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void TrevinIntake::End(bool interrupted) {}
+void TrevinIntake::End(bool interrupted) {
+  RobotContainer::intake->Stop();
+  RobotContainer::intake->StopConveyor();
+}
 
 // Returns true when the command should end.
 bool TrevinIntake::IsFinished() { return RobotContainer::intake->NewIntake(); }

@@ -162,10 +162,10 @@ bool Intake::NewIntake() {
         Stop();
         stop = true;
     }
-    else if (GetInventory(4) == StorageState::PRESENT) {
+    if (GetInventory(4) == StorageState::PRESENT) {
         fourHasBeenTripped = true;
     }
-    else if (GetInventory(0) == StorageState::PRESENT) {
+    if (GetInventory(0) == StorageState::PRESENT) {
         zeroHasBeenTripped = true;
         Stop();
 
