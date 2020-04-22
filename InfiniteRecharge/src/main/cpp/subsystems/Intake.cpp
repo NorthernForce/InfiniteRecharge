@@ -56,7 +56,7 @@ void Intake::Periodic() {
         else {
            std::cout << "Position " << i <<  " empty\n";
         }
-   }
+    }
 }
 
 void Intake::TakeInPowerCell() {

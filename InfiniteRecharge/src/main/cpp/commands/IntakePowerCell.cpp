@@ -33,6 +33,7 @@ void IntakePowerCell::Initialize() {
 void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
+  std::cout << "Empty Position Triggered: " << emptyPositionTriggered << "\n";
 
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     std::cout << "Empty Position " << emptyPosition <<  " full\n";
