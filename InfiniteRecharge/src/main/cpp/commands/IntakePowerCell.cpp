@@ -42,7 +42,7 @@ void IntakePowerCell::Execute() {
     std::cout << "Empty Position " << emptyPosition <<  " empty\n";
   }
 
-  //stops conveyor when power cell has cleared pos 0
+  // //stops conveyor when power cell has cleared pos 0
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10 && fiveReached == false) {
 
     //controls how long conveyor goes backward for
@@ -106,7 +106,7 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
