@@ -14,12 +14,13 @@ SimpleCrossAutoLine::SimpleCrossAutoLine() {
 }
 
 // Called when the command is initially scheduled.
-void SimpleCrossAutoLine::Initialize() {}
+void SimpleCrossAutoLine::Initialize() {
+    RobotContainer::drivetrain->SimpleDriveWithEncoder(-9.693814284);
+
+}
 
 // Called repeatedly when this Command is scheduled to run
-void SimpleCrossAutoLine::Execute() {
-  RobotContainer::drivetrain->SimpleDriveWithEncoder(-9.693814284);
-}
+void SimpleCrossAutoLine::Execute() {}
 
 // Called once the command ends or is interrupted.
 void SimpleCrossAutoLine::End(bool interrupted) {}
