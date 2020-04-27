@@ -47,4 +47,5 @@ class Robot : public frc::TimedRobot {
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
+  int autoCounter;
 };
