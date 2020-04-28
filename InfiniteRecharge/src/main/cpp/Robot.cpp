@@ -73,6 +73,7 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+  autoCounter = 0;
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -108,11 +109,14 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
   ////TODO: Make any of this work
 
-  int autoCounter = 0;
-  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 0)) {
-    simpleDriveForward->Schedule();
+  if (autoCounter == 0) {
+    RobotContainer::drivetrain->SimpleDriveWithEncoder(-9.693814284);
     autoCounter++;
-    printf("I'm working????? \n");
+    printf("End of simple drive 1 \n");
+  } else if ((autoCounter == 1) && (!autoTurnToAngle->IsScheduled())) {
+    autoTurnToAngle->SetAngle(-90);
+    autoTurnToAngle->Schedule();
+    printf("End of turn to angle \n");
   }
   /*
   if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 1)) {

@@ -20,10 +20,11 @@ void TrevinIntake::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void TrevinIntake::Execute() {
   isFinished = RobotContainer::intake->NewIntake();
+  std::cout << "Intake Running\n";
 }
 
 // Called once the command ends or is interrupted.
-void TrevinIntake::End(bool interrupted) {
+void TrevinIntake::End(bool interrupted)  {
   RobotContainer::intake->Stop();
   RobotContainer::intake->StopConveyor();
 }
