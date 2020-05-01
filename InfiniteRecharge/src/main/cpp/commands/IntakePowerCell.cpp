@@ -23,6 +23,7 @@ void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
   conveyorBackwardsCounter = 0;
   fiveReached = false;
+  emptyPositionTriggered = false;
  // zeroHasBeenTriggered = false;
 }
 
@@ -62,7 +63,7 @@ void IntakePowerCell::Execute() {
     ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && emptyPositionTriggered == false) {
       RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
     }
     
@@ -87,13 +88,13 @@ void IntakePowerCell::Execute() {
   // }  
 
   //will run conveyor backward if power cell wasn't intaked properly
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
-  // //sees if the emptyPosition has been triggered
-  // if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
-  //   emptyPositionTriggered = true;
-  // }
+  //sees if the emptyPosition has been triggered
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
+    emptyPositionTriggered = true;
+  }
 
 }
 
@@ -106,7 +107,7 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
