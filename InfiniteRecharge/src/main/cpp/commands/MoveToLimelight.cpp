@@ -26,8 +26,8 @@ void MoveToLimelight::Initialize() {
 void MoveToLimelight::Execute() {
   limeLightOffset = RobotContainer::limelight->GetXOffset();
   isTargetThere = RobotContainer::limelight->IsTargetThere();
-  std::cout << "is target there: " << isTargetThere << std::endl;
-  std::cout << "limelight offset: " << limeLightOffset << std::endl;
+  std::cout << "is target there: " << isTargetThere << '\n';
+  std::cout << "limelight offset: " << limeLightOffset << '\n';
 
   if (isTargetThere == true) {
     if (!turnToLimelight->IsScheduled()) {

@@ -14,6 +14,7 @@
 #include "commands/ShootCell.h"
 #include "commands/TurnToAngle.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/AutoDrive.h"
 #include <thread>
 
 #include "RobotContainer.h"
@@ -41,6 +42,7 @@ class Robot : public frc::TimedRobot {
   frc::SendableChooser<std::string> *chooserAuto;
   SimpleCrossAutoLine* simpleDriveForward;
   MoveToLimelight* autoMoveToLimelight;
+  AutoDrive* autoDrive;
   TurnToAngle* autoTurnToAngle;
   ShootCell* autoShooter;
   std::string chooserAutoSelected;

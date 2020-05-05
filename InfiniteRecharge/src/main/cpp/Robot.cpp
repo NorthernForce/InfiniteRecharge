@@ -102,22 +102,39 @@ void Robot::AutonomousInit() {
       new DoNothing;
     }
 */
-  RobotContainer::drivetrain->SetEncoderPosition(0);
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+
+    auto drive = [this](int desiredDist) {
+        autoDrive->SetDist(desiredDist);
+        autoDrive->SetSpeeds(0.3, 0.3);
+        autoDrive->Schedule();
+    };
+    drive(9.693814284);
 }
 
 
 void Robot::AutonomousPeriodic() {
   ////TODO: Make any of this work
 
-  if (autoCounter == 0) {
-    RobotContainer::drivetrain->SimpleDriveWithEncoder(-9.693814284);
-    autoCounter++;
-    printf("End of simple drive 1 \n");
-  } else if ((autoCounter == 1) && (!autoTurnToAngle->IsScheduled())) {
-    autoTurnToAngle->SetAngle(-90);
-    autoTurnToAngle->Schedule();
-    printf("End of turn to angle \n");
-  }
+    auto turnToAngle = [this](int targetAngle) {
+        if (!autoDrive->IsScheduled() && !autoTurnToAngle->IsScheduled()) {
+            autoTurnToAngle->SetAngle(targetAngle);
+            autoTurnToAngle->Schedule();
+        }
+    };
+    turnToAngle(-90);
+
+//   if (autoCounter == 0) {
+//     RobotContainer::drivetrain->SimpleDriveWithEncoder(9.693814284);
+//     autoCounter++;
+//     printf("End of simple drive 1 \n");
+//   } else if ((autoCounter == 1) && (!autoTurnToAngle->IsScheduled())) {
+//     autoTurnToAngle->SetAngle(-90);
+//     autoTurnToAngle->Schedule();
+//     printf("End of turn to angle \n");
+//   }
+  
+
   /*
   if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 1)) {
     autoTurnToAngle->SetAngle(-90);
