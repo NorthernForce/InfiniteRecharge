@@ -10,7 +10,6 @@
 TrevinIntake::TrevinIntake() {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(RobotContainer::intake.get());
-
 }
 
 // Called when the command is initially scheduled.
@@ -20,14 +19,17 @@ void TrevinIntake::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void TrevinIntake::Execute() {
-  RobotContainer::intake->NewIntake();
+  isFinished = RobotContainer::intake->NewIntake();
+  std::cout << "Intake Running\n";
 }
 
 // Called once the command ends or is interrupted.
-void TrevinIntake::End(bool interrupted) {
+void TrevinIntake::End(bool interrupted)  {
   RobotContainer::intake->Stop();
   RobotContainer::intake->StopConveyor();
 }
 
 // Returns true when the command should end.
-bool TrevinIntake::IsFinished() { return RobotContainer::intake->NewIntake(); }
+bool TrevinIntake::IsFinished() {
+    return isFinished;
+}

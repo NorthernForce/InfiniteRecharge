@@ -168,7 +168,6 @@ bool Intake::NewIntake() {
     if (GetInventory(0) == StorageState::PRESENT) {
         zeroHasBeenTripped = true;
         Stop();
-
         if (fourHasBeenTripped) {
             NewRunConveyer(Constants::Intake::slow);
         }
