@@ -81,6 +81,10 @@ void IntakePowerCell::Execute() {
     conveyorBackwardsCounter = 0;
   }
 
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+    RobotContainer::intake->SetIntakeSpeed(0.3);
+  }
+
   // if (RobotContainer::intake->GetPowerCellCount >= 5) {
   //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
   //   RobotContainer::intake->Stop();
