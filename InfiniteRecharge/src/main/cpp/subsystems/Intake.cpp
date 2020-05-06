@@ -159,7 +159,7 @@ double Intake::GetConveyerSpeed() {
     return sparkSpeed;
 }
 
-bool Intake::NewIntake() {
+bool Intake::TrevinIntake() {
     bool stop;
     if (GetInventory(5) == StorageState::PRESENT) {
         StopConveyor();
@@ -186,6 +186,23 @@ bool Intake::NewIntake() {
     return stop;
 }
 
+bool Intake::NewTrevinIntake() {
+    bool stop;
+    if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
+        StopConveyor();
+        stop = true;
+    }
+    if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
+        Stop();
+    }
+    if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
+        NewRunConveyer(Constants::Intake::slow);
+    }
+    else if (GetInventory(0) == StorageState::PRESENT) {
+        NewRunConveyer();
+    }
+    return stop;
+}
 
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
 void Intake::StopConveyor() {
