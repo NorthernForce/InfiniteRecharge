@@ -37,6 +37,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
+
   chooserAuto = new frc::SendableChooser<std::string>;
   chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
   chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
