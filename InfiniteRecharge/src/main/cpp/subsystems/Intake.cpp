@@ -188,6 +188,9 @@ bool Intake::NewTrevinIntake() {
         StopConveyor();
         stop = true;
     }
+    else {
+        TakeInPowerCell();
+    }
     if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
         Stop();
     }
