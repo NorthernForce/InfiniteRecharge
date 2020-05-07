@@ -185,6 +185,7 @@ bool Intake::TrevinIntake() {
 bool Intake::NewTrevinIntake() {
     bool stop;
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
+        std::cout << "Stopping Conveyers";
         StopConveyor();
         stop = true;
     }
@@ -193,6 +194,7 @@ bool Intake::NewTrevinIntake() {
     }
     if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
         Stop();
+        std::cout << "Stopping Inktake";
     }
     if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
         NewRunConveyer(Constants::Intake::slow);
