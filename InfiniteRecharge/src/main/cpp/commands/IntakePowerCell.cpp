@@ -60,7 +60,7 @@ void IntakePowerCell::Execute() {
   }
 
   else {
-    ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
+   
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && emptyPositionTriggered == false) {
@@ -81,9 +81,9 @@ void IntakePowerCell::Execute() {
     conveyorBackwardsCounter = 0;
   }
 
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->SetIntakeSpeed(0.3);
-  }
+  // if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+  //   RobotContainer::intake->SetIntakeSpeed(0.3);
+  // }
 
   // if (RobotContainer::intake->GetPowerCellCount >= 5) {
   //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
@@ -95,6 +95,8 @@ void IntakePowerCell::Execute() {
   if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
+  
+  
   //sees if the emptyPosition has been triggered
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
     emptyPositionTriggered = true;

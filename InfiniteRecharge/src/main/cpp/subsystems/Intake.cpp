@@ -63,7 +63,7 @@ void Intake::TakeInPowerCell() {
     intakeTalon->Set(0.6);
 }
 
-double Intake::SetIntakeSpeed(double speed) {
+void Intake::SetIntakeSpeed(double speed) {
     intakeTalon->Set(speed);
 }
 
