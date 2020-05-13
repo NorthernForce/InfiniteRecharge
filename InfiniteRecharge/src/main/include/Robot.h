@@ -43,7 +43,7 @@ class Robot : public frc::TimedRobot {
   SimpleCrossAutoLine* simpleDriveForward;
   MoveToLimelight* autoMoveToLimelight;
   AutoDrive* autoDrive;
-  TurnToAngle* autoTurnToAngle;
+  std::shared_ptr<TurnToAngle> autoTurnToAngle;
   ShootCell* autoShooter;
   std::string chooserAutoSelected;
 
