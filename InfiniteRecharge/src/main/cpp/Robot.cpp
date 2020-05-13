@@ -107,7 +107,7 @@ void Robot::AutonomousInit() {
     }
 */
     RobotContainer::drivetrain->SetEncoderPosition(0);
-
+    autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
     printf("Aiden is right and this is kind of working___________ \n");
 
