@@ -37,6 +37,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
+/*
 
   chooserAuto = new frc::SendableChooser<std::string>;
   chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
@@ -46,6 +47,8 @@ void Robot::RobotInit() {
   chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
+
+  */
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -105,18 +108,24 @@ void Robot::AutonomousInit() {
 */
     RobotContainer::drivetrain->SetEncoderPosition(0);
 
+    autoTurnToAngle->Schedule();
+    printf("Aiden is right and this is kind of working___________ \n");
+
+/*
     auto drive = [this](int desiredDist) {
         autoDrive->SetDist(desiredDist);
         autoDrive->SetSpeeds(0.3, 0.3);
         autoDrive->Schedule();
     };
     drive(9.693814284);
+*/
 }
 
 
 void Robot::AutonomousPeriodic() {
   ////TODO: Make any of this work
 
+/*
     auto turnToAngle = [this](int targetAngle) {
         if (!autoDrive->IsScheduled() && !autoTurnToAngle->IsScheduled()) {
             autoTurnToAngle->SetAngle(targetAngle);
@@ -124,6 +133,7 @@ void Robot::AutonomousPeriodic() {
         }
     };
     turnToAngle(-90);
+  */
 
 //   if (autoCounter == 0) {
 //     RobotContainer::drivetrain->SimpleDriveWithEncoder(9.693814284);
