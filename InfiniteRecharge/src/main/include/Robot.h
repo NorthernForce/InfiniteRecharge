@@ -40,12 +40,12 @@ class Robot : public frc::TimedRobot {
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
   frc::SendableChooser<std::string> *chooserAuto;
-  SimpleCrossAutoLine* simpleDriveForward;
-  MoveToLimelight* autoMoveToLimelight;
-  AutoDrive* autoDrive;
+  //SimpleCrossAutoLine* simpleDriveForward;
+  //MoveToLimelight* autoMoveToLimelight;
+  //AutoDrive* autoDrive;
   std::shared_ptr<TurnToAngle> autoTurnToAngle;
-  ShootCell* autoShooter;
-  std::string chooserAutoSelected;
+  //ShootCell* autoShooter;
+  //std::string chooserAutoSelected;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
