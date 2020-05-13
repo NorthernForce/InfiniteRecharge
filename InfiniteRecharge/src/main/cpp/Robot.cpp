@@ -106,6 +106,8 @@ void Robot::AutonomousInit() {
       new DoNothing;
     }
 */
+  autoTurnToAngle.reset(new TurnToAngle)
+  
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
