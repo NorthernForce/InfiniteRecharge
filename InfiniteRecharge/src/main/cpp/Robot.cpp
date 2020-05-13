@@ -112,6 +112,10 @@ void Robot::AutonomousInit() {
     autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
     printf("Aiden is right and this is kind of working___________ \n");
+    auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+  RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
+  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 10) {
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 
 /*
     auto drive = [this](int desiredDist) {
@@ -126,13 +130,6 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
   ////TODO: Make any of this work
-
- 
-      auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
-  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 10) {
-    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
-  }
 
 /*
     auto turnToAngle = [this](int targetAngle) {
