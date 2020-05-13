@@ -127,7 +127,7 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 
     if (!autoTurnToAngle->IsScheduled()) {
-        RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
+        RobotContainer::drivetrain->DriveUsingSpeeds(-0.4, -0.4);
         
         auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
         if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 10) {
