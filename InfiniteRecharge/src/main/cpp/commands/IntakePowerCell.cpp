@@ -43,6 +43,10 @@ void IntakePowerCell::Execute() {
     std::cout << "Empty Position " << emptyPosition <<  " empty\n";
   }
 
+  // if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+  //   RobotContainer::intake->StopConveyor();
+  // }
+
   //stops conveyor when power cell has cleared pos 0
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10 && fiveReached == false) {
 
@@ -57,14 +61,14 @@ void IntakePowerCell::Execute() {
       RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
     }
     conveyorBackwardsCounter++;
-  }
+  } 
 
   else {
    
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
     if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && emptyPositionTriggered == false) {
-      RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
+      RobotContainer::intake->ConveyorSetSpeed(-.3);
     }
     
     //  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
