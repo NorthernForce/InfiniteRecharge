@@ -129,6 +129,14 @@ autoCounter = 1;
 
 void Robot::AutonomousPeriodic() {
 
+autoTurnToAngle.reset(new TurnToAngle);
+
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle->SetAngle(90);
+    autoTurnToAngle->Schedule();
+    printf("Aiden is right and this is kind of working___________ \n");
+    autoCounter = 1;
+
 if (autoCounter == 1) {
         RobotContainer::drivetrain->DriveUsingSpeeds(-0.4, -0.4);
         auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
