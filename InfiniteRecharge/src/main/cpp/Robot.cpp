@@ -37,6 +37,7 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
+/*
 
   chooserAuto = new frc::SendableChooser<std::string>;
   chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
@@ -46,6 +47,8 @@ void Robot::RobotInit() {
   chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
+
+  */
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -103,20 +106,47 @@ void Robot::AutonomousInit() {
       new DoNothing;
     }
 */
-    RobotContainer::drivetrain->SetEncoderPosition(0);
+  autoTurnToAngle.reset(new TurnToAngle);
 
+if (autoCounter == 0) {
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle->SetAngle(90);
+    autoTurnToAngle->Schedule();
+    printf("Aiden is right and this is kind of working___________ \n");
+}
+autoCounter = 1;
+
+/*
     auto drive = [this](int desiredDist) {
         autoDrive->SetDist(desiredDist);
         autoDrive->SetSpeeds(0.3, 0.3);
         autoDrive->Schedule();
     };
     drive(9.693814284);
+*/
 }
 
 
 void Robot::AutonomousPeriodic() {
+
+autoTurnToAngle.reset(new TurnToAngle);
+
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle->SetAngle(90);
+    autoTurnToAngle->Schedule();
+    printf("Aiden is right and this is kind of working___________ \n");
+    autoCounter = 1;
+
+if (autoCounter == 1) {
+        RobotContainer::drivetrain->DriveUsingSpeeds(-0.4, -0.4);
+        auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
+        if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 10) {
+            RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+        }
+}
   ////TODO: Make any of this work
 
+/*
     auto turnToAngle = [this](int targetAngle) {
         if (!autoDrive->IsScheduled() && !autoTurnToAngle->IsScheduled()) {
             autoTurnToAngle->SetAngle(targetAngle);
@@ -124,6 +154,7 @@ void Robot::AutonomousPeriodic() {
         }
     };
     turnToAngle(-90);
+  */
 
 //   if (autoCounter == 0) {
 //     RobotContainer::drivetrain->SimpleDriveWithEncoder(9.693814284);

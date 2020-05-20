@@ -34,10 +34,11 @@ class IntakePowerCell
  private:
   int emptyPosition;
   int conveyorBackwardsCounter = 0;
-  const int backwardCountLimit = 5;
+  const int backwardCountLimit = 2;
 
   //position four sensor was too high up, in order to stop cells faster we made it based on pos 0 clearing
   bool zeroHasBeenTriggered; 
+  bool oneTriggered;
   bool emptyPositionTriggered = false;
   bool fiveReached = false;
 

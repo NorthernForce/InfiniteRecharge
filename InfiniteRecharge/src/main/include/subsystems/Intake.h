@@ -36,6 +36,7 @@ class Intake : public frc2::SubsystemBase {
   void Periodic();
   void SetInvertedFollower();
   void TakeInPowerCell();
+  void SetIntakeSpeed(double speed);
   void PushOutPowerCell();
   int GetPowerCellCount();
   void Stop();
