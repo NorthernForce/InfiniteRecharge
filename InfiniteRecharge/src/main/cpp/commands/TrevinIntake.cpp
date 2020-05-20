@@ -13,9 +13,7 @@ TrevinIntake::TrevinIntake() {
 }
 
 // Called when the command is initially scheduled.
-void TrevinIntake::Initialize() {
-  RobotContainer::intake->TakeInPowerCell();
-}
+void TrevinIntake::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void TrevinIntake::Execute() {
