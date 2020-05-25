@@ -44,6 +44,7 @@ class Robot : public frc::TimedRobot {
   //MoveToLimelight* autoMoveToLimelight;
   //AutoDrive* autoDrive;
   std::shared_ptr<TurnToAngle> autoTurnToAngle;
+  std::shared_ptr<AutoDrive> autoTestDrive;
   //ShootCell* autoShooter;
   //std::string chooserAutoSelected;
 

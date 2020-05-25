@@ -9,6 +9,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <frc2/command/SequentialCommandGroup.h>
 #include <cameraserver/CameraServer.h>
 #include <string>
 
@@ -23,6 +24,8 @@
 #include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
+#include "commands/TurnToAngle.h"
+#include "commands/AutoDrive.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -77,7 +80,6 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  autoCounter = 0;
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -106,44 +108,31 @@ void Robot::AutonomousInit() {
       new DoNothing;
     }
 */
-  autoTurnToAngle.reset(new TurnToAngle);
 
-if (autoCounter == 0) {
-    RobotContainer::drivetrain->SetEncoderPosition(0);
-    autoTurnToAngle->SetAngle(90);
-    autoTurnToAngle->Schedule();
-    printf("Aiden is right and this is kind of working___________ \n");
-}
-autoCounter = 1;
-
-/*
-    auto drive = [this](int desiredDist) {
-        autoDrive->SetDist(desiredDist);
-        autoDrive->SetSpeeds(0.3, 0.3);
-        autoDrive->Schedule();
-    };
-    drive(9.693814284);
-*/
 }
 
 
 void Robot::AutonomousPeriodic() {
+/*
 
-autoTurnToAngle.reset(new TurnToAngle);
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
     printf("Aiden is right and this is kind of working___________ \n");
-    autoCounter = 1;
 
-if (autoCounter == 1) {
-        RobotContainer::drivetrain->DriveUsingSpeeds(-0.4, -0.4);
-        auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-        if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 10) {
-            RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
-        }
-}
+  autoTurnToAngle.reset(new TurnToAngle);
+  autoTestDrive.reset(new AutoDrive);
+
+  AutoDrive->SetDist(15);
+*/
+
+
+
+  frc2::SequentialCommandGroup{
+    TurnToAngle(),
+    AutoDrive(15, .3, .3),
+  };
   ////TODO: Make any of this work
 
 /*
