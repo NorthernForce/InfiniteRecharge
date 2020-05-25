@@ -115,16 +115,12 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 /*
 
-
+autoTurnToAngle.reset(new TurnToAngle);
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
     printf("Aiden is right and this is kind of working___________ \n");
 
-  autoTurnToAngle.reset(new TurnToAngle);
-  autoTestDrive.reset(new AutoDrive);
-
-  AutoDrive->SetDist(15);
 */
 
 
