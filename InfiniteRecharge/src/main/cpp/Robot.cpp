@@ -80,6 +80,9 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+  std::cout << "Autonomous run\n";
+  AutonomousIsRunning = true;
+  autoTestDrive.reset(new AutoDrive(30, .5, .5));
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -113,6 +116,7 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";
 /*
 
 
@@ -128,12 +132,13 @@ void Robot::AutonomousPeriodic() {
 */
 
 
-
+/*
   frc2::SequentialCommandGroup{
     TurnToAngle(),
     AutoDrive(15, .3, .3),
   };
   ////TODO: Make any of this work
+*/
 
 /*
     auto turnToAngle = [this](int targetAngle) {

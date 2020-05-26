@@ -46,7 +46,7 @@ void Intake::SetInvertedFollower() {
 }
 
 void Intake::Periodic() {
-
+/*
     //Outputs position states to driver station
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
@@ -56,7 +56,7 @@ void Intake::Periodic() {
         else {
            std::cout << "Position " << i <<  " empty\n";
         }
-    }
+    } */
 }
 
 void Intake::TakeInPowerCell() {

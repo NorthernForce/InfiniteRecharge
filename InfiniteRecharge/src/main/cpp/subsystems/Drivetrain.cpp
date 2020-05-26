@@ -49,7 +49,7 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 
 // This method will be called once per scheduler run
 void Drivetrain::Periodic() {
-    std::cout << "Encoder Pos:" << leftPrimarySpark->GetEncoder().GetPosition() << "\n";
+  //  std::cout << "Encoder Pos:" << leftPrimarySpark->GetEncoder().GetPosition() << "\n";
 }
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake

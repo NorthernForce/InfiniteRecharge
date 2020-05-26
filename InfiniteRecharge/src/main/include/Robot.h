@@ -31,6 +31,8 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   static void CameraInit();
+  
+  bool AutonomousIsRunning = false;
 
  private:
   // Have it null by default so that if testing teleop it
