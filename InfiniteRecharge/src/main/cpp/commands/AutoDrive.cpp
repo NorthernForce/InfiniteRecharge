@@ -10,39 +10,53 @@
 
 AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
  : m_inches(inches), m_leftSpeed(leftSpeed), m_rightSpeed(rightSpeed) {
-  AddRequirements(RobotContainer::drivetrain.get());
+    AddRequirements(RobotContainer::drivetrain.get());
+}
+
+// Use this only in autonomous or when calling from another command
+void AutoDrive::SetDist(double inches) {
+    m_inches = inches;
+}
+
+// Use this only in autonomous or when calling from another command
+void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
+    if (rightSpeed != leftSpeed)
+        rightSpeed = leftSpeed;
+    m_leftSpeed = leftSpeed;
+    m_rightSpeed = rightSpeed;
 }
 
 // Called when the command is initially scheduled.
 void AutoDrive::Initialize() {
-  CheckForAndFixNegatives();
+    CheckForAndFixNegatives();
+    startDist = RobotContainer::drivetrain->GetAvgEncoderRotations();
+    encoderToTravelTo = startDist + m_inches * Constants::Shifting::highMultiplier;
 }
 
 void AutoDrive::CheckForAndFixNegatives() {
-  if (m_inches < 0) {
-    m_inches *= -1;
-    m_rightSpeed *= -1;
-    m_leftSpeed *= -1;
-  }
+    if (m_inches < 0) {
+        m_inches *= -1;
+        m_rightSpeed *= -1;
+        m_leftSpeed *= -1;
+    }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  encoderToTravel = m_inches * Constants::Shifting::highMultiplier;
-  averageDistance = (encoderRotations.first + encoderRotations.second)/2;
-  RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
+    std::cout << "Autonomous running?\n";
+    RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
+    encoderCurrent = RobotContainer::drivetrain->GetAvgEncoderRotations();
 }
 
 // Called once the command ends or is interrupted.
 void AutoDrive::End(bool interrupted) {
-  RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 }
 
 // Returns true when the command should end.
 bool AutoDrive::IsFinished() {
-  if (averageDistance < encoderToTravel)
-    return true;
-  else
-    return false;
+    if (abs(encoderToTravelTo) < abs(encoderCurrent))
+        return true;
+    else
+        return false;
 }

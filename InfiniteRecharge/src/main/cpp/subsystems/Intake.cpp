@@ -46,7 +46,7 @@ void Intake::SetInvertedFollower() {
 }
 
 void Intake::Periodic() {
-
+/*
     //Outputs position states to driver station
     InventoryPowerCells();
     for(int i=0; i<6; i++) {
@@ -56,11 +56,15 @@ void Intake::Periodic() {
         else {
            std::cout << "Position " << i <<  " empty\n";
         }
-    }
+    } */
 }
 
 void Intake::TakeInPowerCell() {
     intakeTalon->Set(0.6);
+}
+
+void Intake::SetIntakeSpeed(double speed) {
+    intakeTalon->Set(speed);
 }
 
 void Intake::PushOutPowerCell() {
@@ -155,7 +159,7 @@ double Intake::GetConveyerSpeed() {
     return sparkSpeed;
 }
 
-bool Intake::NewIntake() {
+bool Intake::TrevinIntake() {
     bool stop;
     if (GetInventory(5) == StorageState::PRESENT) {
         StopConveyor();
@@ -168,7 +172,6 @@ bool Intake::NewIntake() {
     if (GetInventory(0) == StorageState::PRESENT) {
         zeroHasBeenTripped = true;
         Stop();
-
         if (fourHasBeenTripped) {
             NewRunConveyer(Constants::Intake::slow);
         }
@@ -183,6 +186,28 @@ bool Intake::NewIntake() {
     return stop;
 }
 
+bool Intake::NewTrevinIntake() {
+    bool stop;
+    if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
+        std::cout << "Stopping Conveyers";
+        StopConveyor();
+        stop = true;
+    }
+    else {
+        TakeInPowerCell();
+    }
+    if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
+        Stop();
+        std::cout << "Stopping Intake";
+    }
+    if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
+        NewRunConveyer(Constants::Intake::slow);
+    }
+    else if (GetInventory(0) == StorageState::PRESENT) {
+        NewRunConveyer();
+    }
+    return stop;
+}
 
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
 void Intake::StopConveyor() {

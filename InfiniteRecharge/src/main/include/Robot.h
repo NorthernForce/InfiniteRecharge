@@ -14,6 +14,7 @@
 #include "commands/ShootCell.h"
 #include "commands/TurnToAngle.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/AutoDrive.h"
 #include <thread>
 
 #include "RobotContainer.h"
@@ -30,6 +31,8 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   static void CameraInit();
+  
+  bool AutonomousIsRunning = false;
 
  private:
   // Have it null by default so that if testing teleop it
@@ -38,13 +41,16 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<RobotContainer> container;
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
-  frc::SendableChooser<std::string> *chooserAuto;
-  SimpleCrossAutoLine* simpleDriveForward;
-  MoveToLimelight* autoMoveToLimelight;
-  TurnToAngle* autoTurnToAngle;
-  ShootCell* autoShooter;
-  std::string chooserAutoSelected;
+  //frc::SendableChooser<std::string> *chooserAuto;
+  //SimpleCrossAutoLine* simpleDriveForward;
+  //MoveToLimelight* autoMoveToLimelight;
+  //AutoDrive* autoDrive;
+  std::shared_ptr<TurnToAngle> autoTurnToAngle;
+  std::shared_ptr<AutoDrive> autoTestDrive;
+  //ShootCell* autoShooter;
+  //std::string chooserAutoSelected;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
+  int autoCounter;
 };

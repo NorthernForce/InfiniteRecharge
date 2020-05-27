@@ -11,10 +11,10 @@
 #include <iostream>
 
 CrossAutoLine::CrossAutoLine() {
-      std::cout << "I'm working" << std::endl,
+      std::cout << "I'm working" << '\n',
   frc2::SequentialCommandGroup {
     AutoDrive(144),
   }; 
-      std::cout << "I'm working end" << std::endl;
+      std::cout << "I'm working end" << '\n';
 
 }

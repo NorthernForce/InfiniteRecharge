@@ -17,23 +17,16 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class AutoDrive
-    : public frc2::CommandHelper<frc2::CommandBase, AutoDrive> {
+class TurnAndMove
+    : public frc2::CommandHelper<frc2::CommandBase, TurnAndMove> {
  public:
-  AutoDrive(double inches, double leftSpeed=0.3, double rightSpeed=0.3);
-  void SetDist(double inches);
-  void SetSpeeds(double leftSpeed=0.3, double rightSpeed=0.3);
-  void Initialize() override;
-  void CheckForAndFixNegatives();
-  void Execute() override;
-  void End(bool interrupted) override;
-  bool IsFinished() override;
+  TurnAndMove();
 
- private:
-  double m_inches;
-  double m_leftSpeed;
-  double m_rightSpeed;
-  double encoderToTravelTo;
-  double encoderCurrent;
-  double startDist;
+  void Initialize() override;
+
+  void Execute() override;
+
+  void End(bool interrupted) override;
+
+  bool IsFinished() override;
 };

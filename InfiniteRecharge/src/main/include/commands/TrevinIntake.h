@@ -21,14 +21,11 @@
 class TrevinIntake
     : public frc2::CommandHelper<frc2::CommandBase, TrevinIntake> {
  public:
-  TrevinIntake();
-
-  void Initialize() override;
-
-  void Execute() override;
-
-  void End(bool interrupted) override;
-
-  bool IsFinished() override;
-
+    TrevinIntake();
+    void Initialize() override;
+    void Execute() override;
+    void End(bool interrupted) override;
+    bool IsFinished() override;
+ private:
+    bool isFinished;
 };

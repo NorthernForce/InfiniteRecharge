@@ -23,6 +23,7 @@ void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
   conveyorBackwardsCounter = 0;
   fiveReached = false;
+  emptyPositionTriggered = false;
  // zeroHasBeenTriggered = false;
 }
 
@@ -34,6 +35,7 @@ void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
   std::cout << "Empty Position Triggered: " << emptyPositionTriggered << "\n";
+  //std::cout << "Pos 5 Triggered: " << fiveReached << "\n";
 
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     std::cout << "Empty Position " << emptyPosition <<  " full\n";
@@ -42,8 +44,13 @@ void IntakePowerCell::Execute() {
     std::cout << "Empty Position " << emptyPosition <<  " empty\n";
   }
 
-  // //stops conveyor when power cell has cleared pos 0
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 10 && fiveReached == false) {
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+    RobotContainer::intake->StopConveyor();
+  }
+
+/*
+  //stops conveyor when power cell has cleared pos 0
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 2 && fiveReached == false) {
 
     //controls how long conveyor goes backward for
     if (conveyorBackwardsCounter >= backwardCountLimit) {
@@ -56,19 +63,16 @@ void IntakePowerCell::Execute() {
       RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
     }
     conveyorBackwardsCounter++;
-  }
-
+  } 
+*/
   else {
-    ////TODO: if we are basing the conveyor stopping on the empty position, should we just take out the 0 pos code?
+   
     //run conveyor and intake to take in power cell
     RobotContainer::intake->TakeInPowerCell();
-    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::EMPTY) {
-      RobotContainer::intake->ConveyorSetSpeed(conveyorRunSpeed);
+    if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT && emptyPositionTriggered == false) {
+      RobotContainer::intake->ConveyorSetSpeed(-.3);
     }
-    
-    //  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-    //   zeroHasBeenTriggered = true;
-    // }
+
   }
   //tag to keep the conveyor from oscillating at five
   if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
@@ -86,14 +90,17 @@ void IntakePowerCell::Execute() {
   //   RobotContainer::intake->StopConveyor();
   // }  
 
+
+   //sees if the emptyPosition has been triggered
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
+    emptyPositionTriggered = true;
+  }
+
   //will run conveyor backward if power cell wasn't intaked properly
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
 
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
-    emptyPositionTriggered = true;
-  }
 
 }
 

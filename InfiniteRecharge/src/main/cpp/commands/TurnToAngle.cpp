@@ -37,6 +37,7 @@ void TurnToAngle::SetAngle(double angle) {
 
 // Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
+   std::cout << "Autonomous running?\n";
   double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
   double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
   double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);

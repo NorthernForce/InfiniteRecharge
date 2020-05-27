@@ -9,6 +9,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <frc2/command/SequentialCommandGroup.h>
 #include <cameraserver/CameraServer.h>
 #include <string>
 
@@ -23,6 +24,8 @@
 #include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
+#include "commands/TurnToAngle.h"
+#include "commands/AutoDrive.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -37,6 +40,8 @@ void Robot::RobotInit() {
   autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
   frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
 */
+/*
+
   chooserAuto = new frc::SendableChooser<std::string>;
   chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
   chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
@@ -45,6 +50,8 @@ void Robot::RobotInit() {
   chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
   chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
   frc::SmartDashboard::PutData(chooserAuto);
+
+  */
 
   CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -73,6 +80,9 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+  std::cout << "Autonomous run\n";
+  AutonomousIsRunning = true;
+  autoTestDrive.reset(new AutoDrive(30, .5, .5));
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
@@ -101,19 +111,52 @@ void Robot::AutonomousInit() {
       new DoNothing;
     }
 */
-  RobotContainer::drivetrain->SetEncoderPosition(0);
+
 }
 
 
 void Robot::AutonomousPeriodic() {
-  ////TODO: Make any of this work
+  std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";
+/*
 
-  int autoCounter = 0;
-  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 0)) {
-    simpleDriveForward->Schedule();
-    autoCounter++;
-    printf("I'm working????? \n");
-  }
+autoTurnToAngle.reset(new TurnToAngle);
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle->SetAngle(90);
+    autoTurnToAngle->Schedule();
+    printf("Aiden is right and this is kind of working___________ \n");
+
+*/
+
+
+/*
+  frc2::SequentialCommandGroup{
+    TurnToAngle(),
+    AutoDrive(15, .3, .3),
+  };
+  ////TODO: Make any of this work
+*/
+
+/*
+    auto turnToAngle = [this](int targetAngle) {
+        if (!autoDrive->IsScheduled() && !autoTurnToAngle->IsScheduled()) {
+            autoTurnToAngle->SetAngle(targetAngle);
+            autoTurnToAngle->Schedule();
+        }
+    };
+    turnToAngle(-90);
+  */
+
+//   if (autoCounter == 0) {
+//     RobotContainer::drivetrain->SimpleDriveWithEncoder(9.693814284);
+//     autoCounter++;
+//     printf("End of simple drive 1 \n");
+//   } else if ((autoCounter == 1) && (!autoTurnToAngle->IsScheduled())) {
+//     autoTurnToAngle->SetAngle(-90);
+//     autoTurnToAngle->Schedule();
+//     printf("End of turn to angle \n");
+//   }
+  
+
   /*
   if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 1)) {
     autoTurnToAngle->SetAngle(-90);

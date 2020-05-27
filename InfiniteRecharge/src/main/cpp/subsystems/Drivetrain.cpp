@@ -49,7 +49,7 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 
 // This method will be called once per scheduler run
 void Drivetrain::Periodic() {
-    std::cout << "Encoder Pos:" << leftPrimarySpark->GetEncoder().GetPosition() << "\n";
+  //  std::cout << "Encoder Pos:" << leftPrimarySpark->GetEncoder().GetPosition() << "\n";
 }
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake
@@ -73,13 +73,21 @@ double Drivetrain::GetRightRPM() {
 }
 
 std::pair<double, double> Drivetrain::GetEncoderRotations() {
-    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition() * -1;
-    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition();
+    double leftSideRotations = leftPrimarySpark->GetEncoder().GetPosition();
+    double rightSideRotations = rightPrimarySpark->GetEncoder().GetPosition() * -1;
     return std::make_pair(leftSideRotations, rightSideRotations);
 }
 
+double Drivetrain::GetAvgEncoderRotations() {
+    double left = GetEncoderRotations().first;
+    double right = GetEncoderRotations().second;
+    double avgRots = (left + right) / 2;
+    return avgRots;
+}
+
+// This does not work as intended, use autodrive command instead
 void Drivetrain::SimpleDriveWithEncoder(double desiredEncoder) {
-    if(leftPrimarySpark->GetEncoder().GetPosition() <= desiredEncoder) {
+    if ((leftPrimarySpark->GetEncoder().GetPosition() && rightPrimarySpark->GetEncoder().GetPosition()) <= desiredEncoder) {
         leftPrimarySpark->Set(0.3);
         rightPrimarySpark->Set(0.3);
     }
@@ -90,6 +98,7 @@ void Drivetrain::SetEncoderPosition(double position) {
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
 
+// This isn't being used anywhere, do we need it now that the command works?
 void Drivetrain::SimpleTurnToAngle(double limelightOffset) {
     if (limelightOffset < 0) {
         rightPrimarySpark->Set(0.6);
