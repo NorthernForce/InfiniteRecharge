@@ -41,6 +41,7 @@ class IntakePowerCell
   bool oneTriggered;
   bool emptyPositionTriggered = false;
   bool fiveReached = false;
+  bool badIntake = false;
 
 
 };

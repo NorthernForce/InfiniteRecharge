@@ -35,6 +35,7 @@ void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
   std::cout << "Empty Position Triggered: " << emptyPositionTriggered << "\n";
+  std::cout << "Bad intake is " << badIntake <<  "\n";
   //std::cout << "Pos 5 Triggered: " << fiveReached << "\n";
 
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
@@ -91,13 +92,19 @@ void IntakePowerCell::Execute() {
   // }  
 
 
+
+  // sees if one has been triggered
+  if (RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
+    oneTriggered = true;
+  }
+
    //sees if the emptyPosition has been triggered
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
+  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && oneTriggered == true) {
     emptyPositionTriggered = true;
   }
 
-  //will run conveyor backward if power cell wasn't intaked properly
   if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+    badIntake = true;
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
 
@@ -113,7 +120,7 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
     return true;
   else
     return false; 
