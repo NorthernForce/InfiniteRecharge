@@ -43,6 +43,7 @@ void AutoDrive::CheckForAndFixNegatives() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
+    std::cout << "Autonomous running?\n";
     RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
     encoderCurrent = RobotContainer::drivetrain->GetAvgEncoderRotations();
 }
