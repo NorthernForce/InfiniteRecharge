@@ -82,7 +82,8 @@ void Robot::DisabledPeriodic() {}
 void Robot::AutonomousInit() {
   std::cout << "Autonomous run\n";
   AutonomousIsRunning = true;
-  autoTestDrive.reset(new AutoDrive(30, .5, .5));
+  autoTestDrive.reset(new CrossAutoLine());
+  autoTestDrive->Schedule(false);
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)
