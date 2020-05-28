@@ -83,7 +83,7 @@ void Robot::AutonomousInit() {
   std::cout << "Autonomous run\n";
   AutonomousIsRunning = true;
   autoTestDrive.reset(new CrossAutoLine());
-  autoTestDrive->Schedule();
+  autoTestDrive->Schedule(false);
 /*
 	autonomousCommand.reset(autonomousChooser.GetSelected());
   if(autonomousCommand != nullptr)

@@ -193,17 +193,20 @@ bool Intake::NewTrevinIntake() {
         StopConveyor();
         stop = true;
     }
-    else {
-        TakeInPowerCell();
-    }
     if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
         Stop();
-        std::cout << "Stopping Intake";
+        std::cout << "Stopping Wheels";
+    }
+    else {
+        std::cout << "Running Wheels";
+        TakeInPowerCell();
     }
     if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
+        std::cout << "Running Slow";
         NewRunConveyer(Constants::Intake::slow);
     }
     else if (GetInventory(0) == StorageState::PRESENT) {
+        std::cout << "Running Conveyers";
         NewRunConveyer();
     }
     return stop;
