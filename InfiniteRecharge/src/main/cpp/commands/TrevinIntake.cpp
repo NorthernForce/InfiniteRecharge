@@ -17,7 +17,9 @@ void TrevinIntake::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void TrevinIntake::Execute() {
-  isFinished = RobotContainer::intake->NewTrevinIntake();
+  // isFinished = RobotContainer::intake->NewTrevinIntake();
+  RobotContainer::intake->NewRunConveyer();
+  cycles += 1;
 }
 
 // Called once the command ends or is interrupted.
@@ -28,5 +30,12 @@ void TrevinIntake::End(bool interrupted)  {
 
 // Returns true when the command should end.
 bool TrevinIntake::IsFinished() {
-    return isFinished;
+    // return isFinished;
+    
+    if (cycles >= 30) {
+      return true;
+    }
+    else {
+      return false;
+    }
 }

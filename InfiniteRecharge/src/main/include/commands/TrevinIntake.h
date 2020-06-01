@@ -28,4 +28,5 @@ class TrevinIntake
     bool IsFinished() override;
  private:
     bool isFinished;
+    int cycles;
 };
