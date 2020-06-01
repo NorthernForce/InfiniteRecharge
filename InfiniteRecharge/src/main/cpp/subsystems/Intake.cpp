@@ -199,7 +199,7 @@ bool Intake::NewTrevinIntake() {
     }
     else {
         std::cout << "Running Wheels";
-        TakeInPowerCell();
+        intakeTalon->Set(0.6);
     }
     if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
         std::cout << "Running Slow";
