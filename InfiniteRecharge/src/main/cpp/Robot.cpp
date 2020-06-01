@@ -117,6 +117,7 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+  frc2::CommandScheduler::GetInstance().Run();
   std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";
 
 /*
