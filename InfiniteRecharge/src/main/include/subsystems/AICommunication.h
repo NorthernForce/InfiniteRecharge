@@ -8,16 +8,20 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include "subsystems/AIVisionTargetting.h"
 #include <string>
+
+using Target = AIVisionTargetting::Target;
 
 class AICommunication : public frc2::SubsystemBase {
  public:
   AICommunication();
+  void Periodic();
+  std::vector<double> GetCamTargetOffsets(Target targetType);
   std::vector<double> GetValueArray(std::string key);
   double GetNumber(std::string key);
-  void Periodic();
-  const std::string powercellOffsetInCam =  "PC Offset in AI Cam:";
-  const std::string distanceToPcFromCam = "Distance to PC from Cam:";
+  const std::string pcOffsetInCam_label =  "PC Offset in AI Cam: ";
+  const std::string distanceToPcFromCam_label = "Distance to PC from Cam:";
 
  private:
 };

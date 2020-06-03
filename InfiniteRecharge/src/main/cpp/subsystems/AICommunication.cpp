@@ -11,6 +11,17 @@
 
 AICommunication::AICommunication() {}
 
+// This method will be called once per scheduler run
+void AICommunication::Periodic() {}
+
+std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
+    std::vector<double> targetOffset;
+    if (targetType == Target::Powercell)
+        targetOffset = GetValueArray(pcOffsetInCam_label);
+    // add goal targetting later
+    return targetOffset;    
+}
+
 ////TODO: Understand how this vector works/is structured
 std::vector<double> AICommunication::GetValueArray(std::string key) {
     auto data = frc::SmartDashboard::GetNumberArray(key, 0);
@@ -19,10 +30,4 @@ std::vector<double> AICommunication::GetValueArray(std::string key) {
 
 double AICommunication::GetNumber(std::string key) {
     return frc::SmartDashboard::GetNumber(key, 0);
-}
-
-// This method will be called once per scheduler run
-void AICommunication::Periodic() {
-    auto aiCamOff = GetValueArray(powercellOffsetInCam);
-    //std::cout << aiCamOff[0] << ", " << aiCamOff[1] << '\n';
 }

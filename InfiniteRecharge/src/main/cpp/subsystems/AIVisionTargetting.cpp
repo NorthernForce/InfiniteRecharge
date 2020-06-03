@@ -37,9 +37,9 @@ Target AIVisionTargetting::CheckTargetType() {
 
 void AIVisionTargetting::RefreshTargetPositioning() {
     double currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    double powerCellOffsetX = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam)[0];
-    double camAngleToTarget = currentPan + powerCellOffsetX;
-    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam);
+    auto powerCellOffsets = RobotContainer::aiComms->GetCamTargetOffsets(powercell);
+    double camAngleToTarget = currentPan + powerCellOffsets[0];
+    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label);
     camAngleToTarget *= Constants::degreesToRadians;
 
     targetPositionX = camDistToTarget * std::sin(camAngleToTarget);

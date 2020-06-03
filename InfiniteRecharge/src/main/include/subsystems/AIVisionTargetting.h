@@ -22,17 +22,11 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   void RefreshTargetPositioning();
   double RoboAngleToTarget();
   double RoboDistToTarget();
-
-  /*
-    Will be called periodically whenever the CommandScheduler runs.
-   */
-
   void Periodic();
 
  private:
-  
   bool targetFound;
   double targetPositionX;
   double targetPositionY;
-
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };

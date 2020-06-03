@@ -10,51 +10,51 @@
 #include <iostream>
 
 SweepAICamera::SweepAICamera() {
-  AddRequirements(RobotContainer::cameraMount.get());
-  AddRequirements(RobotContainer::aiVisionTargetting.get());
-  turnToAngle.reset(new TurnToAngle());
+    AddRequirements(RobotContainer::cameraMount.get());
+    AddRequirements(RobotContainer::aiVisionTargetting.get());
+    turnToAngle.reset(new TurnToAngle());
 }
 
 // Called when the command is initially scheduled.
 void SweepAICamera::Initialize() {
-  RobotContainer::cameraMount->Tilt(0);
+    RobotContainer::cameraMount->Tilt(0);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
-  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
-  if(RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
-    TurnToServoAngle();
-  else
-    RobotContainer::cameraMount->SweepForPowercells();
+    if (RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
+        TurnToServoAngle();
+    else
+        RobotContainer::cameraMount->SweepForPowercells();
 }
 
 void SweepAICamera::TurnToServoAngle() {
-  int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
-  char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
-  std::vector<double> pcOffsetInCamera = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam);
+    int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
+    char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
+    double pcOffsetInCamera = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
 
-  AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera[0]);
-  TurnRobotUsingServoAngle(servoPanAng, servoPanDir);
+    AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera);
+    TurnRobotUsingServoAngle(servoPanAng, servoPanDir);
 }
 
 void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
-  if (pcOffset < -10)
-    RobotContainer::cameraMount->Pan(servoAng+=1);
-  else if (pcOffset > 10)
-    RobotContainer::cameraMount->Pan(servoAng-=1);
+    if (pcOffset < -10)
+        RobotContainer::cameraMount->Pan(servoAng+=1);
+    else if (pcOffset > 10)
+        RobotContainer::cameraMount->Pan(servoAng-=1);
 }
 
 void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
-  int robotAng = RobotContainer::imu->GetRotation();
-  if (servoDir == 'l')
-    TurnToAngle(robotAng-servoAng);
-  else if (servoDir == 'r')
-    TurnToAngle(robotAng+servoAng);
+    int robotAng = RobotContainer::imu->GetRotation();
+    if (servoDir == 'l')
+        turnToAngle->SetAngle(robotAng-servoAng);
+    else if (servoDir == 'r')
+        turnToAngle->SetAngle(robotAng+servoAng);
+    turnToAngle->Schedule();
 }
 
 // Called once the command ends or is interrupted.
 void SweepAICamera::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool SweepAICamera::IsFinished() { return true; }
+bool SweepAICamera::IsFinished() { return false; }
