@@ -12,7 +12,9 @@
 AICommunication::AICommunication() {}
 
 // This method will be called once per scheduler run
-void AICommunication::Periodic() {}
+void AICommunication::Periodic() {
+    std::cout << "Offset in cam: " << GetCamTargetOffsets(AIVisionTargetting::Target::Powercell)[0] << '\n';
+}
 
 std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
     std::vector<double> targetOffset;
