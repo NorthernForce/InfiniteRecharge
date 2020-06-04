@@ -13,20 +13,26 @@
 
 using Target = AIVisionTargetting::Target;
 
-AIVisionTargetting::AIVisionTargetting() {}
+AIVisionTargetting::AIVisionTargetting() {
+}
 
 // This method will be called once per scheduler run
 void AIVisionTargetting::Periodic() {}
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
-    if (CheckTargetType() == type)
-        return true;
+    bool isTargetTypeFound = false;
+    if (RobotContainer::aiComms->IsTargetFound()) {
+        if (type == CheckTargetType())
+            isTargetTypeFound = true;
+    }
     else
-        return false;
+        isTargetTypeFound = false;
+
+    return isTargetTypeFound;
 }
 
 Target AIVisionTargetting::CheckTargetType() {
-    std::string targetType = frc::SmartDashboard::GetString("targetType:", "none");
+    std::string targetType = frc::SmartDashboard::GetString("targetType:", "pc");
     if (targetType == "pc")
         return Target::Powercell;
     else if (targetType == "goal")
