@@ -17,6 +17,8 @@ class AICommunication : public frc2::SubsystemBase {
  public:
   AICommunication();
   void Periodic();
+  bool IsTargetFound();
+  Target GetTargetType();
   std::vector<double> GetCamTargetOffsets(Target targetType);
   std::vector<double> GetValueArray(std::string key);
   double GetNumber(std::string key);

@@ -50,7 +50,9 @@ void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
         turnToAngle->SetAngle(robotAng-servoAng);
     else if (servoDir == 'r')
         turnToAngle->SetAngle(robotAng+servoAng);
-    turnToAngle->Schedule();
+        
+    if (!turnToAngle->IsScheduled())
+        turnToAngle->Schedule();
 }
 
 // Called once the command ends or is interrupted.

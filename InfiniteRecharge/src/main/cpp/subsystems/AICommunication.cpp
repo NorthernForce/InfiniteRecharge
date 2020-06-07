@@ -9,11 +9,33 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 
-AICommunication::AICommunication() {}
+AICommunication::AICommunication() {
+    frc::SmartDashboard::PutString("targetType:", "pc");
+    frc::SmartDashboard::PutNumber("valid target:", 0);
+}
 
 // This method will be called once per scheduler run
 void AICommunication::Periodic() {
     std::cout << "Offset in cam: " << GetCamTargetOffsets(AIVisionTargetting::Target::Powercell)[0] << '\n';
+}
+
+bool AICommunication::IsTargetFound() {
+    auto isTargetFound = frc::SmartDashboard::GetNumber("valid target:", 0);
+    if (isTargetFound > 0)
+        return true;
+    else
+        return false;
+}
+
+Target AICommunication::GetTargetType() {
+    auto type = Target::None;
+    auto targetType = frc::SmartDashboard::GetString("targetType:", "pc");
+
+    if (targetType == "pc")
+        type = Target::Powercell;
+    else if (targetType == "goal")
+        type = Target::Goal;
+    return type;
 }
 
 std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
