@@ -22,11 +22,12 @@ IntakePowerCell::IntakePowerCell() {
 void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
   conveyorBackwardsCounter = 0;
+  rumbleCounter = 0;
   fiveReached = false;
   emptyPositionTriggered = false;
   oneTriggered = false;
   badIntake = false;
- // zeroHasBeenTriggered = false;
+  zeroTriggered = false;
 }
 
 //***************************************************************************
@@ -39,7 +40,7 @@ void IntakePowerCell::Execute() {
   std::cout << "Empty Position Triggered: " << emptyPositionTriggered << "\n";
   std::cout << "Pos 1 Triggered is " << badIntake <<  "\n";
   std::cout << "Bad intake is " << badIntake <<  "\n";
-  //std::cout << "Pos 5 Triggered: " << fiveReached << "\n";
+  std::cout << "Pos 0 Triggered: " << zeroTriggered << "\n";
 
   if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT) {
     std::cout << "Empty Position " << emptyPosition <<  " full\n";
@@ -88,13 +89,19 @@ void IntakePowerCell::Execute() {
     conveyorBackwardsCounter = 0;
   }
 
-  // if (RobotContainer::intake->GetPowerCellCount >= 5) {
-  //   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
-  //   RobotContainer::intake->Stop();
-  //   RobotContainer::intake->StopConveyor();
-  // }  
+  //makes controller rumble to tell driver there is a ball in five
+  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && rumbleCounter <= 9) {
+   RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 1, true);
+   rumbleCounter++;
+  }  
+  else {
+    RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 0, true);
+  }
 
-
+  //sees if 0 has been triggered
+  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
+    zeroTriggered = true;
+  }
 
   // sees if one has been triggered
   if (RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT) {
@@ -106,7 +113,8 @@ void IntakePowerCell::Execute() {
     emptyPositionTriggered = true;
   }
 
-  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY) {
+  //determines if there was a bad intake and then backs up conveyor
+  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::EMPTY && zeroTriggered == true && RobotContainer::intake->GetInventory(0) == Intake::StorageState::EMPTY) {
     badIntake = true;
     RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
   }
