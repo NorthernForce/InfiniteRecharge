@@ -24,6 +24,8 @@ void IntakePowerCell::Initialize() {
   conveyorBackwardsCounter = 0;
   fiveReached = false;
   emptyPositionTriggered = false;
+  oneTriggered = false;
+  badIntake = false;
  // zeroHasBeenTriggered = false;
 }
 
@@ -35,6 +37,7 @@ void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
   std::cout << "Empty Position Triggered: " << emptyPositionTriggered << "\n";
+  std::cout << "Pos 1 Triggered is " << badIntake <<  "\n";
   std::cout << "Bad intake is " << badIntake <<  "\n";
   //std::cout << "Pos 5 Triggered: " << fiveReached << "\n";
 
