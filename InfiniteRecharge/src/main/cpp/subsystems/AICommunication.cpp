@@ -48,10 +48,10 @@ std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
 
 ////TODO: Understand how this vector works/is structured
 std::vector<double> AICommunication::GetValueArray(std::string key) {
-    auto data = frc::SmartDashboard::GetNumberArray(key, 0);
+    auto data = frc::SmartDashboard::GetNumberArray(key, -1);
     return data;
 }
 
 double AICommunication::GetNumber(std::string key) {
-    return frc::SmartDashboard::GetNumber(key, 0);
+    return frc::SmartDashboard::GetNumber(key, -1);
 }
