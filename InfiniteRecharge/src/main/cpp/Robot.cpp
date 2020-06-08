@@ -81,15 +81,18 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-  autoTurnToAngle.reset(new TurnToAngle);
+  //autoTurnToAngle.reset(new TurnToAngle);
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
-    autoTurnToAngle->Schedule();
 
-  simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-  simpleCrossAutoLine->Schedule();
+  //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+
   printf("I am getting through the move forward command and possibly doing something \n");
+    frc2::SequentialCommandGroup{
+    TurnToAngle(),
+    SimpleCrossAutoLine(),
+  };
 
 
 

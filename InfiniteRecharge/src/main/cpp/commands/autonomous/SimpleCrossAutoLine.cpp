@@ -20,7 +20,7 @@ RobotContainer::drivetrain->SetEncoderPosition(0);
 
 // Called repeatedly when this Command is scheduled to run
 void SimpleCrossAutoLine::Execute() {
-  RobotContainer::drivetrain->DriveUsingSpeeds(.4, .4);
+  RobotContainer::drivetrain->DriveUsingSpeeds(.2, .2);
 }
 
 // Called once the command ends or is interrupted.
