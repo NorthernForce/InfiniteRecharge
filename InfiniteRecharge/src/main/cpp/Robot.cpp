@@ -141,7 +141,7 @@ void Robot::AutonomousPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";
 */
-if ((isTurnFinished == true) && (isForwardFinished == false)) {
+if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
   simpleCrossAutoLine->Schedule();
   isForwardFinished = true;
 }
