@@ -16,8 +16,9 @@ class CameraMount : public frc2::SubsystemBase {
   CameraMount();
   void Init();
   void Periodic();
+  void SyncServoAngles();
   int GetServoAngleToTarget();
-  void SweepForPowercells();
+  void Sweep();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();
@@ -26,6 +27,7 @@ class CameraMount : public frc2::SubsystemBase {
   int GetPreviousTilt();
   void Tilt(int degrees);
   char GetPanDirection();
+  void RecoverOutOfRangeServo();
 
  private:
   int currentPan;

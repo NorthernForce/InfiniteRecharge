@@ -10,6 +10,7 @@
 
 ShiftGear::ShiftGear(Gear gear) :
   m_gear(gear) {
+    SetName("ShiftGear");
     AddRequirements(RobotContainer::drivetrain.get());
     AddRequirements(RobotContainer::driveShifter.get());
     strcpy(logMessage, m_gear == Gear::Low ? "Shift to low" : "Shift to high");
@@ -22,4 +23,8 @@ void ShiftGear::Initialize() {
 
 bool ShiftGear::IsFinished() {
   return RobotContainer::driveShifter->IsShiftDone();
+}
+
+void ShiftGear::End(bool interrupted) {
+  Drivetrain::robotDrive->SetSafetyEnabled(true);
 }

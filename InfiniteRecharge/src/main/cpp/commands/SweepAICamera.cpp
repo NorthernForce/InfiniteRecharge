@@ -8,6 +8,7 @@
 #include "commands/SweepAICamera.h"
 #include "commands/TurnToAngle.h"
 #include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SweepAICamera::SweepAICamera() {
     AddRequirements(RobotContainer::cameraMount.get());
@@ -23,33 +24,35 @@ void SweepAICamera::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
     if (RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
-        TurnToServoAngle();
+        TurnRobotToTarget();
     else
-        RobotContainer::cameraMount->SweepForPowercells();
+        RobotContainer::cameraMount->Sweep();
 }
 
-void SweepAICamera::TurnToServoAngle() {
+void SweepAICamera::TurnRobotToTarget() {
     int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
     char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
     double pcOffsetInCamera = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
 
     AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera);
-    TurnRobotUsingServoAngle(servoPanAng, servoPanDir);
+    if (OI::driverController->GetRawButton(OI::Xbox::menu_button))
+        TurnRobotToServoAngle(servoPanAng, servoPanDir);
 }
 
 void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
+    frc::SmartDashboard::PutNumber("pc offset", pcOffset);
     if (pcOffset < -10)
-        RobotContainer::cameraMount->Pan(servoAng+=1);
-    else if (pcOffset > 10)
-        RobotContainer::cameraMount->Pan(servoAng-=1);
+        RobotContainer::cameraMount->Pan(++servoAng);
+    if (pcOffset > 10)
+        RobotContainer::cameraMount->Pan(--servoAng);
 }
 
-void SweepAICamera::TurnRobotUsingServoAngle(int servoAng, char servoDir) {
+void SweepAICamera::TurnRobotToServoAngle(int servoAng, char servoDir) {
     int robotAng = RobotContainer::imu->GetRotation();
-    if (servoDir == 'l')
-        turnToAngle->SetAngle(robotAng-servoAng);
-    else if (servoDir == 'r')
-        turnToAngle->SetAngle(robotAng+servoAng);
+    // if (servoDir == 'l')
+    //     turnToAngle->SetAngle(robotAng+servoAng-90);
+    // else if (servoDir == 'r')
+    turnToAngle->SetAngle(-1*(servoAng-90));
         
     if (!turnToAngle->IsScheduled())
         turnToAngle->Schedule();

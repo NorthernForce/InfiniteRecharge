@@ -26,6 +26,7 @@
 #include "subsystems/DriveShifter.h"
 #include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
+#include "commands/ShiftGear.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -53,7 +54,7 @@ void Robot::RobotInit() {
 
   */
 
-  CameraServer::GetInstance()->StartAutomaticCapture();
+    CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -81,20 +82,15 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-  //autoTurnToAngle.reset(new TurnToAngle);
-
     RobotContainer::drivetrain->SetEncoderPosition(0);
-    autoTurnToAngle->SetAngle(90);
 
-  //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+    printf("I am getting through the move forward command and possibly doing something \n");
 
-  printf("I am getting through the move forward command and possibly doing something \n");
-    frc2::SequentialCommandGroup{
-    TurnToAngle(),
-    SimpleCrossAutoLine(),
-  };
-
-
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new TurnToAngle(90),
+        new ShiftGear(ShiftGear::Gear::Low),
+        new ShiftGear(ShiftGear::Gear::High)
+    }));
 
 /*
   std::cout << "Autonomous run\n";

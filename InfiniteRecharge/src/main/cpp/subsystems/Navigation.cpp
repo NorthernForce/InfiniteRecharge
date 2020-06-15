@@ -9,6 +9,13 @@
 #include "RobotContainer.h"
 #include "Constants.h"
 
+#include <thread>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 Navigation::Navigation() {}
 
 ////TODO: Need to calculate position
@@ -16,7 +23,7 @@ Navigation::Navigation() {}
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
-    Navigation::CoordinatePosition();
+    CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
@@ -44,7 +51,6 @@ void Navigation::ResetPosition() {
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 
-////TODO: Look into how robot angle difference is determined
 void Navigation::CoordinatePosition() {
     double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
     xPosition +=  averageInches * sin(-robotAngleDifference);

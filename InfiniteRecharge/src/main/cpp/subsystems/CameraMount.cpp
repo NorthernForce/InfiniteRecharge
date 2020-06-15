@@ -8,7 +8,7 @@
 #include "subsystems/CameraMount.h"
 #include "RobotContainer.h"
 #include "Constants.h"
-#include <chrono>
+#include <unistd.h>
 #include <thread>
 
 int CameraMount::sweepPassCount;
@@ -25,15 +25,22 @@ void CameraMount::Init() {
     currentTilt = 0;
     previousPan = 90;
     previousTilt = 0;
+    // std::thread syncThread(SyncServoAngles);
 }
 
 void CameraMount::Periodic() {}
+
+void CameraMount::SyncServoAngles() {
+    currentPan = panServo->GetAngle();
+    currentTilt = panServo->GetAngle();
+    sleep(20);
+}
 
 int CameraMount::GetServoAngleToTarget() {
     return servoAngleToTarget;
 }
 
-void CameraMount::SweepForPowercells() {    
+void CameraMount::Sweep() {    
     if (sweepPassCount % 2 == 0) {
         if (currentPan <= 155) {
             Pan(currentPan);
@@ -47,6 +54,8 @@ void CameraMount::SweepForPowercells() {
     }
     if (currentPan == 35 || currentPan == 155)
         sweepPassCount++;
+
+    RecoverOutOfRangeServo();
 }
 
 void CameraMount::SetToZero() {
@@ -90,4 +99,12 @@ char CameraMount::GetPanDirection() {
     else
         panDirection = 'r';
     return panDirection;
+}
+
+void CameraMount::RecoverOutOfRangeServo() {
+    int angle = panServo->GetAngle();
+    if (angle > 155)
+        Pan(--angle);
+    else if (angle < 35)
+        Pan(++angle);
 }

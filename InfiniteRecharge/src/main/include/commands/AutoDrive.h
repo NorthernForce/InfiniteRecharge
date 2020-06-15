@@ -30,9 +30,9 @@ class AutoDrive
   bool IsFinished() override;
 
  private:
-  double m_inches;
-  double m_leftSpeed;
-  double m_rightSpeed;
+  double inchesToTravel;
+  double leftMotorSpeed;
+  double rightMotorSpeed;
   double encoderToTravelTo;
   double encoderCurrent;
   double startDist;
