@@ -81,18 +81,19 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-  //autoTurnToAngle.reset(new TurnToAngle);
+  autoTurnToAngle.reset(new TurnToAngle);
+  simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
+    autoTurnToAngle->Schedule();
+    isTurnFinished = autoTurnToAngle->IsFinished();
 
-  //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-
-  printf("I am getting through the move forward command and possibly doing something \n");
-    frc2::SequentialCommandGroup{
-    TurnToAngle(),
-    SimpleCrossAutoLine(),
-  };
+  // printf("I am getting through the move forward command and possibly doing something \n");
+  //   frc2::SequentialCommandGroup{
+  //   TurnToAngle(),
+  //   SimpleCrossAutoLine(),
+  // };
 
 
 
@@ -140,6 +141,10 @@ void Robot::AutonomousPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";
 */
+if ((isTurnFinished == true) && (isForwardFinished == false)) {
+  simpleCrossAutoLine->Schedule();
+  isForwardFinished = true;
+}
 
 /*
   frc2::SequentialCommandGroup{
