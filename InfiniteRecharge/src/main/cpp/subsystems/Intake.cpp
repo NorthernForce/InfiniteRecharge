@@ -188,6 +188,8 @@ bool Intake::TrevinIntake() {
 
 bool Intake::NewTrevinIntake() {
     bool stop;
+    stop = false;
+    std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
         std::cout << "Stopping Conveyers";
         StopConveyor();
