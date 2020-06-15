@@ -14,24 +14,14 @@ IndexPowerCells::IndexPowerCells() {
 }
 
 // Called when the command is initially scheduled.
-void IndexPowerCells::Initialize() {
-  emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
-}
+void IndexPowerCells::Initialize() {}
 
 
 // Called repeatedly when this Command is scheduled to run
 void IndexPowerCells::Execute() {
-  //runs conveyor if there is a power cell in intake
-  if (RobotContainer::intake->GetInventory(0) == Intake::StorageState::PRESENT) {
-    RobotContainer::intake->RunConveyor();
-    //std::cout << "running conveyor\n";
-  } 
-  //stops conveyor and rumbles if there are already five power cells
-  else if (RobotContainer::intake->GetPowerCellCount() >= 5) {
-    RobotContainer::oi->SetControllerRumble(OI::manipulatorController.get(), 1, true);
-    RobotContainer::intake->Stop();
-    RobotContainer::intake->StopConveyor();
-  } 
+
+  intakeDone = RobotContainer::intake->NewTrevinIntake();
+
 }
 
 // Called once the command ends or is interrupted.
@@ -41,9 +31,4 @@ void IndexPowerCells::End(bool interrupted) {
 }
 
 // Returns true when the command should end.
-bool IndexPowerCells::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(emptyPosition) == Intake::StorageState::PRESENT)
-    return true;
-  else
-    return false; 
-}
+bool IndexPowerCells::IsFinished() { return intakeDone; }

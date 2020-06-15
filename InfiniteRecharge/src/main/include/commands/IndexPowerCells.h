@@ -34,4 +34,5 @@ class IndexPowerCells
 
   private:
     int emptyPosition;
+    bool intakeDone;
 };
