@@ -190,29 +190,30 @@ bool Intake::NewTrevinIntake() {
     bool stop;
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
-        std::cout << "Stopping Conveyers";
+        std::cout << "Stopping Conveyers\n";
         StopConveyor();
         stop = true;
     }
     if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
         Stop();
-        std::cout << "Stopping Wheels";
+        std::cout << "Stopping Wheels\n";
     }
     else {
-        std::cout << "Running Wheels";
+        std::cout << "Running Wheels\n";
         intakeTalon->Set(0.6);
     }
     if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
-        std::cout << "Running Slow";
+        std::cout << "Running Slow\n";
         NewRunConveyer(Constants::Intake::slow);
         zeroHasBeenTripped = true;
     }
     else if (GetInventory(0) == StorageState::PRESENT) {
-        std::cout << "Running Conveyers";
+        std::cout << "Running Conveyers\n";
         NewRunConveyer();
         zeroHasBeenTripped = true;
     }
     std::cout << "Stopping: " << stop << "\n";
+    std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
     return stop;
 }
 
