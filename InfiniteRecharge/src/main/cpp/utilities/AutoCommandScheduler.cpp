@@ -52,37 +52,38 @@
 //         ScheduleCmdIfPrevIsFinished(command, command_prev);
 // }
 
+AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
+    int maxIndex = commandQueue.size() - 1;
+
+    commandQueue[0]->Schedule();
+
+    for (indexer=1; indexer <= maxIndex; indexer++) {
+        frc::SmartDashboard::PutNumber("previous command running?", commandQueue[indexer-1]->IsScheduled());
+        if (!commandQueue[indexer-1]->IsScheduled())
+            commandQueue[indexer]->Schedule();
+        else
+            indexer--;
+        frc::SmartDashboard::PutNumber("current indexer:", indexer);
+    }
+}
+
 // AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> commandQueue) {
+    
 //     int maxIndex = commandQueue.size() - 1;
 //     commandQueue[0]->Schedule();
 
 //     for (indexer=1; indexer <= maxIndex; indexer++) {
 //         frc::SmartDashboard::PutNumber("previous command running?", commandQueue[indexer-1]->IsScheduled());
-//         if (!commandQueue[indexer-1]->IsScheduled())
-//             commandQueue[indexer]->Schedule();
-//         else
-//             indexer--;
+//         frc2::CommandScheduler::GetInstance().OnCommandFinish(
+//         [this, commandQueue](const frc2::Command& command) {
+//             if (command.GetName() == commandQueue[indexer-1]->GetName())
+//                 commandQueue[indexer]->Schedule();
+//             else
+//                 --indexer;
+//         });
 //         frc::SmartDashboard::PutNumber("current indexer:", indexer);
 //     }
 // }
-
-AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> commandQueue) {
-    
-    int maxIndex = commandQueue.size() - 1;
-    commandQueue[0]->Schedule();
-
-    for (indexer=1; indexer <= maxIndex; indexer++) {
-        frc::SmartDashboard::PutNumber("previous command running?", commandQueue[indexer-1]->IsScheduled());
-        frc2::CommandScheduler::GetInstance().OnCommandFinish(
-        [this, commandQueue](const frc2::Command& command) {
-            if (command.GetName() == commandQueue[indexer-1]->GetName())
-                commandQueue[indexer]->Schedule();
-            else
-                --indexer;
-        });
-        frc::SmartDashboard::PutNumber("current indexer:", indexer);
-    }
-}
 
 // void AutoCommandScheduler::ScheduleFirstCommand(std::vector<frc2::Command*> cmdList) {
 //     cmdList[0]->Schedule();

@@ -12,8 +12,8 @@
 
 class AutoCommandScheduler {
  public:
-  AutoCommandScheduler(std::vector<frc2::Command*> commandQueue);
-  static void ScheduleCmdIfPrevIsFinished(frc2::Command* command, frc2::Command* command_prev);
+  AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue);
+//   static void ScheduleCmdIfPrevIsFinished(std::unique_ptr<frc2::Command> command, std::unique_ptr<frc2::Command> command_prev);
 //   bool IsFinished();
 
  private:

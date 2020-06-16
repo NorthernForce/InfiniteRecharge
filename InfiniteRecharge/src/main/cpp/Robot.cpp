@@ -87,9 +87,9 @@ void Robot::AutonomousInit() {
     printf("I am getting through the move forward command and possibly doing something \n");
 
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new TurnToAngle(90),
-        new ShiftGear(ShiftGear::Gear::Low),
-        new ShiftGear(ShiftGear::Gear::High)
+        std::make_shared<ShiftGear>(ShiftGear::Gear::High),
+        std::make_shared<ShiftGear>(ShiftGear::Gear::Low),
+        std::make_shared<TurnToAngle>(90)
     }));
 
 /*
