@@ -15,9 +15,7 @@ AICommunication::AICommunication() {
 }
 
 // This method will be called once per scheduler run
-void AICommunication::Periodic() {
-    std::cout << "Offset in cam: " << GetCamTargetOffsets(AIVisionTargetting::Target::Powercell)[0] << '\n';
-}
+void AICommunication::Periodic() {}
 
 bool AICommunication::IsTargetFound() {
     auto isTargetFound = frc::SmartDashboard::GetNumber("valid target:", 0);

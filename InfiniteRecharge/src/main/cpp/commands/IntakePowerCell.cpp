@@ -15,7 +15,7 @@ const double conveyorBackwardSpeed = 0.4;
 
 IntakePowerCell::IntakePowerCell() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::intake.get());
+//   AddRequirements(RobotContainer::intake.get());
 }
 
 // Called when the command is initially scheduled.
