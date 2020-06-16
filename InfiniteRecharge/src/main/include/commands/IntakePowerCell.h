@@ -38,11 +38,7 @@ class IntakePowerCell
   int rumbleCounter = 0;
 
   //position four sensor was too high up, in order to stop cells faster we made it based on pos 0 clearing
-  bool zeroTriggered; 
-  bool oneTriggered;
-  bool emptyPositionTriggered = false;
-  bool fiveReached = false;
-  bool badIntake = false;
+  bool finished = false;
 
 
 };
