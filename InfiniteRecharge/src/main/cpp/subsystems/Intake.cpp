@@ -48,15 +48,15 @@ void Intake::SetInvertedFollower() {
 void Intake::Periodic() {
 
     //Outputs position states to driver station
-    InventoryPowerCells();
-    for(int i=0; i<6; i++) {
-        if (GetInventory(i) == StorageState::PRESENT) {
-           std::cout << "Position " << i <<  " full\n";
-        }
-        else {
-           std::cout << "Position " << i <<  " empty\n";
-        }
-    }
+    // InventoryPowerCells();
+    // for(int i=0; i<6; i++) {
+    //     if (GetInventory(i) == StorageState::PRESENT) {
+    //        std::cout << "Position " << i <<  " full\n";
+    //     }
+    //     else {
+    //        std::cout << "Position " << i <<  " empty\n";
+    //     }
+    // }
 }
 
 void Intake::TakeInPowerCell() {
@@ -188,7 +188,6 @@ bool Intake::TrevinIntake() {
 
 bool Intake::NewTrevinIntake() {
     bool stop;
-    stop = false;
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
         std::cout << "Stopping Conveyers";
@@ -206,10 +205,12 @@ bool Intake::NewTrevinIntake() {
     if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
         std::cout << "Running Slow";
         NewRunConveyer(Constants::Intake::slow);
+        zeroHasBeenTripped = true;
     }
     else if (GetInventory(0) == StorageState::PRESENT) {
         std::cout << "Running Conveyers";
         NewRunConveyer();
+        zeroHasBeenTripped = true;
     }
     return stop;
 }
