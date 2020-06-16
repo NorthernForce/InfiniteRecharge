@@ -13,20 +13,26 @@
 
 using Target = AIVisionTargetting::Target;
 
-AIVisionTargetting::AIVisionTargetting() {}
+AIVisionTargetting::AIVisionTargetting() {
+}
 
 // This method will be called once per scheduler run
 void AIVisionTargetting::Periodic() {}
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
-    if (CheckTargetType() == type)
-        return true;
+    bool isTargetTypeFound = false;
+    if (RobotContainer::aiComms->IsTargetFound()) {
+        if (type == CheckTargetType())
+            isTargetTypeFound = true;
+    }
     else
-        return false;
+        isTargetTypeFound = false;
+
+    return isTargetTypeFound;
 }
 
 Target AIVisionTargetting::CheckTargetType() {
-    std::string targetType = frc::SmartDashboard::GetString("targetType:", "none");
+    std::string targetType = frc::SmartDashboard::GetString("targetType:", "pc");
     if (targetType == "pc")
         return Target::Powercell;
     else if (targetType == "goal")
@@ -37,9 +43,9 @@ Target AIVisionTargetting::CheckTargetType() {
 
 void AIVisionTargetting::RefreshTargetPositioning() {
     double currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    double powerCellOffsetX = RobotContainer::aiComms->GetValueArray(RobotContainer::aiComms->powercellOffsetInCam)[0];
-    double camAngleToTarget = currentPan + powerCellOffsetX;
-    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam);
+    auto powerCellOffsets = RobotContainer::aiComms->GetCamTargetOffsets(powercell);
+    double camAngleToTarget = currentPan + powerCellOffsets[0];
+    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label);
     camAngleToTarget *= Constants::degreesToRadians;
 
     targetPositionX = camDistToTarget * std::sin(camAngleToTarget);

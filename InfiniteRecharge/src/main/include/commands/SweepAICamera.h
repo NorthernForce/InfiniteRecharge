@@ -25,4 +25,5 @@ class SweepAICamera
   bool IsFinished() override;
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };
