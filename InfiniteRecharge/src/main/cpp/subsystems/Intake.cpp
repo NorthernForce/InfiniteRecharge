@@ -212,6 +212,7 @@ bool Intake::NewTrevinIntake() {
         NewRunConveyer();
         zeroHasBeenTripped = true;
     }
+    std::cout << "Stopping: " << stop << "\n";
     return stop;
 }
 
