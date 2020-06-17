@@ -47,8 +47,8 @@ void Intake::SetInvertedFollower() {
 
 void Intake::Periodic() {
 
-    //Outputs position states to driver station
-    // InventoryPowerCells();
+    // Outputs position states to driver station
+    InventoryPowerCells();
     // for(int i=0; i<6; i++) {
     //     if (GetInventory(i) == StorageState::PRESENT) {
     //        std::cout << "Position " << i <<  " full\n";
@@ -160,11 +160,11 @@ double Intake::GetConveyerSpeed() {
 }
 
 bool Intake::TrevinIntake() {
-    bool stop;
+    bool abcd = false;
     if (GetInventory(5) == StorageState::PRESENT) {
         StopConveyor();
         Stop();
-        stop = true;
+        abcd = true;
     }
     if (GetInventory(4) == StorageState::PRESENT) {
         fourHasBeenTripped = true;
@@ -181,21 +181,21 @@ bool Intake::TrevinIntake() {
     }
     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
         StopConveyor();
-        stop = true;
+        abcd = true;
     }
-    return stop;
+    return abcd;
 }
 
 bool Intake::NewTrevinIntake() {
-    bool stop;
+    bool trevin_stop;
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
-    std::cout << "Stopping: " << stop << "\n";
+    std::cout << "Stopping: " << trevin_stop << "\n";
     std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
 
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
         std::cout << "Setting Stop to 1\n";
         StopConveyor();
-        stop = true;
+        trevin_stop = true;
     }
     if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
         Stop();
@@ -218,7 +218,7 @@ bool Intake::NewTrevinIntake() {
     if (zeroHasBeenTripped == false) {
         std::cout << "Waiting for ball\n";
     }
-    return stop;
+    return trevin_stop;
 }
 
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
