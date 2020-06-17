@@ -189,8 +189,11 @@ bool Intake::TrevinIntake() {
 bool Intake::NewTrevinIntake() {
     bool stop;
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
+    std::cout << "Stopping: " << stop << "\n";
+    std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
+
     if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
-        std::cout << "Stopping Conveyers\n";
+        std::cout << "Setting Stop to 1\n";
         StopConveyor();
         stop = true;
     }
@@ -212,8 +215,9 @@ bool Intake::NewTrevinIntake() {
         NewRunConveyer();
         zeroHasBeenTripped = true;
     }
-    std::cout << "Stopping: " << stop << "\n";
-    std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
+    if (zeroHasBeenTripped == false) {
+        std::cout << "Waiting for ball\n";
+    }
     return stop;
 }
 
