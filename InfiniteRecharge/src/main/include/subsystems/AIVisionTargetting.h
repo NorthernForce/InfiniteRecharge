@@ -19,14 +19,10 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   };
   bool CheckForTarget(Target type=Target::Powercell);
   Target CheckTargetType();
-  void RefreshTargetPositioning();
-  double RoboAngleToTarget();
-  double RoboDistToTarget();
+  double GetCameraDistToTarget();
+  double GetAngleToTarget();
   void Periodic();
 
  private:
-  bool targetFound;
-  double targetPositionX;
-  double targetPositionY;
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };

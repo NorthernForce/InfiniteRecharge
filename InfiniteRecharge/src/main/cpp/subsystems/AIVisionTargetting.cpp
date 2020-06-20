@@ -7,9 +7,13 @@
 
 #include "subsystems/AIVisionTargetting.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <string>
+#include <memory>
+
 #include "RobotContainer.h"
 #include "Constants.h"
-#include <string>
+#include "utilities/TriangleCalculator.h"
+#include "utilities/Triangle.h"
 
 using Target = AIVisionTargetting::Target;
 
@@ -41,48 +45,20 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-void AIVisionTargetting::RefreshTargetPositioning() {
-    double currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    auto powerCellOffsets = RobotContainer::aiComms->GetCamTargetOffsets(powercell);
-    double camAngleToTarget = currentPan + powerCellOffsets[0];
-    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label);
-    camAngleToTarget *= Constants::degreesToRadians;
-
-    targetPositionX = camDistToTarget * std::sin(camAngleToTarget);
-    targetPositionY = camDistToTarget * std::cos(camAngleToTarget);
+double AIVisionTargetting::GetCameraDistToTarget() {
+    // remember to fill this in
 }
 
-double AIVisionTargetting::RoboAngleToTarget() {
-    RefreshTargetPositioning();
-    return std::atan((targetPositionX-Constants::camDistFromRoboFrontCent)/(targetPositionY+Constants::camDistFromRoboSideCent));
+double AIVisionTargetting::GetAngleToTarget() {
+    // uppercase and lowercase letters follow standard triangle naming for law of cosines
+    double a = GetCameraDistToTarget(); // exp reg eq for getting target
+    double c = Constants::camDistFromRoboFrontCent;
+    double B = RobotContainer::cameraMount->GetCurrentPan();
+
+    auto rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
+    auto angleCalc = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    
+    double angleToTarget = angleCalc->SAS().GetAngleA();
+    frc::SmartDashboard::PutNumber("angleToTarget", angleToTarget) - 90;
+    return angleToTarget;
 }
-
-double AIVisionTargetting::RoboDistToTarget() {
-    RefreshTargetPositioning();
-    return sqrt(pow((targetPositionY+Constants::camDistFromRoboFrontCent),2.0)+pow((Constants::camDistFromRoboSideCent-targetPositionX),2.0));
-}
-
-
-// double TargDist(double Ac,double Dc)
-// {
-//     Ac *= (M_PI/180);
-//     double C = 10;
-//     double Tx = Dc*std::sin(Ac);
-//     double Ty = Dc*std::cos(Ac);
-//     double Td = sqrt(pow(Ty,2.0)+pow((C-Tx),2.0));
-
-//     return Td;
-// }
-
-// double TargAng(double Ac,double Dc)
-// {
-//     Ac *= conve;
-//     double C = 10;
-//     double Tx = Dc*std::sin(Ac);
-//     double Ty = Dc*std::cos(Ac);
-//     double Ta = std::atan((Tx-C)/Ty);
-
-//     Ta /= convert;
-
-//     return Ta;
-// }
