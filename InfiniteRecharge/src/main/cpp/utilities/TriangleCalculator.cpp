@@ -111,7 +111,12 @@ void TriangleCalculator::ThrowExceptionOnErrors(std::vector<double> measurements
             throw NegativeError();
         if (prop < 0)
             throw NegativeError();
-        if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 180 )
+    }
+    std::vector<double> angles = {angle_a, angle_b, angle_c};
+    for (auto ang : angles) {
+        if (abs(ang) >= 180)
             throw AngleError();
     }
+    if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 180)
+        throw AngleError();
 }
