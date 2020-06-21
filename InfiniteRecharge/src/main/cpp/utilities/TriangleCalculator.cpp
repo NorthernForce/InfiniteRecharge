@@ -112,23 +112,3 @@ void TriangleCalculator::ThrowExceptionOnErrors(double prop_a, double prop_b, do
     if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 180 )
         throw AngleError();
 }
-
-struct BaseException : public std::exception {};
-
-struct ZeroError : public BaseException {
-	const char * what () const throw () {
-    	return "ZeroError: more than one required value is zero.\nTry entering 3 positive values.\n";
-    }
-};
-
-struct AngleError : public BaseException {
-	const char * what () const throw () {
-    	return "AngleError: one or more angles is too large.\nTry entering angles with a sum of 180.\n";
-    }
-};
-
-struct NegativeError : public BaseException {
-	const char * what () const throw () {
-    	return "NegativeError: one or more sides or angles is negative.\n";
-    }
-};
