@@ -20,10 +20,10 @@ class Triangle {
     double GetSideC();
 
  private:
-    double m_A;
-    double m_B;
-    double m_C;
     double m_a;
     double m_b;
     double m_c;
+    double m_A;
+    double m_B;
+    double m_C;
 };

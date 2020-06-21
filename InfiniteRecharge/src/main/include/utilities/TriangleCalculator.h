@@ -9,6 +9,7 @@
 
 #include "utilities/Triangle.h"
 #include <memory>
+#include <vector>
 
 class TriangleCalculator {
  public:
@@ -23,7 +24,7 @@ class TriangleCalculator {
     double ThirdSideCalc(double side, double angle_a, double angle_c);
     double DegToRad(double deg);
     double RadToDeg(double rad);
-    void ThrowExceptionOnErrors(double prop_a, double prop_b, double prop_c);
+    void ThrowExceptionOnErrors(std::vector<double> measurements);
 
     struct BaseException : public std::exception {};
     struct ZeroError : public BaseException {
