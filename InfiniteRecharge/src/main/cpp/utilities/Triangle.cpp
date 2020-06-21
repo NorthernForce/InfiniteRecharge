@@ -10,21 +10,17 @@
 // creates an empty triangle
 Triangle::Triangle() {}
 
-// triangles use normal naming scheme:
-// sides- abc (c can be bottom)
-// angles- ABC (<C can be top)
-// Use zeros for unknown arguments, only three required
-Triangle::Triangle(double a, double b, double c, double A, double B, double C)
- : a(a), b(b), c(c), A(A), B(B), C(C) {}
+Triangle::Triangle(double side_a, double side_b, double side_c, double ang_a, double ang_b, double ang_c)
+ : m_a(side_a), m_b(side_b), m_c(side_c), m_A(ang_a), m_B(ang_b), m_C(ang_c) {}
 
-double Triangle::GetAngleA() { return A; }
+double Triangle::GetAngleA() { return m_A; }
 
-double Triangle::GetAngleB() { return B; }
+double Triangle::GetAngleB() { return m_B; }
 
-double Triangle::GetAngleC() { return C; }
+double Triangle::GetAngleC() { return m_C; }
 
-double Triangle::GetSideA() { return a; }
+double Triangle::GetSideA() { return m_a; }
 
-double Triangle::GetSideB() { return b; }
+double Triangle::GetSideB() { return m_b; }
 
-double Triangle::GetSideC() { return c; }
+double Triangle::GetSideC() { return m_c; }

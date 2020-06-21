@@ -45,20 +45,27 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-double AIVisionTargetting::GetCameraDistToTarget() {
+double AIVisionTargetting::GetCameraDistToTargetFromEq() {
     // remember to fill this in
 }
 
 double AIVisionTargetting::GetAngleToTarget() {
-    // uppercase and lowercase letters follow standard triangle naming for law of cosines
-    double a = GetCameraDistToTarget(); // exp reg eq for getting target
+    // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
+    double angleToTarget = 0;
+    double a = GetCameraDistToTargetFromEq();
     double c = Constants::camDistFromRoboFrontCent;
     double B = RobotContainer::cameraMount->GetCurrentPan();
 
     auto rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
     auto angleCalc = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
     
-    double angleToTarget = angleCalc->SAS().GetAngleA();
-    frc::SmartDashboard::PutNumber("angleToTarget", angleToTarget) - 90;
-    return angleToTarget;
+    try {
+        angleToTarget = angleCalc->SAS().GetAngleA();
+    }
+    catch (TriangleCalculator::BaseException& e) {
+        std::cerr << e.what() << '\n';
+    }
+
+    frc::SmartDashboard::PutNumber("angleToTarget", (angleToTarget-90));
+    return (angleToTarget - 90);
 }

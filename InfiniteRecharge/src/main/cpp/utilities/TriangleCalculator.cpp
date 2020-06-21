@@ -18,29 +18,29 @@ TriangleCalculator::TriangleCalculator(std::unique_ptr<Triangle> t) {
     angle_c = t->GetAngleC();
 }
 
+// can handle any valid angle with neighboring sides
 Triangle TriangleCalculator::SAS() {
-    Triangle triangle;
-
     if (side_b && side_c && angle_a != 0) {
+        ThrowExceptionOnErrors(side_b, side_c, angle_a);
         side_a = sqrt(pow(side_b,2) + pow(side_c,2) - 2*side_b*side_c * cos(DegToRad(angle_a)));
-        triangle = SSS();
     }
     else if (side_a && side_c && angle_b != 0) {
+        ThrowExceptionOnErrors(side_a, side_c, angle_b);
         side_b = sqrt(pow(side_a,2) + pow(side_c,2) - 2*side_a*side_c * cos(DegToRad(angle_b)));
-        triangle = SSS();
     }
     else if (side_a && side_b && angle_c != 0) {
+        ThrowExceptionOnErrors(side_a, side_b, angle_c);
         side_c = sqrt(pow(side_a,2) + pow(side_b,2) - 2*side_a*side_b * cos(DegToRad(angle_c)));
-        triangle = SSS();
     }
     else {
-        std::cerr << "ZeroError: One or more specified numbers is zero.\nPlease enter at least 3 positive numbers.\n";
+        throw ZeroError();
     }
-
-    return triangle;
+    return SSS();
 }
 
+// expects: (x, x, num, num, num, x)
 Triangle TriangleCalculator::AAS() {
+    ThrowExceptionOnErrors(side_c, angle_a, angle_b);
 
     angle_c = ThirdAngleCalc(angle_a, angle_c);
     side_a = ThirdSideCalc(side_c, angle_b, angle_c);
@@ -49,7 +49,10 @@ Triangle TriangleCalculator::AAS() {
     return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
+// expects: (x, x, num, num, num, x)
 Triangle TriangleCalculator::ASA() {
+    ThrowExceptionOnErrors(side_c, angle_a, side_b);
+
     angle_c = ThirdAngleCalc(angle_a, angle_b);
     side_a = ThirdSideCalc(side_c, angle_a, angle_c);
     side_b = ThirdSideCalc(side_c, angle_b, angle_c);
@@ -57,7 +60,10 @@ Triangle TriangleCalculator::ASA() {
     return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
+// expects: (num, num, num, x, x, x)
 Triangle TriangleCalculator::SSS() {
+    ThrowExceptionOnErrors(side_a, side_b, side_c);
+
     angle_a = RadToDeg(acos((pow(side_b,2) + pow(side_c,2) - pow(side_a,2)) / (2 * side_b * side_c)));
     angle_b = RadToDeg(acos((pow(side_c,2) + pow(side_a,2) - pow(side_b,2)) / (2 * side_c * side_a)));
     angle_c = ThirdAngleCalc(angle_a, angle_b);
@@ -65,8 +71,10 @@ Triangle TriangleCalculator::SSS() {
     return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
+// expects: (x, num, num, x, x, x)
 Triangle TriangleCalculator::HL() {
     angle_c = 90;
+    ThrowExceptionOnErrors(side_b, side_c, angle_c);
 
     side_a = sqrt(pow(side_c,2) - pow(side_b,2));
     angle_a = RadToDeg(acos((pow(side_b,2) + pow(side_a,2) - pow(side_a,2)) / (2 * side_b * side_a)));
@@ -93,3 +101,34 @@ double TriangleCalculator::DegToRad(double deg) {
 double TriangleCalculator::RadToDeg(double rad) {
     return rad * (180 / M_PI);
 }
+
+void TriangleCalculator::ThrowExceptionOnErrors(double prop_a, double prop_b, double prop_c) {
+    if (prop_a || prop_b || prop_c == 0)
+        throw ZeroError();
+    if (prop_a || prop_b || prop_c < 0)
+        throw NegativeError();
+    if (angle_a || angle_b || angle_c < 0)
+        throw NegativeError();
+    if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 180 )
+        throw AngleError();
+}
+
+struct BaseException : public std::exception {};
+
+struct ZeroError : public BaseException {
+	const char * what () const throw () {
+    	return "ZeroError: more than one required value is zero.\nTry entering 3 positive values.\n";
+    }
+};
+
+struct AngleError : public BaseException {
+	const char * what () const throw () {
+    	return "AngleError: one or more angles is too large.\nTry entering angles with a sum of 180.\n";
+    }
+};
+
+struct NegativeError : public BaseException {
+	const char * what () const throw () {
+    	return "NegativeError: one or more sides or angles is negative.\n";
+    }
+};

@@ -23,6 +23,24 @@ class TriangleCalculator {
     double ThirdSideCalc(double side, double angle_a, double angle_c);
     double DegToRad(double deg);
     double RadToDeg(double rad);
+    void ThrowExceptionOnErrors(double prop_a, double prop_b, double prop_c);
+
+    struct BaseException : public std::exception {};
+    struct ZeroError : public BaseException {
+        const char * what () const throw () {
+            return "ZeroError: more than one required value is zero.\nTry entering 3 positive values.\n";
+        }
+    };
+    struct AngleError : public BaseException {
+        const char * what () const throw () {
+            return "AngleError: one or more angles is too large.\nTry entering angles with a sum of 180.\n";
+        }
+    };
+    struct NegativeError : public BaseException {
+        const char * what () const throw () {
+            return "NegativeError: one or more sides or angles is negative.\n";
+        }
+    };
 
  private:
     double side_a;
