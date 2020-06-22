@@ -19,6 +19,7 @@ void AutoShootCell::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void AutoShootCell::Execute() {
+  RobotContainer::shooter->Shoot();
    if (RobotContainer::shooter->GetError() < 100) {
       RobotContainer::intake->ConveyorSetSpeed(-0.5);
     }
