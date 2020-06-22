@@ -124,7 +124,7 @@ if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
   isForwardFinished = true;
 }
 
-if ((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false)) {
+if ((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
   std::cout << "Sparky has reached autonomous shooting part 1" << "\n";
   autoShootCell->Schedule();
   isShooterFinished = autoShootCell->IsFinished();
