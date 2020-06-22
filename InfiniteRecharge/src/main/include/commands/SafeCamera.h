@@ -9,23 +9,24 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "commands/TurnToAngle.h"
-#include "RobotContainer.h"
 
-class SweepAICamera
-    : public frc2::CommandHelper<frc2::CommandBase, SweepAICamera> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class SafeCamera
+    : public frc2::CommandHelper<frc2::CommandBase, SafeCamera> {
  public:
-  SweepAICamera();
-  void Initialize() override;
-  void Execute() override;
-  void TurnRobotToTarget();
-  void AdjustServoAngToPCOffset(double pcOffset);
-  void TurnRobotToTargetAngle(int ang);
-  void End(bool interrupted) override;
-  bool IsFinished() override;
- private:
-  std::shared_ptr<TurnToAngle> turnToAngle;
-  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
-  bool hasturnedOnButton;
+  SafeCamera();
 
+  void Initialize() override;
+
+  void Execute() override;
+
+  void End(bool interrupted) override;
+
+  bool IsFinished() override;
 };

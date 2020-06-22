@@ -9,9 +9,9 @@
 #include <frc/SPI.h>
 
 IMU::IMU() {
-    ahrs.reset(new AHRS(SPI::Port::kMXP));
+    ahrs = std::make_shared<AHRS>(SPI::Port::kMXP);
     Init();
-    accelerationRateTimer.reset(new frc::Timer());
+    accelerationRateTimer = std::make_shared<frc::Timer>();
     accelerationRateTimer->Start();
 }
 

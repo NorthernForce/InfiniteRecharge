@@ -31,7 +31,7 @@
 #include <cameraserver/CameraServer.h>
 
 void Robot::RobotInit() {
-  container.reset(new RobotContainer());
+  container = std::make_shared<RobotContainer>();
 ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
 /*
   autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());

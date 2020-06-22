@@ -14,7 +14,7 @@ const int Climber::peakCurrentDuration = 2000;
 
 
 Climber::Climber() {
-    armTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::climberArm));
+    armTalon = std::make_shared<WPI_TalonSRX>(Constants::MotorIDs::climberArm);
 }
 
 // This method will be called once per scheduler run

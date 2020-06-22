@@ -10,6 +10,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc/Servo.h>
 #include <functional>
+#include "subsystems/AIVisionTargetting.h"
 
 class CameraMount : public frc2::SubsystemBase {
  public:
@@ -19,6 +20,7 @@ class CameraMount : public frc2::SubsystemBase {
   void SyncServoAngles();
   int GetServoAngleToTarget();
   void Sweep();
+  void SmartSweep();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();
@@ -30,7 +32,7 @@ class CameraMount : public frc2::SubsystemBase {
   void RecoverOutOfRangeServo();
 
  private:
-  int currentPan;
+  double currentPan;
   int currentTilt;
   int previousPan;
   int previousTilt;
@@ -41,4 +43,5 @@ class CameraMount : public frc2::SubsystemBase {
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };

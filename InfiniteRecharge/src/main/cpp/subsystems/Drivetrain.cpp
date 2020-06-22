@@ -8,18 +8,19 @@
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
 
-Drivetrain::Drivetrain() {    
-    leftPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    leftFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless));
-    rightPrimarySpark.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightPrimary, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark1.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower1, rev::CANSparkMax::MotorType::kBrushless));
-    rightFollowerSpark2.reset(new rev::CANSparkMax(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless));
+Drivetrain::Drivetrain() {
+    leftPrimarySpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless);
+    leftFollowerSpark1 = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveLeftFollower1, rev::CANSparkMax::MotorType::kBrushless);
+    leftFollowerSpark2 = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveLeftFollower2, rev::CANSparkMax::MotorType::kBrushless);
+    rightPrimarySpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveRightPrimary, rev::CANSparkMax::MotorType::kBrushless);
+    rightFollowerSpark1 = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveRightFollower1, rev::CANSparkMax::MotorType::kBrushless);
+    rightFollowerSpark2 = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveRightFollower2, rev::CANSparkMax::MotorType::kBrushless);
+
 ////Execute Methods to set up Motor Controllers (Followers, Ramping Rates, and Inverted Motors)
     SetInvertedFollowers();
     ConfigureAllControllers();
 
-    robotDrive.reset(new frc::DifferentialDrive(*leftPrimarySpark, *rightPrimarySpark));
+    robotDrive = std::make_shared<frc::DifferentialDrive>(*leftPrimarySpark, *rightPrimarySpark);
 }
 
 void Drivetrain::SetInvertedFollowers() {

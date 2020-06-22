@@ -56,8 +56,8 @@ OI::OI() {
 }
 
 void OI::InitControllers() {
-    driverController.reset(new frc::XboxController(Constants::driverController_id));
-    manipulatorController.reset(new frc::XboxController(Constants::manipulatorController_id));
+    driverController = std::make_shared<frc::XboxController>(Constants::driverController_id);
+    manipulatorController = std::make_shared<frc::XboxController>(Constants::manipulatorController_id);
 }
 
 void OI::MapControllerButtons() {

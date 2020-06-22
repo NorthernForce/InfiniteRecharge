@@ -14,8 +14,8 @@
 int CameraMount::sweepPassCount;
 
 CameraMount::CameraMount() {
-    panServo.reset(new frc::Servo(Constants::MotorIDs::panServoPWM));
-    tiltServo.reset(new frc::Servo(Constants::MotorIDs::tiltServoPWM));
+    panServo = std::make_shared<frc::Servo>(Constants::MotorIDs::panServoPWM);
+    tiltServo = std::make_shared<frc::Servo>(Constants::MotorIDs::tiltServoPWM);
     Init();
     SetToZero();
 }
@@ -40,7 +40,8 @@ int CameraMount::GetServoAngleToTarget() {
     return servoAngleToTarget;
 }
 
-void CameraMount::Sweep() {    
+void CameraMount::Sweep() {
+    std::cout << "sweep\n";
     if (sweepPassCount % 2 == 0) {
         if (currentPan <= 155) {
             Pan(currentPan);
@@ -56,6 +57,21 @@ void CameraMount::Sweep() {
         sweepPassCount++;
 
     RecoverOutOfRangeServo();
+}
+
+void CameraMount::SmartSweep() {
+    auto pcOffset = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
+    if (RobotContainer::aiComms->IsTargetFound()) {
+        if (pcOffset < -6)
+            RobotContainer::cameraMount->Pan(round(currentPan+=0.5));
+        else if (pcOffset > 6)
+            RobotContainer::cameraMount->Pan(round(currentPan-=0.5));
+    }
+    else
+        Sweep();
+
+    if (RobotContainer::aiVisionTargetting->IsTargetCentered())
+        RobotContainer::cameraMount->Pan(currentPan);
 }
 
 void CameraMount::SetToZero() {
@@ -95,9 +111,9 @@ void CameraMount::Tilt(int degrees) {
 
 char CameraMount::GetPanDirection() {
     if (currentPan < 90)
-        panDirection = 'l';
-    else
         panDirection = 'r';
+    else
+        panDirection = 'l';
     return panDirection;
 }
 

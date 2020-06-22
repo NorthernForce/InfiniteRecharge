@@ -13,7 +13,7 @@
 SweepAICamera::SweepAICamera() {
     AddRequirements(RobotContainer::cameraMount.get());
     AddRequirements(RobotContainer::aiVisionTargetting.get());
-    turnToAngle.reset(new TurnToAngle());
+    turnToAngle = std::make_shared<TurnToAngle>();
 }
 
 // Called when the command is initially scheduled.
@@ -23,39 +23,30 @@ void SweepAICamera::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void SweepAICamera::Execute() {
-    if (RobotContainer::aiVisionTargetting->CheckForTarget(powercell))
+    RobotContainer::cameraMount->SmartSweep();
+    bool isTargetPresent = RobotContainer::aiVisionTargetting->CheckForTarget(powercell);
+    if (isTargetPresent)
         TurnRobotToTarget();
-    else
-        RobotContainer::cameraMount->Sweep();
 }
 
 void SweepAICamera::TurnRobotToTarget() {
-    int servoPanAng = RobotContainer::cameraMount->GetCurrentPan();
-    char servoPanDir = RobotContainer::cameraMount->GetPanDirection();
     double pcOffsetInCamera = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
+    double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
 
-    AdjustServoAngToPCOffset(servoPanAng, pcOffsetInCamera);
-    if (OI::driverController->GetRawButton(OI::Xbox::menu_button))
-        TurnRobotToServoAngle(servoPanAng, servoPanDir);
+    if (OI::driverController->GetRawButton(OI::Xbox::menu_button)) {
+        TurnRobotToTargetAngle(targetAng);
+        hasturnedOnButton = true;
+    }
+    else
+        hasturnedOnButton = false;
 }
 
-void SweepAICamera::AdjustServoAngToPCOffset(int servoAng, double pcOffset) {
-    frc::SmartDashboard::PutNumber("pc offset", pcOffset);
-    if (pcOffset < -10)
-        RobotContainer::cameraMount->Pan(++servoAng);
-    if (pcOffset > 10)
-        RobotContainer::cameraMount->Pan(--servoAng);
-}
-
-void SweepAICamera::TurnRobotToServoAngle(int servoAng, char servoDir) {
-    int robotAng = RobotContainer::imu->GetRotation();
-    // if (servoDir == 'l')
-    //     turnToAngle->SetAngle(robotAng+servoAng-90);
-    // else if (servoDir == 'r')
-    turnToAngle->SetAngle(-1*(servoAng-90));
-        
-    if (!turnToAngle->IsScheduled())
+void SweepAICamera::TurnRobotToTargetAngle(int ang) {
+    if (!turnToAngle->IsScheduled() && !hasturnedOnButton) {
+        turnToAngle->SetAngle(-1*ang);
         turnToAngle->Schedule();
+        hasturnedOnButton = true;
+    }
 }
 
 // Called once the command ends or is interrupted.

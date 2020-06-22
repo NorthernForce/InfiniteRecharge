@@ -19,10 +19,14 @@ class AIVisionTargetting : public frc2::SubsystemBase {
   };
   bool CheckForTarget(Target type=Target::Powercell);
   Target CheckTargetType();
-  double GetCameraDistToTargetFromEq();
-  double GetAngleToTarget();
+  int GetArea();
+  double GetCameraDistToTargetFromArea(int area);
+  double GetRobotAngleToTarget();
+  bool IsTargetCentered();
   void Periodic();
 
  private:
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
+  double camAngleOffset;
+  int servoToRobotCenterAngleOffset = 90;
 };

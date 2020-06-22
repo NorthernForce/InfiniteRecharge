@@ -124,6 +124,7 @@ void IntakePowerCell::Execute() {
 
 // Called once the command ends or is interrupted.
 void IntakePowerCell::End(bool interrupted) {
+  RobotContainer::oi->SetControllerRumble(OI::driverController.get(), 0, true);
   RobotContainer::intake->Stop();
   RobotContainer::intake->StopConveyor();
 }

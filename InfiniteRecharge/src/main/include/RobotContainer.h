@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc2/command/Command.h>
+#include <memory>
 #include "OI.h"
 
 #include "subsystems/Drivetrain.h"
