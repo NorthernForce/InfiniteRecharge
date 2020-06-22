@@ -33,8 +33,14 @@ class Intake : public frc2::SubsystemBase {
   Intake();
   void InitMotorControllers();
   void InitBallPositionSensors();
-  void Periodic();
   void SetInvertedFollower();
+  void Periodic();
+  void ResetZHBT();
+  void TrevinRunConveyer(double speed = Constants::Intake::normal);
+  bool TrevinIntakeDebug();
+  bool TrevinIntakeCompact();
+
+
   void TakeInPowerCell();
   void SetIntakeSpeed(double speed);
   void PushOutPowerCell();
@@ -49,10 +55,7 @@ class Intake : public frc2::SubsystemBase {
   void RunConveyorToShoot();
   void StopConveyor();
   void ConveyorSetSpeed(double speed);
-  void NewRunConveyer(double speed = Constants::Intake::normal);
   double GetConveyerSpeed();
-  bool TrevinIntake();
-  bool NewTrevinIntake();
   bool IsConveyorEmpty();
 
   //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition

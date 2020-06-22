@@ -59,6 +59,110 @@ void Intake::Periodic() {
     // }
 }
 
+void Intake::ResetZHBT() {
+    zeroHasBeenTripped = false;
+}
+
+void Intake::TrevinRunConveyer(double speed) {
+    primaryConveyorSpark->Set(speed);
+}
+
+bool Intake::TrevinIntakeDebug() {
+    bool stop = false;
+
+    std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
+    std::cout << "Stopping: " << stop << "\n";
+    std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
+
+    if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {
+        std::cout << "Setting Stop to 1\n";
+        TrevinRunConveyer(0);
+        stop = true;
+    }
+    if ((GetInventory(5) == StorageState::PRESENT) || (GetInventory(0) == StorageState::PRESENT)) {
+        intakeTalon->Set(0);
+        std::cout << "Stopping Wheels\n";
+    }
+    else {
+        std::cout << "Running Wheels\n";
+        intakeTalon->Set(0.6);
+    }
+    if ((GetInventory(0) == StorageState::PRESENT) && (GetInventory(4) == StorageState::PRESENT)) {
+        std::cout << "Running Slow\n";
+        TrevinRunConveyer(Constants::Intake::slow);
+        zeroHasBeenTripped = true;
+    }
+    else if (GetInventory(0) == StorageState::PRESENT) {
+        std::cout << "Running Conveyers\n";
+        TrevinRunConveyer();
+        zeroHasBeenTripped = true;
+    }
+    if (zeroHasBeenTripped == false) {
+        std::cout << "Waiting for ball\n";
+    }
+    return stop;
+}
+
+////TODO: Update this to match Debug's code
+
+// bool Intake::TrevinIntakeCompact() {
+//     bool abcd = false;
+//     if (GetInventory(5) == StorageState::PRESENT) {
+//         StopConveyor();
+//         Stop();
+//         abcd = true;
+//     }
+//     if (GetInventory(4) == StorageState::PRESENT) {
+//         fourHasBeenTripped = true;
+//     }
+//     if (GetInventory(0) == StorageState::PRESENT) {
+//         zeroHasBeenTripped = true;
+//         Stop();
+//         if (fourHasBeenTripped) {
+//             TrevinRunConveyer(Constants::Intake::slow);
+//         }
+//         else {
+//             TrevinRunConveyer();
+//         }
+//     }
+//     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
+//         StopConveyor();
+//         abcd = true;
+//     }
+//     return abcd;
+// }
+
+
+//Methods not used
+
+
+//cycles through positions to get storage states
+void Intake::InventoryPowerCells() {
+    for(int pos=0; pos<6; pos++) {
+        if (ballPosition[pos]->Get() == ballDetected)
+            powerCellPosition[pos] = StorageState::PRESENT;
+        else
+            powerCellPosition[pos] = StorageState::EMPTY;
+    }
+}
+
+//Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 
+StorageState Intake::GetInventory(int position) {
+    return powerCellPosition[position];
+}
+
+bool Intake::IsConveyorEmpty() {
+    int emptyCounter = 0;
+    bool isEmpty;
+    for (int pos=0; pos<6; pos++) {
+        if (GetInventory(pos) == Intake::StorageState::EMPTY)
+            emptyCounter++;
+    if (emptyCounter == 6)
+        isEmpty = true;
+    }
+    return isEmpty;
+}
+
 void Intake::TakeInPowerCell() {
     intakeTalon->Set(0.6);
 }
@@ -153,105 +257,9 @@ void Intake::ConveyorSetSpeed(double speed) {
     }
 }
 
-void Intake::NewRunConveyer(double speed) {
-    primaryConveyorSpark->Set(speed);
-}
-
 double Intake::GetConveyerSpeed() {
     sparkSpeed = primaryConveyorSpark->Get();
     return sparkSpeed;
-}
-
-////TODO: Update this to give more reads
-
-// bool Intake::TrevinIntake() {
-//     bool abcd = false;
-//     if (GetInventory(5) == StorageState::PRESENT) {
-//         StopConveyor();
-//         Stop();
-//         abcd = true;
-//     }
-//     if (GetInventory(4) == StorageState::PRESENT) {
-//         fourHasBeenTripped = true;
-//     }
-//     if (GetInventory(0) == StorageState::PRESENT) {
-//         zeroHasBeenTripped = true;
-//         Stop();
-//         if (fourHasBeenTripped) {
-//             NewRunConveyer(Constants::Intake::slow);
-//         }
-//         else {
-//             NewRunConveyer();
-//         }
-//     }
-//     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
-//         StopConveyor();
-//         abcd = true;
-//     }
-//     return abcd;
-// }
-
-bool Intake::NewTrevinIntake() {
-    bool stop = false;
-
-    std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
-    std::cout << "Stopping: " << stop << "\n";
-    std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
-
-    if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {
-        std::cout << "Setting Stop to 1\n";
-        NewRunConveyer(0);
-        stop = true;
-    }
-    if ((GetInventory(5) == StorageState::PRESENT) || (GetInventory(0) == StorageState::PRESENT)) {
-        intakeTalon->Set(0);
-        std::cout << "Stopping Wheels\n";
-    }
-    else {
-        std::cout << "Running Wheels\n";
-        intakeTalon->Set(0.6);
-    }
-    if ((GetInventory(0) == StorageState::PRESENT) && (GetInventory(4) == StorageState::PRESENT)) {
-        std::cout << "Running Slow\n";
-        NewRunConveyer(Constants::Intake::slow);
-        zeroHasBeenTripped = true;
-    }
-    else if (GetInventory(0) == StorageState::PRESENT) {
-        std::cout << "Running Conveyers\n";
-        NewRunConveyer();
-        zeroHasBeenTripped = true;
-    }
-    if (zeroHasBeenTripped == false) {
-        std::cout << "Waiting for ball\n";
-    }
-    return stop;
-}
-
-//cycles through positions to get storage states
-void Intake::InventoryPowerCells() {
-    for(int pos=0; pos<6; pos++) {
-        if (ballPosition[pos]->Get() == ballDetected)
-            powerCellPosition[pos] = StorageState::PRESENT;
-        else
-            powerCellPosition[pos] = StorageState::EMPTY;
-    }
-}
-
-//Returns a "StorageState" indicating whether there is a Power Cell at the Given (integer) Conveyor Storage Location 
-StorageState Intake::GetInventory(int position) {
-    return powerCellPosition[position];
-}
-
-bool Intake::IsConveyorEmpty() {
-    int emptyCounter = 0;
-    bool isEmpty;
-    for (int pos=0; pos<6; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::EMPTY)
-            emptyCounter++;
-    if (emptyCounter == 6)
-        isEmpty = true;
-    }
-    return isEmpty;
 }
 
 //Return the First Position in the Conveyor Storage that is empty (no PC).

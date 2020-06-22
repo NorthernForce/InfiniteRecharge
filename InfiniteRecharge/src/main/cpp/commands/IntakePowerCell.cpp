@@ -19,12 +19,14 @@ IntakePowerCell::IntakePowerCell() {
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {}
+void IntakePowerCell::Initialize() {
+  RobotContainer::intake->ResetZHBT();
+}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
 
-finished = RobotContainer::intake->NewTrevinIntake();
+finished = RobotContainer::intake->TrevinIntakeDebug();
 
 }
 
