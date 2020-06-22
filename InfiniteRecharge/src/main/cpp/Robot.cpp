@@ -17,11 +17,6 @@
 #include "OI.h"
 
 #include "commands/InventoryPowerCells.h"
-#include "commands/autonomous/CrossAutoLine.h"
-#include "commands/autonomous/InFrontOfGoal.h"
-#include "commands/autonomous/InFrontOfOurTrench.h"
-#include "commands/autonomous/InFrontOfFoesTrench.h"
-#include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
@@ -130,43 +125,13 @@ if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
 }
 
 if ((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false)) {
+  std::cout << "Sparky has reached autonomous shooting part 1" << "\n";
   autoShootCell->Schedule();
   isShooterFinished = autoShootCell->IsFinished();
+    std::cout << "Sparky has reached autonomous shooting part 2" << "\n";
 }
 
-/*
-  frc2::SequentialCommandGroup{
-    TurnToAngle(),
-    AutoDrive(15, .3, .3),
-  };
-  ////TODO: Make any of this work
-*/
-
-/*
-    auto turnToAngle = [this](int targetAngle) {
-        if (!autoDrive->IsScheduled() && !autoTurnToAngle->IsScheduled()) {
-            autoTurnToAngle->SetAngle(targetAngle);
-            autoTurnToAngle->Schedule();
-        }
-    };
-    turnToAngle(-90);
-  */
-  
-
   /*
-  if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 1)) {
-    autoTurnToAngle->SetAngle(-90);
-    autoTurnToAngle->Schedule();
-    autoCounter++;
-  }
-  */
-  /*
-  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter == 0)) {
-    autoMoveToLimelight->Schedule();
-    autoCounter++;
-  }
-
-  
   Old working autonomous code
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
