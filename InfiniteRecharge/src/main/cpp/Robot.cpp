@@ -83,8 +83,10 @@ void Robot::AutonomousInit() {
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
-    autoTurnToAngle->Schedule();
-    isTurnFinished = autoTurnToAngle->IsFinished();
+    isTurnFinished = false;
+    isForwardFinished = false;
+    isShooterFinished = false;
+
 
 
 ////TODO: Figure out if this should go in periodic or Init
@@ -130,14 +132,17 @@ void Robot::AutonomousPeriodic() {
 //   isShooterFinished = autoShootCell->IsFinished();
 //     std::cout << "Sparky has reached autonomous shooting part 2" << "\n";
 // }
-
-if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true)) {
+if(isTurnFinished == false) {
+autoTurnToAngle->Schedule();
+isTurnFinished = true;
+} else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true)) {
   simpleCrossAutoLine->Schedule();
   isForwardFinished = true;
 } else if ((isForwardFinished == true) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished != true)) {
   autoShootCell->Schedule();
   isShooterFinished = true;
 }
+
 
   /*
   Old working autonomous code
