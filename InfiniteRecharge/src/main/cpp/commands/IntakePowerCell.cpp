@@ -19,8 +19,7 @@ IntakePowerCell::IntakePowerCell() {
 }
 
 // Called when the command is initially scheduled.
-void IntakePowerCell::Initialize() {
-}
+void IntakePowerCell::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {

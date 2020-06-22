@@ -77,7 +77,7 @@ int Intake::GetPowerCellCount() {
 }
 
 void Intake::Stop() {
-    intakeTalon->Set(0);
+    intakeTalon->Set(0.0);
 }
 
 void Intake::SetArmUp() {
@@ -93,6 +93,9 @@ void Intake::SetArmUp() {
     }
 }
 
+void Intake::StopConveyor() {
+    primaryConveyorSpark->Set(0.0);
+}
 
 ////TODO: Set Camera to low position before the arm is commanded
 void Intake::SetArmDown() {
@@ -159,53 +162,56 @@ double Intake::GetConveyerSpeed() {
     return sparkSpeed;
 }
 
-bool Intake::TrevinIntake() {
-    bool abcd = false;
-    if (GetInventory(5) == StorageState::PRESENT) {
-        StopConveyor();
-        Stop();
-        abcd = true;
-    }
-    if (GetInventory(4) == StorageState::PRESENT) {
-        fourHasBeenTripped = true;
-    }
-    if (GetInventory(0) == StorageState::PRESENT) {
-        zeroHasBeenTripped = true;
-        Stop();
-        if (fourHasBeenTripped) {
-            NewRunConveyer(Constants::Intake::slow);
-        }
-        else {
-            NewRunConveyer();
-        }
-    }
-    else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
-        StopConveyor();
-        abcd = true;
-    }
-    return abcd;
-}
+////TODO: Update this to give more reads
+
+// bool Intake::TrevinIntake() {
+//     bool abcd = false;
+//     if (GetInventory(5) == StorageState::PRESENT) {
+//         StopConveyor();
+//         Stop();
+//         abcd = true;
+//     }
+//     if (GetInventory(4) == StorageState::PRESENT) {
+//         fourHasBeenTripped = true;
+//     }
+//     if (GetInventory(0) == StorageState::PRESENT) {
+//         zeroHasBeenTripped = true;
+//         Stop();
+//         if (fourHasBeenTripped) {
+//             NewRunConveyer(Constants::Intake::slow);
+//         }
+//         else {
+//             NewRunConveyer();
+//         }
+//     }
+//     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
+//         StopConveyor();
+//         abcd = true;
+//     }
+//     return abcd;
+// }
 
 bool Intake::NewTrevinIntake() {
-    bool trevin_stop;
+    bool stop = false;
+
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
-    std::cout << "Stopping: " << trevin_stop << "\n";
+    std::cout << "Stopping: " << stop << "\n";
     std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
 
-    if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
+    if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {
         std::cout << "Setting Stop to 1\n";
-        StopConveyor();
-        trevin_stop = true;
+        NewRunConveyer(0);
+        stop = true;
     }
-    if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
-        Stop();
+    if ((GetInventory(5) == StorageState::PRESENT) || (GetInventory(0) == StorageState::PRESENT)) {
+        intakeTalon->Set(0);
         std::cout << "Stopping Wheels\n";
     }
     else {
         std::cout << "Running Wheels\n";
         intakeTalon->Set(0.6);
     }
-    if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
+    if ((GetInventory(0) == StorageState::PRESENT) && (GetInventory(4) == StorageState::PRESENT)) {
         std::cout << "Running Slow\n";
         NewRunConveyer(Constants::Intake::slow);
         zeroHasBeenTripped = true;
@@ -218,12 +224,7 @@ bool Intake::NewTrevinIntake() {
     if (zeroHasBeenTripped == false) {
         std::cout << "Waiting for ball\n";
     }
-    return trevin_stop;
-}
-
-////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
-void Intake::StopConveyor() {
-    primaryConveyorSpark->Set(0);
+    return stop;
 }
 
 //cycles through positions to get storage states

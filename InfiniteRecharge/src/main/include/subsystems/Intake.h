@@ -61,7 +61,6 @@ class Intake : public frc2::SubsystemBase {
   //Returns the previously detemined "StorageState" of the specific Conveyor Storage Position (integer) given
   StorageState GetInventory(int position);
 
-  //Return the First Position in the Conveyor Storage that is empty (no PC).
   int GetFirstEmptyPosition();
   int LowestFullPosition();
   
