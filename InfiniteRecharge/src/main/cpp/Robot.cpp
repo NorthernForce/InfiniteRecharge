@@ -22,6 +22,7 @@
 #include "commands/autonomous/InFrontOfOurTrench.h"
 #include "commands/autonomous/InFrontOfFoesTrench.h"
 #include "commands/autonomous/DoNothing.h"
+#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
 #include "commands/TurnToAngle.h"
@@ -83,32 +84,14 @@ void Robot::AutonomousInit() {
 
   autoTurnToAngle.reset(new TurnToAngle);
   simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+  autoShootCell.reset(new AutoShootCell);
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle->SetAngle(90);
     autoTurnToAngle->Schedule();
     isTurnFinished = autoTurnToAngle->IsFinished();
 
-  // printf("I am getting through the move forward command and possibly doing something \n");
-  //   frc2::SequentialCommandGroup{
-  //   TurnToAngle(),
-  //   SimpleCrossAutoLine(),
-  // };
 
-
-
-/*
-  std::cout << "Autonomous run\n";
-  AutonomousIsRunning = true;
-  autoTestDrive.reset(new CrossAutoLine());
-  autoTestDrive->Schedule(false);
-*/
-
-/*
-	autonomousCommand.reset(autonomousChooser.GetSelected());
-  if(autonomousCommand != nullptr)
-      autonomousCommand->Schedule();
-*/
 ////TODO: Figure out if this should go in periodic or Init
   /*
   chooserAutoSelected = chooserAuto->GetSelected();
@@ -146,6 +129,11 @@ if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
   isForwardFinished = true;
 }
 
+if ((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false)) {
+  autoShootCell->Schedule();
+  isShooterFinished = autoShootCell->IsFinished();
+}
+
 /*
   frc2::SequentialCommandGroup{
     TurnToAngle(),
@@ -163,16 +151,6 @@ if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
     };
     turnToAngle(-90);
   */
-
-//   if (autoCounter == 0) {
-//     RobotContainer::drivetrain->SimpleDriveWithEncoder(9.693814284);
-//     autoCounter++;
-//     printf("End of simple drive 1 \n");
-//   } else if ((autoCounter == 1) && (!autoTurnToAngle->IsScheduled())) {
-//     autoTurnToAngle->SetAngle(-90);
-//     autoTurnToAngle->Schedule();
-//     printf("End of turn to angle \n");
-//   }
   
 
   /*
@@ -188,28 +166,8 @@ if ((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false)) {
     autoCounter++;
   }
 
-  if((!autoShooter->IsScheduled()) && (autoCounter == 1)) {
-    while((RobotContainer::intake->IsConveyorEmpty()) == false) {
-      autoShooter->Schedule();
-      autoCounter++;
-    }
-  }
-
-    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 2)) {
-    autoTurnToAngle->SetAngle(-90);
-    autoTurnToAngle->Schedule();
-    autoCounter++;
-  }
-
-  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 3)) {
-    simpleDriveForward->Schedule();
-    autoCounter++;
-    printf("I'm working????? \n");
-  }
-  */
-
   
-  /* Working autonomous code
+  Old working autonomous code
   auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
   RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
   if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35) {
