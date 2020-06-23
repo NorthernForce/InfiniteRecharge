@@ -19,8 +19,8 @@ class CameraMount : public frc2::SubsystemBase {
   void Periodic();
   void SyncServoAngles();
   int GetServoAngleToTarget();
-  void Sweep();
   void SmartSweep();
+  void Sweep();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();
@@ -43,5 +43,4 @@ class CameraMount : public frc2::SubsystemBase {
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;
-  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };

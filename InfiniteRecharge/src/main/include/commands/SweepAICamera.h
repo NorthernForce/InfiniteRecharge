@@ -20,7 +20,7 @@ class SweepAICamera
   void Execute() override;
   void TurnRobotToTarget();
   void AdjustServoAngToPCOffset(double pcOffset);
-  void TurnRobotToTargetAngle(int ang);
+  void TurnWithButtonToAng(int ang);
   void End(bool interrupted) override;
   bool IsFinished() override;
  private:

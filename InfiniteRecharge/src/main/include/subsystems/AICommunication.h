@@ -22,8 +22,10 @@ class AICommunication : public frc2::SubsystemBase {
   std::vector<double> GetCamTargetOffsets(Target targetType);
   std::vector<double> GetValueArray(std::string key);
   double GetNumber(std::string key);
+  double GetPCOffsetInCameraX();
   const std::string pcOffsetInCam_label =  "PC Offset in AI Cam: ";
   const std::string distanceToPcFromCam_label = "Distance to PC from Cam:";
 
  private:
+  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
 };

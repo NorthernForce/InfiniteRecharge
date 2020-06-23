@@ -33,19 +33,18 @@ void SweepAICamera::TurnRobotToTarget() {
     double pcOffsetInCamera = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
 
-    if (OI::driverController->GetRawButton(OI::Xbox::menu_button)) {
-        TurnRobotToTargetAngle(targetAng);
+    if (RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button)) {
+        TurnWithButtonToAng(targetAng);
         hasturnedOnButton = true;
     }
     else
         hasturnedOnButton = false;
 }
 
-void SweepAICamera::TurnRobotToTargetAngle(int ang) {
+void SweepAICamera::TurnWithButtonToAng(int ang) {
     if (!turnToAngle->IsScheduled() && !hasturnedOnButton) {
         turnToAngle->SetAngle(-1*ang);
         turnToAngle->Schedule();
-        hasturnedOnButton = true;
     }
 }
 

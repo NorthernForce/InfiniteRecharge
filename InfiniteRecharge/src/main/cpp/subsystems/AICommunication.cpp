@@ -7,6 +7,7 @@
 
 #include "subsystems/AICommunication.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "RobotContainer.h"
 #include <iostream>
 
 AICommunication::AICommunication() {}
@@ -38,6 +39,10 @@ std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
         targetOffset = GetValueArray(pcOffsetInCam_label);
     // add goal targetting later
     return targetOffset;    
+}
+
+double AICommunication::GetPCOffsetInCameraX() {
+    return RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
 }
 
 std::vector<double> AICommunication::GetValueArray(std::string key) {

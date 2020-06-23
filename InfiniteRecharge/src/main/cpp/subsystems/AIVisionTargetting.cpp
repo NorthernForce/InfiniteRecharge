@@ -8,19 +8,20 @@
 #include "subsystems/AIVisionTargetting.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <string>
-#include <memory>
 
-#include "RobotContainer.h"
 #include "Constants.h"
 #include "utilities/TriangleCalculator.h"
 #include "utilities/Triangle.h"
+#include "RobotContainer.h"
 
 using Target = AIVisionTargetting::Target;
 
 AIVisionTargetting::AIVisionTargetting() {}
 
 // This method will be called once per scheduler run
-void AIVisionTargetting::Periodic() {}
+void AIVisionTargetting::Periodic() {
+    pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
+}
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
     bool isTargetTypeFound = false;
@@ -44,8 +45,40 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-int AIVisionTargetting::GetArea() {
-    return RobotContainer::aiComms->GetNumber("target area");
+bool AIVisionTargetting::IsTargetCentered() {
+    bool isCentered = false;
+    double pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
+    if (!CheckForTarget())
+        isCentered = false;
+    else if (CheckForTarget() && abs(pcOffsetInCam) < 5)
+        isCentered = true;
+    
+    return isCentered;
+}
+
+double AIVisionTargetting::GetRobotAngleToTarget() {
+    // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
+    double a = GetCameraDistToTargetFromArea(GetArea());
+    double c = Constants::camDistFromRoboCenter;
+    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
+
+    auto inputTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
+    auto calculator = std::make_unique<TriangleCalculator>(std::move(inputTriangle));
+
+    double calculatedAngle = GetAngleAFromCalculator(std::move(calculator));
+    return calculatedAngle;
+}
+
+double AIVisionTargetting::GetAngleAFromCalculator(std::unique_ptr<TriangleCalculator> calculator) {
+    double calculatedAngle = 0;
+    try {
+        calculatedAngle = calculator->SAS().GetAngleA();
+    }
+    catch (const TriangleCalculator::BaseException& e) {
+        std::cout << e.what() << '\n';
+    }
+
+    return (-1*(calculatedAngle - 90));
 }
 
 double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
@@ -55,34 +88,6 @@ double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
     return num;
 }
 
-double AIVisionTargetting::GetRobotAngleToTarget() {
-    // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
-    double calculatedAngle;
-    double pcOffsetInCam = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
-    double a = GetCameraDistToTargetFromArea(GetArea());
-    double c = Constants::camDistFromRoboCenter;
-    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam; // replace 90 with the correct angle
-
-    auto rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
-    auto angleCalc = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
-    
-    try {
-        calculatedAngle = angleCalc->SAS().GetAngleA();
-    }
-    catch (const TriangleCalculator::BaseException& e) {
-        std::cout << e.what() << '\n';
-    }
-    frc::SmartDashboard::PutNumber("angle to target", calculatedAngle);
-    return (calculatedAngle - 90);
-}
-
-bool AIVisionTargetting::IsTargetCentered() {
-    bool isCentered;
-    double targetOffset = RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
-    if (!CheckForTarget())
-        isCentered = false;
-    else if (CheckForTarget() && abs(targetOffset) < 5)
-        isCentered = true;
-    
-    return isCentered;
+int AIVisionTargetting::GetArea() {
+    return RobotContainer::aiComms->GetNumber("target area");
 }

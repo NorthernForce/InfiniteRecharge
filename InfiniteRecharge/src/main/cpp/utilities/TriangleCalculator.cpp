@@ -35,7 +35,7 @@ Triangle TriangleCalculator::SAS() {
     else {
         throw ZeroError();
     }
-
+    // finds the third side and then uses SSS to find remaining properties
     return SSS();
 }
 
