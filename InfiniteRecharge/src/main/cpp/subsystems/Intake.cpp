@@ -74,63 +74,68 @@ bool Intake::TrevinIntakeDebug() {
     std::cout << "Stopping: " << stop << "\n";
     std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
 
-    if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {
-        std::cout << "Setting Stop to 1\n";
-        TrevinRunConveyer(0);
-        stop = true;
-    }
-    if ((GetInventory(5) == StorageState::PRESENT) || (GetInventory(0) == StorageState::PRESENT)) {
-        intakeTalon->Set(0);
-        std::cout << "Stopping Wheels\n";
+    if ((GetInventory(2) == StorageState::PRESENT) && (GetInventory(1) == StorageState::EMPTY)) {
+        TrevinRunConveyer(0 - Constants::Intake::normal);
     }
     else {
-        std::cout << "Running Wheels\n";
-        intakeTalon->Set(0.6);
-    }
-    if ((GetInventory(0) == StorageState::PRESENT) && (GetInventory(4) == StorageState::PRESENT)) {
-        std::cout << "Running Slow\n";
-        TrevinRunConveyer(Constants::Intake::slow);
-        zeroHasBeenTripped = true;
-    }
-    else if (GetInventory(0) == StorageState::PRESENT) {
-        std::cout << "Running Conveyers\n";
-        TrevinRunConveyer();
-        zeroHasBeenTripped = true;
-    }
-    if (zeroHasBeenTripped == false) {
-        std::cout << "Waiting for ball\n";
+        if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {
+            std::cout << "Setting Stop to 1\n";
+            TrevinRunConveyer(0);
+            stop = true;
+        }
+        if ((GetInventory(5) == StorageState::PRESENT) || (GetInventory(0) == StorageState::PRESENT)) {
+            intakeTalon->Set(0);
+            std::cout << "Stopping Wheels\n";
+        }
+        else {
+            std::cout << "Running Wheels\n";
+            intakeTalon->Set(0.6);
+        }
+        if ((GetInventory(0) == StorageState::PRESENT) && (GetInventory(4) == StorageState::PRESENT)) {
+            std::cout << "Running Slow\n";
+            TrevinRunConveyer(Constants::Intake::slow);
+            zeroHasBeenTripped = true;
+        }
+        else if (GetInventory(0) == StorageState::PRESENT) {
+            std::cout << "Running Conveyers\n";
+            TrevinRunConveyer();
+            zeroHasBeenTripped = true;
+        }
+        if (zeroHasBeenTripped == false) {
+            std::cout << "Waiting for ball\n";
+        }
     }
     return stop;
 }
 
 ////TODO: Update this to match Debug's code
 
-// bool Intake::TrevinIntakeCompact() {
-//     bool abcd = false;
-//     if (GetInventory(5) == StorageState::PRESENT) {
-//         StopConveyor();
-//         Stop();
-//         abcd = true;
-//     }
-//     if (GetInventory(4) == StorageState::PRESENT) {
-//         fourHasBeenTripped = true;
-//     }
-//     if (GetInventory(0) == StorageState::PRESENT) {
-//         zeroHasBeenTripped = true;
-//         Stop();
-//         if (fourHasBeenTripped) {
-//             TrevinRunConveyer(Constants::Intake::slow);
-//         }
-//         else {
-//             TrevinRunConveyer();
-//         }
-//     }
-//     else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
-//         StopConveyor();
-//         abcd = true;
-//     }
-//     return abcd;
-// }
+bool Intake::TrevinIntakeCompact() {
+    bool stop = false;
+    if (GetInventory(5) == StorageState::PRESENT) {
+        StopConveyor();
+        Stop();
+        stop = true;
+    }
+    if (GetInventory(0) == StorageState::PRESENT) {
+        zeroHasBeenTripped = true;
+        Stop();
+        if (GetInventory(4) == StorageState::PRESENT) {
+            TrevinRunConveyer(Constants::Intake::slow);
+        }
+        else {
+            TrevinRunConveyer();
+        }
+    }
+    else if ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped) {
+        StopConveyor();
+        stop = true;
+    }
+    else {
+        intakeTalon->Set(0.6);
+    }
+    return stop;
+}
 
 
 //Methods not used
