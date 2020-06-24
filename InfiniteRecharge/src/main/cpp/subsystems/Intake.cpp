@@ -74,7 +74,7 @@ bool Intake::TrevinIntakeDebug() {
     std::cout << "Stopping: " << stop << "\n";
     std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
 
-    if ((GetInventory(2) == StorageState::PRESENT) && (GetInventory(1) == StorageState::EMPTY)) {
+    if ((GetInventory(2) == StorageState::PRESENT) && (GetInventory(1) == StorageState::EMPTY) && (GetInventory(2) == StorageState::EMPTY)) {
         TrevinRunConveyer(0 - Constants::Intake::normal);
     }
     else {
