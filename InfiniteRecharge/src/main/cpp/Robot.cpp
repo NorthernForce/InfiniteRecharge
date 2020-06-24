@@ -151,7 +151,7 @@ if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
 if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
   autoTurnToAngle->Schedule();
   isTurnFinished = true;
-  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true) && (isTurnFinished == true)) {
+  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
       simpleCrossAutoLine->Schedule();
       isForwardFinished = true;
   }
