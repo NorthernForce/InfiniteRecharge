@@ -35,7 +35,7 @@ class Intake : public frc2::SubsystemBase {
   void InitBallPositionSensors();
   void SetInvertedFollower();
   void Periodic();
-  void ResetZHBT();
+  
   void TrevinRunConveyer(double speed = Constants::Intake::normal);
   bool TrevinIntakeDebug();
   bool TrevinIntakeCompact();
