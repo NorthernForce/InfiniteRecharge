@@ -41,18 +41,16 @@ int CameraMount::GetServoAngleToTarget() {
 }
 
 void CameraMount::SmartSweep() {
-    auto pcOffset = RobotContainer::aiComms->GetPCOffsetInCameraX();
-    if (RobotContainer::aiComms->IsTargetFound()) {
-        if (pcOffset < -6)
-            RobotContainer::cameraMount->Pan(round(currentPan+=0.5));
-        else if (pcOffset > 6)
-            RobotContainer::cameraMount->Pan(round(currentPan-=0.5));
-    }
-    else
-        Sweep();
+    int millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
+    bool isTargetCentered = RobotContainer::aiVisionTargetting->IsTargetCentered();
+    bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
-    if (RobotContainer::aiVisionTargetting->IsTargetCentered())
-        RobotContainer::cameraMount->Pan(currentPan);
+    if (millisSinceTargetRegistered >= 250) {
+        if (!isTargetCentered && isTargetFound)
+            CenterTarget();
+        else
+            Sweep();
+    }
 }
 
 void CameraMount::Sweep() {
@@ -72,6 +70,15 @@ void CameraMount::Sweep() {
         sweepPassCount++;
 
     RecoverOutOfRangeServo();
+}
+
+void CameraMount::CenterTarget() {
+    auto pcOffset = RobotContainer::aiComms->GetPCOffsetInCameraX();
+
+    if (pcOffset < -6)
+        RobotContainer::cameraMount->Pan(round(currentPan+=0.5));
+    else if (pcOffset > 6)
+        RobotContainer::cameraMount->Pan(round(currentPan-=0.5));
 }
 
 void CameraMount::SetToZero() {

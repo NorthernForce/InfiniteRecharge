@@ -22,6 +22,7 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     void Periodic();
     bool CheckForTarget(Target type=Target::Powercell);
     Target CheckTargetType();
+    int TimeSinceTargetRegisteredInMillis();
     bool IsTargetCentered();
     double GetRobotAngleToTarget();
     double GetAngleAFromCalculator(std::unique_ptr<TriangleCalculator> calculator);
@@ -29,7 +30,12 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     int GetArea();
 
  private:
+    void RegisterFoundTargets();
+
     double camAngleOffset;
     int servoToRobotCenterAngleOffset = 90;
     double pcOffsetInCam;
+
+    int loopCyclesSinceTargetRegistered;
+    bool targetHasBeenRegistered;
 };

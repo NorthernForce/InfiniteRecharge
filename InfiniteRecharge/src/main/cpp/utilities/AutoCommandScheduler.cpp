@@ -34,38 +34,41 @@
 //         cmd->Schedule(false);
 // }
 
-// AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> commandQueue) {
-//     frc2::Command* cmd_prev = nullptr;
-//     for (auto cmd : commandQueue) {
-//         if (cmd_prev == nullptr)
-//             cmd->Schedule();
-//         else
-//             ScheduleCmdIfPrevIsFinished(cmd, cmd_prev);
-//         cmd_prev = cmd;
-//     }
-// }
+AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
+    int maxIndex = commandQueue.size() - 1;
+    for (int i=0; i <= maxIndex; i++) {
+        if (i == 0)
+            commandQueue[i]->Schedule();
+        else {
+            if (!commandQueue[i-1]->IsScheduled())
+                commandQueue[i]->Schedule();
+            else
+                --i;
+        }
+    }
+}
 
-// void AutoCommandScheduler::ScheduleCmdIfPrevIsFinished(frc2::Command* command, frc2::Command* command_prev) {
+// void AutoCommandScheduler::ScheduleCmdIfPrevIsFinished(std::shared_ptr<frc2::Command> command, std::shared_ptr<frc2::Command> command_prev) {
 //     if (!command_prev->IsScheduled())
 //         command->Schedule();
 //     else
 //         ScheduleCmdIfPrevIsFinished(command, command_prev);
 // }
 
-AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
-    int maxIndex = commandQueue.size() - 1;
+// AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
+//     int maxIndex = commandQueue.size() - 1;
 
-    commandQueue[0]->Schedule();
+//     commandQueue[0]->Schedule();
 
-    for (indexer=1; indexer <= maxIndex; indexer++) {
-        frc::SmartDashboard::PutNumber("previous command running?", commandQueue[indexer-1]->IsScheduled());
-        if (!commandQueue[indexer-1]->IsScheduled())
-            commandQueue[indexer]->Schedule();
-        else
-            indexer--;
-        frc::SmartDashboard::PutNumber("current indexer:", indexer);
-    }
-}
+//     for (indexer=1; indexer <= maxIndex; indexer++) {
+//         frc::SmartDashboard::PutNumber("previous command running?", commandQueue[indexer-1]->IsScheduled());
+//         if (!commandQueue[indexer-1]->IsScheduled())
+//             commandQueue[indexer]->Schedule();
+//         else
+//             indexer--;
+//         frc::SmartDashboard::PutNumber("current indexer:", indexer);
+//     }
+// }
 
 // AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> commandQueue) {
     

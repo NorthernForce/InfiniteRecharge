@@ -43,7 +43,7 @@ void SweepAICamera::TurnRobotToTarget() {
 
 void SweepAICamera::TurnWithButtonToAng(int ang) {
     if (!turnToAngle->IsScheduled() && !hasturnedOnButton) {
-        turnToAngle->SetAngle(-1*ang);
+        turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
     }
 }

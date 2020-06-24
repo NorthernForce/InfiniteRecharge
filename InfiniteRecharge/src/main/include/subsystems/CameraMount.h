@@ -21,6 +21,7 @@ class CameraMount : public frc2::SubsystemBase {
   int GetServoAngleToTarget();
   void SmartSweep();
   void Sweep();
+  void CenterTarget();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();

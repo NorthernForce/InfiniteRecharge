@@ -21,6 +21,7 @@ AIVisionTargetting::AIVisionTargetting() {}
 // This method will be called once per scheduler run
 void AIVisionTargetting::Periodic() {
     pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
+    RegisterFoundTargets();    
 }
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
@@ -45,9 +46,14 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
+int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
+    int multiplier = 20;
+    int millis = loopCyclesSinceTargetRegistered * multiplier;
+    return millis;
+}
+
 bool AIVisionTargetting::IsTargetCentered() {
     bool isCentered = false;
-    double pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
     if (!CheckForTarget())
         isCentered = false;
     else if (CheckForTarget() && abs(pcOffsetInCam) < 5)
@@ -90,4 +96,16 @@ double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
 
 int AIVisionTargetting::GetArea() {
     return RobotContainer::aiComms->GetNumber("target area");
+}
+
+void AIVisionTargetting::RegisterFoundTargets() {
+    if (RobotContainer::aiComms->IsTargetFound() && !targetHasBeenRegistered) {
+        loopCyclesSinceTargetRegistered = 0;
+        targetHasBeenRegistered = true;
+    }
+    else {
+        loopCyclesSinceTargetRegistered++;
+        if (!RobotContainer::aiComms->IsTargetFound())
+            targetHasBeenRegistered = false;
+    }
 }
