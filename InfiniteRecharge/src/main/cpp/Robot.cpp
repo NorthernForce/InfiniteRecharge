@@ -77,15 +77,20 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-  autoTurnToAngle.reset(new TurnToAngle);
-  simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-  autoShootCell.reset(new AutoShootCell);
+  frc2::SequentialCommandGroup{
+  TurnToAngle(90),
+  SimpleCrossAutoLine(),
+};
 
-    RobotContainer::drivetrain->SetEncoderPosition(0);
-    autoTurnToAngle->SetAngle(90);
-    isTurnFinished = false;
-    isForwardFinished = false;
-    isShooterFinished = false;
+  // autoTurnToAngle.reset(new TurnToAngle);
+  // simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+  // autoShootCell.reset(new AutoShootCell);
+
+  //   RobotContainer::drivetrain->SetEncoderPosition(0);
+  //   autoTurnToAngle->SetAngle(90);
+  //   isTurnFinished = false;
+  //   isForwardFinished = false;
+  //   isShooterFinished = false;
 
 
 
@@ -135,6 +140,8 @@ void Robot::AutonomousPeriodic() {
 
 
 
+
+
 /*
 if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
   autoTurnToAngle->Schedule();
@@ -148,13 +155,13 @@ if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
       }
 */
 
-if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
-  autoTurnToAngle->Schedule();
-  isTurnFinished = true;
-  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
-      simpleCrossAutoLine->Schedule();
-      isForwardFinished = true;
-  }
+// if(isTurnFinished == false) {
+//   autoTurnToAngle->Schedule();
+//   isTurnFinished = true;
+//   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+//       simpleCrossAutoLine->Schedule();
+//       isForwardFinished = true;
+//   }
 
 
   /*
