@@ -59,6 +59,10 @@ void Intake::Periodic() {
     // }
 }
 
+void Intake::ResetZeroTripped() {
+    zeroHasBeenTripped = false;
+}
+
 void Intake::TrevinRunConveyer(double speed) {
     primaryConveyorSpark->Set(speed);
 }
@@ -72,6 +76,7 @@ bool Intake::TrevinIntakeDebug() {
 
     if ((GetInventory(2) == StorageState::PRESENT) && (GetInventory(1) == StorageState::EMPTY) && (GetInventory(0) == StorageState::EMPTY)) {
         TrevinRunConveyer(0 - Constants::Intake::normal);
+        ResetZeroTripped();
     }
     else {
         if ((GetInventory(5) == StorageState::PRESENT) || ((GetInventory(0) == StorageState::EMPTY) && zeroHasBeenTripped)) {

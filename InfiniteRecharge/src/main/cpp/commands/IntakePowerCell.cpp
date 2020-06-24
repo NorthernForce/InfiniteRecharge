@@ -20,7 +20,7 @@ IntakePowerCell::IntakePowerCell() {
 
 // Called when the command is initially scheduled.
 void IntakePowerCell::Initialize() {
-  RobotContainer::intake->ResetZHBT();
+  RobotContainer::intake->ResetZeroTripped();
 }
 
 // Called repeatedly when this Command is scheduled to run
