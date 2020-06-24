@@ -132,16 +132,29 @@ void Robot::AutonomousPeriodic() {
 //   isShooterFinished = autoShootCell->IsFinished();
 //     std::cout << "Sparky has reached autonomous shooting part 2" << "\n";
 // }
-if(isTurnFinished == false) {
-autoTurnToAngle->Schedule();
-isTurnFinished = true;
-} else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true)) {
-  simpleCrossAutoLine->Schedule();
-  isForwardFinished = true;
-} else if ((isForwardFinished == true) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished != true)) {
-  autoShootCell->Schedule();
-  isShooterFinished = true;
-}
+
+
+
+/*
+if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
+  autoTurnToAngle->Schedule();
+  isTurnFinished = true;
+  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true) && (isTurnFinished == true)) {
+      simpleCrossAutoLine->Schedule();
+      isForwardFinished = true;
+    } else if ((isForwardFinished == true) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished != true)) {
+        autoShootCell->Schedule();
+        isShooterFinished = true;
+      }
+*/
+
+if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
+  autoTurnToAngle->Schedule();
+  isTurnFinished = true;
+  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true) && (isTurnFinished == true)) {
+      simpleCrossAutoLine->Schedule();
+      isForwardFinished = true;
+  }
 
 
   /*
