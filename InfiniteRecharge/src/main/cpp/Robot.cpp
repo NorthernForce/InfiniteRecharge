@@ -82,15 +82,15 @@ void Robot::AutonomousInit() {
   SimpleCrossAutoLine(),
 };
 
-  // autoTurnToAngle.reset(new TurnToAngle);
-  // simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-  // autoShootCell.reset(new AutoShootCell);
+autoTurnToAngle.reset(new TurnToAngle);
+simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+autoShootCell.reset(new AutoShootCell);
 
-  //   RobotContainer::drivetrain->SetEncoderPosition(0);
-  //   autoTurnToAngle->SetAngle(90);
-  //   isTurnFinished = false;
-  //   isForwardFinished = false;
-  //   isShooterFinished = false;
+RobotContainer::drivetrain->SetEncoderPosition(0);
+autoTurnToAngle->SetAngle(90);
+isTurnFinished = false;
+isForwardFinished = false;
+isShooterFinished = false;
 
 
 
@@ -154,6 +154,7 @@ if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
         isShooterFinished = true;
       }
 */
+
 
 // if(isTurnFinished == false) {
 //   autoTurnToAngle->Schedule();
