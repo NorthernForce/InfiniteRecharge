@@ -14,6 +14,6 @@ class ComboControl {
   bool Get();
  private:
   std::shared_ptr<frc::GenericHID> currentJoystick;
-  int m_button1;
-  int m_button2;
+  int button1;
+  int button2;
 };

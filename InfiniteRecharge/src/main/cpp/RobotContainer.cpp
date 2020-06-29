@@ -6,8 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
+
 #include <frc2/command/RunCommand.h>
-#include "Constants.h" 
+#include "commands/DriveWithJoystick.h"
+#include "commands/Climb.h"
+#include "commands/TurnToTarget.h"
 
 std::shared_ptr<OI> RobotContainer::oi;
 std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
@@ -55,7 +58,7 @@ void RobotContainer::InitDefaultCommands() {
         [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
     ));
 
-    cameraMount->SetDefaultCommand(SweepAICamera());
+    cameraMount->SetDefaultCommand(TurnToTarget());
 }
 
 void RobotContainer::InitAutonomousCommands() {

@@ -12,6 +12,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <cameraserver/CameraServer.h>
 #include <string>
+#include <memory>
 
 #include "Constants.h"
 #include "OI.h"
@@ -24,9 +25,12 @@
 #include "commands/autonomous/DoNothing.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
-#include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
 #include "commands/ShiftGear.h"
+#include "commands/SafeCamera.h"
+#include "commands/TurnToAngle.h"
+#include "commands/ShootCell.h"
+#include "commands/MoveToLimelight.h"
 
 #include <cameraserver/CameraServer.h>
 
@@ -84,13 +88,12 @@ void Robot::AutonomousInit() {
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
 
-    printf("I am getting through the move forward command and possibly doing something \n");
-
-    autoCommandScheduler.reset(new AutoCommandScheduler({
-        std::make_shared<ShiftGear>(ShiftGear::Gear::High),
-        std::make_shared<ShiftGear>(ShiftGear::Gear::Low),
-        std::make_shared<TurnToAngle>(90)
-    }));
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    //     std::move(std::make_unique<ShiftGear>(ShiftGear::Gear::High)),
+    //     std::move(std::make_unique<ShiftGear>(ShiftGear::Gear::Low)),
+    //     std::move(std::make_unique<TurnToAngle>(90)),
+    //     std::move(std::make_unique<SafeCamera>())
+    // }));
 
 /*
   std::cout << "Autonomous run\n";

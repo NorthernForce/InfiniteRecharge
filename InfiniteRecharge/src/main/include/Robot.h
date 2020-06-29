@@ -10,12 +10,6 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
-#include "commands/autonomous/SimpleCrossAutoLine.h"
-#include "commands/ShootCell.h"
-#include "commands/TurnToAngle.h"
-#include "commands/MoveToLimelight.h"
-#include "commands/AutoDrive.h"
-#include "commands/autonomous/CrossAutoLine.h"
 #include <thread>
 
 #include "RobotContainer.h"

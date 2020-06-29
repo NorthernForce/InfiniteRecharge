@@ -8,17 +8,16 @@
 #include "commands/ShiftGear.h"
 #include <frc/DriverStation.h>
 
-ShiftGear::ShiftGear(Gear gear) :
-  m_gear(gear) {
+ShiftGear::ShiftGear(Gear gear) {
+    this->gear = gear;
     SetName("ShiftGear");
     AddRequirements(RobotContainer::drivetrain.get());
     AddRequirements(RobotContainer::driveShifter.get());
-    strcpy(logMessage, m_gear == Gear::Low ? "Shift to low" : "Shift to high");
 }
 
 void ShiftGear::Initialize() {
   frc::DriverStation::ReportWarning(logMessage);
-  RobotContainer::driveShifter->Shift(m_gear);
+  RobotContainer::driveShifter->Shift(gear);
 }
 
 bool ShiftGear::IsFinished() {

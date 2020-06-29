@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/IntakePowerCell.h"
-#include "OI.h"
 #include "RobotContainer.h"
 #include <iostream>
 

@@ -7,12 +7,12 @@
 
 #include "utilities/ComboControl.h"
 
-ComboControl::ComboControl(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2)
- : currentJoystick(joystick), m_button1(button1), m_button2(button2) {}
+ComboControl::ComboControl(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2) 
+ : currentJoystick(joystick), button1(button1), button2(button2) {}
 
 bool ComboControl::Get() {
-    bool b1 = currentJoystick->GetRawButton(m_button1);
-    bool b2 = currentJoystick->GetRawButton(m_button2);
+    bool b1 = currentJoystick->GetRawButton(button1);
+    bool b2 = currentJoystick->GetRawButton(button2);
     if (b1 && b2)
         return true;
     else

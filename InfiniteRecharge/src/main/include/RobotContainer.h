@@ -26,10 +26,6 @@
 #include "subsystems/Climber.h"
 #include "subsystems/Limelight.h"
 
-#include "commands/DriveWithJoystick.h"
-#include "commands/Climb.h"
-#include "commands/SweepAICamera.h"
-
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should

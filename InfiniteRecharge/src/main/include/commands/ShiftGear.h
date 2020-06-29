@@ -23,6 +23,6 @@ class ShiftGear
   void End(bool interrupted) override;
 
  private:
-  Gear m_gear;
+  Gear gear;
   char logMessage[32];
 };
