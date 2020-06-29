@@ -10,7 +10,7 @@
 class Triangle {
  public:
     Triangle();
-    Triangle(double a, double b, double c, double A, double B, double C);
+    Triangle(double side_a, double side_b, double side_c, double ang_a, double ang_b, double ang_c);
 
     double GetAngleA();
     double GetAngleB();
@@ -20,10 +20,10 @@ class Triangle {
     double GetSideC();
 
  private:
-    double m_a;
-    double m_b;
-    double m_c;
-    double m_A;
-    double m_B;
-    double m_C;
+    double a;
+    double b;
+    double c;
+    double A;
+    double B;
+    double C;
 };

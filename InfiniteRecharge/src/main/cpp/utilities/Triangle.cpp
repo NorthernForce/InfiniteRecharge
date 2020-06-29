@@ -11,16 +11,16 @@
 Triangle::Triangle() {}
 
 Triangle::Triangle(double side_a, double side_b, double side_c, double ang_a, double ang_b, double ang_c)
- : m_a(side_a), m_b(side_b), m_c(side_c), m_A(ang_a), m_B(ang_b), m_C(ang_c) {}
+ : a(side_a), b(side_b), c(side_c), A(ang_a), B(ang_b), C(ang_c) {}
 
-double Triangle::GetAngleA() { return m_A; }
+double Triangle::GetAngleA() { return A; }
 
-double Triangle::GetAngleB() { return m_B; }
+double Triangle::GetAngleB() { return B; }
 
-double Triangle::GetAngleC() { return m_C; }
+double Triangle::GetAngleC() { return C; }
 
-double Triangle::GetSideA() { return m_a; }
+double Triangle::GetSideA() { return a; }
 
-double Triangle::GetSideB() { return m_b; }
+double Triangle::GetSideB() { return b; }
 
-double Triangle::GetSideC() { return m_c; }
+double Triangle::GetSideC() { return c; }

@@ -8,7 +8,6 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <memory>
 #include "utilities/TriangleCalculator.h"
 
 class AIVisionTargetting : public frc2::SubsystemBase {
@@ -24,13 +23,14 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     Target CheckTargetType();
     int TimeSinceTargetRegisteredInMillis();
     bool IsTargetCentered();
+    double GetRobotDistToTarget();
     double GetRobotAngleToTarget();
-    double GetAngleAFromCalculator(std::unique_ptr<TriangleCalculator> calculator);
     double GetCameraDistToTargetFromArea(int area);
     int GetArea();
 
  private:
     void RegisterFoundTargets();
+    std::unique_ptr<Triangle> GetTargetTriangle();
 
     double camAngleOffset;
     int servoToRobotCenterAngleOffset = 90;

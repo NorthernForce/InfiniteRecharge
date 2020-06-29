@@ -67,7 +67,7 @@ double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
 }
 
 double TurnToAngle::GetRotationMultiplier() {
-    double rotMultiplier = pow(3, error);
+    double rotMultiplier = 0.75 * pow(3, error);
     return rotMultiplier;
 }
 

@@ -8,8 +8,6 @@
 #include "subsystems/CameraMount.h"
 #include "RobotContainer.h"
 #include "Constants.h"
-#include <unistd.h>
-#include <thread>
 
 int CameraMount::sweepPassCount;
 
@@ -28,12 +26,9 @@ void CameraMount::Init() {
     // std::thread syncThread(SyncServoAngles);
 }
 
-void CameraMount::Periodic() {}
-
-void CameraMount::SyncServoAngles() {
-    currentPan = panServo->GetAngle();
-    currentTilt = panServo->GetAngle();
-    sleep(20);
+void CameraMount::Periodic() {
+    pcOffset = RobotContainer::aiComms->GetPCOffsetInCameraX();
+    SetLastNonZeroPcOffset();
 }
 
 int CameraMount::GetServoAngleToTarget() {
@@ -45,7 +40,7 @@ void CameraMount::SmartSweep() {
     bool isTargetCentered = RobotContainer::aiVisionTargetting->IsTargetCentered();
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
-    if (millisSinceTargetRegistered >= 250) {
+    if (millisSinceTargetRegistered >= 750) {
         if (!isTargetCentered && isTargetFound)
             CenterTarget();
         else
@@ -54,31 +49,26 @@ void CameraMount::SmartSweep() {
 }
 
 void CameraMount::Sweep() {
-    std::cout << "sweep\n";
-    if (sweepPassCount % 2 == 0) {
-        if (currentPan <= 155) {
-            Pan(currentPan);
-            currentPan++;
-        }
-    } else if (sweepPassCount % 2 == 1) {
-        if (currentPan <= 155) {
-            Pan(currentPan);
-            currentPan--;
-        }
+    if (sweepPassCount % 2 == 0 || lastNonZeroPcOffset < -6) {
+        Pan(currentPan);
+        currentPan++;
+    } else if (sweepPassCount % 2 == 1 || lastNonZeroPcOffset > 6) {
+        Pan(currentPan);
+        currentPan--;
     }
-    if (currentPan == 35 || currentPan == 155)
+    if (currentPan <= 35 || currentPan >= 155) {
         sweepPassCount++;
+        lastNonZeroPcOffset = 0;
+    }
 
     RecoverOutOfRangeServo();
 }
 
 void CameraMount::CenterTarget() {
-    auto pcOffset = RobotContainer::aiComms->GetPCOffsetInCameraX();
-
     if (pcOffset < -6)
-        RobotContainer::cameraMount->Pan(round(currentPan+=0.5));
+        panServo->SetAngle(++currentPan);
     else if (pcOffset > 6)
-        RobotContainer::cameraMount->Pan(round(currentPan-=0.5));
+        panServo->SetAngle(--currentPan);
 }
 
 void CameraMount::SetToZero() {
@@ -127,7 +117,12 @@ char CameraMount::GetPanDirection() {
 void CameraMount::RecoverOutOfRangeServo() {
     int angle = panServo->GetAngle();
     if (angle > 155)
-        Pan(--angle);
+        Pan(angle-3);
     else if (angle < 35)
-        Pan(++angle);
+        Pan(angle+3);
+}
+
+void CameraMount::SetLastNonZeroPcOffset() {
+    if (pcOffset != 0)
+        lastNonZeroPcOffset = pcOffset;
 }
