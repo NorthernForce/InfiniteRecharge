@@ -34,26 +34,21 @@
 //         cmd->Schedule(false);
 // }
 
-AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
+AutoCommandScheduler::AutoCommandScheduler(std::vector<std::unique_ptr<frc2::Command>> commandQueue) {
     int maxIndex = commandQueue.size() - 1;
-    for (int i=0; i <= maxIndex; i++) {
-        if (i == 0)
-            commandQueue[i]->Schedule();
-        else {
-            if (!commandQueue[i-1]->IsScheduled())
-                commandQueue[i]->Schedule();
-            else
-                --i;
-        }
+    commandQueue[0]->Schedule();
+
+    for (int currInd=1; currInd <= maxIndex; currInd++) {
+        int prevInd = currInd - 1;
+        if (!commandQueue[prevInd]->IsScheduled())
+            commandQueue[currInd]->Schedule();
+        else
+            --currInd;
     }
+    isFinished = true;
 }
 
-// void AutoCommandScheduler::ScheduleCmdIfPrevIsFinished(std::shared_ptr<frc2::Command> command, std::shared_ptr<frc2::Command> command_prev) {
-//     if (!command_prev->IsScheduled())
-//         command->Schedule();
-//     else
-//         ScheduleCmdIfPrevIsFinished(command, command_prev);
-// }
+
 
 // AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Command>> commandQueue) {
 //     int maxIndex = commandQueue.size() - 1;
@@ -88,8 +83,8 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Com
 //     }
 // }
 
-// void AutoCommandScheduler::ScheduleFirstCommand(std::vector<frc2::Command*> cmdList) {
-//     cmdList[0]->Schedule();
+// void AutoCommandScheduler::ScheduleFirstCommand(std::shared_ptr<frc2::Command> cmd) {
+//     cmd->Schedule();
 // }
 
 // void AutoCommandScheduler::AssignVacantPtrs(std::vector<frc2::Command*> cmdList, int indexer, int max) {
@@ -99,9 +94,9 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<std::shared_ptr<frc2::Com
 //         nextCommand = cmdList[indexer+1];
 // }
 
-// bool AutoCommandScheduler::IsFinished() {
-//     return isFinished;
-// }
+bool AutoCommandScheduler::IsFinished() {
+    return isFinished;
+}
 
 // void AutoCommandScheduler::CleanPtrs() {
 //     delete currCommand;
