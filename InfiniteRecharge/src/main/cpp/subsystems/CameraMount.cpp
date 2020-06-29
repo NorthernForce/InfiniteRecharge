@@ -49,10 +49,10 @@ void CameraMount::SmartSweep() {
 }
 
 void CameraMount::Sweep() {
-    if (sweepPassCount % 2 == 0 || lastNonZeroPcOffset < -6) {
+    if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
         Pan(currentPan);
         currentPan++;
-    } else if (sweepPassCount % 2 == 1 || lastNonZeroPcOffset > 6) {
+    } else if (lastNonZeroPcOffset > 6 || sweepPassCount % 2 == 1) {
         Pan(currentPan);
         currentPan--;
     }
