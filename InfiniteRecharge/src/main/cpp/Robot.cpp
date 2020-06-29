@@ -77,10 +77,10 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-  frc2::SequentialCommandGroup{
-  TurnToAngle(90),
-  SimpleCrossAutoLine(),
-};
+//   frc2::SequentialCommandGroup{
+//   TurnToAngle(90),
+//   SimpleCrossAutoLine(),
+// };
 
 autoTurnToAngle.reset(new TurnToAngle);
 simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
@@ -139,30 +139,22 @@ void Robot::AutonomousPeriodic() {
 // }
 
 
-
-
-
-/*
-if((isTurnFinished == false) && (!autoTurnToAngle->IsScheduled())) {
+if(isTurnFinished == false) {
   autoTurnToAngle->Schedule();
   isTurnFinished = true;
-  } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished != true) && (isTurnFinished == true)) {
-      simpleCrossAutoLine->Schedule();
-      isForwardFinished = true;
-    } else if ((isForwardFinished == true) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished != true)) {
-        autoShootCell->Schedule();
-        isShooterFinished = true;
-      }
-*/
+   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+       simpleCrossAutoLine->Schedule();
+       isForwardFinished = true;
+   } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+     autoShootCell->Schedule();
+     isShooterFinished = true;
+   }
 
 
-// if(isTurnFinished == false) {
-//   autoTurnToAngle->Schedule();
-//   isTurnFinished = true;
-//   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
-//       simpleCrossAutoLine->Schedule();
-//       isForwardFinished = true;
-//   }
+// if((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false)) {
+//   autoShootCell->Schedule();
+//   isShooterFinished = true;
+// }
 
 
   /*
