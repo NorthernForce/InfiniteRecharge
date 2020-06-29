@@ -146,6 +146,7 @@ if(isTurnFinished == false) {
        simpleCrossAutoLine->Schedule();
        isForwardFinished = true;
    } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+     std::cout << "I should be shooting a ball rn \n";
      autoShootCell->Schedule();
      isShooterFinished = true;
    }
