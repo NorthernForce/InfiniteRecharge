@@ -49,14 +49,14 @@ void Intake::Periodic() {
 
     // Outputs position states to driver station
     InventoryPowerCells();
-    // for(int i=0; i<6; i++) {
-    //     if (GetInventory(i) == StorageState::PRESENT) {
-    //        std::cout << "Position " << i <<  " full\n";
-    //     }
-    //     else {
-    //        std::cout << "Position " << i <<  " empty\n";
-    //     }
-    // }
+    for(int i=0; i<6; i++) {
+        if (GetInventory(i) == StorageState::PRESENT) {
+           std::cout << "Position " << i <<  " full\n";
+        }
+        else {
+           std::cout << "Position " << i <<  " empty\n";
+        }
+    }
 }
 
 void Intake::ResetZeroTripped() {
@@ -73,6 +73,7 @@ bool Intake::TrevinIntakeDebug() {
     std::cout << "Zero Has been triggered: " << zeroHasBeenTripped << "\n";
     std::cout << "Stopping: " << stop << "\n";
     std::cout << "Inventory 5 Full: "<< (GetInventory(5) == StorageState::PRESENT) << "\n";
+    std::cout << "conveyor is empty: " << IsConveyorEmpty() << '\n';
 
     if ((IsConveyorEmpty() == false) && (GetInventory(1) == StorageState::EMPTY) && (GetInventory(0) == StorageState::EMPTY)) {
         TrevinRunConveyer(0 - Constants::Intake::normal);
@@ -158,15 +159,11 @@ StorageState Intake::GetInventory(int position) {
 }
 
 bool Intake::IsConveyorEmpty() {
-    int emptyCounter = 0;
-    bool isEmpty;
     for (int pos=0; pos<6; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::EMPTY)
-            emptyCounter++;
-    if (emptyCounter == 6)
-        isEmpty = true;
+        if (GetInventory(pos) == Intake::StorageState::PRESENT)
+            return false;
     }
-    return isEmpty;
+    return true;
 }
 
 void Intake::TakeInPowerCell() {
