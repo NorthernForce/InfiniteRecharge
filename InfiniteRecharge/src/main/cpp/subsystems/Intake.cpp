@@ -233,15 +233,11 @@ StorageState Intake::GetInventory(int position) {
 }
 
 bool Intake::IsConveyorEmpty() {
-    int emptyCounter = 0;
-    bool isEmpty;
     for (int pos=0; pos<6; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::EMPTY)
-            emptyCounter++;
-    if (emptyCounter == 6)
-        isEmpty = true;
+        if (GetInventory(pos) == Intake::StorageState::PRESENT)
+            return false;
     }
-    return isEmpty;
+    return true;
 }
 
 //Return the First Position in the Conveyor Storage that is empty (no PC).
