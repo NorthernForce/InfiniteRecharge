@@ -23,6 +23,10 @@ void SimpleCrossAutoLine::Execute() {
     RobotContainer::drivetrain->DriveUsingSpeeds(.2, .2);
 }
 
+void SimpleCrossAutoLine::SetDistance(double distance) {
+    targetDistance = distance;
+}
+
 // Called once the command ends or is interrupted.
 void SimpleCrossAutoLine::End(bool interrupted) {}
 

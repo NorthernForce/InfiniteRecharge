@@ -5,6 +5,10 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/button/Button.h>
 
+#include "commands/TurnToAngle.h"
+#include "commands/autonomous/AutoShootCell.h"
+#include "commands/autonomous/SimpleCrossAutoLine.h"
+
 class OI {
  public:
     OI();
