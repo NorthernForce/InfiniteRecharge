@@ -88,7 +88,7 @@ void Robot::AutonomousInit() {
 // };
 
 
-    // Aidens stuff
+    // Aiden's stuff
     autoTurnToAngle.reset(new TurnToAngle);
     simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
     autoShootCell.reset(new AutoShootCell);
