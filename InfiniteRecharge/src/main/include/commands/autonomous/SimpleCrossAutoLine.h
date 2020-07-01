@@ -28,5 +28,10 @@ class SimpleCrossAutoLine
 
   void End(bool interrupted) override;
 
+  void SetDistance(double distance);
+
   bool IsFinished() override;
+
+  private:
+  double targetDistance;
 };

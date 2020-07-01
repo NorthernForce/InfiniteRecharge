@@ -48,9 +48,9 @@ class Robot : public frc::TimedRobot {
   //SimpleCrossAutoLine* simpleDriveForward;
   //MoveToLimelight* autoMoveToLimelight;
   //AutoDrive* autoDrive;
-  std::shared_ptr<TurnToAngle> autoTurnToAngle;
-  std::shared_ptr<SimpleCrossAutoLine> simpleCrossAutoLine;
-  std::shared_ptr<AutoShootCell> autoShootCell;
+    std::shared_ptr<TurnToAngle> autoTurnToAngle;
+    std::shared_ptr<SimpleCrossAutoLine> simpleCrossAutoLine;
+    std::shared_ptr<AutoShootCell> autoShootCell;
   //std::shared_ptr<CrossAutoLine> autoTestDrive;
   //ShootCell* autoShooter;
   //std::string chooserAutoSelected;
@@ -59,7 +59,9 @@ class Robot : public frc::TimedRobot {
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
   int autoCounter;
-  bool isTurnFinished;
-  bool isForwardFinished;
-  bool isShooterFinished;
+  bool autoStepOne = false;
+  bool autoStepTwo = false;
+  bool autoStepThree = false;
+  bool autoStepFour = false;
+  bool autoStepFive = false;
 };
