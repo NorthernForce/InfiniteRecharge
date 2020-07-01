@@ -20,6 +20,7 @@
 #include <thread>
 
 #include "RobotContainer.h"
+#include "utilities/AutoCommandScheduler.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -53,6 +54,7 @@ class Robot : public frc::TimedRobot {
   //std::shared_ptr<CrossAutoLine> autoTestDrive;
   //ShootCell* autoShooter;
   //std::string chooserAutoSelected;
+  std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;

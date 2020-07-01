@@ -7,12 +7,10 @@
 
 #include "subsystems/AICommunication.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "RobotContainer.h"
 #include <iostream>
 
-AICommunication::AICommunication() {
-    frc::SmartDashboard::PutString("targetType:", "pc");
-    frc::SmartDashboard::PutNumber("valid target:", 0);
-}
+AICommunication::AICommunication() {}
 
 // This method will be called once per scheduler run
 void AICommunication::Periodic() {
@@ -20,11 +18,8 @@ void AICommunication::Periodic() {
 }
 
 bool AICommunication::IsTargetFound() {
-    auto isTargetFound = frc::SmartDashboard::GetNumber("valid target:", 0);
-    if (isTargetFound > 0)
-        return true;
-    else
-        return false;
+    bool isTargetFound = static_cast<bool>(frc::SmartDashboard::GetNumber("valid target:", 0));
+    return isTargetFound;
 }
 
 Target AICommunication::GetTargetType() {
@@ -46,7 +41,10 @@ std::vector<double> AICommunication::GetCamTargetOffsets(Target targetType) {
     return targetOffset;    
 }
 
-////TODO: Understand how this vector works/is structured
+double AICommunication::GetPCOffsetInCameraX() {
+    return RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
+}
+
 std::vector<double> AICommunication::GetValueArray(std::string key) {
     auto data = frc::SmartDashboard::GetNumberArray(key, -1);
     return data;

@@ -9,17 +9,29 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "utilities/AutoCommandScheduler.h"
+#include "commands/TurnToTarget.h"
+#include "commands/AutoDrive.h"
+#include <memory>
 
-class CrossAutoLine
-    : public frc2::CommandHelper<frc2::CommandBase, CrossAutoLine> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class AutoBallSeek
+    : public frc2::CommandHelper<frc2::CommandBase, AutoBallSeek> {
  public:
-  CrossAutoLine();
+  AutoBallSeek();
+  void DriveToTarget();
   void Initialize() override;
   void Execute() override;
+  void End(bool interrupted) override;
   bool IsFinished() override;
 
  private:
-    std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
-
+    std::unique_ptr<TurnToTarget> turnToTarget = std::make_unique<TurnToTarget>();
+    std::unique_ptr<AutoDrive> autoDrive = std::make_unique<AutoDrive>();
+    double distToTarget;
 };

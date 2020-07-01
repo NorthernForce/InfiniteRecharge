@@ -13,81 +13,75 @@
 double TurnToAngle::targetAngle;
 
 TurnToAngle::TurnToAngle(double target) {
-  AddRequirements(RobotContainer::drivetrain.get());
-  AddRequirements(RobotContainer::imu.get());
+    SetName("TurnToAngle");
+    AddRequirements(RobotContainer::drivetrain.get());
+    AddRequirements(RobotContainer::imu.get());
 
-  frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
-  frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
-  frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
-  
-  if (target != 0)
-    targetAngle = target;
+    frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
+    frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
+    frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
+
+    if (target != 0)
+        SetAngle(target);
+}
+
+void TurnToAngle::SetAngle(double angle) {
+    targetAngle = angle;
 }
 
 // Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
-  currentAngle = RobotContainer::imu->GetRotation();
-  totalTargetAngle = currentAngle + targetAngle;
-  integral = 0;
-}
-
-void TurnToAngle::SetAngle(double angle) {
-  targetAngle = angle;
+    currentAngle = RobotContainer::imu->GetRotation();
+    distanceToTargetAngle = currentAngle + targetAngle;
+    integral = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
-   std::cout << "Autonomous running?\n";
-  double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
-  double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
-  double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
+    currentAngle = RobotContainer::imu->GetRotation();
+    frc::SmartDashboard::PutNumber("Robot angle: ", currentAngle);
 
-  double rotationRaw = GetRotationFromPID(p,i,d);
-  double rotationLimited = LimitMaxTurnSpeed(rotationRaw);
-  std::cout << "running tta\n";
-  std::cout << "rotationlim: " << rotationLimited << '\n';
-  
-  auto driveControls = RobotContainer::oi->GetDriveControls();
-  RobotContainer::drivetrain->Drive(driveControls.first, rotationLimited + driveControls.second * 0.5);
+    double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
+    double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
+    double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
+
+    double rotRaw = GetRotationFromPID(p,i,d);
+    double rotMult = GetRotationMultiplier();
+    double rotLim = LimitMaxTurnSpeed(rotRaw * rotMult);
+    frc::SmartDashboard::PutNumber("rotation multiplier:", rotMult);
+    
+    auto driveControls = RobotContainer::oi->GetDriveControls();
+    RobotContainer::drivetrain->Drive(driveControls.first, rotLim + driveControls.second * 0.5);
+}
+
+double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
+    error = (currentAngle - distanceToTargetAngle) / 180;
+    if (error == 0)
+        integral = 0;
+
+    integral += error * defaultPeriodInMs;
+    derivative = (error - errorPrior) / defaultPeriodInMs;
+    double rotation = p*error + i*integral + d*derivative;
+    errorPrior = error;
+    return rotation;
+}
+
+double TurnToAngle::GetRotationMultiplier() {
+    double rotMultiplier = 0.75 * pow(3, error);
+    return rotMultiplier;
+}
+
+double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {
+    double speed = currentSpeed;
+    if (currentSpeed < maxTurnSpeed * -1)
+        speed = maxTurnSpeed * -1;
+    else if (currentSpeed > maxTurnSpeed)
+        speed = maxTurnSpeed;
+    return speed;
 }
 
 void TurnToAngle::End(bool interrupted) {}
 
-bool TurnToAngle::CheckIfFinished() {
-  if ((targetAngle >= 0) && (currentAngle >= targetAngle))
-    return true;
-  else if ((targetAngle <= 0) && (currentAngle <= targetAngle))
-    return true;
-  else if (std::abs(error) < minError)
-    return true;
-  else
-    return false;
-}
-
 bool TurnToAngle::IsFinished() {
-  if (std::abs(error) < minError)
-    return true;
-  else
-    return false;  
-}
-
-double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
-  error = (RobotContainer::imu->GetRotation() - totalTargetAngle) / 180;
-  if (error == 0)
-    integral = 0;
-
-  integral += error * defaultPeriodInMs;
-  derivative = (error - errorPrior) / defaultPeriodInMs;
-  double rotation = p*error + i*integral + d*derivative;
-  errorPrior = error;
-  return rotation*3;
-}
-
-double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {
-  double speed = currentSpeed;
-  if (currentSpeed < maxTurnSpeed * -1)
-    speed = maxTurnSpeed * -1;
-  else if (currentSpeed > maxTurnSpeed)
-    speed = maxTurnSpeed;
-  return speed;
+    return std::abs(error) < minError;
 }

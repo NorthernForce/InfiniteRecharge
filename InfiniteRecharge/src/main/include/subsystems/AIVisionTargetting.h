@@ -8,25 +8,34 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include "utilities/TriangleCalculator.h"
 
 class AIVisionTargetting : public frc2::SubsystemBase {
  public:
-  AIVisionTargetting();
-  enum class Target {
-    Powercell,
-    Goal,
-    None
-  };
-  bool CheckForTarget(Target type=Target::Powercell);
-  Target CheckTargetType();
-  void RefreshTargetPositioning();
-  double RoboAngleToTarget();
-  double RoboDistToTarget();
-  void Periodic();
+    enum class Target {
+        Powercell,
+        Goal,
+        None
+    };
+    AIVisionTargetting();
+    void Periodic();
+    bool CheckForTarget(Target type=Target::Powercell);
+    Target CheckTargetType();
+    int TimeSinceTargetRegisteredInMillis();
+    bool IsTargetLocked();
+    double GetRobotDistToTarget();
+    double GetRobotAngleToTarget();
+    double GetCameraDistToTargetFromArea(int area);
+    int GetArea();
 
  private:
-  bool targetFound;
-  double targetPositionX;
-  double targetPositionY;
-  AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
+    void RegisterFoundTargets();
+    std::unique_ptr<Triangle> GetTargetTriangle();
+
+    double camAngleOffset;
+    int servoToRobotCenterAngleOffset = 90;
+    double pcOffsetInCam;
+
+    int loopCyclesSinceTargetRegistered;
+    bool targetHasBeenRegistered;
 };

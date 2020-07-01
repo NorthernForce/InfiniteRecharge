@@ -9,17 +9,24 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "utilities/AutoCommandScheduler.h"
 
-class CrossAutoLine
-    : public frc2::CommandHelper<frc2::CommandBase, CrossAutoLine> {
+/**
+ * An example command.
+ *
+ * <p>Note that this extends CommandHelper, rather extending CommandBase
+ * directly; this is crucially important, or else the decorator functions in
+ * Command will *not* work!
+ */
+class SafeCamera
+    : public frc2::CommandHelper<frc2::CommandBase, SafeCamera> {
  public:
-  CrossAutoLine();
+  SafeCamera();
+
   void Initialize() override;
+
   void Execute() override;
+
+  void End(bool interrupted) override;
+
   bool IsFinished() override;
-
- private:
-    std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
-
 };

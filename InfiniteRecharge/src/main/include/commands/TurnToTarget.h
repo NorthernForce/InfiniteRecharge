@@ -12,18 +12,23 @@
 #include "commands/TurnToAngle.h"
 #include "RobotContainer.h"
 
-class SweepAICamera
-    : public frc2::CommandHelper<frc2::CommandBase, SweepAICamera> {
+class TurnToTarget
+    : public frc2::CommandHelper<frc2::CommandBase, TurnToTarget> {
  public:
-  SweepAICamera();
+  TurnToTarget();
   void Initialize() override;
+  void EnableTurningMode(bool enableTurning);
+  bool IsTurningEnabled();
   void Execute() override;
-  void TurnToServoAngle();
-  void AdjustServoAngToPCOffset(int servoAng, double pcOffset);
-  void TurnRobotUsingServoAngle(int servoAng, char servoDir);
+  void TurnRobotToTarget();
+  void TurnToAng(int ang);
+  bool HasReachedTargetAngle();
   void End(bool interrupted) override;
   bool IsFinished() override;
+
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
+  bool hasTurned;
+  bool turningMode = false;
 };

@@ -5,30 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/IntakeDown.h"
+#include "commands/autonomous/AutoBallSeek.h"
 #include "RobotContainer.h"
 
-IntakeDown::IntakeDown() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    AddRequirements(RobotContainer::intake.get());
-    safeCameraCmd = std::make_unique<SafeCamera>();
-}
+AutoBallSeek::AutoBallSeek() {}
 
 // Called when the command is initially scheduled.
-void IntakeDown::Initialize() {
-    safeCameraCmd->Schedule();
-}
+void AutoBallSeek::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void IntakeDown::Execute() {
-    if (!safeCameraCmd->IsScheduled())
-        RobotContainer::intake->SetArm(0.35);
+void AutoBallSeek::Execute() {
+    if (RobotContainer::aiVisionTargetting->IsTargetLocked()) {
+        turnToTarget->EnableTurningMode(true);
+        if (turnToTarget->HasReachedTargetAngle())
+            DriveToTarget();
+    }
+}
+
+void AutoBallSeek::DriveToTarget() {
+    distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+    autoDrive->SetDist(distToTarget);
+    if (!autoDrive->IsScheduled())
+        autoDrive->Schedule();
 }
 
 // Called once the command ends or is interrupted.
-void IntakeDown::End(bool interrupted) {
-    RobotContainer::intake->SetArm(0);
+void AutoBallSeek::End(bool interrupted) {
+    turnToTarget->EnableTurningMode(false);
 }
 
 // Returns true when the command should end.
-bool IntakeDown::IsFinished() { return false; }
+bool AutoBallSeek::IsFinished() { return false; }

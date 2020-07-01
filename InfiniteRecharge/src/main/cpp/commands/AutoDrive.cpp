@@ -9,42 +9,44 @@
 #include "RobotContainer.h"
 
 AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
- : m_inches(inches), m_leftSpeed(leftSpeed), m_rightSpeed(rightSpeed) {
+ : leftMotorSpeed(leftSpeed), rightMotorSpeed(rightSpeed) {
     AddRequirements(RobotContainer::drivetrain.get());
+    if (inches != 0)
+        SetDist(inches);
 }
 
 // Use this only in autonomous or when calling from another command
 void AutoDrive::SetDist(double inches) {
-    m_inches = inches;
+    inchesToTravel = inches;
 }
 
 // Use this only in autonomous or when calling from another command
 void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
     if (rightSpeed != leftSpeed)
         rightSpeed = leftSpeed;
-    m_leftSpeed = leftSpeed;
-    m_rightSpeed = rightSpeed;
+    leftMotorSpeed = leftSpeed;
+    rightMotorSpeed = rightSpeed;
 }
 
 // Called when the command is initially scheduled.
 void AutoDrive::Initialize() {
     CheckForAndFixNegatives();
     startDist = RobotContainer::drivetrain->GetAvgEncoderRotations();
-    encoderToTravelTo = startDist + m_inches * Constants::Shifting::highMultiplier;
+    encoderToTravelTo = startDist + inchesToTravel * Constants::Shifting::highMultiplier;
 }
 
 void AutoDrive::CheckForAndFixNegatives() {
-    if (m_inches < 0) {
-        m_inches *= -1;
-        m_rightSpeed *= -1;
-        m_leftSpeed *= -1;
+    if (inchesToTravel < 0) {
+        inchesToTravel *= -1;
+        leftMotorSpeed *= -1;
+        rightMotorSpeed *= -1;
     }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
     std::cout << "Autonomous running?\n";
-    RobotContainer::drivetrain->DriveUsingSpeeds(m_leftSpeed, m_rightSpeed);
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftMotorSpeed, rightMotorSpeed);
     encoderCurrent = RobotContainer::drivetrain->GetAvgEncoderRotations();
 }
 

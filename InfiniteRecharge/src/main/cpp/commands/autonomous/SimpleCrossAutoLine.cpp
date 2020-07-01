@@ -9,18 +9,18 @@
 #include "RobotContainer.h"
 
 SimpleCrossAutoLine::SimpleCrossAutoLine() {
-  // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::drivetrain.get());
+    // Use addRequirements() here to declare subsystem dependencies.
+    AddRequirements(RobotContainer::drivetrain.get());
 }
 
 // Called when the command is initially scheduled.
 void SimpleCrossAutoLine::Initialize() {
-RobotContainer::drivetrain->SetEncoderPosition(0);
+    RobotContainer::drivetrain->SetEncoderPosition(0);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SimpleCrossAutoLine::Execute() {
-  RobotContainer::drivetrain->DriveUsingSpeeds(.2, .2);
+    RobotContainer::drivetrain->DriveUsingSpeeds(.2, .2);
 }
 
 // Called once the command ends or is interrupted.
@@ -28,8 +28,8 @@ void SimpleCrossAutoLine::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool SimpleCrossAutoLine::IsFinished() {  
-  if(RobotContainer::drivetrain->GetAvgEncoderRotations() < -10) {
-    return true;
-  } else {
-    return false;
-  }}
+    if (RobotContainer::drivetrain->GetAvgEncoderRotations() < -10)
+        return true;
+    else
+        return false;
+}

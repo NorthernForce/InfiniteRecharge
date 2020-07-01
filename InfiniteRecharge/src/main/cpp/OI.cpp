@@ -1,18 +1,14 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Command.h>
-#include <frc2/command/button/Button.h>
-#include <frc2/command/button/Trigger.h>
 #include "OI.h"
 #include "Constants.h"
 
-#include "frc2/command/button/Button.h"
-#include <frc2/command/button/JoystickButton.h>
 #include "utilities/ComboControl.h"
 
-#include "commands/SweepAICamera.h"
+#include "commands/TurnToTarget.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
-#include "commands/SweepAICamera.h"
+#include "commands/TurnToTarget.h"
 #include "commands/IntakePowerCell.h"
 #include "commands/PushOutPowerCell.h"
 #include "commands/ToggleArm.h"
@@ -56,13 +52,12 @@ OI::OI() {
 }
 
 void OI::InitControllers() {
-    driverController.reset(new frc::XboxController(Constants::driverController_id));
-    manipulatorController.reset(new frc::XboxController(Constants::manipulatorController_id));
+    driverController = std::make_shared<frc::XboxController>(Constants::driverController_id);
+    manipulatorController = std::make_shared<frc::XboxController>(Constants::manipulatorController_id);
 }
 
 void OI::MapControllerButtons() {
   //Driver Controller
-    // SimpleButton(driverController, Xbox::A_button).WhenPressed(new IntakePowerCell());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
     // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
     frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
@@ -99,6 +94,28 @@ void OI::MapControllerButtons() {
     // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point
 }
 
+void OI::MapControllerButtonsNew() {
+    SimpleAxis(driverController, XboxAxis::rt_trigger).WhileHeld(new ShootCell);
+    SimpleButton(driverController, Xbox::B_button).WhileHeld(new PushOutPowerCell);
+    SimpleButton(driverController, Xbox::lt_bumper).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
+    SimpleButton(driverController, Xbox::lt_bumper).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
+    SimpleButton(driverController, Xbox::rt_bumper).WhileHeld(new IntakePowerCell);
+    SimpleButton(driverController, Xbox::X_button).WhileHeld(new ReverseConveyor);
+    SimpleButton(driverController, Xbox::A_button).WhileHeld(new MoveToLimelight);
+    SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
+
+    SimpleButton(manipulatorController, Xbox::Y_button).WhenPressed(new AimShooterUp);
+    SimpleButton(manipulatorController, Xbox::B_button).WhenPressed(new AimShooterDown());
+    SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
+    SimpleButton(manipulatorController, Xbox::X_button).WhileHeld(new IntakeUp);
+    SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
+    SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
+    SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);
+    SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
+    SimpleButton(manipulatorController, XboxPOV::up).WhenPressed(new IncreaseShooterRPM);
+    SimpleButton(manipulatorController, XboxPOV::down).WhenPressed(new DecreaseShooterRPM);
+}
+
 std::pair<double, double> OI::GetDriveControls() {
   double speed = driverController->GetY(frc::XboxController::JoystickHand::kLeftHand);
   double rotation = driverController->GetX(frc::XboxController::JoystickHand::kRightHand) *-1;
@@ -132,4 +149,8 @@ frc2::Button OI::SimpleButton(std::shared_ptr<frc::GenericHID> controller, int b
 
 frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold) {
   return frc2::Button([this, controller, axis, threshold] { return controller->GetRawAxis(axis) > threshold; });
+}
+
+frc2::Button OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degs) {
+    return frc2::Button([this, controller, degs] { return (controller->GetPOV(degs) == degs); });
 }

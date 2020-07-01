@@ -12,6 +12,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <cameraserver/CameraServer.h>
 #include <string>
+#include <memory>
 
 #include "Constants.h"
 #include "OI.h"
@@ -20,13 +21,17 @@
 #include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
-#include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
+#include "commands/ShiftGear.h"
+#include "commands/SafeCamera.h"
+#include "commands/TurnToAngle.h"
+#include "commands/ShootCell.h"
+#include "commands/MoveToLimelight.h"
 
 #include <cameraserver/CameraServer.h>
 
 void Robot::RobotInit() {
-  container.reset(new RobotContainer());
+  container = std::make_shared<RobotContainer>();
 ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
 /*
   autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
@@ -49,7 +54,7 @@ void Robot::RobotInit() {
 
   */
 
-  CameraServer::GetInstance()->StartAutomaticCapture();
+    CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -82,18 +87,37 @@ void Robot::AutonomousInit() {
 //   SimpleCrossAutoLine(),
 // };
 
-autoTurnToAngle.reset(new TurnToAngle);
-simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-autoShootCell.reset(new AutoShootCell);
 
-RobotContainer::drivetrain->SetEncoderPosition(0);
-autoTurnToAngle->SetAngle(90);
-isTurnFinished = false;
-isForwardFinished = false;
-isShooterFinished = false;
+    // Aidens stuff
+    autoTurnToAngle.reset(new TurnToAngle);
+    simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+    autoShootCell.reset(new AutoShootCell);
 
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle->SetAngle(90);
+    isTurnFinished = false;
+    isForwardFinished = false;
+    isShooterFinished = false;
 
+    // auto command scheduler init
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new TurnToAngle(90),
+        new SimpleCrossAutoLine(),
+        new SafeCamera()
+    }));
 
+/*
+  std::cout << "Autonomous run\n";
+  AutonomousIsRunning = true;
+  autoTestDrive.reset(new CrossAutoLine());
+  autoTestDrive->Schedule(false);
+*/
+
+/*
+	autonomousCommand.reset(autonomousChooser.GetSelected());
+  if(autonomousCommand != nullptr)
+      autonomousCommand->Schedule();
+*/
 ////TODO: Figure out if this should go in periodic or Init
   /*
   chooserAutoSelected = chooserAuto->GetSelected();
@@ -122,6 +146,10 @@ isShooterFinished = false;
 
 
 void Robot::AutonomousPeriodic() {
+
+    // auto command scheduler execution
+    autoCommandScheduler->Run();
+ 
 /*
   frc2::CommandScheduler::GetInstance().Run();
   std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";

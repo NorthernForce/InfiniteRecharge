@@ -21,24 +21,26 @@ Intake::Intake() {
 }
 
 void Intake::InitMotorControllers() {
-    intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
-    armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
+    intakeTalon = std::make_shared<WPI_TalonSRX>(Constants::MotorIDs::intake);
+    armSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless);
     armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     armSpark->SetSmartCurrentLimit(60);
 
-    primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
-    followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
+    primaryConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless);
+    followerConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless);
 
     intakeTalon->ConfigPeakCurrentLimit(5);
 }
 
 void Intake::InitBallPositionSensors() {
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
+    ballPosition = {
+        new frc::DigitalInput(Constants::DigitalPort::ballPort0),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort1),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort2),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort3),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort4),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort5)
+    };
 }
 
 void Intake::SetInvertedFollower() {

@@ -7,17 +7,25 @@
 
 #include "subsystems/AIVisionTargetting.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "RobotContainer.h"
-#include "Constants.h"
 #include <string>
+#include <memory>
+
+#include "Constants.h"
+#include "RobotContainer.h"
 
 using Target = AIVisionTargetting::Target;
 
-AIVisionTargetting::AIVisionTargetting() {
+bool IsXInRange(unsigned x, unsigned low, unsigned high) {
+    return ((x - low) <= (high - low));
 }
 
+AIVisionTargetting::AIVisionTargetting() {}
+
 // This method will be called once per scheduler run
-void AIVisionTargetting::Periodic() {}
+void AIVisionTargetting::Periodic() {
+    pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
+    RegisterFoundTargets();
+}
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
     bool isTargetTypeFound = false;
@@ -41,48 +49,74 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-void AIVisionTargetting::RefreshTargetPositioning() {
-    double currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    auto powerCellOffsets = RobotContainer::aiComms->GetCamTargetOffsets(powercell);
-    double camAngleToTarget = currentPan + powerCellOffsets[0];
-    double camDistToTarget = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label);
-    camAngleToTarget *= Constants::degreesToRadians;
-
-    targetPositionX = camDistToTarget * std::sin(camAngleToTarget);
-    targetPositionY = camDistToTarget * std::cos(camAngleToTarget);
+int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
+    int multiplier = 20;
+    int millis = loopCyclesSinceTargetRegistered * multiplier;
+    return millis;
 }
 
-double AIVisionTargetting::RoboAngleToTarget() {
-    RefreshTargetPositioning();
-    return std::atan((targetPositionX-Constants::camDistFromRoboFrontCent)/(targetPositionY+Constants::camDistFromRoboSideCent));
+bool AIVisionTargetting::IsTargetLocked() {
+    int currentPan = RobotContainer::cameraMount->GetCurrentPan();
+    int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    frc::SmartDashboard::PutNumber("avgOfRecentPans", avgOfRecentPans);
+    frc::SmartDashboard::PutNumber("currentPan", currentPan);
+    return IsXInRange(avgOfRecentPans-3, avgOfRecentPans+3, currentPan);
 }
 
-double AIVisionTargetting::RoboDistToTarget() {
-    RefreshTargetPositioning();
-    return sqrt(pow((targetPositionY+Constants::camDistFromRoboFrontCent),2.0)+pow((Constants::camDistFromRoboSideCent-targetPositionX),2.0));
+double AIVisionTargetting::GetRobotDistToTarget() {
+    double calculatedDist = 0;
+    auto calculator = std::make_unique<TriangleCalculator>(GetTargetTriangle());
+
+    try {
+        calculatedDist = calculator->SAS().GetSideB();
+    }
+    catch (const TriangleCalculator::BaseException& e) {
+        std::cout << e.what() << '\n';
+    }
+    return calculatedDist;
 }
 
+double AIVisionTargetting::GetRobotAngleToTarget() {
+    double calculatedAngle = 0;
+    auto calculator = std::make_unique<TriangleCalculator>(GetTargetTriangle());
 
-// double TargDist(double Ac,double Dc)
-// {
-//     Ac *= (M_PI/180);
-//     double C = 10;
-//     double Tx = Dc*std::sin(Ac);
-//     double Ty = Dc*std::cos(Ac);
-//     double Td = sqrt(pow(Ty,2.0)+pow((C-Tx),2.0));
+    try {
+        calculatedAngle = calculator->SAS().GetAngleA();
+    }
+    catch (const TriangleCalculator::BaseException& e) {
+        std::cout << e.what() << '\n';
+    }
+    return (-1*(calculatedAngle - servoToRobotCenterAngleOffset));
+}
 
-//     return Td;
-// }
+double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
+    // pwr. reg. equation determined from sample bounding box areas at several intervals
+    double dist = (3349.276088 * pow(area, -0.5003571008));
+    return dist;
+}
 
-// double TargAng(double Ac,double Dc)
-// {
-//     Ac *= conve;
-//     double C = 10;
-//     double Tx = Dc*std::sin(Ac);
-//     double Ty = Dc*std::cos(Ac);
-//     double Ta = std::atan((Tx-C)/Ty);
+int AIVisionTargetting::GetArea() {
+    return RobotContainer::aiComms->GetNumber("target area");
+}
 
-//     Ta /= convert;
+void AIVisionTargetting::RegisterFoundTargets() {
 
-//     return Ta;
-// }
+    if (RobotContainer::aiComms->IsTargetFound() && !targetHasBeenRegistered) {
+        loopCyclesSinceTargetRegistered = 0;
+        targetHasBeenRegistered = true;
+    }
+    else {
+        loopCyclesSinceTargetRegistered++;
+        if (!RobotContainer::aiComms->IsTargetFound())
+            targetHasBeenRegistered = false;
+    }
+}
+
+std::unique_ptr<Triangle> AIVisionTargetting::GetTargetTriangle() {
+    // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
+    double a = GetCameraDistToTargetFromArea(GetArea());
+    double c = Constants::camDistFromRoboCenter;
+    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
+
+    return std::make_unique<Triangle>(a, 0, c, 0, B, 0);
+}

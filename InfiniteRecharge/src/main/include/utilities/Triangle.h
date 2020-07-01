@@ -5,16 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "utilities/ComboControl.h"
+#pragma once
 
-ComboControl::ComboControl(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2) 
- : currentJoystick(joystick), button1(button1), button2(button2) {}
+class Triangle {
+ public:
+    Triangle();
+    Triangle(double side_a, double side_b, double side_c, double ang_a, double ang_b, double ang_c);
 
-bool ComboControl::Get() {
-    bool b1 = currentJoystick->GetRawButton(button1);
-    bool b2 = currentJoystick->GetRawButton(button2);
-    if (b1 && b2)
-        return true;
-    else
-        return false;
-}
+    double GetAngleA();
+    double GetAngleB();
+    double GetAngleC();
+    double GetSideA();
+    double GetSideB();
+    double GetSideC();
+
+ private:
+    double a;
+    double b;
+    double c;
+    double A;
+    double B;
+    double C;
+};

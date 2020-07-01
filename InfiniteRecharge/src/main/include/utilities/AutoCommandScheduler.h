@@ -6,14 +6,24 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
-#include <frc/GenericHID.h>
+#include "RobotContainer.h"
+#include <frc2/command/Command.h>
+#include <vector>
 
-class ComboControl {
+class AutoCommandScheduler {
  public:
-  ComboControl(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2);
-  bool Get();
+  AutoCommandScheduler(std::vector<frc2::Command*> &&commandQueue);
+  void Run();
+  bool IsFinished();
+
  private:
-  std::shared_ptr<frc::GenericHID> currentJoystick;
-  int button1;
-  int button2;
+    int GetPrevIndex();
+    void ScheduleCommandsInSequence();
+    void EndIfGoneThroughAllIndexes();
+    void CleanUpArray(std::vector<frc2::Command*> array);
+
+    std::vector<frc2::Command*> commandQueue;
+    static int currIndex;
+    int maxIndex;
+    bool isFinished = false;
 };

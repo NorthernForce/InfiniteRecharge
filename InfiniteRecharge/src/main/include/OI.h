@@ -10,6 +10,7 @@ class OI {
     OI();
     void InitControllers();
     void MapControllerButtons();
+    void MapControllerButtonsNew();
     frc::SendableChooser<frc2::Command*> DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
     void SetControllerRumble(frc::XboxController *controller, double value=0, bool lightly=false);
@@ -56,5 +57,6 @@ class OI {
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
     frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, int btn);
-    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold);
+    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold=0.5);
+    frc2::Button SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degrees);
 };
