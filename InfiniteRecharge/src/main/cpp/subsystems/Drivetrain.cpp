@@ -7,6 +7,7 @@
 
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 Drivetrain::Drivetrain() {
     leftPrimarySpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless);
@@ -50,7 +51,7 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 
 // This method will be called once per scheduler run
 void Drivetrain::Periodic() {
-  //  std::cout << "Encoder Pos:" << leftPrimarySpark->GetEncoder().GetPosition() << "\n";
+    frc::SmartDashboard::PutNumber("Encoder Pos:", GetAvgEncoderRotations());
 }
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake

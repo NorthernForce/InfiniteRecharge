@@ -6,14 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/TurnToTarget.h"
-#include <iostream>
-#include <frc/smartdashboard/SmartDashboard.h>
 
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
     AddRequirements(RobotContainer::aiVisionTargetting.get());
     turnToAngle = std::make_shared<TurnToAngle>();
-    frc::SmartDashboard::PutBoolean("targetHasBeenLocked", RobotContainer::aiVisionTargetting->IsTargetLocked());
 }
 
 // Called when the command is initially scheduled.
@@ -32,8 +29,8 @@ bool TurnToTarget::IsTurningEnabled() {
 // Called repeatedly when this Command is scheduled to run
 void TurnToTarget::Execute() {
     RobotContainer::cameraMount->SmartSweep();
-    bool isTargetPresent = RobotContainer::aiVisionTargetting->CheckForTarget(powercell);
-    if (isTargetPresent)
+    bool isTargetLocked = RobotContainer::aiVisionTargetting->IsTargetLocked();
+    if (isTargetLocked)
         TurnRobotToTarget();
 }
 

@@ -88,22 +88,20 @@ void Robot::AutonomousInit() {
 // };
 
 
-    // Aidens stuff
-    autoTurnToAngle.reset(new TurnToAngle);
-    simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-    autoShootCell.reset(new AutoShootCell);
+    // // Aidens stuff
+    // autoTurnToAngle.reset(new TurnToAngle);
+    // simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+    // autoShootCell.reset(new AutoShootCell);
 
-    RobotContainer::drivetrain->SetEncoderPosition(0);
-    autoTurnToAngle->SetAngle(90);
-    isTurnFinished = false;
-    isForwardFinished = false;
-    isShooterFinished = false;
+    // RobotContainer::drivetrain->SetEncoderPosition(0);
+    // autoTurnToAngle->SetAngle(90);
+    // isTurnFinished = false;
+    // isForwardFinished = false;
+    // isShooterFinished = false;
 
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new TurnToAngle(90),
-        new SimpleCrossAutoLine(),
-        new SafeCamera()
+        new AutoDrive(12)
     }));
 
 /*
@@ -167,17 +165,17 @@ void Robot::AutonomousPeriodic() {
 // }
 
 
-if(isTurnFinished == false) {
-  autoTurnToAngle->Schedule();
-  isTurnFinished = true;
-   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
-       simpleCrossAutoLine->Schedule();
-       isForwardFinished = true;
-   } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
-     std::cout << "I should be shooting a ball rn \n";
-     autoShootCell->Schedule();
-     isShooterFinished = true;
-   }
+// if(isTurnFinished == false) {
+//   autoTurnToAngle->Schedule();
+//   isTurnFinished = true;
+//    } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+//        simpleCrossAutoLine->Schedule();
+//        isForwardFinished = true;
+//    } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+//      std::cout << "I should be shooting a ball rn \n";
+//      autoShootCell->Schedule();
+//      isShooterFinished = true;
+//    }
 
 
 // if((!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false)) {

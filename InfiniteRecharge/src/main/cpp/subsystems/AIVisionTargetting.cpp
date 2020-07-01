@@ -56,11 +56,12 @@ int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
 }
 
 bool AIVisionTargetting::IsTargetLocked() {
+    bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
     int currentPan = RobotContainer::cameraMount->GetCurrentPan();
     int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
     frc::SmartDashboard::PutNumber("avgOfRecentPans", avgOfRecentPans);
     frc::SmartDashboard::PutNumber("currentPan", currentPan);
-    return IsXInRange(avgOfRecentPans-3, avgOfRecentPans+3, currentPan);
+    return (IsXInRange(avgOfRecentPans-3, avgOfRecentPans+3, currentPan) and isTargetFound);
 }
 
 double AIVisionTargetting::GetRobotDistToTarget() {

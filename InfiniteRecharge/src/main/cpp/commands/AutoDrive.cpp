@@ -7,6 +7,7 @@
 
 #include "commands/AutoDrive.h"
 #include "RobotContainer.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
  : leftMotorSpeed(leftSpeed), rightMotorSpeed(rightSpeed) {
@@ -32,7 +33,7 @@ void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
 void AutoDrive::Initialize() {
     CheckForAndFixNegatives();
     startDist = RobotContainer::drivetrain->GetAvgEncoderRotations();
-    encoderToTravelTo = startDist + inchesToTravel * Constants::Shifting::highMultiplier;
+    encoderToTravelTo = startDist + (inchesToTravel * 0.275789889);
 }
 
 void AutoDrive::CheckForAndFixNegatives() {
@@ -45,7 +46,8 @@ void AutoDrive::CheckForAndFixNegatives() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-    std::cout << "Autonomous running?\n";
+    frc::SmartDashboard::PutNumber("encoderCurrent", encoderCurrent);
+    frc::SmartDashboard::PutNumber("encoderToTravelTo", encoderToTravelTo);
     RobotContainer::drivetrain->DriveUsingSpeeds(leftMotorSpeed, rightMotorSpeed);
     encoderCurrent = RobotContainer::drivetrain->GetAvgEncoderRotations();
 }
@@ -57,8 +59,5 @@ void AutoDrive::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool AutoDrive::IsFinished() {
-    if (abs(encoderToTravelTo) < abs(encoderCurrent))
-        return true;
-    else
-        return false;
+    return (abs(encoderCurrent) >= abs(encoderToTravelTo));
 }

@@ -8,6 +8,7 @@
 #include "subsystems/CameraMount.h"
 #include "RobotContainer.h"
 #include "Constants.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 int CameraMount::sweepPassCount;
 
@@ -31,6 +32,8 @@ void CameraMount::Periodic() {
     SetLastNonZeroPcOffset();
     LimitStoredAngles();
     recentPanAngles.push_front(GetCurrentPan());
+    frc::SmartDashboard::PutNumber("avgOffsets", GetAvgOfRecentPans());
+    frc::SmartDashboard::PutNumber("currentPan", currentPan);
 }
 
 int CameraMount::GetServoAngleToTarget() {
@@ -54,33 +57,34 @@ void CameraMount::SmartSweep() {
 
 void CameraMount::Sweep() {
     if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
-        Pan(currentPan);
         currentPan++;
-    } else if (lastNonZeroPcOffset > 6 || sweepPassCount % 2 == 1) {
         Pan(currentPan);
-        currentPan--;
     }
+    else if (lastNonZeroPcOffset > 6 || sweepPassCount % 2 == 1) {
+        currentPan--;
+        Pan(currentPan);
+    }    
+
     if (currentPan <= 35 || currentPan >= 155) {
         sweepPassCount++;
         lastNonZeroPcOffset = 0;
     }
-
     RecoverOutOfRangeServo();
 }
 
 void CameraMount::CenterTarget() {
     if (pcOffset < -6)
-        Pan(++currentPan);
+        panServo->SetAngle(++currentPan);
     else if (pcOffset > 6)
-        Pan(--currentPan);
+        panServo->SetAngle(--currentPan);
 }
 
 void CameraMount::MoveServoBackToTarget() {
     if (lastNonZeroPcOffset < -6)
-        currentPan += 6;
+        currentPan += 10;
     else if (lastNonZeroPcOffset > 6)
-        currentPan -= 6;
-    Pan(currentPan);
+        currentPan -= 10;
+    panServo->SetAngle(currentPan);
     hasMovedServoBackToTarget = true;
 }
 
@@ -90,7 +94,6 @@ void CameraMount::SetToZero() {
 }
 
 int CameraMount::GetCurrentPan() {
-    currentPan = panServo->GetAngle();
     return currentPan;
 }
 
