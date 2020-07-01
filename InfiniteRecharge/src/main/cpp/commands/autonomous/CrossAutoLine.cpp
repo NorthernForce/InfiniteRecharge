@@ -6,12 +6,21 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/autonomous/CrossAutoLine.h"
-#include <frc2/command/SequentialCommandGroup.h>
 #include "commands/AutoDrive.h"
-#include <iostream>
+#include <memory>
 
-CrossAutoLine::CrossAutoLine() {
-  frc2::SequentialCommandGroup {
-    AutoDrive(36)
-  };
+CrossAutoLine::CrossAutoLine() {}
+
+void CrossAutoLine::Initialize() {
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new AutoDrive(36)
+    }));
+}
+
+void CrossAutoLine::Execute() {
+    autoCommandScheduler->Run();
+}
+
+bool CrossAutoLine::IsFinished() {
+    return autoCommandScheduler->IsFinished();
 }

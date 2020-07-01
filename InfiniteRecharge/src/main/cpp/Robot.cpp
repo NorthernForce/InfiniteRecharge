@@ -88,12 +88,11 @@ void Robot::AutonomousInit() {
 
     RobotContainer::drivetrain->SetEncoderPosition(0);
 
-    // autoCommandScheduler.reset(new AutoCommandScheduler({
-    //     std::move(std::make_unique<ShiftGear>(ShiftGear::Gear::High)),
-    //     std::move(std::make_unique<ShiftGear>(ShiftGear::Gear::Low)),
-    //     std::move(std::make_unique<TurnToAngle>(90)),
-    //     std::move(std::make_unique<SafeCamera>())
-    // }));
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new TurnToAngle(90),
+        new SimpleCrossAutoLine(),
+        new SafeCamera()
+    }));
 
 /*
   std::cout << "Autonomous run\n";
@@ -135,6 +134,9 @@ void Robot::AutonomousInit() {
 
 
 void Robot::AutonomousPeriodic() {
+
+    autoCommandScheduler->Run();
+ 
 /*
   frc2::CommandScheduler::GetInstance().Run();
   std::cout << "Autonomous runing" << AutonomousIsRunning << "\n";

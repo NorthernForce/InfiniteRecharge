@@ -29,6 +29,8 @@ void CameraMount::Init() {
 void CameraMount::Periodic() {
     pcOffset = RobotContainer::aiComms->GetPCOffsetInCameraX();
     SetLastNonZeroPcOffset();
+    LimitStoredAngles();
+    recentPanAngles.push_front(GetCurrentPan());
 }
 
 int CameraMount::GetServoAngleToTarget() {
@@ -37,15 +39,17 @@ int CameraMount::GetServoAngleToTarget() {
 
 void CameraMount::SmartSweep() {
     int millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
-    bool isTargetCentered = RobotContainer::aiVisionTargetting->IsTargetCentered();
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
     if (millisSinceTargetRegistered >= 750) {
-        if (!isTargetCentered && isTargetFound)
+        hasMovedServoBackToTarget = false;
+        if (isTargetFound)
             CenterTarget();
         else
             Sweep();
     }
+    else if (!hasMovedServoBackToTarget)
+        MoveServoBackToTarget();
 }
 
 void CameraMount::Sweep() {
@@ -66,9 +70,18 @@ void CameraMount::Sweep() {
 
 void CameraMount::CenterTarget() {
     if (pcOffset < -6)
-        panServo->SetAngle(++currentPan);
+        Pan(++currentPan);
     else if (pcOffset > 6)
-        panServo->SetAngle(--currentPan);
+        Pan(--currentPan);
+}
+
+void CameraMount::MoveServoBackToTarget() {
+    if (lastNonZeroPcOffset < -6)
+        currentPan += 6;
+    else if (lastNonZeroPcOffset > 6)
+        currentPan -= 6;
+    Pan(currentPan);
+    hasMovedServoBackToTarget = true;
 }
 
 void CameraMount::SetToZero() {
@@ -83,6 +96,14 @@ int CameraMount::GetCurrentPan() {
 
 int CameraMount::GetPreviousPan() {
     return previousPan;
+}
+
+int CameraMount::GetAvgOfRecentPans() {
+    int sum = 0;
+    int arrayLen = recentPanAngles.size();
+    for (auto ang : recentPanAngles)
+        sum += ang;
+    return sum / arrayLen;
 }
 
 int CameraMount::GetCurrentTilt() {
@@ -125,4 +146,9 @@ void CameraMount::RecoverOutOfRangeServo() {
 void CameraMount::SetLastNonZeroPcOffset() {
     if (pcOffset != 0)
         lastNonZeroPcOffset = pcOffset;
+}
+
+void CameraMount::LimitStoredAngles() {
+    if (recentPanAngles.size() > 50)
+        recentPanAngles.pop_back();
 }

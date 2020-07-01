@@ -7,16 +7,26 @@
 
 #include "commands/TurnToTarget.h"
 #include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
     AddRequirements(RobotContainer::aiVisionTargetting.get());
     turnToAngle = std::make_shared<TurnToAngle>();
+    frc::SmartDashboard::PutBoolean("targetHasBeenLocked", RobotContainer::aiVisionTargetting->IsTargetLocked());
 }
 
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
     RobotContainer::cameraMount->Tilt(0);
+}
+
+void TurnToTarget::EnableTurningMode(bool enableTurning) {
+    turningMode = enableTurning;
+}
+
+bool TurnToTarget::IsTurningEnabled() {
+    return (RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button) or turningMode);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -30,20 +40,24 @@ void TurnToTarget::Execute() {
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
 
-    if (RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button)) {
-        TurnWithButtonToAng(targetAng);
-        hasturnedOnButton = true;
+    if (IsTurningEnabled()) {
+        TurnToAng(targetAng);
+        if (!turnToAngle->IsScheduled())
+            hasTurned = true;
     }
     else
-        hasturnedOnButton = false;
+        hasTurned = false;
 }
 
-void TurnToTarget::TurnWithButtonToAng(int ang) {
-    if (!turnToAngle->IsScheduled() && !hasturnedOnButton) {
+void TurnToTarget::TurnToAng(int ang) {
+    if (!turnToAngle->IsScheduled() && !hasTurned) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
-        RobotContainer::cameraMount->Pan(90);
     }
+}
+
+bool TurnToTarget::HasReachedTargetAngle() {
+    return hasTurned;
 }
 
 // Called once the command ends or is interrupted.

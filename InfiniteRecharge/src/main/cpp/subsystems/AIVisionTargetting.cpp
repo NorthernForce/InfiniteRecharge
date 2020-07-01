@@ -15,6 +15,10 @@
 
 using Target = AIVisionTargetting::Target;
 
+bool IsXInRange(unsigned x, unsigned low, unsigned high) {
+    return ((x - low) <= (high - low));
+}
+
 AIVisionTargetting::AIVisionTargetting() {}
 
 // This method will be called once per scheduler run
@@ -51,14 +55,12 @@ int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
     return millis;
 }
 
-bool AIVisionTargetting::IsTargetCentered() {
-    bool isCentered = false;
-    if (!CheckForTarget())
-        isCentered = false;
-    else if (CheckForTarget() && abs(pcOffsetInCam) < 5)
-        isCentered = true;
-    
-    return isCentered;
+bool AIVisionTargetting::IsTargetLocked() {
+    int currentPan = RobotContainer::cameraMount->GetCurrentPan();
+    int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    frc::SmartDashboard::PutNumber("avgOfRecentPans", avgOfRecentPans);
+    frc::SmartDashboard::PutNumber("currentPan", currentPan);
+    return IsXInRange(avgOfRecentPans-3, avgOfRecentPans+3, currentPan);
 }
 
 double AIVisionTargetting::GetRobotDistToTarget() {
@@ -98,6 +100,7 @@ int AIVisionTargetting::GetArea() {
 }
 
 void AIVisionTargetting::RegisterFoundTargets() {
+
     if (RobotContainer::aiComms->IsTargetFound() && !targetHasBeenRegistered) {
         loopCyclesSinceTargetRegistered = 0;
         targetHasBeenRegistered = true;

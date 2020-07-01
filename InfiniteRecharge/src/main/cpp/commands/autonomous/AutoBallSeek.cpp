@@ -5,27 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/SafeCamera.h"
+#include "commands/autonomous/AutoBallSeek.h"
 #include "RobotContainer.h"
 
-SafeCamera::SafeCamera() {
-  // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements(RobotContainer::cameraMount.get());
-}
+AutoBallSeek::AutoBallSeek() {}
 
 // Called when the command is initially scheduled.
-void SafeCamera::Initialize() {}
+void AutoBallSeek::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void SafeCamera::Execute() {
-    RobotContainer::cameraMount->Pan(180);
-    RobotContainer::cameraMount->Tilt(0);
+void AutoBallSeek::Execute() {
+    if (RobotContainer::aiVisionTargetting->IsTargetLocked()) {
+        turnToTarget->EnableTurningMode(true);
+        if (turnToTarget->HasReachedTargetAngle())
+            DriveToTarget();
+    }
+}
+
+void AutoBallSeek::DriveToTarget() {
+    distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+    autoDrive->SetDist(distToTarget);
+    if (!autoDrive->IsScheduled())
+        autoDrive->Schedule();
 }
 
 // Called once the command ends or is interrupted.
-void SafeCamera::End(bool interrupted) {}
+void AutoBallSeek::End(bool interrupted) {
+    turnToTarget->EnableTurningMode(false);
+}
 
 // Returns true when the command should end.
-bool SafeCamera::IsFinished() {
-    return RobotContainer::cameraMount->GetCurrentPan() > 165;
-}
+bool AutoBallSeek::IsFinished() { return false; }

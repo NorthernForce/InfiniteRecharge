@@ -37,7 +37,6 @@ class TurnToAngle
   double GetRotationMultiplier();
   double LimitMaxTurnSpeed(double currentSpeed);
 
-  bool isComplete;
   static double targetAngle;
   double distanceToTargetAngle = 0;
   double currentAngle;

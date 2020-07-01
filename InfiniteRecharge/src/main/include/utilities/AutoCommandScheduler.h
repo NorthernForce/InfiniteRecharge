@@ -12,15 +12,18 @@
 
 class AutoCommandScheduler {
  public:
-  AutoCommandScheduler(std::vector<std::unique_ptr<frc2::Command>> commandQueue);
-//   void ScheduleCmdIfPrevIsFinished(std::shared_ptr<frc2::Command> command, std::shared_ptr<frc2::Command> command_prev);
+  AutoCommandScheduler(std::vector<frc2::Command*> &&commandQueue);
+  void Run();
   bool IsFinished();
 
  private:
-    // void ScheduleFirstCommand(std::shared_ptr<frc2::Command> cmd);
-    // void AssignVacantPtrs(std::vector<frc2::Command*> cmdList, int indexer, int max);
-    // void CleanPtrs();
+    int GetPrevIndex();
+    void ScheduleCommandsInSequence();
+    void EndIfGoneThroughAllIndexes();
+    void CleanUpArray(std::vector<frc2::Command*> array);
 
-    // std::vector<frc2::Command*> commandList;
-    bool isFinished;
+    std::vector<frc2::Command*> commandQueue;
+    static int currIndex;
+    int maxIndex;
+    bool isFinished = false;
 };

@@ -9,8 +9,10 @@
 #include "RobotContainer.h"
 
 AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
- : inchesToTravel(inches), leftMotorSpeed(leftSpeed), rightMotorSpeed(rightSpeed) {
+ : leftMotorSpeed(leftSpeed), rightMotorSpeed(rightSpeed) {
     AddRequirements(RobotContainer::drivetrain.get());
+    if (inches != 0)
+        SetDist(inches);
 }
 
 // Use this only in autonomous or when calling from another command

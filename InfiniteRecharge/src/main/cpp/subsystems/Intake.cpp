@@ -33,12 +33,14 @@ void Intake::InitMotorControllers() {
 }
 
 void Intake::InitBallPositionSensors() {
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
+    ballPosition = {
+        new frc::DigitalInput(Constants::DigitalPort::ballPort0),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort1),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort2),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort3),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort4),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort5)
+    };
 }
 
 void Intake::SetInvertedFollower() {

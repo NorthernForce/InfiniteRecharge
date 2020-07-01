@@ -20,9 +20,9 @@ TurnToAngle::TurnToAngle(double target) {
     frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
     frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
     frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
-    
+
     if (target != 0)
-        targetAngle = target;
+        SetAngle(target);
 }
 
 void TurnToAngle::SetAngle(double angle) {

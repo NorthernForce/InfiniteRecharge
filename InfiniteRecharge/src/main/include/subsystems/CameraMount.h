@@ -10,6 +10,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc/Servo.h>
 #include "subsystems/AIVisionTargetting.h"
+#include <deque>
 
 class CameraMount : public frc2::SubsystemBase {
  public:
@@ -20,9 +21,11 @@ class CameraMount : public frc2::SubsystemBase {
   void SmartSweep();
   void Sweep();
   void CenterTarget();
+  void MoveServoBackToTarget();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();
+  int GetAvgOfRecentPans();
   void Pan(int degrees);
   int GetCurrentTilt();
   int GetPreviousTilt();
@@ -32,10 +35,12 @@ class CameraMount : public frc2::SubsystemBase {
  private:
   void RecoverOutOfRangeServo();
   void SetLastNonZeroPcOffset();
+  void LimitStoredAngles();
 
   int currentPan;
   int currentTilt;
   int previousPan;
+  std::deque<int> recentPanAngles;
   int previousTilt;
   char panDirection;
   char tiltDirection;
@@ -44,6 +49,7 @@ class CameraMount : public frc2::SubsystemBase {
   int offsetCorrectLimiter;
   double pcOffset;
   double lastNonZeroPcOffset;
+  bool hasMovedServoBackToTarget = false;
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;
