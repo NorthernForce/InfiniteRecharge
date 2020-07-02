@@ -29,6 +29,8 @@
 #include "commands/MoveToLimelight.h"
 
 #include <cameraserver/CameraServer.h>
+#include <frc2/command/ParallelCommandGroup.h>
+
 
 void Robot::RobotInit() {
   container = std::make_shared<RobotContainer>();
@@ -117,7 +119,8 @@ void Robot::AutonomousInit() {
 
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new AutoDrive(12)
+        new SafeCamera(),
+        new TurnToAngle()
     }));
 
 }
@@ -126,23 +129,24 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 
     // auto command scheduler execution
-    autoCommandScheduler->Run();
+    autoCommandScheduler->RunParallel();
  
 /*
 
-// if(isTurnFinished == false) {
-//   autoTurnToAngle->Schedule();
-//   isTurnFinished = true;
-//    } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
-//        simpleCrossAutoLine->Schedule();
-//        isForwardFinished = true;
-//    } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
-//      std::cout << "I should be shooting a ball rn \n";
-//      autoShootCell->Schedule();
-//      isShooterFinished = true;
-//    }
+if(isTurnFinished == false) {
+  autoTurnToAngle->Schedule();
+  isTurnFinished = true;
+   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+       simpleCrossAutoLine->Schedule();
+       isForwardFinished = true;
+   } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+     std::cout << "I should be shooting a ball rn \n";
+     autoShootCell->Schedule();
+     isShooterFinished = true;
+   }
 */
 
+/*
 if(autoStepOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
@@ -187,7 +191,7 @@ autoStepOne = true;
       autoShootCell->Schedule();
     }
 }
-
+*/
 
 
 
