@@ -129,7 +129,30 @@ void Robot::AutonomousPeriodic() {
     autoCommandScheduler->RunSequential();
  
 /*
-    if(isTurnFinished == false) {
+
+if(isTurnFinished == false) {
+  autoTurnToAngle->Schedule();
+  isTurnFinished = true;
+   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+       simpleCrossAutoLine->Schedule();
+       isForwardFinished = true;
+   } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+     std::cout << "I should be shooting a ball rn \n";
+     autoShootCell->Schedule();
+     isShooterFinished = true;
+   }
+*/
+
+/*
+if(autoStepOne == false) {
+  std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
+  int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
+
+  if((autoOneString == "Turn") && (!autoTurnToAngle->IsScheduled())) {
+    
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle.reset(new TurnToAngle);
+    autoTurnToAngle->SetAngle(autoOneNum);
     autoTurnToAngle->Schedule();
     isTurnFinished = true;
     } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
@@ -140,8 +163,25 @@ void Robot::AutonomousPeriodic() {
         autoShootCell->Schedule();
         isShooterFinished = true;
     }
-*/
-/*
+autoStepOne = true;
+} else if (autoStepTwo == false) {
+    std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
+    int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
+
+  if(autoTwoString == "Turn") {
+    
+    RobotContainer::drivetrain->SetEncoderPosition(0);
+    autoTurnToAngle.reset(new TurnToAngle);
+    autoTurnToAngle->SetAngle(autoTwoNum);
+    autoTurnToAngle->Schedule();
+
+    } else if ((autoTwoString == "GoForward") && (!simpleCrossAutoLine->IsScheduled())) {
+
+      simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+      simpleCrossAutoLine->SetDistance(autoTwoNum);
+      simpleCrossAutoLine->Schedule();
+
+    } else if (autoTwoString == "Shoot") {
 
     if(autoStepOne == false) {
         std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
