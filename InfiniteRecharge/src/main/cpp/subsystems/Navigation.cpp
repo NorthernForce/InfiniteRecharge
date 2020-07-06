@@ -57,6 +57,17 @@ void Navigation::ResetPosition() {
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
 
+void Navigation::ZeroPosition() {
+    xPosition = 0;
+    yPosition = 0;
+}
+
+void Navigation::ZeroAngle() {
+    robotAngleDifference = 0;
+    robotCurrentAngle = 0;
+    robotStartingAngle = 0;
+}
+
 void Navigation::CoordinatePosition() {
     double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
     xPosition +=  averageInches * sin(-robotAngleDifference);
