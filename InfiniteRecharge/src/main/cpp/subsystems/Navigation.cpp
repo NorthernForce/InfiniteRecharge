@@ -26,16 +26,17 @@ void Navigation::Periodic() {
     CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 
-    /* ////new prints
     std::cout << "Current angle: " << robotCurrentAngle << "\n";
     std::cout << "Coordinates: " << GetCoordinatePosition().first << " " << GetCoordinatePosition().second << "\n";
     std::cout << "Inches traveled: " << GetInchesTravelled().first << " " << GetInchesTravelled().second << "\n";
-    */
+
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
     double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
     double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
+    std::cout << "leftEncoderPos: " << leftEncoderPos << "\n";
+    std::cout << "rightEncoderPos: " << rightEncoderPos << "\n";
     previousLeftEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
     previousRightEncoder = RobotContainer::drivetrain->GetEncoderRotations().second;
     double leftDistance;
@@ -59,6 +60,7 @@ void Navigation::ResetPosition() {
 
 void Navigation::CoordinatePosition() {
     double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+    std::cout << "Average inches: " << averageInches << "\n";
     xPosition +=  averageInches * sin(-robotAngleDifference);
     yPosition += averageInches * cos(-robotAngleDifference);
 }
