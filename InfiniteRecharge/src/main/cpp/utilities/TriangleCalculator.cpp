@@ -109,8 +109,6 @@ void TriangleCalculator::ThrowExceptionOnErrors(std::vector<double> measurements
             throw ZeroError();
         if (prop < 0)
             throw NegativeError();
-        if (prop < 0)
-            throw NegativeError();
     }
     std::vector<double> angles = {angle_a, angle_b, angle_c};
     for (auto ang : angles) {

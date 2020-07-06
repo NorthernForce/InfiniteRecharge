@@ -34,4 +34,7 @@ class AutoBallSeek
     std::unique_ptr<TurnToTarget> turnToTarget = std::make_unique<TurnToTarget>();
     std::unique_ptr<AutoDrive> autoDrive = std::make_unique<AutoDrive>();
     double distToTarget;
+    bool isTargetLocked = false;
+    bool distHasBeenSet = true;
+    bool hasDriven = false;
 };

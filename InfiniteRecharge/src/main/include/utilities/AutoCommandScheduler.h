@@ -13,6 +13,7 @@
 class AutoCommandScheduler {
  public:
   AutoCommandScheduler(std::vector<frc2::Command*> &&commandQueue);
+  AutoCommandScheduler();
   void RunSequential();
   void RunParallel();
   bool IsFinished();
@@ -24,13 +25,14 @@ class AutoCommandScheduler {
     void EndIfGoneThroughAllIndexes();
     bool CheckForSubsystemConflictsInCommandQueue();
     std::vector<frc2::Subsystem*> GetRequiredSubsystems();
-    void CleanUpArray(std::vector<frc2::Command*> array);
+    void CheckAllCommandsHaveFinished();
 
     std::vector<frc2::Command*> commandQueue;
     static int currIndex;
     int maxIndex;
     bool isFinished = false;
     bool doCommandsHaveSharedSubsystems = false;
+    bool parallelScheduledOnce = false;
 
     struct BaseException : public std::exception {};
     struct CommandConflictError : public BaseException {

@@ -25,6 +25,12 @@ void Navigation::Periodic() {
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
     CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
+
+    /* ////new prints
+    std::cout << "Current angle: " << robotCurrentAngle << "\n";
+    std::cout << "Coordinates: " << GetCoordinatePosition().first << " " << GetCoordinatePosition().second << "\n";
+    std::cout << "Inches traveled: " << GetInchesTravelled().first << " " << GetInchesTravelled().second << "\n";
+    */
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {

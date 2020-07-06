@@ -8,6 +8,7 @@
 #include "subsystems/Drivetrain.h"
 #include "Constants.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <RobotContainer.h>
 
 Drivetrain::Drivetrain() {
     leftPrimarySpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::driveLeftPrimary, rev::CANSparkMax::MotorType::kBrushless);
@@ -50,9 +51,7 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 }
 
 // This method will be called once per scheduler run
-void Drivetrain::Periodic() {
-    frc::SmartDashboard::PutNumber("Encoder Pos:", GetAvgEncoderRotations());
-}
+void Drivetrain::Periodic() {}
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake
 void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
@@ -72,6 +71,10 @@ double Drivetrain::GetLeftRPM() {
 
 double Drivetrain::GetRightRPM() {
     return rightPrimarySpark->GetEncoder().GetVelocity() * -1;
+}
+
+double Drivetrain::GetAvgRPM() {
+    return ((GetLeftRPM() + GetRightRPM()) / 2);
 }
 
 std::pair<double, double> Drivetrain::GetEncoderRotations() {
@@ -100,11 +103,16 @@ void Drivetrain::SetEncoderPosition(double position) {
     rightPrimarySpark->GetEncoder().SetPosition(position);
 }
 
-// This isn't being used anywhere, do we need it now that the command works?
-void Drivetrain::SimpleTurnToAngle(double limelightOffset) {
-    if (limelightOffset < 0) {
-        rightPrimarySpark->Set(0.6);
-    } else if (limelightOffset > 0) {
-        leftPrimarySpark->Set(-0.6);
-    }
+int Drivetrain::GetSpeedInInchesPerSecond() {
+    prevEncoder = currentEncoder;
+    currentEncoder = GetAvgEncoderRotations();
+    double changeInPosition = abs(currentEncoder - prevEncoder);
+
+    int convertToInchesMultiplier;
+    if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::Low)
+        convertToInchesMultiplier = Constants::lowDriveMultiplier; 
+    else
+        convertToInchesMultiplier = Constants::highDriveMultiplier;
+        
+    return convertToInchesMultiplier * changeInPosition * loopCyclesInOneSecond;
 }

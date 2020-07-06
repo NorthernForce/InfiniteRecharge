@@ -22,17 +22,21 @@ class Drivetrain : public frc2::SubsystemBase {
   void ConfigureController(rev::CANSparkMax& controller);
   double GetRightRPM();
   double GetLeftRPM();
+  double GetAvgRPM();
   std::pair<double, double> GetEncoderRotations();
   double GetAvgEncoderRotations();
   void SimpleDriveWithEncoder(double desiredEncoder);
   void SetEncoderPosition(double position);
-  void SimpleTurnToAngle(double limeLightOffset);
+  int GetSpeedInInchesPerSecond();
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
 
   bool continueDrive;
+  int currentEncoder;
+  int prevEncoder;
+  const int loopCyclesInOneSecond = 50;
 
  private:
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
