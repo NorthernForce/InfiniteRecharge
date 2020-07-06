@@ -147,10 +147,10 @@ if(isTurnFinished == false) {
 if(autoStepOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
+  RobotContainer::drivetrain->SetEncoderPosition(0);
 
   if((autoOneString == "Turn") && (!autoTurnToAngle->IsScheduled()) && (autoPointOne == false)) {
     
-    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoOneNum);
     autoTurnToAngle->Schedule();
