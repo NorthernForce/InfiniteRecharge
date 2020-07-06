@@ -64,4 +64,6 @@ class Robot : public frc::TimedRobot {
   bool autoStepThree = false;
   bool autoStepFour = false;
   bool autoStepFive = false;
+  bool autoPointOne = false;
+  bool autoPointTwo = false;
 };
