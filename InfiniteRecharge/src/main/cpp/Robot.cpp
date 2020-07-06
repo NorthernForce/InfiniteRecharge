@@ -118,10 +118,10 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    autoCommandScheduler.reset(new AutoCommandScheduler({
-        new SafeCamera(),
-        new TurnToAngle()
-    }));
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    //     new SafeCamera(),
+    //     new TurnToAngle()
+    // }));
 
 }
 
@@ -129,7 +129,7 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 
     // auto command scheduler execution
-    autoCommandScheduler->RunParallel();
+    //autoCommandScheduler->RunParallel();
  
 /*
 
@@ -146,7 +146,7 @@ if(isTurnFinished == false) {
    }
 */
 
-/*
+
 if(autoStepOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
@@ -193,7 +193,7 @@ autoStepOne = true;
       autoShootCell->Schedule();
     }
 }
-*/
+
 
 
 
