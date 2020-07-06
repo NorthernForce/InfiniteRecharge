@@ -8,7 +8,6 @@
 #include "subsystems/CameraMount.h"
 #include "RobotContainer.h"
 #include "Constants.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 int CameraMount::sweepPassCount;
 
@@ -24,7 +23,6 @@ void CameraMount::Init() {
     currentTilt = 0;
     previousPan = 90;
     previousTilt = 0;
-    // std::thread syncThread(SyncServoAngles);
 }
 
 void CameraMount::Periodic() {
@@ -32,8 +30,6 @@ void CameraMount::Periodic() {
     SetLastNonZeroPcOffset();
     LimitStoredAngles();
     recentPanAngles.push_front(GetCurrentPan());
-    frc::SmartDashboard::PutNumber("avgOffsets", GetAvgOfRecentPans());
-    frc::SmartDashboard::PutNumber("currentPan", currentPan);
 }
 
 int CameraMount::GetServoAngleToTarget() {

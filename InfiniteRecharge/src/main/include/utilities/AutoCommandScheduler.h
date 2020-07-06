@@ -13,17 +13,31 @@
 class AutoCommandScheduler {
  public:
   AutoCommandScheduler(std::vector<frc2::Command*> &&commandQueue);
-  void Run();
+  void RunSequential();
+  void RunParallel();
   bool IsFinished();
 
  private:
     int GetPrevIndex();
-    void ScheduleCommandsInSequence();
+    void ScheduleInSequence();
+    void ScheduleInParallel();
     void EndIfGoneThroughAllIndexes();
+    bool CheckForSubsystemConflictsInCommandQueue();
+    std::vector<frc2::Subsystem*> GetRequiredSubsystems();
     void CleanUpArray(std::vector<frc2::Command*> array);
 
     std::vector<frc2::Command*> commandQueue;
     static int currIndex;
     int maxIndex;
     bool isFinished = false;
+    bool doCommandsHaveSharedSubsystems = false;
+
+    struct BaseException : public std::exception {};
+    struct CommandConflictError : public BaseException {
+        const char * what () const throw () {
+            const char *error_message = "CommandConflictError: Commands that require the same subsystems can not be run in parallel.\n"
+            "This is due to an intentional limitation of the WPILib.\n";
+            return error_message;
+        }
+    };
 };
