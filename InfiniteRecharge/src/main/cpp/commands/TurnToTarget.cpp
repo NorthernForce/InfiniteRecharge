@@ -35,7 +35,7 @@ void TurnToTarget::DisableTurningMode() {
 }
 
 bool TurnToTarget::IsTurnOnButtonEnabled() {
-    return RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button);
+    return (RobotContainer::oi->driverController->GetRawButton(OI::XboxAxis::lt_trigger) > 0.5);
 }
 
 bool TurnToTarget::IsAutoTurningEnabled() {
