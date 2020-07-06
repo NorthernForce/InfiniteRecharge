@@ -32,7 +32,7 @@ void SimpleCrossAutoLine::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool SimpleCrossAutoLine::IsFinished() {  
-    if (RobotContainer::drivetrain->GetAvgEncoderRotations() < -10)
+    if (RobotContainer::drivetrain->GetAvgEncoderRotations() < -5)
         return true;
     else
         return false;
