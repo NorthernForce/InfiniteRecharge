@@ -175,10 +175,10 @@ if(autoPointOne == false) {
 if ((autoPointTwo == false) && (autoPointOne == true)) {
     std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
     int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
+    RobotContainer::drivetrain->SetEncoderPosition(0);
 
     if((autoTwoString == "Turn") && (!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (autoPointTwo == false)) {
 
-    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoTwoNum);
     autoTurnToAngle->Schedule();
