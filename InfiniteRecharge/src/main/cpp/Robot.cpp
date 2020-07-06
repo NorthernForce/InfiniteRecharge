@@ -147,8 +147,9 @@ if(autoStepOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
 
-  if(autoOneString == "Turn") {
+  if((autoOneString == "Turn") && (!autoTurnToAngle->IsScheduled())) {
     
+    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoOneNum);
     autoTurnToAngle->Schedule();
@@ -171,11 +172,12 @@ autoStepOne = true;
 
   if(autoTwoString == "Turn") {
     
+    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoTwoNum);
     autoTurnToAngle->Schedule();
 
-    } else if (autoTwoString == "GoForward") {
+    } else if ((autoTwoString == "GoForward") && (!simpleCrossAutoLine->IsScheduled())) {
 
       simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
       simpleCrossAutoLine->SetDistance(autoTwoNum);
