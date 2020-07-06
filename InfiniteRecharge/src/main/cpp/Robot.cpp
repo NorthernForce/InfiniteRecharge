@@ -168,10 +168,10 @@ if(autoStepOne == false) {
       autoShootCell.reset(new AutoShootCell);
       autoShootCell->Schedule();
       autoPointOne = true;
-
-    } else {
-      autoStepOne = true;
     }
+
+  autoStepOne = true;
+
 }
 
 if ((autoStepTwo == false) && (autoStepOne == true)) {
@@ -199,9 +199,10 @@ if ((autoStepTwo == false) && (autoStepOne == true)) {
       autoShootCell->Schedule();
       autoPointTwo = true;
 
-    } else {
-      autoStepTwo = true;
-    }
+    } 
+  
+  autoStepTwo = true;
+
 }
 
 }
