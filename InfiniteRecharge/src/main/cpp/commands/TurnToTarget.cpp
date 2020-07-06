@@ -54,12 +54,13 @@ void TurnToTarget::TurnRobotToTarget() {
     if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
         double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
         TurnToAng(targetAng);
-        std::cout << "hasTurned: " << (!turnToAngle->IsScheduled() && startedTurning) << '\n';
         if (!turnToAngle->IsScheduled() && startedTurning)
             hasTurned = true;
     }
-    else
+    else {
         hasTurned = false;
+        startedTurning = false;
+    }
 }
 
 void TurnToTarget::TurnToAng(int ang) {
