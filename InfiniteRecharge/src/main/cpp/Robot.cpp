@@ -148,46 +148,59 @@ if(autoStepOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
 
-  if(autoOneString == "Turn") {
-
+  if((autoOneString == "Turn") && (!autoTurnToAngle->IsScheduled()) && (autoPointOne == false)) {
+    
+    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoOneNum);
     autoTurnToAngle->Schedule();
+    autoPointOne = true;
 
-    } else if (autoOneString == "GoForward") {
+    } else if ((autoOneString == "GoForward") && (!simpleCrossAutoLine->IsScheduled()) && (autoPointOne == false)) {
 
       simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
       simpleCrossAutoLine->SetDistance(autoOneNum);
       simpleCrossAutoLine->Schedule();
+      autoPointOne = true;
 
     } else if (autoOneString == "Shoot") {
 
       autoShootCell.reset(new AutoShootCell);
       autoShootCell->Schedule();
+      autoPointOne = true;
+
+    } else {
+      autoStepOne = true;
     }
+}
 
-autoStepOne = true;
-
-} else if (autoStepTwo == false) {
+if ((autoStepTwo == false) && (autoStepOne == true)) {
     std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
     int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
 
-    if(autoTwoString == "Turn") {
+    if((autoTwoString == "Turn") && (!autoTurnToAngle->IsScheduled()) && (!simpleCrossAutoLine->IsScheduled()) && (autoPointTwo == false)) {
 
+    RobotContainer::drivetrain->SetEncoderPosition(0);
     autoTurnToAngle.reset(new TurnToAngle);
     autoTurnToAngle->SetAngle(autoTwoNum);
     autoTurnToAngle->Schedule();
+    autoPointTwo = true;
 
-    } else if (autoTwoString == "GoForward") {
+    } else if ((autoTwoString == "GoForward") && (!simpleCrossAutoLine->IsScheduled()) && (!autoTurnToAngle->IsScheduled()) && (autoPointTwo == false)) {
 
       simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
       simpleCrossAutoLine->SetDistance(autoTwoNum);
       simpleCrossAutoLine->Schedule();
+      autoPointTwo = true;
 
     } else if (autoTwoString == "Shoot") {
 
       autoShootCell.reset(new AutoShootCell);
       autoShootCell->Schedule();
+      autoPointTwo = true;
+
+    } else {
+      autoStepTwo = true;
     }
 }
 
