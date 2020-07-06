@@ -155,20 +155,23 @@ if(autoPointOne == false) {
     autoTurnToAngle->SetAngle(autoOneNum);
     autoTurnToAngle->Schedule();
     autoPointOne = true;
+  }
 
-    } else if ((autoOneString == "GoForward") && (!simpleCrossAutoLine->IsScheduled()) && (autoPointOne == false)) {
+  if ((autoOneString == "GoForward") && (!simpleCrossAutoLine->IsScheduled()) && (autoPointOne == false)) {
 
-      simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-      simpleCrossAutoLine->SetDistance(autoOneNum);
-      simpleCrossAutoLine->Schedule();
-      autoPointOne = true;
+    simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+    simpleCrossAutoLine->SetDistance(autoOneNum);
+    simpleCrossAutoLine->Schedule();
+    autoPointOne = true;
 
-    } else if (autoOneString == "Shoot") {
+  }
+    
+  if (autoOneString == "Shoot") {
 
-      autoShootCell.reset(new AutoShootCell);
-      autoShootCell->Schedule();
-      autoPointOne = true;
-    }
+    autoShootCell.reset(new AutoShootCell);
+    autoShootCell->Schedule();
+    autoPointOne = true;
+  }
 
 }
 
