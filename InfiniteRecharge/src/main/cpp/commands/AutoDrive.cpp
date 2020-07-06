@@ -32,7 +32,7 @@ void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
 // Called when the command is initially scheduled.
 void AutoDrive::Initialize() {
     CheckForAndFixNegatives();
-    startDist = RobotContainer::drivetrain->GetAvgEncoderRotations();
+    startDist = RobotContainer::drivetrain->GetEncoderRotations().first;
     encoderToTravelTo = startDist + (inchesToTravel * 0.275789889);
 }
 

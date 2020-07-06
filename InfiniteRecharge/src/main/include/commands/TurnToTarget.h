@@ -17,8 +17,10 @@ class TurnToTarget
  public:
   TurnToTarget();
   void Initialize() override;
-  void EnableTurningMode(bool enableTurning);
-  bool IsTurningEnabled();
+  void EnableTurningMode();
+  void DisableTurningMode();
+  bool IsTurnOnButtonEnabled();
+  bool IsAutoTurningEnabled();
   void Execute() override;
   void TurnRobotToTarget();
   void TurnToAng(int ang);
@@ -29,6 +31,7 @@ class TurnToTarget
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
-  bool hasTurned;
-  bool turningMode = false;
+  static bool hasTurned;
+  static bool turningMode;
+  static bool startedTurning;
 };

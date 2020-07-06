@@ -7,6 +7,11 @@
 
 #include "commands/TurnToTarget.h"
 
+bool TurnToTarget::hasTurned;
+bool TurnToTarget::turningMode;
+bool TurnToTarget::startedTurning;
+
+
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
     AddRequirements(RobotContainer::aiVisionTargetting.get());
@@ -16,14 +21,25 @@ TurnToTarget::TurnToTarget() {
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
     RobotContainer::cameraMount->Tilt(0);
+    turningMode = false;
+    startedTurning = false;
+    hasTurned = false;
 }
 
-void TurnToTarget::EnableTurningMode(bool enableTurning) {
-    turningMode = enableTurning;
+void TurnToTarget::EnableTurningMode() {
+    turningMode = true;
 }
 
-bool TurnToTarget::IsTurningEnabled() {
-    return (RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button) or turningMode);
+void TurnToTarget::DisableTurningMode() {
+    turningMode = false;
+}
+
+bool TurnToTarget::IsTurnOnButtonEnabled() {
+    return RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button);
+}
+
+bool TurnToTarget::IsAutoTurningEnabled() {
+    return turningMode;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -35,11 +51,11 @@ void TurnToTarget::Execute() {
 }
 
 void TurnToTarget::TurnRobotToTarget() {
-    double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-
-    if (IsTurningEnabled()) {
+    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
+        double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
         TurnToAng(targetAng);
-        if (!turnToAngle->IsScheduled())
+        std::cout << "hasTurned: " << (!turnToAngle->IsScheduled() && startedTurning) << '\n';
+        if (!turnToAngle->IsScheduled() && startedTurning)
             hasTurned = true;
     }
     else
@@ -47,9 +63,10 @@ void TurnToTarget::TurnRobotToTarget() {
 }
 
 void TurnToTarget::TurnToAng(int ang) {
-    if (!turnToAngle->IsScheduled() && !hasTurned) {
+    if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
+        startedTurning = true;
     }
 }
 

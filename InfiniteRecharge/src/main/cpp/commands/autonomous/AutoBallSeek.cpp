@@ -15,23 +15,27 @@ void AutoBallSeek::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void AutoBallSeek::Execute() {
-    if (RobotContainer::aiVisionTargetting->IsTargetLocked()) {
-        turnToTarget->EnableTurningMode(true);
-        if (turnToTarget->HasReachedTargetAngle())
-            DriveToTarget();
-    }
+    if (!turnToTarget->IsAutoTurningEnabled())
+        turnToTarget->EnableTurningMode();
+
+    if (turnToTarget->HasReachedTargetAngle())
+        DriveToTarget();
 }
 
 void AutoBallSeek::DriveToTarget() {
+    // if (!hasDriven) {
     distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
     autoDrive->SetDist(distToTarget);
-    if (!autoDrive->IsScheduled())
+    if (autoDrive->IsFinished())
+        hasDriven = true;
+    else if (!autoDrive->IsScheduled())
         autoDrive->Schedule();
+    // }
 }
 
 // Called once the command ends or is interrupted.
 void AutoBallSeek::End(bool interrupted) {
-    turnToTarget->EnableTurningMode(false);
+    turnToTarget->DisableTurningMode();
 }
 
 // Returns true when the command should end.

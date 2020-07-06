@@ -27,50 +27,48 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/autonomous/AutoBallSeek.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
 
 
 void Robot::RobotInit() {
-  container = std::make_shared<RobotContainer>();
+    container = std::make_shared<RobotContainer>();
 
-// std::string strTest = "something";
-
-// frc::SmartDashboard::PutData(strtest);
-frc::SmartDashboard::PutString("auto string input 1", "insert here");
-frc::SmartDashboard::PutNumber("auto 1 parameter", 0);
-frc::SmartDashboard::PutString("auto string input 2", "insert here");
-frc::SmartDashboard::PutNumber("auto 2 parameter", 0);
-frc::SmartDashboard::PutString("auto string input 3", "insert here");
-frc::SmartDashboard::PutNumber("auto 3 parameter", 0);
-frc::SmartDashboard::PutString("auto string input 4", "insert here");
-frc::SmartDashboard::PutNumber("auto 4 parameter", 0);
-frc::SmartDashboard::PutString("auto string input 5", "insert here");
-frc::SmartDashboard::PutNumber("auto 5 parameter", 0);
+    frc::SmartDashboard::PutString("auto string input 1", "insert here");
+    frc::SmartDashboard::PutNumber("auto 1 parameter", 0);
+    frc::SmartDashboard::PutString("auto string input 2", "insert here");
+    frc::SmartDashboard::PutNumber("auto 2 parameter", 0);
+    frc::SmartDashboard::PutString("auto string input 3", "insert here");
+    frc::SmartDashboard::PutNumber("auto 3 parameter", 0);
+    frc::SmartDashboard::PutString("auto string input 4", "insert here");
+    frc::SmartDashboard::PutNumber("auto 4 parameter", 0);
+    frc::SmartDashboard::PutString("auto string input 5", "insert here");
+    frc::SmartDashboard::PutNumber("auto 5 parameter", 0);
 
 
-////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
-/*
-  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
-  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
-  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
-  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
-  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
-  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-*/
-/*
+    ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
+    /*
+    autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+    autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+    autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+    autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+    autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+    frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+    */
+    /*
 
-  chooserAuto = new frc::SendableChooser<std::string>;
-  chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
-  chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
-  chooserAuto->AddOption("InFrontOfGoal", "InFrontOfGoal");
-  chooserAuto->AddOption("SimpleCrossAutoLine", "SimpleCrossAutoLine");
-  chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
-  chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
-  frc::SmartDashboard::PutData(chooserAuto);
+    chooserAuto = new frc::SendableChooser<std::string>;
+    chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
+    chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
+    chooserAuto->AddOption("InFrontOfGoal", "InFrontOfGoal");
+    chooserAuto->AddOption("SimpleCrossAutoLine", "SimpleCrossAutoLine");
+    chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
+    chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
+    frc::SmartDashboard::PutData(chooserAuto);
 
-  */
+    */
 
     CameraServer::GetInstance()->StartAutomaticCapture();
 }
@@ -100,10 +98,10 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
 
-//   frc2::SequentialCommandGroup{
-//   TurnToAngle(90),
-//   SimpleCrossAutoLine(),
-// };
+    //   frc2::SequentialCommandGroup{
+    //   TurnToAngle(90),
+    //   SimpleCrossAutoLine(),
+    // };
 
 
     // Aiden's stuff
@@ -111,7 +109,7 @@ void Robot::AutonomousInit() {
     //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
     //autoShootCell.reset(new AutoShootCell);
 
-   // RobotContainer::drivetrain->SetEncoderPosition(0);
+    // RobotContainer::drivetrain->SetEncoderPosition(0);
     //autoTurnToAngle->SetAngle(90);
     // isTurnFinished = false;
     // isForwardFinished = false;
@@ -119,8 +117,7 @@ void Robot::AutonomousInit() {
 
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new SafeCamera(),
-        new TurnToAngle()
+        new AutoBallSeek()
     }));
 
 }
@@ -129,68 +126,57 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 
     // auto command scheduler execution
-    autoCommandScheduler->RunParallel();
+    autoCommandScheduler->RunSequential();
  
 /*
-
-if(isTurnFinished == false) {
-  autoTurnToAngle->Schedule();
-  isTurnFinished = true;
-   } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
-       simpleCrossAutoLine->Schedule();
-       isForwardFinished = true;
-   } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
-     std::cout << "I should be shooting a ball rn \n";
-     autoShootCell->Schedule();
-     isShooterFinished = true;
-   }
+    if(isTurnFinished == false) {
+    autoTurnToAngle->Schedule();
+    isTurnFinished = true;
+    } else if((!autoTurnToAngle->IsScheduled()) && (isForwardFinished == false) && (isTurnFinished == true)) {
+        simpleCrossAutoLine->Schedule();
+        isForwardFinished = true;
+    } else if ((!simpleCrossAutoLine->IsScheduled()) && (isShooterFinished == false) && (isForwardFinished == true)) {
+        std::cout << "I should be shooting a ball rn \n";
+        autoShootCell->Schedule();
+        isShooterFinished = true;
+    }
 */
-
 /*
-if(autoStepOne == false) {
-  std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
-  int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
 
-  if(autoOneString == "Turn") {
-    
-    autoTurnToAngle.reset(new TurnToAngle);
-    autoTurnToAngle->SetAngle(autoOneNum);
-    autoTurnToAngle->Schedule();
+    if(autoStepOne == false) {
+        std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
+        int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
 
-    } else if (autoOneString == "GoForward") {
+        if(autoOneString == "Turn") { 
+            autoTurnToAngle.reset(new TurnToAngle);
+            autoTurnToAngle->SetAngle(autoOneNum);
+            autoTurnToAngle->Schedule();
+        } else if (autoOneString == "GoForward") {
+            simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+            simpleCrossAutoLine->SetDistance(autoOneNum);
+            simpleCrossAutoLine->Schedule();
+        } else if (autoOneString == "Shoot") {
+            autoShootCell.reset(new AutoShootCell);
+            autoShootCell->Schedule();
+        }
+            autoStepOne = true;
 
-      simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-      simpleCrossAutoLine->SetDistance(autoOneNum);
-      simpleCrossAutoLine->Schedule();
-
-    } else if (autoOneString == "Shoot") {
-
-      autoShootCell.reset(new AutoShootCell);
-      autoShootCell->Schedule();
+    } else if (autoStepTwo == false) {
+        std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
+        int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
+        if(autoTwoString == "Turn") {
+            autoTurnToAngle.reset(new TurnToAngle);
+            autoTurnToAngle->SetAngle(autoTwoNum);
+            autoTurnToAngle->Schedule();
+        } else if (autoTwoString == "GoForward") {
+            simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+            simpleCrossAutoLine->SetDistance(autoTwoNum);
+            simpleCrossAutoLine->Schedule();
+        } else if (autoTwoString == "Shoot") {
+            autoShootCell.reset(new AutoShootCell);
+            autoShootCell->Schedule();
+        }
     }
-autoStepOne = true;
-} else if (autoStepTwo == false) {
-    std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
-    int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
-
-  if(autoTwoString == "Turn") {
-    
-    autoTurnToAngle.reset(new TurnToAngle);
-    autoTurnToAngle->SetAngle(autoTwoNum);
-    autoTurnToAngle->Schedule();
-
-    } else if (autoTwoString == "GoForward") {
-
-      simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-      simpleCrossAutoLine->SetDistance(autoTwoNum);
-      simpleCrossAutoLine->Schedule();
-
-    } else if (autoTwoString == "Shoot") {
-
-      autoShootCell.reset(new AutoShootCell);
-      autoShootCell->Schedule();
-    }
-}
 */
 
 

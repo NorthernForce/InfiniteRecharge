@@ -13,12 +13,12 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> &&command
     this->commandQueue = commandQueue;
     maxIndex = commandQueue.size() - 1;
     doCommandsHaveSharedSubsystems = CheckForSubsystemConflictsInCommandQueue();
- }
+}
+
+AutoCommandScheduler::AutoCommandScheduler() {}
 
 void AutoCommandScheduler::RunSequential() {
-    if (isFinished)
-        EndIfGoneThroughAllIndexes();
-    else
+    if (!isFinished)
         ScheduleInSequence();
 }
 
@@ -28,6 +28,8 @@ void AutoCommandScheduler::ScheduleInSequence() {
         commandQueue[currIndex]->Schedule();
         currIndex++;
     }
+    else 
+        CheckAllCommandsHaveFinished();
 }
 
 int AutoCommandScheduler::GetPrevIndex() {
@@ -38,16 +40,18 @@ int AutoCommandScheduler::GetPrevIndex() {
 }
 
 void AutoCommandScheduler::RunParallel() {
-    if (isFinished)
-        EndIfGoneThroughAllIndexes();
-    else
+    if (!isFinished)
         ScheduleInParallel();
 }
 
 void AutoCommandScheduler::ScheduleInParallel() {
     if (!doCommandsHaveSharedSubsystems) {
-        for (auto cmd : commandQueue)
-            cmd->Schedule();
+        if (currIndex <= maxIndex) {
+            commandQueue[currIndex]->Schedule();
+            currIndex++;
+        }
+        else
+            CheckAllCommandsHaveFinished();
     }
     else
         throw CommandConflictError();
@@ -74,19 +78,11 @@ std::vector<frc2::Subsystem*> AutoCommandScheduler::GetRequiredSubsystems() {
     return requirements;
 }
 
+void AutoCommandScheduler::CheckAllCommandsHaveFinished() {
+    if (!commandQueue[maxIndex]->IsScheduled())
+        isFinished = true;
+}
+
 bool AutoCommandScheduler::IsFinished() {
     return isFinished;
-}
-
-void AutoCommandScheduler::EndIfGoneThroughAllIndexes() {
-    if (currIndex >= maxIndex) {
-        currIndex = 0;
-        isFinished = true;
-    }
-    CleanUpArray(commandQueue);
-}
-
-void AutoCommandScheduler::CleanUpArray(std::vector<frc2::Command*> array) {
-    for (auto elem : array)
-        delete elem;
 }
