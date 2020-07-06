@@ -144,7 +144,7 @@ if(isTurnFinished == false) {
 */
 
 
-if(autoStepOne == false) {
+if(autoPointOne == false) {
   std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
   RobotContainer::drivetrain->SetEncoderPosition(0);
@@ -170,11 +170,9 @@ if(autoStepOne == false) {
       autoPointOne = true;
     }
 
-  autoStepOne = true;
-
 }
 
-if ((autoStepTwo == false) && (autoStepOne == true)) {
+if ((autoPointTwo == false) && (autoPointOne == true)) {
     std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
     int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
 
@@ -201,8 +199,6 @@ if ((autoStepTwo == false) && (autoStepOne == true)) {
 
     } 
   
-  autoStepTwo = true;
-
 }
 
 }
