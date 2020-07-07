@@ -51,7 +51,9 @@ void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
 }
 
 // This method will be called once per scheduler run
-void Drivetrain::Periodic() {}
+void Drivetrain::Periodic() {
+    frc::SmartDashboard::PutNumber("currenEncoderReal", GetEncoderRotations().first);
+}
 
 // Sets each Spark motor controller with current limits, a speed ramp, and brake
 void Drivetrain::ConfigureController(rev::CANSparkMax& controller) {
@@ -110,9 +112,9 @@ int Drivetrain::GetSpeedInInchesPerSecond() {
 
     int convertToInchesMultiplier;
     if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::Low)
-        convertToInchesMultiplier = Constants::lowDriveMultiplier; 
+        convertToInchesMultiplier = Constants::Shifting::lowMultiplier; 
     else
-        convertToInchesMultiplier = Constants::highDriveMultiplier;
+        convertToInchesMultiplier = Constants::Shifting::highMultiplier;
         
     return convertToInchesMultiplier * changeInPosition * loopCyclesInOneSecond;
 }

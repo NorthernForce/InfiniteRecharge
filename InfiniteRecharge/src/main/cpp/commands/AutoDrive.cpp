@@ -32,8 +32,8 @@ void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
 // Called when the command is initially scheduled.
 void AutoDrive::Initialize() {
     CheckForAndFixNegatives();
-    startDist = RobotContainer::drivetrain->GetEncoderRotations().first;
-    encoderToTravelTo = startDist + (inchesToTravel * 0.275789889);
+    startDist = -1 * RobotContainer::drivetrain->GetEncoderRotations().first;
+    encoderToTravelTo = startDist + (inchesToTravel * Constants::Shifting::highMultiplier);
 }
 
 void AutoDrive::CheckForAndFixNegatives() {
@@ -49,7 +49,7 @@ void AutoDrive::Execute() {
     frc::SmartDashboard::PutNumber("encoderCurrent", encoderCurrent);
     frc::SmartDashboard::PutNumber("encoderToTravelTo", encoderToTravelTo);
     RobotContainer::drivetrain->DriveUsingSpeeds(leftMotorSpeed, rightMotorSpeed);
-    encoderCurrent = RobotContainer::drivetrain->GetAvgEncoderRotations();
+    encoderCurrent = -1 * RobotContainer::drivetrain->GetEncoderRotations().first;
 }
 
 // Called once the command ends or is interrupted.
@@ -59,5 +59,10 @@ void AutoDrive::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool AutoDrive::IsFinished() {
-    return (abs(encoderCurrent) >= abs(encoderToTravelTo));
+    if (encoderToTravelTo >= 0)
+        return encoderCurrent >= encoderToTravelTo;
+    else if (encoderToTravelTo < 0)
+        return encoderCurrent <= encoderToTravelTo;
+    else
+        return false;
 }

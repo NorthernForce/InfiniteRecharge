@@ -27,10 +27,7 @@ namespace Constants {
     const double pi = 3.141592653589793;
     const double degreesToRadians = pi/180;
 
-    const int XResetMultiplier = 0.996194698092;
-
-    const int lowDriveMultiplier = .7179821429;
-    const int highDriveMultiplier = .269272619;
+    const double XResetMultiplier = 0.996194698092;
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;
@@ -63,8 +60,8 @@ namespace Constants {
     }
 
     namespace Shifting {
-        const double lowMultiplier = 4.286;
-        const double highMultiplier = 1.39383333333333333333;
+        const double lowMultiplier = .7179821429;
+        const double highMultiplier = .275789889;
     }
 
     namespace DigitalPort { 
