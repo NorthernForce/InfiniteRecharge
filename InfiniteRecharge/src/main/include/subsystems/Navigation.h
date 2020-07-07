@@ -25,9 +25,9 @@ class Navigation : public frc2::SubsystemBase {
     double robotStartingAngle;
     double robotCurrentAngle;
     double robotAngleDifference = robotStartingAngle - robotCurrentAngle;
-    double cameraStartingAngle;
-    double cameraCurrentAngle;
-    double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
+    // double cameraStartingAngle;
+    // double cameraCurrentAngle;
+    // double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
     double previousLeftEncoder = 0;
     double previousRightEncoder = 0;
 
