@@ -70,8 +70,8 @@ void OI::MapControllerButtons() {
     frc2::Button([this] { return (driverController->GetRawButton(Xbox::X_button)); }).WhileHeld(new ReverseConveyor());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
     frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TrevinIntake());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhileHeld(new ZeroRobotAngle());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::view_button); }).WhileHeld(new ZeroRobotPosition());
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ZeroRobotAngle());
+    frc2::Button([this] { return driverController->GetRawButton(Xbox::view_button); }).WhenPressed(new ZeroRobotPosition());
 
 
     // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
