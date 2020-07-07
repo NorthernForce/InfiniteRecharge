@@ -13,7 +13,7 @@ ZeroRobotAngle::ZeroRobotAngle() {
 
 // Called when the command is initially scheduled.
 void ZeroRobotAngle::Initialize() {
-  RobotContainer::navigation->ZeroAngle();
+  RobotContainer::imu->ZeroRotation();
 }
 
 // Called repeatedly when this Command is scheduled to run

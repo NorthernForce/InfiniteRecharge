@@ -18,7 +18,6 @@ class Navigation : public frc2::SubsystemBase {
   std::pair<double, double> GetInchesTravelled();
   void ResetPosition();
   void ZeroPosition();
-  void ZeroAngle();
   void CoordinatePosition();
   std::pair<double, double> GetCoordinatePosition();
 
