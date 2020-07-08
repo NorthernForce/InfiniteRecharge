@@ -18,7 +18,7 @@ void AutoBallSeek::Execute() {
     if (!turnToTarget->IsAutoTurningEnabled())
         turnToTarget->EnableTurningMode();
 
-    if (turnToTarget->HasReachedTargetAngle())
+    if (turnToTarget->HasRobotTurned())
         DriveToTarget();
 }
 

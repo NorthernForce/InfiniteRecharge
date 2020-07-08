@@ -85,3 +85,11 @@ void TurnToAngle::End(bool interrupted) {}
 bool TurnToAngle::IsFinished() {
     return std::abs(error) < minError;
 }
+
+double TurnToAngle::GetCurrentError() {
+    return error;
+}
+
+double TurnToAngle::GetMinimumError() {
+    return minError;
+}

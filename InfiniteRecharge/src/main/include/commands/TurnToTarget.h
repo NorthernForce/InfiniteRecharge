@@ -24,14 +24,13 @@ class TurnToTarget
   void Execute() override;
   void TurnRobotToTarget();
   void TurnToAng(int ang);
-  bool HasReachedTargetAngle();
   void End(bool interrupted) override;
   bool IsFinished() override;
+  bool HasRobotTurned();
 
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
-  static bool hasTurned;
   static bool turningMode;
-  static bool startedTurning;
+  static bool hasTurned;
 };

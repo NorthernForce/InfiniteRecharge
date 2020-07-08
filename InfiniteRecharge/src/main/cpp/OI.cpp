@@ -59,46 +59,6 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-  //Driver Controller
-    // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::lt_trigger) > 0.5); }).WhileHeld(new ShootByDist());
-    // frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger) > 0.5); }).WhenPressed(new PushOutPowerCell());
-    frc2::Button([this] { return (driverController->GetRawAxis(XboxAxis::rt_trigger)); }).WhileHeld(new ShootCell());
-    frc2::Button([this] { return (driverController->GetRawButton(Xbox::B_button)); }).WhileHeld(new PushOutPowerCell());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::lt_bumper); }).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new IntakePowerCell());
-    frc2::Button([this] { return (driverController->GetRawButton(Xbox::X_button)); }).WhileHeld(new ReverseConveyor());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToLimelight());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TrevinIntake());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::menu_button); }).WhenPressed(new ZeroRobotAngle());
-    frc2::Button([this] { return driverController->GetRawButton(Xbox::view_button); }).WhenPressed(new ZeroRobotPosition());
-
-
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhenPressed(new IndexPowerCells());
-    // frc2::Button([this] { return driverController->GetRawButton(Xbox::A_button); }).WhileHeld(new MoveToPowercell());
-
-  //Manipulator Controller
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::Y_button); }).WhenPressed(new AimShooterUp());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::B_button); }).WhenPressed(new AimShooterDown());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhileHeld(new IntakeDown());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new IntakeUp());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::rt_bumper); }).WhileHeld(new ManualShooter());
-    frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::rt_trigger); }).WhileHeld(new ManualIntake());
-    frc2::Button([this] { return manipulatorController->GetRawAxis(XboxAxis::lt_trigger); }).WhileHeld(new ManualIntakeBackward());
-    frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ManualConveyor());
-    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::up); }).WhenPressed(new IncreaseShooterRPM());
-    frc2::Button([this] { return manipulatorController->GetPOV(XboxPOV::down); }).WhenPressed(new DecreaseShooterRPM());
-
-    //frc2::Button([this] {return manipulatorController->GetRawButton(Xbox::X_button); }).WhileHeld(new ManualWackyWheel());
-
-  //Testing Buttons
-    //frc2::Button([this] { return driverController->GetRawButton(Xbox::Y_button); }).WhileHeld(new TurnToAngle(180));
-    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::A_button); }).WhenPressed(new PositionControl()); need color sensor that we asked for long ago
-    //frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::X_button); }).WhenPressed(new RotationControl());
-    // frc2::Button([this] { return manipulatorController->GetRawButton(Xbox::lt_bumper); }).WhileHeld(new ToggleArm()); Need to fix toggle arm at some point
-}
-
-void OI::MapControllerButtonsNew() {
     SimpleAxis(driverController, XboxAxis::rt_trigger).WhileHeld(new ShootCell);
     SimpleButton(driverController, Xbox::B_button).WhileHeld(new PushOutPowerCell);
     SimpleButton(driverController, Xbox::lt_bumper).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
@@ -107,8 +67,9 @@ void OI::MapControllerButtonsNew() {
     SimpleButton(driverController, Xbox::X_button).WhileHeld(new ReverseConveyor);
     SimpleButton(driverController, Xbox::A_button).WhileHeld(new MoveToLimelight);
     SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
-    SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
-
+    SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
+    SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
+    
     SimpleButton(manipulatorController, Xbox::Y_button).WhenPressed(new AimShooterUp);
     SimpleButton(manipulatorController, Xbox::B_button).WhenPressed(new AimShooterDown());
     SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);

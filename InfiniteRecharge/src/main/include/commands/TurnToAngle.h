@@ -26,6 +26,8 @@ class TurnToAngle
   void Execute() override;
   void End(bool interrupted) override;
   bool IsFinished() override;
+  double GetCurrentError();
+  double GetMinimumError();
 
   enum class Mode {
     Normal,

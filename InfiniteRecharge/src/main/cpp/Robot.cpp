@@ -117,7 +117,7 @@ void Robot::AutonomousInit() {
 
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new AutoDrive(12)
+        new AutoBallSeek()
     }));
 
 }

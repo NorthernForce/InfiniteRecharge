@@ -7,10 +7,8 @@
 
 #include "commands/TurnToTarget.h"
 
-bool TurnToTarget::hasTurned;
 bool TurnToTarget::turningMode;
-bool TurnToTarget::startedTurning;
-
+bool TurnToTarget::hasTurned;
 
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
@@ -22,8 +20,6 @@ TurnToTarget::TurnToTarget() {
 void TurnToTarget::Initialize() {
     RobotContainer::cameraMount->Tilt(0);
     turningMode = false;
-    startedTurning = false;
-    hasTurned = false;
 }
 
 void TurnToTarget::EnableTurningMode() {
@@ -35,7 +31,7 @@ void TurnToTarget::DisableTurningMode() {
 }
 
 bool TurnToTarget::IsTurnOnButtonEnabled() {
-    return (RobotContainer::oi->driverController->GetRawButton(OI::XboxAxis::lt_trigger) > 0.5);
+    return (RobotContainer::oi->driverController->GetRawButton(OI::XboxPOV::down) > 0.5);
 }
 
 bool TurnToTarget::IsAutoTurningEnabled() {
@@ -54,24 +50,19 @@ void TurnToTarget::TurnRobotToTarget() {
     if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
         double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
         TurnToAng(targetAng);
-        if (!turnToAngle->IsScheduled() && startedTurning)
-            hasTurned = true;
     }
-    else {
-        hasTurned = false;
-        startedTurning = false;
-    }
+    if (abs(turnToAngle->GetCurrentError()) < turnToAngle->GetMinimumError())
+        hasTurned = true;
 }
 
 void TurnToTarget::TurnToAng(int ang) {
     if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
-        startedTurning = true;
     }
 }
 
-bool TurnToTarget::HasReachedTargetAngle() {
+bool TurnToTarget::HasRobotTurned() {
     return hasTurned;
 }
 
