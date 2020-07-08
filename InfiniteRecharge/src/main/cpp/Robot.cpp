@@ -116,17 +116,14 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    autoCommandScheduler.reset(new AutoCommandScheduler({
-        new AutoDrive(12)
-    }));
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    //     new AutoDrive(12)
+    // }));
 
 }
 
 
 void Robot::AutonomousPeriodic() {
-
-    // auto command scheduler execution
-    autoCommandScheduler->RunSequential();
  
 /*
 
@@ -204,6 +201,51 @@ if ((autoPointTwo == false) && (autoPointOne == true)) {
   
 }
 */
+
+if (autoPointOne == false) {
+std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
+  int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
+  RobotContainer::drivetrain->SetEncoderPosition(0);
+
+  if(autoOneString == "Turn") {
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+      new TurnToAngle(autoOneNum)
+    }));
+    autoPointOne = true;
+  }
+
+  if(autoOneString == "GoForward") {
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+      new AutoDrive(autoOneNum)
+    }));
+    autoPointOne = true;
+  }
+
+}
+
+if((autoPointOne == true) && (autoPointTwo == false)) {
+  std::string autoTwoString = frc::SmartDashboard::GetString("auto string input 2", "insert here");
+  int autoTwoNum = frc::SmartDashboard::GetNumber("auto 2 parameter", 0);
+  RobotContainer::drivetrain->SetEncoderPosition(0);
+
+if(autoTwoString == "Turn") {
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+      new TurnToAngle(autoTwoNum)
+    }));
+    autoPointTwo = true;
+  }
+
+  if(autoTwoString == "GoForward") {
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+      new AutoDrive(autoTwoNum)
+    }));
+    autoPointTwo = true;
+  }
+
+  // auto command scheduler execution
+    autoCommandScheduler->RunSequential();
+  
+}
 }
 
 void Robot::TeleopInit() {
