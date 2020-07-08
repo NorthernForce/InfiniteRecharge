@@ -11,6 +11,7 @@
 #include <frc2/command/CommandHelper.h>
 #include "commands/TurnToTarget.h"
 #include "commands/AutoDrive.h"
+#include "commands/IntakePowerCell.h"
 #include <memory>
 
 /**
@@ -33,8 +34,10 @@ class AutoBallSeek
  private:
     std::unique_ptr<TurnToTarget> turnToTarget = std::make_unique<TurnToTarget>();
     std::unique_ptr<AutoDrive> autoDrive = std::make_unique<AutoDrive>();
+    std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
     double distToTarget;
     bool isTargetLocked = false;
     bool distHasBeenSet = true;
     bool hasDriven = false;
+    bool hasCompletedIntake = false;
 };
