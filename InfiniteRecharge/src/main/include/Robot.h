@@ -55,6 +55,7 @@ class Robot : public frc::TimedRobot {
   //ShootCell* autoShooter;
   //std::string chooserAutoSelected;
   std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
+  std::vector<std::string> dashboardInput;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;

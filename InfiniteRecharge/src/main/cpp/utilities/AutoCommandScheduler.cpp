@@ -5,7 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+#include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/AutoCommandScheduler.h"
+#include "commands/TurnToAngle.h"
+#include "commands/AutoDrive.h"
 
 int AutoCommandScheduler::currIndex;
 
@@ -13,6 +16,17 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> &&command
     this->commandQueue = commandQueue;
     maxIndex = commandQueue.size() - 1;
     doCommandsHaveSharedSubsystems = CheckForSubsystemConflictsInCommandQueue();
+}
+
+void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
+
+  if((driverInput[1] == "Turn") && (driverInput[2] == "GoForward")) {
+      commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
+      commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
+  } else if ((driverInput[1] == "GoForward") && (driverInput[2] == "Turn")) {
+      commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
+      commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
+  }
 }
 
 AutoCommandScheduler::AutoCommandScheduler() {}

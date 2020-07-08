@@ -16,7 +16,9 @@ class AutoCommandScheduler {
   AutoCommandScheduler();
   void RunSequential();
   void RunParallel();
+  void CustomAuto(std::vector<std::string> driverInput);
   bool IsFinished();
+  std::vector<frc2::Command*> commandQueue;
 
  private:
     int GetPrevIndex();
@@ -27,7 +29,6 @@ class AutoCommandScheduler {
     std::vector<frc2::Subsystem*> GetRequiredSubsystems();
     void CheckAllCommandsHaveFinished();
 
-    std::vector<frc2::Command*> commandQueue;
     static int currIndex;
     int maxIndex;
     bool isFinished = false;
