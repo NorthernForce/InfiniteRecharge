@@ -117,6 +117,7 @@ void Robot::AutonomousInit() {
 
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
+        // new AutoDrive(12)
         new AutoBallSeek()
     }));
 
@@ -202,6 +203,7 @@ if ((autoPointTwo == false) && (autoPointOne == true)) {
 }
 */
 
+/*/*
 if (autoPointOne == false) {
 std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");
   int autoOneNum = frc::SmartDashboard::GetNumber("auto 1 parameter", 0);
@@ -241,11 +243,11 @@ if(autoTwoString == "Turn") {
     }));
     autoPointTwo = true;
   }
-
-  // auto command scheduler execution
-    autoCommandScheduler->RunSequential();
   
 }
+*/
+    // auto command scheduler execution
+    autoCommandScheduler->RunSequential();
 }
 
 void Robot::TeleopInit() {

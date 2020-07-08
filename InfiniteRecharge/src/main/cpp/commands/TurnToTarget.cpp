@@ -47,11 +47,10 @@ void TurnToTarget::Execute() {
 }
 
 void TurnToTarget::TurnRobotToTarget() {
-    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
-        double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
+    double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
+    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled())
         TurnToAng(targetAng);
-    }
-    if (abs(turnToAngle->GetCurrentError()) < turnToAngle->GetMinimumError())
+    if ((abs(turnToAngle->GetCurrentError()) < turnToAngle->GetMinimumError()) && targetAng != 0)
         hasTurned = true;
 }
 

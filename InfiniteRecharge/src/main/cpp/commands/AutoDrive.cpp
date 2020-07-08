@@ -46,10 +46,9 @@ void AutoDrive::CheckForAndFixNegatives() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
-    frc::SmartDashboard::PutNumber("encoderCurrent", encoderCurrent);
-    frc::SmartDashboard::PutNumber("encoderToTravelTo", encoderToTravelTo);
     RobotContainer::drivetrain->DriveUsingSpeeds(leftMotorSpeed, rightMotorSpeed);
     encoderCurrent = -1 * RobotContainer::drivetrain->GetEncoderRotations().first;
+    frc::SmartDashboard::PutNumber("current encoder", encoderCurrent);
 }
 
 // Called once the command ends or is interrupted.
@@ -57,12 +56,16 @@ void AutoDrive::End(bool interrupted) {
     RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
 }
 
-// Returns true when the command should end.
-bool AutoDrive::IsFinished() {
+bool AutoDrive::HasReachedTargetDistance() {
     if (encoderToTravelTo >= 0)
         return encoderCurrent >= encoderToTravelTo;
     else if (encoderToTravelTo < 0)
         return encoderCurrent <= encoderToTravelTo;
     else
         return false;
+}
+
+// Returns true when the command should end.
+bool AutoDrive::IsFinished() {
+    return HasReachedTargetDistance();
 }

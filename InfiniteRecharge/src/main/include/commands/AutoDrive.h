@@ -27,6 +27,7 @@ class AutoDrive
   void CheckForAndFixNegatives();
   void Execute() override;
   void End(bool interrupted) override;
+  bool HasReachedTargetDistance();
   bool IsFinished() override;
 
  private:
