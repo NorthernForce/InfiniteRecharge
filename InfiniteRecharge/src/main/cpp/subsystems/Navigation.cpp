@@ -17,6 +17,9 @@
 #include <unistd.h>
 #endif
 
+double Navigation::xPosition;
+double Navigation::yPosition;
+
 Navigation::Navigation() {}
 
 ////TODO: Need to calculate position
