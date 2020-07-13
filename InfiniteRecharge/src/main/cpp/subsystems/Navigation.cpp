@@ -67,11 +67,20 @@ void Navigation::ZeroPosition() {
     yPosition = 0;
 }
 
+// void Navigation::CoordinatePosition() {
+//     double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+//     frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
+//     xPosition +=  averageInches * sin(robotCurrentAngle);
+//     yPosition += averageInches * cos(robotCurrentAngle);
+// }
+
 void Navigation::CoordinatePosition() {
-    double averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+    averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
+    double change = averageInches - averageInchesBuffer;
     frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
-    xPosition +=  averageInches * sin(robotCurrentAngle);
-    yPosition += averageInches * cos(robotCurrentAngle);
+    frc::SmartDashboard::PutNumber("Average inches change: ", change);
+    xPosition +=  change * sin(robotCurrentAngle);
+    yPosition += change * cos(robotCurrentAngle);
 }
 
 std::pair<double, double> Navigation::GetCoordinatePosition() {

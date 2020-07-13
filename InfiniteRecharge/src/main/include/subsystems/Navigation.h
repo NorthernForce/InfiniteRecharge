@@ -37,6 +37,8 @@ class Navigation : public frc2::SubsystemBase {
 
     double xPosition;
     double yPosition;
+    double averageInches;
+    double averageInchesBuffer; 
     double NavXScaling = Constants::XResetMultiplier;
 
     // const double cameraOffsetFromCenter;
