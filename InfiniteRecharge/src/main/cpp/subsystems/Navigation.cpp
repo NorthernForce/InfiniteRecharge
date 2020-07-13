@@ -17,6 +17,9 @@
 #include <unistd.h>
 #endif
 
+double Navigation::xPosition;
+double Navigation::yPosition;
+
 Navigation::Navigation() {}
 
 ////TODO: Need to calculate position
@@ -79,8 +82,8 @@ void Navigation::CoordinatePosition() {
     double change = averageInches - averageInchesBuffer;
     frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
     frc::SmartDashboard::PutNumber("Average inches change: ", change);
-    xPosition +=  change * sin(robotCurrentAngle);
-    yPosition += change * cos(robotCurrentAngle);
+    xPosition +=  change * sin(robotCurrentAngle * Constants::degreesToRadians);
+    yPosition += change * cos(robotCurrentAngle * Constants::degreesToRadians);
 }
 
 std::pair<double, double> Navigation::GetCoordinatePosition() {

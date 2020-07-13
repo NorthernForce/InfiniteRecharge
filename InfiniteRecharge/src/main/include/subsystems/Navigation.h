@@ -35,8 +35,8 @@ class Navigation : public frc2::SubsystemBase {
     double totalDistanceTravelled;
     double lastDistanceTravelled;
 
-    double xPosition;
-    double yPosition;
+    static double xPosition;
+    static double yPosition;
     double averageInches;
     double averageInchesBuffer; 
     double NavXScaling = Constants::XResetMultiplier;
