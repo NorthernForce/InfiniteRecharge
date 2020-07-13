@@ -40,4 +40,5 @@ class AutoBallSeek
     bool distHasBeenSet = true;
     bool hasDriven = false;
     bool hasCompletedIntake = false;
+    bool hasGottenDistToTarget = false;
 };

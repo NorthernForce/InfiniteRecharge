@@ -31,14 +31,17 @@ void AutoBallSeek::Execute() {
 
 void AutoBallSeek::DriveToTarget() {
     if (!hasDriven) {
-        distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+        if (!hasGottenDistToTarget && distToTarget != 0) {
+            distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+            hasGottenDistToTarget = true;
+        }
         
-        if (!autoDrive->IsScheduled() && distToTarget != 0) {
+        if (!autoDrive->IsScheduled()) {
             autoDrive->SetDist(distToTarget);
             autoDrive->Schedule();
+            if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
+                hasDriven = true;
         }
-        else if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
-            hasDriven = true;
     }
 }
 
