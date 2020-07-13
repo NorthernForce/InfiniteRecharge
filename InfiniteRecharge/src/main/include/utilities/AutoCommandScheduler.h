@@ -35,11 +35,13 @@ class AutoCommandScheduler {
     bool isFinished = false;
     bool doCommandsHaveSharedSubsystems = false;
     bool parallelScheduledOnce = false;
+    bool isUsingAuto = false;
+    bool hasScheduledAuto = false;
 
     struct BaseException : public std::exception {};
     struct CommandConflictError : public BaseException {
         const char * what () const throw () {
-            const char *error_message = "CommandConflictError: Commands that require the same subsystems can not be run in parallel.\n"
+            const char *error_message = "CommandConflictError: Commands that require the same subsystems cannot be run in parallel.\n"
             "This is due to an intentional limitation of the WPILib.\n";
             return error_message;
         }

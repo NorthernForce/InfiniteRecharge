@@ -21,7 +21,9 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> &&command
     doCommandsHaveSharedSubsystems = CheckForSubsystemConflictsInCommandQueue();
 }
 
-AutoCommandScheduler::AutoCommandScheduler() {}
+AutoCommandScheduler::AutoCommandScheduler() {
+    isUsingAuto = true;
+}
 
 void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
     if ((driverInput[0] == "Turn") && (driverInput[1] == "GoForward")) {
@@ -31,12 +33,14 @@ void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
         commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
         commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
     }
+    maxIndex = commandQueue.size() - 1;
+    hasScheduledAuto = true;
 }
 
 void AutoCommandScheduler::RunSequential() {
     if (isFinished)
         EndIfGoneThroughAllIndexes();
-    else
+    else if (isUsingAuto == false or (isUsingAuto == true and hasScheduledAuto == true))
         ScheduleInSequence();
 }
 

@@ -127,6 +127,10 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    //     new TurnToAngle(90),
+    //     new AutoDrive(24)
+    // }));
     autoCommandScheduler.reset(new AutoCommandScheduler);
     autoCommandScheduler->CustomAuto(dashboardInput);
 }
