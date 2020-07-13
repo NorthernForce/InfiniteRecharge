@@ -28,6 +28,7 @@ class AutoCommandScheduler {
     bool CheckForSubsystemConflictsInCommandQueue();
     std::vector<frc2::Subsystem*> GetRequiredSubsystems();
     void CheckAllCommandsHaveFinished();
+    void CleanUpArray(std::vector<frc2::Command*> array);
 
     static int currIndex;
     int maxIndex;
@@ -42,5 +43,20 @@ class AutoCommandScheduler {
             "This is due to an intentional limitation of the WPILib.\n";
             return error_message;
         }
+    };
+
+    enum class CommandTypes {
+        Drive,
+        Turn,
+        Intake,
+        Shoot,
+        AutoBallSeek
+    };
+    std::map<std::string, CommandTypes> stringToCommandTypes = {
+        { "Drive", CommandTypes::Drive },
+        { "Turn", CommandTypes::Turn },
+        { "Intake", CommandTypes::Intake },
+        { "Shoot", CommandTypes::Shoot },
+        { "AutoBallSeek", CommandTypes::AutoBallSeek }
     };
 };

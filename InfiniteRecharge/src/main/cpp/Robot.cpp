@@ -97,6 +97,17 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 1", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 2", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 3", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 4", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 5", "insert here"));
+
+    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 1 parameter", 0));
+    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 2 parameter", 0));
+    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 3 parameter", 0));
+    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 4 parameter", 0));
+    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 5 parameter", 0));
 
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
@@ -116,19 +127,11 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    autoCommandScheduler.reset(new AutoCommandScheduler({
-        // new AutoDrive(12)
-        new AutoBallSeek()
-    }));
-
+    autoCommandScheduler.reset(new AutoCommandScheduler);
+    autoCommandScheduler->CustomAuto(dashboardInput);
 }
 
-
 void Robot::AutonomousPeriodic() {
- 
-dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 1", "insert here"));
-dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 2", "insert here"));
-
 
 /*
 
@@ -210,7 +213,6 @@ if ((autoPointTwo == false) && (autoPointOne == true)) {
   // auto command scheduler execution
   autoCommandScheduler->RunSequential();
   
-}
 /*/*
 if (autoPointOne == false) {
 std::string autoOneString = frc::SmartDashboard::GetString("auto string input 1", "insert here");

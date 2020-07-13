@@ -5,10 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include <frc/smartdashboard/SmartDashboard.h>
 #include "utilities/AutoCommandScheduler.h"
-#include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
+#include "commands/TurnToAngle.h"
+#include "commands/IntakePowerCell.h"
+#include "commands/ShootCell.h"
+#include "commands/autonomous/AutoBallSeek.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 int AutoCommandScheduler::currIndex;
 
@@ -18,21 +21,22 @@ AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> &&command
     doCommandsHaveSharedSubsystems = CheckForSubsystemConflictsInCommandQueue();
 }
 
-void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
-
-  if((driverInput[1] == "Turn") && (driverInput[2] == "GoForward")) {
-      commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
-      commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
-  } else if ((driverInput[1] == "GoForward") && (driverInput[2] == "Turn")) {
-      commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
-      commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
-  }
-}
-
 AutoCommandScheduler::AutoCommandScheduler() {}
 
+void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
+    if ((driverInput[0] == "Turn") && (driverInput[1] == "GoForward")) {
+        commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
+        commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
+    } else if ((driverInput[0] == "GoForward") && (driverInput[1] == "Turn")) {
+        commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
+        commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
+    }
+}
+
 void AutoCommandScheduler::RunSequential() {
-    if (!isFinished)
+    if (isFinished)
+        EndIfGoneThroughAllIndexes();
+    else
         ScheduleInSequence();
 }
 
@@ -42,12 +46,10 @@ void AutoCommandScheduler::ScheduleInSequence() {
         commandQueue[currIndex]->Schedule();
         currIndex++;
     }
-    else 
-        CheckAllCommandsHaveFinished();
 }
 
 int AutoCommandScheduler::GetPrevIndex() {
-    int prevInd = 0;
+    int prevInd=0;
     if (currIndex > 0)
         prevInd = currIndex-1;
     return prevInd;
@@ -99,4 +101,17 @@ void AutoCommandScheduler::CheckAllCommandsHaveFinished() {
 
 bool AutoCommandScheduler::IsFinished() {
     return isFinished;
+}
+
+void AutoCommandScheduler::EndIfGoneThroughAllIndexes() {
+    if (currIndex >= maxIndex) {
+        currIndex = 0;
+        isFinished = true;
+    }
+    CleanUpArray(commandQueue);
+}
+
+void AutoCommandScheduler::CleanUpArray(std::vector<frc2::Command*> array) {
+    for (auto elem : array)
+        delete elem;
 }
