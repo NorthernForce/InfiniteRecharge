@@ -22,7 +22,7 @@ void AutoBallSeek::Execute() {
         else if (!intakeBall->IsScheduled())
             intakeBall->Schedule();
     }
-    else if (turnToTarget->HasRobotTurned())
+    else if (turnToTarget->HasRobotTurned() && !hasDriven)
         DriveToTarget();
 
     else if (!turnToTarget->IsAutoTurningEnabled() && !turnToTarget->HasRobotTurned())
