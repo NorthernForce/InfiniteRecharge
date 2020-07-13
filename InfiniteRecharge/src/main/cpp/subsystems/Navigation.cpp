@@ -47,12 +47,12 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double rightDistance;
 
     if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::High) {
-        leftDistance = leftEncoderPos * Constants::Shifting::highMultiplier;
-        rightDistance = rightEncoderPos * Constants::Shifting::highMultiplier;
+        leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
+        rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
     }
     else {
-        leftDistance = leftEncoderPos * Constants::Shifting::lowMultiplier;
-        rightDistance = rightEncoderPos * Constants::Shifting::lowMultiplier;
+        leftDistance = leftEncoderPos / Constants::Shifting::lowMultiplier;
+        rightDistance = rightEncoderPos / Constants::Shifting::lowMultiplier;
     }
     return std::make_pair(leftDistance, rightDistance);
 }
