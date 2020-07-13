@@ -48,10 +48,11 @@ void TurnToTarget::Execute() {
 
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled())
+    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
         TurnToAng(targetAng);
-    if ((abs(turnToAngle->GetCurrentError()) < turnToAngle->GetMinimumError()) && targetAng != 0)
-        hasTurned = true;
+        if ((abs(turnToAngle->GetCurrentError()) <= turnToAngle->GetMinimumError()) && targetAng != 0)
+            hasTurned = true;
+    }
 }
 
 void TurnToTarget::TurnToAng(int ang) {

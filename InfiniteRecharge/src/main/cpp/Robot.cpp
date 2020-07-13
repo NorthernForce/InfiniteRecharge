@@ -131,8 +131,10 @@ void Robot::AutonomousInit() {
     //     new TurnToAngle(90),
     //     new AutoDrive(24)
     // }));
-    autoCommandScheduler.reset(new AutoCommandScheduler);
-    autoCommandScheduler->CustomAuto(dashboardInput);
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new AutoBallSeek
+    }));
+    // autoCommandScheduler->CustomAuto(dashboardInput);
 }
 
 void Robot::AutonomousPeriodic() {
