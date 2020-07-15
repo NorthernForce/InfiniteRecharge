@@ -22,11 +22,12 @@ void AutoBallSeek::Execute() {
         else if (!intakeBall->IsScheduled())
             intakeBall->Schedule();
     }
-    else if (turnToTarget->HasRobotTurned() && !hasDriven)
+    else if (turnToTarget->HasRobotTurned() && !hasDriven && drivingEligible)
         DriveToTarget();
 
     else if (!turnToTarget->IsAutoTurningEnabled() && !turnToTarget->HasRobotTurned())
         turnToTarget->EnableTurningMode();
+        drivingEligible = true;
 }
 
 void AutoBallSeek::DriveToTarget() {
@@ -37,10 +38,10 @@ void AutoBallSeek::DriveToTarget() {
         }
         
         if (!autoDrive->IsScheduled()) {
-            autoDrive->SetDist(distToTarget);
-            autoDrive->Schedule();
             if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
                 hasDriven = true;
+            autoDrive->SetDist(distToTarget);
+            autoDrive->Schedule();
         }
     }
 }
