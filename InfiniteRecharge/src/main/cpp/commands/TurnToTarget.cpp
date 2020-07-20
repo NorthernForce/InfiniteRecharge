@@ -31,7 +31,7 @@ void TurnToTarget::DisableTurningMode() {
 }
 
 bool TurnToTarget::IsTurnOnButtonEnabled() {
-    return (RobotContainer::oi->driverController->GetRawButton(OI::Xbox::menu_button));
+    return (RobotContainer::oi->manipulatorController->GetRawButton(OI::Xbox::menu_button));
 }
 
 bool TurnToTarget::IsAutoTurningEnabled() {
@@ -50,7 +50,7 @@ void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
     if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
         TurnToAng(targetAng);
-        if ((abs(turnToAngle->GetCurrentError()) <= turnToAngle->GetMinimumError()) && targetAng != 0)
+        if (turnToAngle->GetIsFinished() && targetAng != 0)
             hasTurned = true;
     }
 }

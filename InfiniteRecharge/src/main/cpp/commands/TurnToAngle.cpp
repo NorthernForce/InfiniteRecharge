@@ -32,6 +32,7 @@ void TurnToAngle::SetAngle(double angle) {
 // Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
     currentAngle = RobotContainer::imu->GetRotation();
+    startingAngle = currentAngle;
     distanceToTargetAngle = currentAngle + targetAngle;
     integral = 0;
 }
@@ -92,4 +93,10 @@ double TurnToAngle::GetCurrentError() {
 
 double TurnToAngle::GetMinimumError() {
     return minError;
+}
+
+bool TurnToAngle::GetIsFinished() {
+    double angleRatio = (startingAngle - currentAngle) / distanceToTargetAngle;
+    bool isCloseToDistance = (angleRatio < 1.2 && angleRatio > 0.8);
+    return (std::abs(error) < minError && isCloseToDistance);
 }
