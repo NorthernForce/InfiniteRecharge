@@ -45,8 +45,8 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
     frc::SmartDashboard::PutNumber("Nav leftEncoderPos: ", leftEncoderPos);
     frc::SmartDashboard::PutNumber("Nav rightEncoderPos: ", rightEncoderPos);
-    previousLeftEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
-    previousRightEncoder = RobotContainer::drivetrain->GetEncoderRotations().second;
+    previousLeftEncoder = leftEncoderPos;
+    previousRightEncoder = rightEncoderPos;
     double leftDistance;
     double rightDistance;
 
