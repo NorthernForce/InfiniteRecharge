@@ -28,6 +28,7 @@ class TurnToAngle
   bool IsFinished() override;
   double GetCurrentError();
   double GetMinimumError();
+  bool GetIsFinished();
 
   enum class Mode {
     Normal,
@@ -54,4 +55,5 @@ class TurnToAngle
   double errorPrior = 0;
   double integral = 0;
   double derivative = 0;
+  double startingAngle = 0;
 };

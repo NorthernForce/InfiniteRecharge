@@ -16,30 +16,33 @@ void AutoBallSeek::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void AutoBallSeek::Execute() {
-    if (hasDriven) {
+    if (turnToTarget->HasRobotTurned() && !hasDriven)
+        DriveToTarget();
+
+    else if (!turnToTarget->IsAutoTurningEnabled() && !turnToTarget->HasRobotTurned()) {
+        turnToTarget->EnableTurningMode();
+    }
+
+    else if (hasDriven) {
         if (intakeBall->IsFinished())
             hasCompletedIntake = true;
         else if (!intakeBall->IsScheduled())
             intakeBall->Schedule();
     }
-    else if (turnToTarget->HasRobotTurned() && !hasDriven && drivingEligible)
-        DriveToTarget();
-
-    else if (!turnToTarget->IsAutoTurningEnabled() && !turnToTarget->HasRobotTurned())
-        turnToTarget->EnableTurningMode();
-        drivingEligible = true;
 }
 
 void AutoBallSeek::DriveToTarget() {
     if (!hasDriven) {
         if (!hasGottenDistToTarget && distToTarget != 0) {
             distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+            autoDrive->SetDist(distToTarget);
             hasGottenDistToTarget = true;
         }
         
-        if (!autoDrive->IsScheduled()) {
-            if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
-                hasDriven = true;
+        if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
+            hasDriven = true;
+
+        else if (!autoDrive->IsScheduled()) {
             autoDrive->SetDist(distToTarget);
             autoDrive->Schedule();
         }

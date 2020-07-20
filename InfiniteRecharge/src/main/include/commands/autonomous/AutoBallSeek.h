@@ -41,5 +41,4 @@ class AutoBallSeek
     bool hasDriven = false;
     bool hasCompletedIntake = false;
     bool hasGottenDistToTarget = false;
-    bool drivingEligible = false;
 };

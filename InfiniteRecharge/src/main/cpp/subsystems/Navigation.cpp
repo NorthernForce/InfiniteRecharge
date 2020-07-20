@@ -28,7 +28,6 @@ void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
     CoordinatePosition();
-    GetInchesTravelled();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
 
     frc::SmartDashboard::PutNumber("Nav current angle: ", robotCurrentAngle);
@@ -42,8 +41,10 @@ void Navigation::Periodic() {
 std::pair<double, double> Navigation::GetInchesTravelled() {
     double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
     double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
-    frc::SmartDashboard::PutNumber("Nav leftEncoderPos: ", leftEncoderPos);
-    frc::SmartDashboard::PutNumber("Nav rightEncoderPos: ", rightEncoderPos);
+    frc::SmartDashboard::PutNumber("Nav leftEncoderPosChange: ", leftEncoderPos);
+    frc::SmartDashboard::PutNumber("Nav rightEncoderPosChange: ", rightEncoderPos);
+    frc::SmartDashboard::PutNumber("Nav leftEncoderPos: ", RobotContainer::drivetrain->GetEncoderRotations().first);
+    frc::SmartDashboard::PutNumber("Nav rightEncoderPos: ", RobotContainer::drivetrain->GetEncoderRotations().second);
     previousLeftEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
     previousRightEncoder = RobotContainer::drivetrain->GetEncoderRotations().second;
     double leftDistance;
@@ -52,10 +53,14 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::High) {
         leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
         rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
+        frc::SmartDashboard::PutNumber("Nav leftInchesTravelled: ", leftDistance);
+        frc::SmartDashboard::PutNumber("Nav rightInchesTravelled: ", rightDistance);
     }
     else {
-        leftDistance = leftEncoderPos / Constants::Shifting::lowMultiplier;
-        rightDistance = rightEncoderPos / Constants::Shifting::lowMultiplier;
+        leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
+        rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
+        frc::SmartDashboard::PutNumber("Nav leftInchesTravelled: ", leftDistance);
+        frc::SmartDashboard::PutNumber("Nav rightInchesTravelled: ", rightDistance);
     }
     return std::make_pair(leftDistance, rightDistance);
 }
@@ -85,8 +90,8 @@ void Navigation::CoordinatePosition() {
     frc::SmartDashboard::PutNumber("Average Inches buffer: ", averageInchesBuffer);
 
     //Adds the change in distance to the x and y coordinates
-    xPosition += averageInches * sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
-    yPosition += averageInches * cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
+    xPosition += averageInches * std::sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
+    yPosition += averageInches * std::cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
 }
 
 std::pair<double, double> Navigation::GetCoordinatePosition() {
