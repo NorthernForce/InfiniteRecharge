@@ -9,6 +9,7 @@
 #include "RobotContainer.h"
 #include "Constants.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <cmath>
 
 #include <thread>
 #ifdef _WIN32
