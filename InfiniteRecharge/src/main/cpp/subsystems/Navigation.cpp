@@ -36,28 +36,22 @@ void Navigation::Periodic() {
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
-    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
-    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
-    if (!smartdashCycles) {
-        frc::SmartDashboard::PutNumber("LeftEncoder", leftEncoderPos);
-        frc::SmartDashboard::PutNumber("LeftBuffer", previousLeftEncoder);
-        frc::SmartDashboard::PutNumber("RightEncoder", rightEncoderPos);
-        frc::SmartDashboard::PutNumber("RightBuffer ", previousRightEncoder);
-    }
-    previousLeftEncoder = leftEncoderPos;
-    previousRightEncoder = rightEncoderPos;
-    double leftDistance;
-    double rightDistance;
+    double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first;
+    double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second;
 
     if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::High) {
-        leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
-        rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
+        leftEncoderPos /= Constants::Shifting::highMultiplier;
+        rightEncoderPos /= Constants::Shifting::highMultiplier;
     }
     else {
-        leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
-        rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
+        leftEncoderPos /= Constants::Shifting::highMultiplier;
+        rightEncoderPos /= Constants::Shifting::highMultiplier;
     }
-    return std::make_pair(leftDistance, rightDistance);
+    if (!smartdashCycles) {
+        frc::SmartDashboard::PutNumber("Left Inches", leftEncoderPos);
+        frc::SmartDashboard::PutNumber("Right Inches", rightEncoderPos);
+    }
+    return std::make_pair(leftEncoderPos, rightEncoderPos);
 }
 
 void Navigation::ResetPosition() {
@@ -79,14 +73,20 @@ void Navigation::ZeroPosition() {
 
 void Navigation::CoordinatePosition() {
     //Combines wheel rotations into one measurement
+    double averageInchesChange;
     averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
-    
-    frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
-    frc::SmartDashboard::PutNumber("Average Inches buffer: ", averageInchesBuffer);
+    averageInchesChange = averageInchesChange - averageInchesBuffer;
+    averageInchesBuffer = averageInchesChange;
 
     //Adds the change in distance to the x and y coordinates
-    xPosition += averageInches * std::sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
-    yPosition += averageInches * std::cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
+    xPosition += averageInchesChange * std::sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
+    yPosition += averageInchesChange * std::cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
+    if(!smartdashCycles) {
+        frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
+        frc::SmartDashboard::PutNumber("Average Inches buffer: ", averageInchesBuffer);
+        frc::SmartDashboard::PutNumber("xPostition: ", xPosition);
+        frc::SmartDashboard::PutNumber("yPosition: ", yPosition);
+    }
 }
 
 std::pair<double, double> Navigation::GetCoordinatePosition() {
