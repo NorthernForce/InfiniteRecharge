@@ -31,22 +31,19 @@ void Navigation::Periodic() {
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
     CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
-
-    frc::SmartDashboard::PutNumber("Nav current angle: ", robotCurrentAngle);
-    frc::SmartDashboard::PutNumber("Nav x coordinate: ", GetCoordinatePosition().first);
-    frc::SmartDashboard::PutNumber("Nav y coordinate: ", GetCoordinatePosition().second);
-    frc::SmartDashboard::PutNumber("Nav inches traveled left: ", GetInchesTravelled().first);
-    frc::SmartDashboard::PutNumber("Nav inches traveled right: ", GetInchesTravelled().second);
-
+    smartdashCycles++;
+    smartdashCycles = smartdashCycles % 20;
 }
 
 std::pair<double, double> Navigation::GetInchesTravelled() {
     double leftEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().first - previousLeftEncoder;
     double rightEncoderPos = RobotContainer::drivetrain->GetEncoderRotations().second - previousRightEncoder;
-    frc::SmartDashboard::PutNumber("Nav leftEncoderPosChange: ", leftEncoderPos);
-    frc::SmartDashboard::PutNumber("Nav rightEncoderPosChange: ", rightEncoderPos);
-    frc::SmartDashboard::PutNumber("Nav leftEncoderPos: ", RobotContainer::drivetrain->GetEncoderRotations().first);
-    frc::SmartDashboard::PutNumber("Nav rightEncoderPos: ", RobotContainer::drivetrain->GetEncoderRotations().second);
+    if (!smartdashCycles) {
+        frc::SmartDashboard::PutNumber("LeftEncoder", leftEncoderPos);
+        frc::SmartDashboard::PutNumber("LeftBuffer", previousLeftEncoder);
+        frc::SmartDashboard::PutNumber("RightEncoder", rightEncoderPos);
+        frc::SmartDashboard::PutNumber("RightBuffer ", previousRightEncoder);
+    }
     previousLeftEncoder = leftEncoderPos;
     previousRightEncoder = rightEncoderPos;
     double leftDistance;
@@ -55,14 +52,10 @@ std::pair<double, double> Navigation::GetInchesTravelled() {
     if (RobotContainer::driveShifter->GetGear() == DriveShifter::Gear::High) {
         leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
         rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
-        frc::SmartDashboard::PutNumber("Nav leftInchesTravelled: ", leftDistance);
-        frc::SmartDashboard::PutNumber("Nav rightInchesTravelled: ", rightDistance);
     }
     else {
         leftDistance = leftEncoderPos / Constants::Shifting::highMultiplier;
         rightDistance = rightEncoderPos / Constants::Shifting::highMultiplier;
-        frc::SmartDashboard::PutNumber("Nav leftInchesTravelled: ", leftDistance);
-        frc::SmartDashboard::PutNumber("Nav rightInchesTravelled: ", rightDistance);
     }
     return std::make_pair(leftDistance, rightDistance);
 }

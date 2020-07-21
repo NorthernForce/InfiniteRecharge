@@ -22,6 +22,7 @@ class Navigation : public frc2::SubsystemBase {
   std::pair<double, double> GetCoordinatePosition();
 
  private:
+    int smartdashCycles;
     double robotStartingAngle;
     double robotCurrentAngle;
     double robotAngleDifference = robotStartingAngle - robotCurrentAngle;
