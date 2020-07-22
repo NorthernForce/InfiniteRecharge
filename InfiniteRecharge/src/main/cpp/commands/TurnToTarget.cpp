@@ -9,6 +9,7 @@
 
 bool TurnToTarget::turningMode;
 bool TurnToTarget::hasTurned;
+////TODO: make not static if possible
 
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
@@ -48,18 +49,16 @@ void TurnToTarget::Execute() {
 
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled()) {
+    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled())
         TurnToAng(targetAng);
-        if (turnToAngle->GetIsFinished() && targetAng != 0)
-            hasTurned = true;
-    }
 }
 
 void TurnToTarget::TurnToAng(int ang) {
-    if (!turnToAngle->IsScheduled()) {
+    hasTurned = turnToAngle->GetIsFinished();
+    if (!turnToAngle->IsScheduled() && ang != 0) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
-    }
+    }        
 }
 
 bool TurnToTarget::HasRobotTurned() {

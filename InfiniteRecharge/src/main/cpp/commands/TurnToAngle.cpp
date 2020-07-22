@@ -96,7 +96,5 @@ double TurnToAngle::GetMinimumError() {
 }
 
 bool TurnToAngle::GetIsFinished() {
-    double angleRatio = (startingAngle - currentAngle) / distanceToTargetAngle;
-    bool isCloseToDistance = (angleRatio < 1.2 && angleRatio > 0.8);
-    return (std::abs(error) < minError && isCloseToDistance);
+    return (std::abs(error) < minError);
 }

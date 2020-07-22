@@ -40,7 +40,7 @@ void CameraMount::SmartSweep() {
     int millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
-    if (millisSinceTargetRegistered >= 750) {
+    if (millisSinceTargetRegistered >= 1250) {
         hasMovedServoBackToTarget = false;
         if (isTargetFound)
             CenterTarget();
