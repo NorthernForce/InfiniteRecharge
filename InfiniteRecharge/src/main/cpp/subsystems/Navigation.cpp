@@ -29,6 +29,8 @@ Navigation::Navigation() {}
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
     averageSpeedInRPM = (RobotContainer::drivetrain->GetLeftRPM() + RobotContainer::drivetrain->GetRightRPM() / 2);
+    ChangeInDistanceTravelled();
+    TotalInchesTravelled();
     CoordinatePosition();
     // std::cout << "EncoderPos" << RobotContainer::drivetrain->GetEncoderRotations().first;
     smartdashCycles++;
