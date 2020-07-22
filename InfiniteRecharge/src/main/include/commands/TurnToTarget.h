@@ -33,4 +33,5 @@ class TurnToTarget
   AIVisionTargetting::Target powercell = AIVisionTargetting::Target::Powercell;
   static bool turningMode;
   static bool hasTurned;
+  bool hasTurnedOnce = false;
 };
