@@ -134,7 +134,7 @@ void Robot::AutonomousInit() {
     autoCommandScheduler.reset(new AutoCommandScheduler({
         new AutoBallSeek
     }));
-    // autoCommandScheduler->CustomAuto(dashboardInput);
+    // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }
 
 void Robot::AutonomousPeriodic() {

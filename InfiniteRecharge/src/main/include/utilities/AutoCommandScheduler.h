@@ -16,9 +16,15 @@ class AutoCommandScheduler {
   AutoCommandScheduler();
   void RunSequential();
   void RunParallel();
-  void CustomAuto(std::vector<std::string> driverInput);
+  void CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams);
   bool IsFinished();
   std::vector<frc2::Command*> commandQueue;
+
+  enum StringCode {
+      Turn = 1,
+      GoForward = 2,
+      Shoot = 3
+  };
 
  private:
     int GetPrevIndex();

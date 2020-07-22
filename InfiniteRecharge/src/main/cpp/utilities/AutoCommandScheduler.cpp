@@ -11,6 +11,7 @@
 #include "commands/IntakePowerCell.h"
 #include "commands/ShootCell.h"
 #include "commands/autonomous/AutoBallSeek.h"
+#include "commands/IntakePowerCell.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 int AutoCommandScheduler::currIndex;
@@ -25,7 +26,42 @@ AutoCommandScheduler::AutoCommandScheduler() {
     isUsingAuto = true;
 }
 
-void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput) {
+void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams) {
+
+for(int i = 0; i < driverInput.size(); i++) {
+
+    double commandParam;
+    std::string dashInput;
+
+    commandParam = dashboardParams[i];
+    CommandTypes commandType = stringToCommandTypes[dashInput];
+    switch (commandType)
+    {
+    case CommandTypes::Drive:
+        commandQueue.push_back(new AutoDrive(commandParam));
+        break;
+    
+    case CommandTypes::Turn:
+        commandQueue.push_back(new TurnToAngle(commandParam));
+        break;
+    
+    case CommandTypes::Intake:
+        commandQueue.push_back(new IntakePowerCell());
+        break;
+    
+    case CommandTypes::Shoot:
+        commandQueue.push_back(new AutoShootCell());
+        break;
+    
+    case CommandTypes::AutoBallSeek:
+        commandQueue.push_back(new AutoBallSeek());
+        break;
+    
+    default:
+        break;
+    }
+}
+
     if ((driverInput[0] == "Turn") && (driverInput[1] == "GoForward")) {
         commandQueue.push_back(new TurnToAngle(frc::SmartDashboard::GetNumber("auto 1 parameter", 0)));
         commandQueue.push_back(new AutoDrive(frc::SmartDashboard::GetNumber("auto 2 parameter", 0)));
