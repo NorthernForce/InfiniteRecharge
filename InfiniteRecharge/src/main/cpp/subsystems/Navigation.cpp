@@ -73,16 +73,17 @@ void Navigation::ZeroPosition() {
 
 void Navigation::CoordinatePosition() {
     //Combines wheel rotations into one measurement
-    double averageInchesChange;
+    double averageInchesChange = 0;
     averageInches = (Navigation::GetInchesTravelled().first + Navigation::GetInchesTravelled().second) / 2;
-    averageInchesChange = averageInchesChange - averageInchesBuffer;
-    averageInchesBuffer = averageInchesChange;
+    averageInchesChange = averageInches - averageInchesBuffer;
+    averageInchesBuffer = averageInches;
 
     //Adds the change in distance to the x and y coordinates
-    xPosition += averageInchesChange * std::sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
-    yPosition += averageInchesChange * std::cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
+    xPosition += averageInchesChange * sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
+    yPosition += averageInchesChange * cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
     if(!smartdashCycles) {
         frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInches);
+        frc::SmartDashboard::PutNumber("Nav Average inches change: ", averageInchesChange);
         frc::SmartDashboard::PutNumber("Average Inches buffer: ", averageInchesBuffer);
         frc::SmartDashboard::PutNumber("xPostition: ", xPosition);
         frc::SmartDashboard::PutNumber("yPosition: ", yPosition);
