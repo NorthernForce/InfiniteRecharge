@@ -15,7 +15,8 @@ class Navigation : public frc2::SubsystemBase {
  public:
   Navigation();
   void Periodic();
-  std::pair<double, double> GetInchesTravelled();
+  void ChangeInDistanceTravelled();
+  void TotalInchesTravelled();
   void ResetPosition();
   void ZeroPosition();
   void CoordinatePosition();
@@ -31,6 +32,8 @@ class Navigation : public frc2::SubsystemBase {
     // double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
     double previousLeftEncoder = 0;
     double previousRightEncoder = 0;
+    std::pair<double, double> changeInDistanceTravelled;
+    std::pair<double, double> totalInchesTravelled;
 
     double averageSpeedInRPM;
     double totalDistanceTravelled;
@@ -38,8 +41,7 @@ class Navigation : public frc2::SubsystemBase {
 
     static double xPosition;
     static double yPosition;
-    double averageInches;
-    double averageInchesBuffer; 
+
     double NavXScaling = Constants::XResetMultiplier;
 
     // const double cameraOffsetFromCenter;
