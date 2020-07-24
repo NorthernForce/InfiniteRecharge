@@ -24,10 +24,10 @@ void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
   //Converts final coordinates into angle from robot and subtracts it from current angle
-  angToFinal = RobotContainer::imu->GetRotation() - (180*(yFinal > yCurrent) - 
-  (tanh(abs(yFinal/xFinal))/Constants::degreesToRadians)) * (1 - 2 * (xFinal < xCurrent));
+  angToFinal = (-180 * (xFinal < xCurrent) + atan(abs(yFinal / xFinal)) / Constants::degreesToRadians) *
+  (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent)) - RobotContainer::imu->GetRotation();
   //Outputs a value that changes how sharply the robot turns
-  turnSpeed = -.2 * (abs(angToFinal) >= 1) - .2 * (abs(angToFinal) >= 5) - .6 * 
+  turnSpeed = -.1 * (abs(angToFinal) >= 1) - .25 * (abs(angToFinal) >= 5) - .65 * 
   (abs(angToFinal) >= 45) - (abs(angToFinal) >= 90);
 
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
