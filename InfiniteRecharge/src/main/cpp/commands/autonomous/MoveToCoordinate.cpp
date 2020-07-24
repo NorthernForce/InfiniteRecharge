@@ -44,7 +44,17 @@ void MoveToCoordinate::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void MoveToCoordinate::End(bool interrupted) {}
+void MoveToCoordinate::End(bool interrupted) {
+  RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
+}
 
 // Returns true when the command should end.
-bool MoveToCoordinate::IsFinished() { return false; }
+bool MoveToCoordinate::IsFinished() {
+  if (distance < .5) {
+    return true;
+  }
+  else {
+    return false;
+  }
+  
+}
