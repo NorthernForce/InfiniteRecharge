@@ -20,7 +20,7 @@
 class MoveToCoordinate
     : public frc2::CommandHelper<frc2::CommandBase, MoveToCoordinate> {
  public:
-  MoveToCoordinate(int xPos, int yPos, double speed);
+  MoveToCoordinate(int xPos, int yPos, double speed=0.3);
 
   void Initialize() override;
 

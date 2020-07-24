@@ -7,6 +7,7 @@
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
   AddRequirements(RobotContainer::drivetrain.get());
@@ -23,15 +24,16 @@ void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
   //Converts final coordinates into angle from robot and subtracts it from current angle
-  angToFinal = RobotContainer::imu->GetRotation() - (180*(xFinal < yCurrent) - 
+  angToFinal = RobotContainer::imu->GetRotation() - (180*(yFinal > yCurrent) - 
   (tanh(abs(yFinal/xFinal))/Constants::degreesToRadians)) * (1 - 2 * (xFinal < xCurrent));
   //Outputs a value that changes how sharply the robot turns
-  turnSpeed = -.1 * (abs(angToFinal) >= 1) - .1 * (abs(angToFinal) >= 5) - .3 * 
-  (abs(angToFinal) >= 45) - .5 * (abs(angToFinal) >= 90) - (abs(angToFinal) > 150);
+  turnSpeed = -.2 * (abs(angToFinal) >= 1) - .2 * (abs(angToFinal) >= 5) - .6 * 
+  (abs(angToFinal) >= 45) - (abs(angToFinal) >= 90);
 
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
   //Outputs a value that changes how quickly the robot drives
-  distanceSpeed = .2 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
+  // distanceSpeed = .2 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
+  distanceSpeed = (distance >= 1);
   if (angToFinal <= 0) { //Reads true if the robot needs to turn left or go straight
     rightPower = distanceSpeed * baseSpeed;
     leftPower = (distanceSpeed + turnSpeed) * baseSpeed;
@@ -41,6 +43,7 @@ void MoveToCoordinate::Execute() {
     leftPower = distanceSpeed * baseSpeed;
   }
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower, rightPower);
+  frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 }
 
 // Called once the command ends or is interrupted.

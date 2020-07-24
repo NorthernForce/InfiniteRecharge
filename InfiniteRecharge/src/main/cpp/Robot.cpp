@@ -28,6 +28,7 @@
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
 #include "commands/autonomous/AutoBallSeek.h"
+#include "commands/autonomous/MoveToCoordinate.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -131,8 +132,10 @@ void Robot::AutonomousInit() {
     //     new TurnToAngle(90),
     //     new AutoDrive(24)
     // }));
-    autoCommandScheduler.reset(new AutoCommandScheduler);
-    autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new MoveToCoordinate(0, 11, 0.15)
+    }));
+    // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }
 
 void Robot::AutonomousPeriodic() {

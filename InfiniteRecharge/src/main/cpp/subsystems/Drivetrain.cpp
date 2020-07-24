@@ -23,6 +23,8 @@ Drivetrain::Drivetrain() {
     ConfigureAllControllers();
 
     robotDrive = std::make_shared<frc::DifferentialDrive>(*leftPrimarySpark, *rightPrimarySpark);
+
+    SetEncoderPosition(0);
 }
 
 void Drivetrain::SetInvertedFollowers() {
