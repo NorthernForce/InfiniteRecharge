@@ -25,9 +25,10 @@ void MoveToCoordinate::Execute() {
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
   //Converts final coordinates into angle from robot and subtracts it from current angle
   angToFinal = (-180 * (xFinal < xCurrent) + atan(abs((yFinal - yCurrent) / (xFinal - xCurrent))) / Constants::degreesToRadians) *
-  (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent)) - RobotContainer::imu->GetRotation();
+  (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent)) + RobotContainer::imu->GetRotation();
   //Outputs a value that changes how sharply the robot turns
-  turnSpeed = -.1 * (abs(angToFinal) >= 1) - 1.9 * (abs(angToFinal) >= 5);
+  turnSpeed = -.04 * (abs(angToFinal) > 0) - .06 * (abs(angToFinal) >= 1) - .15 * (abs(angToFinal) >= 5) - .75 * 
+  (abs(angToFinal) >= 45) - (abs(angToFinal) >= 90);
 
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
   frc::SmartDashboard::PutNumber("distance", distance);
@@ -36,10 +37,10 @@ void MoveToCoordinate::Execute() {
   distanceSpeed = (distance >= 1);
   if (angToFinal <= 0) { //Reads true if the robot needs to turn left or go straight
     rightPower = distanceSpeed * baseSpeed;
-    leftPower = (distanceSpeed + turnSpeed) * baseSpeed;
+    leftPower = distanceSpeed * (1 + turnSpeed) * baseSpeed;
   }
   else {
-    rightPower = (distanceSpeed + turnSpeed) * baseSpeed;
+    rightPower = distanceSpeed * (1 + turnSpeed) * baseSpeed;
     leftPower = distanceSpeed * baseSpeed;
   }
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower, rightPower);
