@@ -24,13 +24,13 @@ void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
   //Converts final coordinates into angle from robot and subtracts it from current angle
-  angToFinal = (-180 * (xFinal < xCurrent) + atan(abs(yFinal / xFinal)) / Constants::degreesToRadians) *
+  angToFinal = (-180 * (xFinal < xCurrent) + atan(abs((yFinal - yCurrent) / (xFinal - xCurrent))) / Constants::degreesToRadians) *
   (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent)) - RobotContainer::imu->GetRotation();
   //Outputs a value that changes how sharply the robot turns
-  turnSpeed = -.1 * (abs(angToFinal) >= 1) - .25 * (abs(angToFinal) >= 5) - .65 * 
-  (abs(angToFinal) >= 45) - (abs(angToFinal) >= 90);
+  turnSpeed = -.1 * (abs(angToFinal) >= 1) - 1.9 * (abs(angToFinal) >= 5);
 
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
+  frc::SmartDashboard::PutNumber("distance", distance);
   //Outputs a value that changes how quickly the robot drives
   // distanceSpeed = .2 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
   distanceSpeed = (distance >= 1);
