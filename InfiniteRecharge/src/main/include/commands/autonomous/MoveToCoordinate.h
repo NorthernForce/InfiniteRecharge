@@ -9,6 +9,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/TurnToAngle.h"
 
 /**
  * An example command.
@@ -30,12 +31,16 @@ class MoveToCoordinate
 
   bool IsFinished() override;
 
+
+  std::unique_ptr<TurnToAngle> turnToAngle;
+
   int xFinal;
   int yFinal;
   double baseSpeed;
   double xCurrent;
   double yCurrent;
   double angToFinal;
+  double angleDifference;
   double turnSpeed;
   double distance;
   double distanceSpeed;
