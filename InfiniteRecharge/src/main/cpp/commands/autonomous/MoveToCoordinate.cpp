@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 10.0
+//Version 11.0
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -27,10 +27,11 @@ void MoveToCoordinate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {
-  angToFinal = (-180 * (xFinal < xCurrent) + atan(abs((yFinal - yCurrent) / (xFinal - xCurrent))) / Constants::degreesToRadians) *
-  (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent));
+  angToFinal = (-180 * (xFinal<xCurrent)+atan(abs((yFinal-yCurrent)/(xFinal-xCurrent))) / Constants::degreesToRadians) * (1 - 2 * (xFinal<xCurrent)) * (1 - 2 * (yFinal>yCurrent));
+  frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
   angleDifference = angToFinal - RobotContainer::imu->GetRotation();
+  frc::SmartDashboard::PutNumber("AngleDifference", angleDifference);
   if (!turnToAngle->IsScheduled())
   {
     xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
@@ -41,7 +42,7 @@ void MoveToCoordinate::Execute() {
     //Outputs a value that changes how quickly the robot drives
     distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
     //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.
-    if (abs(angleDifference) > 10) {
+    if (abs(angleDifference) > 20) {
       turnToAngle->SetAngle(angToFinal);
       turnToAngle->Schedule();
     }
@@ -52,9 +53,8 @@ void MoveToCoordinate::Execute() {
       frc::SmartDashboard::PutNumber("leftPower",leftPower);
       frc::SmartDashboard::PutNumber("rightPower",rightPower);
     }
-    frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
     frc::SmartDashboard::PutNumber("distance", distance);
-    frc::SmartDashboard::PutNumber("AngleDifference", angleDifference);
+
   }  
 }
 
