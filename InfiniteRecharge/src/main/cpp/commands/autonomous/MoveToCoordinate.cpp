@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 9.0
+//Version 10.0
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -27,15 +27,15 @@ void MoveToCoordinate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {
+  angToFinal = (-180 * (xFinal < xCurrent) + atan(abs((yFinal - yCurrent) / (xFinal - xCurrent))) / Constants::degreesToRadians) *
+  (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent));
+
+  angleDifference = angToFinal - RobotContainer::imu->GetRotation();
   if (!turnToAngle->IsScheduled())
   {
     xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
     yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
     //Converts final coordinates into angle from robot and subtracts it from current angle
-    angToFinal = (-180 * (xFinal < xCurrent) + atan(abs((yFinal - yCurrent) / (xFinal - xCurrent))) / Constants::degreesToRadians) *
-    (1 - 2 * (xFinal < xCurrent)) * (1 - 2 * (yFinal > yCurrent));
-
-    angleDifference = angToFinal - RobotContainer::imu->GetRotation();
 
     distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
     //Outputs a value that changes how quickly the robot drives
