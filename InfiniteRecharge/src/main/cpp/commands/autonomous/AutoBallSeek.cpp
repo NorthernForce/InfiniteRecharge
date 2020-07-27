@@ -21,7 +21,7 @@ void AutoBallSeek::Execute() {
         if (!turnToTarget->IsAutoTurningEnabled())
             turnToTarget->EnableTurningMode();
     }
-    else if (turnToTarget->HasRobotTurned()) {
+    else if (turnToTarget->HasRobotTurned() && !turnToTarget->IsTurningScheduled()) {
         if (!hasDriven)
             DriveToTarget();
         else if (hasDriven)
@@ -31,17 +31,19 @@ void AutoBallSeek::Execute() {
 
 void AutoBallSeek::DriveToTarget() {
     if (!hasGottenDistToTarget) {
-        distToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
-        autoDrive->SetDist(distToTarget);
+        distToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
+        frc::SmartDashboard::PutNumber("distToTarget", distToTarget);
+        autoDrive->SetDist(0.75*distToTarget);
         if (distToTarget != 0)
             hasGottenDistToTarget = true;
     }
-    
+
+    if (!autoDrive->IsScheduled() && !hasStartedDriving) {
+        autoDrive->Schedule();
+        hasStartedDriving = true;
+    }    
     if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
         hasDriven = true;
-    else if (!autoDrive->IsScheduled()) {
-        autoDrive->Schedule();
-    }
 
 }
 

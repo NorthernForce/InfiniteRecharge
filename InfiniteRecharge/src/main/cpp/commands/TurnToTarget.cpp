@@ -9,6 +9,7 @@
 
 bool TurnToTarget::turningMode;
 bool TurnToTarget::hasTurned;
+int TurnToTarget::distanceToTargetBeforeTurn;
 ////TODO: make not static if possible
 
 TurnToTarget::TurnToTarget() {
@@ -54,15 +55,28 @@ void TurnToTarget::TurnRobotToTarget() {
 }
 
 void TurnToTarget::TurnToAng(int ang) {
-    hasTurned = turnToAngle->GetIsFinished();
-    if (!turnToAngle->IsScheduled() && ang != 0) {
+    if (distanceToTargetBeforeTurn == 0)
+        distanceToTargetBeforeTurn = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+
+    if (!turnToAngle->IsScheduled() && ang != 0 && !hasStartedTurn) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
-    }        
+        hasStartedTurn = true;
+    }      
+
+    hasTurned = (turnToAngle->GetIsFinished() && hasStartedTurn && distanceToTargetBeforeTurn != 0 && !turnToAngle->IsScheduled());  
+}
+
+int TurnToTarget::GetDistanceToTargetBeforeTurn() {
+    return distanceToTargetBeforeTurn;
 }
 
 bool TurnToTarget::HasRobotTurned() {
     return hasTurned;
+}
+
+bool TurnToTarget::IsTurningScheduled() {
+    return turnToAngle->IsScheduled();
 }
 
 // Called once the command ends or is interrupted.
