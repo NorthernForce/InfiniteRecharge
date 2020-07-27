@@ -52,20 +52,23 @@ void CameraMount::SmartSweep() {
 }
 
 void CameraMount::Sweep() {
-    if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
-        currentPan++;
-        Pan(currentPan);
-    }
-    else if (lastNonZeroPcOffset > 6 || sweepPassCount % 2 == 1) {
-        currentPan--;
-        Pan(currentPan);
-    }    
+    if (cycleCounter % 3 != 0) {
+        if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
+            currentPan++;
+            Pan(currentPan);
+        }
+        else if (lastNonZeroPcOffset > 6 || sweepPassCount % 2 == 1) {
+            currentPan--;
+            Pan(currentPan);
+        }    
 
-    if (currentPan <= 35 || currentPan >= 155) {
-        sweepPassCount++;
-        lastNonZeroPcOffset = 0;
+        if (currentPan <= 35 || currentPan >= 155) {
+            sweepPassCount++;
+            lastNonZeroPcOffset = 0;
+        }
+        RecoverOutOfRangeServo();
     }
-    RecoverOutOfRangeServo();
+    cycleCounter++;
 }
 
 void CameraMount::CenterTarget() {
