@@ -14,7 +14,6 @@
 #include <memory>
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
-  AddRequirements(RobotContainer::drivetrain.get());
   xFinal = xPos;
   yFinal = yPos;
   baseSpeed = speed;
@@ -35,6 +34,8 @@ void MoveToCoordinate::Execute() {
 
   angleDifference = angToFinal - RobotContainer::imu->GetRotation();
   frc::SmartDashboard::PutNumber("AngleDifference", angleDifference);
+
+  frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   if (!turnToAngle->IsScheduled()) {
     xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
     yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
@@ -48,8 +49,9 @@ void MoveToCoordinate::Execute() {
       turnToAngle->Schedule();
     }
     else {
-      leftPower = (distanceSpeed + (angleDifference / 15)) * baseSpeed;
-      rightPower = (distanceSpeed - (angleDifference / 15)) * baseSpeed;
+      distance = 0;
+      leftPower = distanceSpeed * baseSpeed;
+      rightPower = distanceSpeed * baseSpeed;
       RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
       frc::SmartDashboard::PutNumber("leftPower",leftPower);
       frc::SmartDashboard::PutNumber("rightPower",rightPower);
