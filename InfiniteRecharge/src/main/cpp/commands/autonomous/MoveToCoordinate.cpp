@@ -22,7 +22,7 @@ MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
 
 // Called when the command is initially scheduled.
 void MoveToCoordinate::Initialize() {
-  turnToAngle = std::make_unique<TurnToAngle>();
+  turnToAngle = std::make_shared<TurnToAngle>();
 }
 
 // Called repeatedly when this Command is scheduled to run
