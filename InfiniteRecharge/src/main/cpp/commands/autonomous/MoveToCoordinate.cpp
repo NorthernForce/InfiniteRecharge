@@ -30,20 +30,21 @@ void MoveToCoordinate::Execute() {
   angToFinal = (-180 * (xFinal<xCurrent)+atan(abs((yFinal-yCurrent)/(xFinal-xCurrent))) / Constants::degreesToRadians) * (1 - 2 * (xFinal<xCurrent)) * (1 - 2 * (yFinal>yCurrent));
   frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
+  distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
+  frc::SmartDashboard::PutNumber("distance", distance);
+
   angleDifference = angToFinal - RobotContainer::imu->GetRotation();
   frc::SmartDashboard::PutNumber("AngleDifference", angleDifference);
-  if (!turnToAngle->IsScheduled())
-  {
+  if (!turnToAngle->IsScheduled()) {
     xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
     yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
     //Converts final coordinates into angle from robot and subtracts it from current angle
 
-    distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
     //Outputs a value that changes how quickly the robot drives
     distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
     //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.
-    if (abs(angleDifference) > 20) {
-      turnToAngle->SetAngle(angToFinal);
+    if (abs(angleDifference) > 10) {
+      turnToAngle->SetAngle(angleDifference);
       turnToAngle->Schedule();
     }
     else {
@@ -53,8 +54,6 @@ void MoveToCoordinate::Execute() {
       frc::SmartDashboard::PutNumber("leftPower",leftPower);
       frc::SmartDashboard::PutNumber("rightPower",rightPower);
     }
-    frc::SmartDashboard::PutNumber("distance", distance);
-
   }  
 }
 
