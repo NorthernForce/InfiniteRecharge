@@ -21,6 +21,10 @@ void AutoDrive::SetDist(double inches) {
     inchesToTravel = inches;
 }
 
+double AutoDrive::GetDist() {
+    return inchesToTravel;
+}
+
 // Use this only in autonomous or when calling from another command
 void AutoDrive::SetSpeeds(double leftSpeed, double rightSpeed) {
     if (rightSpeed != leftSpeed)

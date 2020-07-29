@@ -43,7 +43,6 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   if (!turnToAngle->IsScheduled()) {
 
-
     //Outputs a value that changes how quickly the robot drives
     distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
     //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.

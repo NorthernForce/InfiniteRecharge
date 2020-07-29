@@ -22,6 +22,7 @@ class AutoDrive
  public:
   AutoDrive(double inches=0, double leftSpeed=0.1, double rightSpeed=0.1);
   void SetDist(double inches);
+  double GetDist();
   void SetSpeeds(double leftSpeed=0.3, double rightSpeed=0.3);
   void Initialize() override;
   void CheckForAndFixNegatives();
