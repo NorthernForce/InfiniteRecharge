@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 11.0
+//Version 12.0
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -29,33 +29,35 @@ void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
 
-  angToFinal = (-180 * (xFinal<xCurrent)+atan(abs((yFinal-yCurrent)/(xFinal-xCurrent))) / Constants::degreesToRadians) * (1 - 2 * (xFinal<xCurrent)) * (1 - 2 * (yFinal>yCurrent));
+  //Converts final coordinates into angle from robot and subtracts it from current angle.
+  angToFinal = -(atan((yFinal-yCurrent)/(xFinal-xCurrent)) / Constants::degreesToRadians - RobotContainer::imu->GetRotation()) +
+  //Modifies atan output for (+-)0° - 180° instead of 0° - 90° 
+  (180 * (xFinal<xCurrent) * (1 - 2 * (yFinal>yCurrent)));
+  
   frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
+  //Distance formula between current point and destination point.
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
   frc::SmartDashboard::PutNumber("distance", distance);
 
-  angleDifference = angToFinal - RobotContainer::imu->GetRotation();
-  frc::SmartDashboard::PutNumber("AngleDifference", angleDifference);
-
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   if (!turnToAngle->IsScheduled()) {
-    //Converts final coordinates into angle from robot and subtracts it from current angle
 
     //Outputs a value that changes how quickly the robot drives
     distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
     //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.
-    if (abs(angleDifference) > 10) {
-    //   turnToAngle->SetAngle(angleDifference);
-    //   turnToAngle->Schedule();
+    if (abs(angToFinal) > 10) {
+      turnToAngle->SetAngle(angToFinal);
+      turnToAngle->Schedule();
     }
     else {
-      distance = 0;
-    //   leftPower = distanceSpeed * baseSpeed;
-    //   rightPower = distanceSpeed * baseSpeed;
-    //   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-      frc::SmartDashboard::PutNumber("leftPower", leftPower);
-      frc::SmartDashboard::PutNumber("rightPower", rightPower);
+      //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
+      distanceSpeed = distanceSpeed - (abs(angToFinal/15) * distanceSpeed);
+      leftPower = (distanceSpeed - (angToFinal/15)) * baseSpeed;
+      rightPower = (distanceSpeed + (angToFinal/15)) * baseSpeed;
+      RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+      frc::SmartDashboard::PutNumber("leftPower",leftPower);
+      frc::SmartDashboard::PutNumber("rightPower",rightPower);
     }
   }  
 }

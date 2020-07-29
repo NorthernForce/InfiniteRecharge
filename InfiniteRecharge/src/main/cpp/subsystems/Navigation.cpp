@@ -98,8 +98,8 @@ void Navigation::CoordinatePosition() {
     averageInchesChange = (changeInDistanceTravelled.first + changeInDistanceTravelled.second) / 2;
 
     //Adds the change in distance to the x and y coordinates
-    xPosition += averageInchesChange * std::sin(Constants::degreesToRadians * robotCurrentAngle); //90° & 270°
-    yPosition += averageInchesChange * std::cos(Constants::degreesToRadians * robotCurrentAngle);  // 0° & 180°
+    xPosition += averageInchesChange * std::cos(Constants::degreesToRadians * -robotCurrentAngle); // 0° & 180°
+    yPosition += averageInchesChange * std::sin(Constants::degreesToRadians * -robotCurrentAngle); //90° & 270°
     //Updates the smartdash once per 20 cycles
     if(!smartdashCycles) {
         frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInchesChange);
