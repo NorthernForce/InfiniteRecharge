@@ -22,6 +22,7 @@ TurnToTarget::TurnToTarget() {
 void TurnToTarget::Initialize() {
     RobotContainer::cameraMount->Tilt(0);
     turningMode = false;
+    hasTurned = false;
 }
 
 void TurnToTarget::EnableTurningMode() {
@@ -58,13 +59,14 @@ void TurnToTarget::TurnToAng(int ang) {
     if (distanceToTargetBeforeTurn == 0)
         distanceToTargetBeforeTurn = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
 
-    if (!turnToAngle->IsScheduled() && ang != 0 && !hasStartedTurn) {
+    if (ang != 0 && !hasStartedTurn) {
         turnToAngle->SetAngle(ang);
         turnToAngle->Schedule();
         hasStartedTurn = true;
-    }      
+    }
 
-    hasTurned = (turnToAngle->GetIsFinished() && hasStartedTurn && distanceToTargetBeforeTurn != 0 && !turnToAngle->IsScheduled());  
+    if (distanceToTargetBeforeTurn != 0)
+        hasTurned = (turnToAngle->GetIsFinished() && hasStartedTurn);  
 }
 
 int TurnToTarget::GetDistanceToTargetBeforeTurn() {

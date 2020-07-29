@@ -16,16 +16,15 @@ void AutoBallSeek::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void AutoBallSeek::Execute() {
-    frc::SmartDashboard::PutBoolean("HasRobotTurned: ", turnToTarget->HasRobotTurned());
-    if (!turnToTarget->HasRobotTurned()) {
+    if (turnToTarget->HasRobotTurned()) {
         if (!turnToTarget->IsAutoTurningEnabled())
             turnToTarget->EnableTurningMode();
     }
-    else if (turnToTarget->HasRobotTurned() && !turnToTarget->IsTurningScheduled()) {
-        if (!hasDriven)
-            DriveToTarget();
-        else if (hasDriven)
+    if (turnToTarget->HasRobotTurned() && !turnToTarget->IsTurningScheduled()) {
+        if (hasDriven)
             intakeBall->Schedule();
+        else
+            DriveToTarget();
     }
 }
 
@@ -33,16 +32,16 @@ void AutoBallSeek::DriveToTarget() {
     if (!hasGottenDistToTarget) {
         distToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
         frc::SmartDashboard::PutNumber("distToTarget", distToTarget);
-        autoDrive->SetDist(0.75*distToTarget);
+        autoDrive->SetDist(0.8*distToTarget);
         if (distToTarget != 0)
             hasGottenDistToTarget = true;
     }
 
-    if (!autoDrive->IsScheduled() && !hasStartedDriving) {
+    if (!hasStartedDriving) {
         autoDrive->Schedule();
         hasStartedDriving = true;
     }    
-    if (autoDrive->HasReachedTargetDistance() && distToTarget != 0)
+    if (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() > 0)
         hasDriven = true;
 
 }

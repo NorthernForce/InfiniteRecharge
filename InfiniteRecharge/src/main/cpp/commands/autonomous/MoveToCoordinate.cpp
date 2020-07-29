@@ -26,6 +26,9 @@ void MoveToCoordinate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {
+  xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
+  yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
+
   angToFinal = (-180 * (xFinal<xCurrent)+atan(abs((yFinal-yCurrent)/(xFinal-xCurrent))) / Constants::degreesToRadians) * (1 - 2 * (xFinal<xCurrent)) * (1 - 2 * (yFinal>yCurrent));
   frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
@@ -37,24 +40,22 @@ void MoveToCoordinate::Execute() {
 
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   if (!turnToAngle->IsScheduled()) {
-    xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
-    yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
     //Converts final coordinates into angle from robot and subtracts it from current angle
 
     //Outputs a value that changes how quickly the robot drives
     distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
     //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.
     if (abs(angleDifference) > 10) {
-      turnToAngle->SetAngle(angleDifference);
-      turnToAngle->Schedule();
+    //   turnToAngle->SetAngle(angleDifference);
+    //   turnToAngle->Schedule();
     }
     else {
       distance = 0;
-      leftPower = distanceSpeed * baseSpeed;
-      rightPower = distanceSpeed * baseSpeed;
-      RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-      frc::SmartDashboard::PutNumber("leftPower",leftPower);
-      frc::SmartDashboard::PutNumber("rightPower",rightPower);
+    //   leftPower = distanceSpeed * baseSpeed;
+    //   rightPower = distanceSpeed * baseSpeed;
+    //   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+      frc::SmartDashboard::PutNumber("leftPower", leftPower);
+      frc::SmartDashboard::PutNumber("rightPower", rightPower);
     }
   }  
 }
