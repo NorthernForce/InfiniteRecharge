@@ -40,7 +40,6 @@ class MoveToCoordinate
   double xCurrent;
   double yCurrent;
   double angToFinal;
-  double angleDifference;
   double turnSpeed;
   double distance;
   double distanceSpeed;
