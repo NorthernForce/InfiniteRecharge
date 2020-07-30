@@ -12,6 +12,7 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/TurnToAngle.h"
 #include <memory>
+#include <cmath>
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
   xFinal = xPos;
@@ -30,7 +31,7 @@ void MoveToCoordinate::Execute() {
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
 
   //Converts final coordinates into angle from robot and subtracts it from current angle.
-  angToFinal = -(atan((yFinal-yCurrent)/(xFinal-xCurrent)) / Constants::degreesToRadians - RobotContainer::imu->GetRotation()) +
+  angToFinal = -(atan((yFinal-yCurrent)/(xFinal-xCurrent)) / Constants::degreesToRadians - (int(RobotContainer::imu->GetRotation()) % 360)) +
   //Modifies atan output for (+-)0° - 180° instead of 0° - 90° 
   (180 * (xFinal<xCurrent) * (1 - 2 * (yFinal>yCurrent)));
   

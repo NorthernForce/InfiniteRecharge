@@ -51,7 +51,7 @@ void TurnToTarget::Execute() {
 
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-    if (IsTurnOnButtonEnabled() or IsAutoTurningEnabled())
+    if (IsTurnOnButtonEnabled() && IsAutoTurningEnabled())
         TurnToAng(targetAng);
 }
 
@@ -66,7 +66,7 @@ void TurnToTarget::TurnToAng(int ang) {
     }
 
     if (distanceToTargetBeforeTurn != 0)
-        hasTurned = (turnToAngle->GetIsFinished() && hasStartedTurn);  
+        hasTurned = (turnToAngle->GetIsFinished() && hasStartedTurn);
 }
 
 int TurnToTarget::GetDistanceToTargetBeforeTurn() {
@@ -82,7 +82,9 @@ bool TurnToTarget::IsTurningScheduled() {
 }
 
 // Called once the command ends or is interrupted.
-void TurnToTarget::End(bool interrupted) {}
+void TurnToTarget::End(bool interrupted) {
+    hasStartedTurn = false;
+}
 
 // Returns true when the command should end.
 bool TurnToTarget::IsFinished() { return false; }
