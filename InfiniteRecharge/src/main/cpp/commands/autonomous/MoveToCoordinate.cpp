@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 15.0
+//Version 15.1
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -46,21 +46,14 @@ void MoveToCoordinate::Execute() {
 
    //Outputs a value that changes how quickly the robot drives
    distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
-   //If robot is more than 10 degrees off -> Turns directly to target. Otherwise it will try to correct and drive.
-   if (abs(angToFinal) > 10) {
-     turnToAngle->SetAngle(angToFinal);
-     turnToAngle->Schedule();
-   }
-   else {
-     //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
-     distanceSpeed = distanceSpeed - (abs(angToFinal/15) * distanceSpeed);
-     leftPower = (distanceSpeed - (angToFinal/15)) * baseSpeed;
-     rightPower = (distanceSpeed + (angToFinal/15)) * baseSpeed;
-     RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-     frc::SmartDashboard::PutNumber("leftPower",leftPower);
-     frc::SmartDashboard::PutNumber("rightPower",rightPower);
-    }
-  }  
+   //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
+   distanceSpeed = distanceSpeed - (abs(angToFinal/15) * distanceSpeed);
+   leftPower = (distanceSpeed - (angToFinal/15)) * baseSpeed;
+   rightPower = (distanceSpeed + (angToFinal/15)) * baseSpeed;
+   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+   frc::SmartDashboard::PutNumber("leftPower",leftPower);
+   frc::SmartDashboard::PutNumber("rightPower",rightPower);
+}  
 
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
