@@ -30,9 +30,12 @@ void MoveToCoordinate::Execute() {
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
 
   //Converts final coordinates into angle from robot and subtracts it from current angle.
-  angToFinal = -(atan((yFinal-yCurrent)/(xFinal-xCurrent)) / Constants::degreesToRadians - RobotContainer::imu->GetRotation()) +
-  //Modifies atan output for (+-)0° - 180° instead of 0° - 90° 
-  (180 * (xFinal<xCurrent) * (1 - 2 * (yFinal>yCurrent)));
+  if ((xFinal - xCurrent) == 0) {
+    angToFinal = (-(90) / Constants::degreesToRadians - RobotContainer::imu->GetRotation()) + (180 * (xFinal<xCurrent) * (1 - 2 * (yFinal>yCurrent)));
+  }
+  else {
+    angToFinal = -(atan((yFinal-yCurrent)/(xFinal-xCurrent)) / Constants::degreesToRadians - RobotContainer::imu->GetRotation()) + (180 * (xFinal<xCurrent) * (1 - 2 * (yFinal>yCurrent)));
+  }
   
   frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
