@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 15.1
+//Version 16.0
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -47,7 +47,15 @@ void MoveToCoordinate::Execute() {
    //Outputs a value that changes how quickly the robot drives
    distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
    //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
-   distanceSpeed = distanceSpeed - (abs(angToFinal/15));
+   if (angToFinal < 0) {
+     leftPower = (distanceSpeed + angToFinal) * baseSpeed;
+     rightPower = distanceSpeed * baseSpeed;
+   }
+   else {
+     leftPower = distanceSpeed * baseSpeed;
+     rightPower = (distanceSpeed - angToFinal) * baseSpeed;
+   }
+   
    leftPower = (distanceSpeed - (angToFinal/15)) * baseSpeed;
    rightPower = (distanceSpeed + (angToFinal/15)) * baseSpeed;
    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
