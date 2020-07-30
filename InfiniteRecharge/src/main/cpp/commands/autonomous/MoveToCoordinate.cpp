@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 12.0
+//Version 14.0
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -43,6 +43,9 @@ void MoveToCoordinate::Execute() {
   distance = sqrt ((xFinal-xCurrent)*(xFinal-xCurrent) + (yFinal-yCurrent)*(yFinal-yCurrent));
   frc::SmartDashboard::PutNumber("distance", distance);
 
+  if (angToFinal < 1) {
+    turnToAngle->End(false);
+  }
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   if (!turnToAngle->IsScheduled()) {
 
