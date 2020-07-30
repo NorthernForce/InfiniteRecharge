@@ -98,5 +98,5 @@ double TurnToAngle::GetMinimumError() {
 }
 
 bool TurnToAngle::GetIsFinished() {
-    
+    return std::abs(error) < minError;
 }

@@ -47,7 +47,7 @@ void MoveToCoordinate::Execute() {
    //Outputs a value that changes how quickly the robot drives
    distanceSpeed = .1 * (distance > 0) + .1 * (distance >= 1) + .3 * (distance >= 6) + .5 * (distance >= 12);
    //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
-   distanceSpeed = distanceSpeed - (abs(angToFinal/15) * distanceSpeed);
+   distanceSpeed = distanceSpeed - (abs(angToFinal/15));
    leftPower = (distanceSpeed - (angToFinal/15)) * baseSpeed;
    rightPower = (distanceSpeed + (angToFinal/15)) * baseSpeed;
    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
