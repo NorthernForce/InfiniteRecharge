@@ -56,4 +56,6 @@ class TurnToAngle
   double integral = 0;
   double derivative = 0;
   double startingAngle = 0;
+  
+  static bool isTurnFinished;
 };

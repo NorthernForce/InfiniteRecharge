@@ -12,6 +12,7 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "commands/TurnToAngle.h"
 #include <memory>
+#include <cmath>
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
   xFinal = xPos;

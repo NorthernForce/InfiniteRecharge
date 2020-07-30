@@ -11,6 +11,7 @@
 #include "RobotContainer.h"
 
 double TurnToAngle::targetAngle;
+bool TurnToAngle::isTurnFinished;
 
 TurnToAngle::TurnToAngle(double target) {
     SetName("TurnToAngle");
@@ -84,7 +85,8 @@ double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {
 void TurnToAngle::End(bool interrupted) {}
 
 bool TurnToAngle::IsFinished() {
-    return std::abs(error) < minError;
+    isTurnFinished = std::abs(error) < minError;
+    return isTurnFinished;
 }
 
 double TurnToAngle::GetCurrentError() {
@@ -96,5 +98,5 @@ double TurnToAngle::GetMinimumError() {
 }
 
 bool TurnToAngle::GetIsFinished() {
-    return (std::abs(error) < minError);
+    
 }
