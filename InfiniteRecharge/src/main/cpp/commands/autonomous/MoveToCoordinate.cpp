@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 17.0
+//Version 0.18
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -53,14 +53,18 @@ void MoveToCoordinate::Execute() {
   if (abs(angToFinal) > 5) {
     if (angToFinal < 0) {
       //  leftPower = (distanceSpeed / (-angToFinal / 10)) * baseSpeed;
-      leftPower = 0.5 * baseSpeed;
+      leftPower = 0.25 * baseSpeed;
       rightPower = distanceSpeed * baseSpeed;
     } 
     else {
       leftPower = distanceSpeed * baseSpeed;
       // rightPower = (distanceSpeed / (angToFinal / 10)) * baseSpeed;
-      rightPower = 0.5 * baseSpeed;
+      rightPower = 0.25 * baseSpeed;
     }
+  }
+  else {
+    leftPower = baseSpeed;
+    rightPower = baseSpeed;
   }
 
 
