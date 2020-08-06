@@ -51,7 +51,7 @@ void MoveToCoordinate::Execute() {
    //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
 
   if (abs(angToFinal) > 5) {
-    if (angToFinal < 0) {
+    if (angToFinal > 0) {
       //  leftPower = (distanceSpeed / (-angToFinal / 10)) * baseSpeed;
       leftPower = 0.25 * baseSpeed;
       rightPower = distanceSpeed * baseSpeed;
