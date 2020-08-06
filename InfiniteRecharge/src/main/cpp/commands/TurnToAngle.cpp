@@ -24,6 +24,7 @@ TurnToAngle::TurnToAngle(double target) {
 
     if (target != 0)
         SetAngle(target);
+    isTurnFinished = false;
 }
 
 void TurnToAngle::SetAngle(double angle) {
@@ -98,5 +99,5 @@ double TurnToAngle::GetMinimumError() {
 }
 
 bool TurnToAngle::GetIsFinished() {
-    return std::abs(error) < minError;
+    return isTurnFinished;
 }

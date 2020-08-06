@@ -133,7 +133,7 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new MoveToCoordinate(0, -5, 0.15)
+        new MoveToCoordinate(12, 12, 0.15)
         // new AutoBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
