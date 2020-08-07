@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.18
+//Version 0.19
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -28,6 +28,7 @@ void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
   yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
 
+
   //Converts final coordinates into angle from robot and subtracts it from current angle.
   if (xFinal == xCurrent) {
     angToFinal = -(90 - RobotContainer::imu->GetRotation()) + (180 * (int)(xFinal < xCurrent) * (1 - 2 * (int)(yFinal > yCurrent)));
@@ -37,40 +38,49 @@ void MoveToCoordinate::Execute() {
     - RobotContainer::imu->GetRotation()) + (180 * (int)(xFinal < xCurrent) * (1 - 2 * (int)(yFinal > yCurrent)));
   }
   
-  frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
+  //Higher number -> Sharper Turn
+  turnSpeed = 1 + (int)(angToFinal > 3) + 2 * (int)(angToFinal > 5) + (int)(angToFinal > 7);
 
   //Distance formula between current point and destination point.
   distance = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
-  frc::SmartDashboard::PutNumber("distance", distance);
 
-  frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
-
-   //Outputs a value that changes how quickly the robot drives
-  //  distanceSpeed = .1 * (int)(distance > 0) + .1 * (int)(distance >= 1) + .3 * (int)(distance >= 6) + .5 * (int)(distance >= 12);
+  //Outputs a value that changes how quickly the robot drives
+  // distanceSpeed = .1 * (int)(distance > 0) + .1 * (int)(distance >= 1) + .3 * (int)(distance >= 6) + .5 * (int)(distance >= 12);
   distanceSpeed = 1;
-   //(angToFinal/k); k scales correction while driving. k -> 0; correction increases.
 
-  if (abs(angToFinal) > 5) {
+  rightPower = baseSpeed;
+  leftPower = baseSpeed;
+
+  if (abs(angToFinal) > 10) {
+    //Turn
     if (angToFinal < 0) {
-      //  leftPower = (distanceSpeed / (-angToFinal / 10)) * baseSpeed;
-      leftPower = 0.25 * baseSpeed;
-      rightPower = distanceSpeed * baseSpeed;
-    } 
+      //Turn left
+      leftPower = -baseSpeed;
+    }
     else {
-      leftPower = distanceSpeed * baseSpeed;
-      // rightPower = (distanceSpeed / (angToFinal / 10)) * baseSpeed;
-      rightPower = 0.25 * baseSpeed;
+      //Turn right
+      rightPower = -baseSpeed;
     }
   }
-  else {
-    leftPower = baseSpeed;
-    rightPower = baseSpeed;
+  else if (abs(angToFinal) > 2) {
+    //Drive with corrections
+    if (angToFinal < 0) {
+      //Corrections to the left
+      leftPower = baseSpeed / turnSpeed;
+    }
+    else {
+      //Corrections to the right
+      rightPower = baseSpeed / turnSpeed;
+    }
   }
 
+  RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+  frc::SmartDashboard::PutNumber("leftPower",leftPower);
+  frc::SmartDashboard::PutNumber("rightPower",rightPower);
+  frc::SmartDashboard::PutNumber("distance", distance);
+  frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
+  frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
 
-   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-   frc::SmartDashboard::PutNumber("leftPower",leftPower);
-   frc::SmartDashboard::PutNumber("rightPower",rightPower);
 }  
 
 // Called once the command ends or is interrupted.
@@ -86,5 +96,4 @@ bool MoveToCoordinate::IsFinished() {
   else {
     return false;
   }
-  
 }
