@@ -40,7 +40,7 @@ void Navigation::Periodic() {
         frc::SmartDashboard::PutNumber("Right Inches", totalInchesTravelled.second);
         frc::SmartDashboard::PutNumber("xPostition: ", xPosition);
         frc::SmartDashboard::PutNumber("yPosition: ", yPosition);
-        frc::SmartDashboard::PutNumber("angleToFinal", AngleToPoint(12, 0));
+        frc::SmartDashboard::PutNumber("angleToFinal", AngleToPoint(12,0));
     }
 }
 
@@ -112,12 +112,14 @@ std::pair<double, double> Navigation::GetCoordinatePosition() {
 
 double Navigation::AngleToPoint(double xPos, double yPos) {
     double angToPoint;
-    if (xPos == xPosition) {
-        angToPoint = -(90 - RobotContainer::imu->GetRotation()) + (180 * (int)(xPos < xPosition) * (1 - 2 * (int)(yPos > yPosition)));
+    double xChange = xPos - xPosition;
+    double yChange = yPos - yPosition;
+
+    if (xChange == 0) {
+        angToPoint = 90 * (1 - 2 * (yChange > 0));
     }
     else {
-        angToPoint = -(atan((yPos - yPosition)/(xPos - xPosition)) / Constants::degreesToRadians 
-        - RobotContainer::imu->GetRotation()) + (180 * (int)(xPos < xPosition) * (1 - 2 * (int)(yPos > yPosition)));
+        angToPoint = -(atan(yChange/xChange)) + ((1 - 2 * (int)(yChange > 0)) * 180 * (xChange < 0)) - RobotContainer::imu->GetRotation();
     }
     return angToPoint;
 }
