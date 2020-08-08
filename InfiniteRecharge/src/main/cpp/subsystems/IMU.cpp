@@ -7,6 +7,7 @@
 
 #include "subsystems/IMU.h"
 #include <frc/SPI.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 IMU::IMU() {
     ahrs = std::make_shared<AHRS>(SPI::Port::kMXP);
@@ -31,6 +32,7 @@ void IMU::Periodic() {
         accelerationRateTimer->Reset();
         accelerationRateTimer->Start();
     }
+    frc::SmartDashboard::PutNumber("Robot angle: ", GetRotation());
 }
 
 double IMU::GetRollAngle() {
