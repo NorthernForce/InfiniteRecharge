@@ -10,6 +10,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "commands/TurnToAngle.h"
+#include <memory>
 
 /**
  * An example command.

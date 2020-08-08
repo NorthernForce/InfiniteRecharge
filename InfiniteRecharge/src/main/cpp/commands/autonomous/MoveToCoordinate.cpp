@@ -15,6 +15,7 @@
 #include <cmath>
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
+  turnToAngle = std::make_shared<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
   baseSpeed = speed;
