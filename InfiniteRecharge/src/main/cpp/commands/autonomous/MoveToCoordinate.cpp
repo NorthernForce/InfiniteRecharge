@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.19
+//Version 0.20
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -30,13 +30,7 @@ void MoveToCoordinate::Execute() {
 
 
   //Converts final coordinates into angle from robot and subtracts it from current angle.
-  if (xFinal == xCurrent) {
-    angToFinal = -(90 - RobotContainer::imu->GetRotation()) + (180 * (int)(xFinal < xCurrent) * (1 - 2 * (int)(yFinal > yCurrent)));
-  }
-  else {
-    angToFinal = -(atan((yFinal - yCurrent)/(xFinal - xCurrent)) / Constants::degreesToRadians 
-    - RobotContainer::imu->GetRotation()) + (180 * (int)(xFinal < xCurrent) * (1 - 2 * (int)(yFinal > yCurrent)));
-  }
+  angToFinal = RobotContainer::navigation->AngleToPoint(xFinal,yFinal);
   
   //Higher number -> Sharper Turn
   turnSpeed = 1 + (int)(angToFinal > 3) + 2 * (int)(angToFinal > 5) + (int)(angToFinal > 7);
@@ -79,8 +73,6 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("rightPower",rightPower);
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
-  frc::SmartDashboard::PutNumber("angleToFinal", angToFinal);
-
 }  
 
 // Called once the command ends or is interrupted.

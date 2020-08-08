@@ -21,6 +21,7 @@ class Navigation : public frc2::SubsystemBase {
   void ZeroPosition();
   void CoordinatePosition();
   std::pair<double, double> GetCoordinatePosition();
+  double AngleToPoint(double xPos, double yPos);
 
  private:
     int smartdashCycles;
