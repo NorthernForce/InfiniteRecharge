@@ -33,7 +33,7 @@ void MoveToCoordinate::Execute() {
   angToFinal = RobotContainer::navigation->AngleToPoint(xFinal,yFinal);
   
   //Higher number -> Sharper Turn
-  turnSpeed = 1 + (int)(angToFinal > 3) + 2 * (int)(angToFinal > 5) + (int)(angToFinal > 7);
+  // turnSpeed = 1 + (int)(angToFinal > 3) + 2 * (int)(angToFinal > 5) + (int)(angToFinal > 7);
 
   //Distance formula between current point and destination point.
   distance = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
@@ -60,11 +60,11 @@ void MoveToCoordinate::Execute() {
     //Drive with corrections
     if (angToFinal < 0) {
       //Corrections to the left
-      leftPower = baseSpeed / turnSpeed;
+      leftPower = baseSpeed / 3;
     }
     else {
       //Corrections to the right
-      rightPower = baseSpeed / turnSpeed;
+      rightPower = baseSpeed / 3;
     }
   }
 
