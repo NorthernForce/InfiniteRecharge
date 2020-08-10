@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.21
+//Version 0.22
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -41,7 +41,9 @@ void MoveToCoordinate::Execute() {
 
   //Outputs a value that changes how quickly the robot drives
   // distanceSpeed = .1 * (int)(distance > 0) + .1 * (int)(distance >= 1) + .3 * (int)(distance >= 6) + .5 * (int)(distance >= 12);
-  distanceSpeed = 1;
+  if (abs(angToFinal) < 10) {
+    distanceSpeed = 1 - .5 * (int)(distance < 12);
+  }
 
   // if (firstTurn = 0) {
   //   turnToAngle->SetAngle(angToFinal);
@@ -56,7 +58,7 @@ void MoveToCoordinate::Execute() {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
 
-    if (abs(angToFinal) > 20) {
+    if (abs(angToFinal) > 30) {
       if (angToFinal < 0) {
         //Turn left
         leftPower = -baseSpeed;
@@ -66,7 +68,7 @@ void MoveToCoordinate::Execute() {
         rightPower = -baseSpeed;
       }
     }
-    else if (abs(angToFinal) > 10) {
+    else if (abs(angToFinal) > 15) {
       if (angToFinal < 0) {
         //Corrections to the left
         leftPower = baseSpeed / 4;
