@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.20
+//Version 0.21
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -43,30 +43,48 @@ void MoveToCoordinate::Execute() {
   // distanceSpeed = .1 * (int)(distance > 0) + .1 * (int)(distance >= 1) + .3 * (int)(distance >= 6) + .5 * (int)(distance >= 12);
   distanceSpeed = 1;
 
-  rightPower = baseSpeed;
-  leftPower = baseSpeed;
+  // if (firstTurn = 0) {
+  //   turnToAngle->SetAngle(angToFinal);
+  //   turnToAngle->Schedule();
+  //   firstTurn = 1;
+  // } 
+  // else if ((firstTurn = 1) && (turnToAngle->IsFinished())) {
+  //   firstTurn = 2;
+  // }
+  // else if (firstTurn = 2) {
+  if (true) {
+    rightPower = baseSpeed;
+    leftPower = baseSpeed;
 
-  if (abs(angToFinal) > 10) {
-    //Turn
-    if (angToFinal < 0) {
-      //Turn left
-      leftPower = -baseSpeed;
+    if (abs(angToFinal) > 20) {
+      if (angToFinal < 0) {
+        //Turn left
+        leftPower = -baseSpeed;
+      }
+      else {
+        //Turn right
+        rightPower = -baseSpeed;
+      }
     }
-    else {
-      //Turn right
-      rightPower = -baseSpeed;
+    else if (abs(angToFinal) > 10) {
+      if (angToFinal < 0) {
+        //Corrections to the left
+        leftPower = baseSpeed / 4;
+      }
+      else {
+        //Corrections to the right
+        rightPower = baseSpeed / 4;
+      }
     }
-  }
-  else if (abs(angToFinal) > 2) {
-    //Drive with corrections
-    if (angToFinal < 0) {
-      //Corrections to the left
-      leftPower = baseSpeed / 3;
-    }
-    else {
-      //Corrections to the right
-      rightPower = baseSpeed / 3;
-    }
+    else if (abs(angToFinal) > 2) {
+      if (angToFinal < 0) {
+        //Corrections to the left
+        leftPower = baseSpeed / 5;
+      }
+      else {
+        //Corrections to the right
+        rightPower = baseSpeed / 5;
+      }    }
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);

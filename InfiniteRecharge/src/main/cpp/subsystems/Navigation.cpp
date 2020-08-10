@@ -121,7 +121,7 @@ double Navigation::AngleToPoint(double xPos, double yPos) {
     else {
         angToPoint = -(atan(yChange/xChange)) + ((1 - 2 * (int)(yChange > 0)) * 180 * (xChange < 0)) - RobotContainer::imu->GetRotation();
     }
-    if (angToPoint > 180) {
+    if (abs(angToPoint) > 180) {
         angToPoint += (-360) * (1 - 2 * (angToPoint < 0));
     }
     return angToPoint;

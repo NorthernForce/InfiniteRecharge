@@ -46,4 +46,5 @@ class MoveToCoordinate
   double distanceSpeed;
   double leftPower;
   double rightPower;
+  double firstTurn;
 };
