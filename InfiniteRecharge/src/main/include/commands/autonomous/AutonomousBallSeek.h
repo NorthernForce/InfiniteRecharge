@@ -40,4 +40,5 @@ class AutonomousBallSeek
     double inchesToTarget;
     bool hasDriven = false;
     bool distHasBeenSet = false;
+    bool driveHasBeenScheduled = false;
 };

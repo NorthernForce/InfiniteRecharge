@@ -87,7 +87,14 @@ void TurnToAngle::End(bool interrupted) {}
 
 bool TurnToAngle::IsFinished() {
     isTurnFinished = std::abs(error) < minError;
-    return isTurnFinished;
+
+    bool hasPassedAngle;
+    if (targetAngle < startingAngle)
+        hasPassedAngle = currentAngle <= targetAngle;
+    else
+        hasPassedAngle = currentAngle >= targetAngle;
+        
+    return (isTurnFinished || hasPassedAngle);
 }
 
 double TurnToAngle::GetCurrentError() {

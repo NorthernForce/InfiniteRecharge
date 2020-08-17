@@ -10,13 +10,6 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending CommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class AutoDrive
     : public frc2::CommandHelper<frc2::CommandBase, AutoDrive> {
  public:
@@ -29,6 +22,7 @@ class AutoDrive
   void Execute() override;
   void End(bool interrupted) override;
   bool HasReachedTargetDistance();
+  bool HasDriveFailed();
   bool IsFinished() override;
 
  private:
@@ -36,6 +30,7 @@ class AutoDrive
   double leftMotorSpeed;
   double rightMotorSpeed;
   double encoderToTravelTo;
+  double encoderTravelled;
   double encoderCurrent;
   double startDist;
   bool hasDriven = false;

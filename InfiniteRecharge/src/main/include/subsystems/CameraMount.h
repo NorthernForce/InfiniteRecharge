@@ -51,6 +51,8 @@ class CameraMount : public frc2::SubsystemBase {
   double lastNonZeroPcOffset;
   bool hasMovedServoBackToTarget = false;
   int cycleCounter;
+  int recentSweepStops;
+  int cycleThresh = 3;
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;

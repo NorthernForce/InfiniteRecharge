@@ -27,6 +27,7 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/autonomous/AutonomousBallSeek.h"
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 
@@ -133,8 +134,8 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new MoveToCoordinate(12, 0, 0.15)
-        // new AutoBallSeek
+        // new MoveToCoordinate(12, 0, 0.15)
+        new AutonomousBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }
