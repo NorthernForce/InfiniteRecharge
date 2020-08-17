@@ -64,11 +64,6 @@ void Navigation::ChangeInDistanceTravelled() {
         leftDistTravelled /= Constants::Shifting::highMultiplier;
         rightDistTravelled /= Constants::Shifting::highMultiplier;
     }
-    //Updates smartdashboard once every 20 cycles
-    if (!smartdashCycles) {
-        frc::SmartDashboard::PutNumber("Left Inches", leftDistTravelled);
-        frc::SmartDashboard::PutNumber("Right Inches", rightDistTravelled);
-    }
     changeInDistanceTravelled = std::make_pair(leftDistTravelled, rightDistTravelled);
 }
 
@@ -80,6 +75,7 @@ void Navigation::TotalInchesTravelled() {
 
 //Calculates coordinate position with sensors
 void Navigation::ResetPosition() {
+    ////TODO: Change angle variable
   xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label) * NavXScaling * abs(cos(robotAngleDifference));
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }
@@ -110,16 +106,16 @@ std::pair<double, double> Navigation::GetCoordinatePosition() {
     return std::make_pair(xPosition, yPosition);
 }
 
-double Navigation::AngleToPoint(double xPos, double yPos) {
+double Navigation::AngleToPoint(double xTarget, double yTarget) {
     double angToPoint;
-    double xChange = xPos - xPosition;
-    double yChange = yPos - yPosition;
+    double xChange = xTarget - xPosition;
+    double yChange = yTarget - yPosition;
 
     if (xChange == 0) {
         angToPoint = 90 * (1 - 2 * (yChange > 0));
     }
     else {
-        angToPoint = -(atan(yChange/xChange)) + ((1 - 2 * (int)(yChange > 0)) * 180 * (xChange < 0)) - RobotContainer::imu->GetRotation();
+        angToPoint = -(atan(yChange/xChange) / Constants::degreesToRadians) + ((1 - 2 * (int)(yChange > 0)) * 180 * (xChange < 0)) - RobotContainer::imu->GetRotation();
     }
     if (abs(angToPoint) > 180) {
         angToPoint += (-360) * (1 - 2 * (angToPoint < 0));

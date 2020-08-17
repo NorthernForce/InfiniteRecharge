@@ -88,7 +88,8 @@ void MoveToCoordinate::Execute() {
       else {
         //Corrections to the right
         rightPower = baseSpeed / 5;
-      }    }
+      }
+    }
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
