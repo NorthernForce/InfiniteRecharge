@@ -52,7 +52,16 @@ void CameraMount::SmartSweep() {
 }
 
 void CameraMount::Sweep() {
-    if (cycleCounter % 3 != 0) {
+    // if (recentSweepStops > 4)
+    //     cycleThresh++;
+    // else
+    //     cycleThresh = 2;
+
+    // if (cycleCounter % 300 == 0)
+    //     recentSweepStops = 0;
+
+
+    if (cycleCounter % cycleThresh != 0) {
         if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
             currentPan++;
             Pan(currentPan);
@@ -85,6 +94,7 @@ void CameraMount::MoveServoBackToTarget() {
         currentPan -= 10;
     panServo->SetAngle(currentPan);
     hasMovedServoBackToTarget = true;
+    recentSweepStops++;
 }
 
 void CameraMount::SetToZero() {

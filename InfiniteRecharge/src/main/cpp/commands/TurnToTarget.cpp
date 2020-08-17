@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/TurnToTarget.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 bool TurnToTarget::turningMode;
 bool TurnToTarget::hasTurned;
@@ -51,13 +52,15 @@ void TurnToTarget::Execute() {
 
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-    if (IsTurnOnButtonEnabled() && IsAutoTurningEnabled())
+    if (IsTurnOnButtonEnabled() || IsAutoTurningEnabled())
         TurnToAng(targetAng);
 }
 
 void TurnToTarget::TurnToAng(int ang) {
+    frc::SmartDashboard::PutNumber("Target Angle:", ang);
+
     if (distanceToTargetBeforeTurn == 0)
-        distanceToTargetBeforeTurn = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+        distanceToTargetBeforeTurn = 0.85 * RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
 
     if (ang != 0 && !hasStartedTurn) {
         turnToAngle->SetAngle(ang);

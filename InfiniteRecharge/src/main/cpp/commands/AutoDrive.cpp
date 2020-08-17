@@ -7,7 +7,6 @@
 
 #include "commands/AutoDrive.h"
 #include "RobotContainer.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 AutoDrive::AutoDrive(double inches, double leftSpeed, double rightSpeed)
  : leftMotorSpeed(leftSpeed), rightMotorSpeed(rightSpeed) {
@@ -52,7 +51,7 @@ void AutoDrive::CheckForAndFixNegatives() {
 void AutoDrive::Execute() {
     RobotContainer::drivetrain->DriveUsingSpeeds(leftMotorSpeed, rightMotorSpeed);
     encoderCurrent = -1 * RobotContainer::drivetrain->GetEncoderRotations().first;
-    frc::SmartDashboard::PutNumber("current encoder", encoderCurrent);
+    encoderTravelled = encoderCurrent - startDist;
 }
 
 // Called once the command ends or is interrupted.
@@ -65,6 +64,17 @@ bool AutoDrive::HasReachedTargetDistance() {
         return encoderCurrent >= encoderToTravelTo;
     else if (encoderToTravelTo < 0)
         return encoderCurrent <= encoderToTravelTo;
+    else
+        return !HasDriveFailed();
+}
+
+bool AutoDrive::HasDriveFailed() {
+    if (encoderTravelled == 0)
+        return true;
+    else if (encoderTravelled / (inchesToTravel * Constants::Shifting::highMultiplier) < 0.8)
+        return true;
+    else if (encoderTravelled / (inchesToTravel * Constants::Shifting::highMultiplier) > 1.2)
+        return true;
     else
         return false;
 }

@@ -7,17 +7,26 @@
 
 #include "commands/autonomous/AutonomousBallSeek.h"
 #include "RobotContainer.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
-AutonomousBallSeek::AutonomousBallSeek() {}
+AutonomousBallSeek::AutonomousBallSeek() {
+    distHasBeenSet = false;
+    driveHasBeenScheduled = false;
+    inchesToTarget = 0;
+}
 
 void AutonomousBallSeek::Initialize() {
     turnToTarget->EnableTurningMode();
 }
 
 void AutonomousBallSeek::Execute() {
-    if (turnToTarget->HasRobotTurned()) {
+    int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
+
+    if (turnToTarget->HasRobotTurned() && ballIsCentered) {
         if (!hasDriven) {
             turnToTarget->DisableTurningMode();
+            turnToTarget->Cancel();
             SetDistanceToTargetAndDrive();
         }
         else {
@@ -28,21 +37,26 @@ void AutonomousBallSeek::Execute() {
 }
 
 void AutonomousBallSeek::SetDistanceToTargetAndDrive() {
-    if (inchesToTarget == 0) {
-        inchesToTarget = RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+    inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
+    if (inchesToTarget != 0) {
         autoDrive->SetDist(inchesToTarget);
+        distHasBeenSet = true;
     }
-    else
+    if (distHasBeenSet)
         DriveToTargetAndStop();
 }
 
 void AutonomousBallSeek::DriveToTargetAndStop() {
-    if (autoDrive->HasReachedTargetDistance())
-        hasDriven = true;
-    else if (!autoDrive->IsScheduled())
+    if (!driveHasBeenScheduled) {
         autoDrive->Schedule();
+        driveHasBeenScheduled = true;
+    }
+    else if  (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() != 0)
+        hasDriven = true;        
 }
 
-void AutonomousBallSeek::End(bool interrupted) {}
+void AutonomousBallSeek::End(bool interrupted) {
+    intakeBall->Cancel();
+}
 
 bool AutonomousBallSeek::IsFinished() { return false; }
