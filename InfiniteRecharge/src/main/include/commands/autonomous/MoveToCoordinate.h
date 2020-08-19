@@ -44,6 +44,7 @@ class MoveToCoordinate
   double turnSpeed;
   double distance;
   double distanceSpeed;
+  std::vector<double> previousAngToFinals;
   double leftPower;
   double rightPower;
   double firstTurn;

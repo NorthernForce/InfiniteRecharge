@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.23
+//Version 0.24
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -45,6 +45,19 @@ void MoveToCoordinate::Execute() {
     distanceSpeed = 1 - .5 * (int)(distance < 12);
   }
 
+  // Removing Jumps in angle value
+  bool close = false;
+  for (int i; i < previousAngToFinals.size(); i++) {
+    if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
+      previousAngToFinals.assign(1,angToFinal);
+      close = true;
+    }
+  }
+  if (!close) {
+    previousAngToFinals.push_back(angToFinal);
+  }
+  
+
   // if (firstTurn = 0) {
   //   turnToAngle->SetAngle(angToFinal);
   //   turnToAngle->Schedule();
@@ -54,6 +67,7 @@ void MoveToCoordinate::Execute() {
   //   firstTurn = 2;
   // }
   // else if (firstTurn = 2) {
+  
   if (true) {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
