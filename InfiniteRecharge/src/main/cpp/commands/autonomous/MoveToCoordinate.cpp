@@ -58,17 +58,23 @@ void MoveToCoordinate::Execute() {
   }
   
 
-  // if (firstTurn = 0) {
-  //   turnToAngle->SetAngle(angToFinal);
-  //   turnToAngle->Schedule();
-  //   firstTurn = 1;
-  // } 
-  // else if ((firstTurn = 1) && (turnToAngle->IsFinished())) {
-  //   firstTurn = 2;
-  // }
-  // else if (firstTurn = 2) {
-  
-  if (true) {
+  if (firstTurn == 0) {
+    if (angToFinal < 0) {
+      //Turn left
+      leftPower = -1 * baseSpeed;
+      rightPower = 1 * baseSpeed;
+    }
+    else {
+      //Turn right
+      leftPower = 1 * baseSpeed;
+      rightPower = -1 * baseSpeed;
+    }
+    if (angToFinal < 2) {
+      firstTurn = 1;
+    }
+  } 
+  else if (firstTurn == 1) {
+  // if (true) {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
 
