@@ -13,6 +13,7 @@
 #include "commands/TurnToAngle.h"
 #include <memory>
 #include <cmath>
+#include "subsystems/Drivetrain.h"
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
   turnToAngle = std::make_shared<TurnToAngle>();
@@ -113,8 +114,8 @@ void MoveToCoordinate::Execute() {
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-  frc::SmartDashboard::PutNumber("leftPower",leftPower);
-  frc::SmartDashboard::PutNumber("rightPower",rightPower);
+  frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
+  frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
 }  
