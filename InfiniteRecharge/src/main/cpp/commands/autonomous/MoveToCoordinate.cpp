@@ -15,11 +15,10 @@
 #include <cmath>
 #include "subsystems/Drivetrain.h"
 
-MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
+MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
   turnToAngle = std::make_shared<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
-  baseSpeed = speed;
 }
 
 // Called when the command is initially scheduled.

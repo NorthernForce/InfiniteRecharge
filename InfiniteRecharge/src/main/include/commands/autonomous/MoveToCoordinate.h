@@ -37,7 +37,7 @@ class MoveToCoordinate
 
   int xFinal;
   int yFinal;
-  double baseSpeed;
+  const double baseSpeed;
   double xCurrent;
   double yCurrent;
   double angToFinal;
