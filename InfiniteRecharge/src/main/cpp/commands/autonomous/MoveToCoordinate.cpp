@@ -57,8 +57,9 @@ void MoveToCoordinate::Execute() {
     previousAngToFinals.push_back(angToFinal);
   }
   
+  frc::SmartDashboard::PutNumber("firstTurn", firstTurn);
 
-  if (firstTurn == 0) {
+  if (int(firstTurn) == 0) {
     if (angToFinal < 0) {
       //Turn left
       leftPower = -1 * baseSpeed;
@@ -72,8 +73,8 @@ void MoveToCoordinate::Execute() {
     if (angToFinal < 2) {
       firstTurn = 1;
     }
-  } 
-  else if (firstTurn == 1) {
+  }
+  else if (int(firstTurn) == 1) {
   // if (true) {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
@@ -113,6 +114,7 @@ void MoveToCoordinate::Execute() {
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+  
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
