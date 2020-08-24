@@ -47,5 +47,5 @@ class MoveToCoordinate
   std::vector<double> previousAngToFinals;
   double leftPower;
   double rightPower;
-  double firstTurn;
+  double movementStage;
 };

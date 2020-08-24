@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.24
+//Version 0.25
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -58,7 +58,7 @@ void MoveToCoordinate::Execute() {
   }
   
 
-  if (firstTurn == 0) {
+  if (movementStage == 0) {
     if (angToFinal < 0) {
       //Turn left
       leftPower = -1 * baseSpeed;
@@ -69,11 +69,11 @@ void MoveToCoordinate::Execute() {
       leftPower = 1 * baseSpeed;
       rightPower = -1 * baseSpeed;
     }
-    if (angToFinal < 2) {
-      firstTurn = 1;
+    if (abs(angToFinal) < 2) {
+      movementStage = 1;
     }
   } 
-  else if (firstTurn == 1) {
+  else if (movementStage == 1) {
   // if (true) {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
@@ -81,26 +81,16 @@ void MoveToCoordinate::Execute() {
     if (abs(angToFinal) > 20) {
       if (angToFinal < 0) {
         //Turn left
-        leftPower = -1.5 * baseSpeed;
-        rightPower = 1.5 * baseSpeed;
+        leftPower = -.5 * baseSpeed;
+        rightPower = .5 * baseSpeed;
       }
       else {
         //Turn right
-        leftPower = 1.5 * baseSpeed;
-        rightPower = -1.5 * baseSpeed;
+        leftPower = .5 * baseSpeed;
+        rightPower = -.5 * baseSpeed;
       }
     }
     else if (abs(angToFinal) > 10) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 4;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 4;
-      }
-    }
-    else if (abs(angToFinal) > 5) {
       if (angToFinal < 0) {
         //Corrections to the left
         leftPower = baseSpeed / 5;
@@ -110,6 +100,22 @@ void MoveToCoordinate::Execute() {
         rightPower = baseSpeed / 5;
       }
     }
+    else if (abs(angToFinal) > 5) {
+      if (angToFinal < 0) {
+        //Corrections to the left
+        leftPower = baseSpeed / 3;
+      }
+      else {
+        //Corrections to the right
+        rightPower = baseSpeed / 3;
+      }
+    }
+  }
+  if (abs(leftPower) > baseSpeed) {
+    leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
+  }
+  if (abs(rightPower) > baseSpeed) {
+    rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
