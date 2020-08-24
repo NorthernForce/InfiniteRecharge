@@ -16,6 +16,7 @@
 #include "subsystems/Drivetrain.h"
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
+  AddRequirements(RobotContainer::drivetrain.get());
   turnToAngle = std::make_shared<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
@@ -111,6 +112,9 @@ void MoveToCoordinate::Execute() {
         rightPower = baseSpeed / 3;
       }
     }
+    else {
+        movementStage = 0;
+    }
   }
   if (abs(leftPower) > baseSpeed) {
     leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
@@ -130,11 +134,13 @@ void MoveToCoordinate::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
+  movementStage = 2;
+  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (abs(distance) < 3) {
+  if (abs(distance) < 0.45) {
     return true;
   }
   else {
