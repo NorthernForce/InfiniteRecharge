@@ -57,6 +57,7 @@ void MoveToCoordinate::Execute() {
     previousAngToFinals.push_back(angToFinal);
   }
   
+  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
     if (angToFinal < 0) {
@@ -119,6 +120,7 @@ void MoveToCoordinate::Execute() {
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+  
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
