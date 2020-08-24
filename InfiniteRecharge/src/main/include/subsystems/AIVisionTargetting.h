@@ -30,7 +30,18 @@ class AIVisionTargetting : public frc2::SubsystemBase {
 
  private:
     void RegisterFoundTargets();
-    std::unique_ptr<Triangle> GetTargetTriangle();
+    Triangle GetMainTriangle();
+    Triangle GetPrecisionTriangle();
+    Triangle GetComplementaryMainTriangle();
+    Triangle GetFinalTriangle();
+    Triangle GetCenterTriangle();
+
+
+    Triangle mainTriangle;
+    Triangle precisionTriangle;
+    Triangle complementaryTriangle;
+    Triangle FinalTriangle;
+    Triangle centerTriangle;
 
     double camAngleOffset;
     int servoToRobotCenterAngleOffset = 90;
