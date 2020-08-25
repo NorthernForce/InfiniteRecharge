@@ -37,7 +37,7 @@ class MoveToCoordinate
 
   int xFinal;
   int yFinal;
-  double baseSpeed;
+  const double baseSpeed;
   double xCurrent;
   double yCurrent;
   double angToFinal;
@@ -47,5 +47,5 @@ class MoveToCoordinate
   std::vector<double> previousAngToFinals;
   double leftPower;
   double rightPower;
-  double firstTurn;
+  int movementStage;
 };

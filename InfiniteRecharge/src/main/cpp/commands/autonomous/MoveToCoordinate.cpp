@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.24
+//Version 0.25
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -13,12 +13,13 @@
 #include "commands/TurnToAngle.h"
 #include <memory>
 #include <cmath>
+#include "subsystems/Drivetrain.h"
 
-MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) {
+MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
+  AddRequirements(RobotContainer::drivetrain.get());
   turnToAngle = std::make_shared<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
-  baseSpeed = speed;
 }
 
 // Called when the command is initially scheduled.
@@ -57,44 +58,41 @@ void MoveToCoordinate::Execute() {
     previousAngToFinals.push_back(angToFinal);
   }
   
+  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
-  // if (firstTurn = 0) {
-  //   turnToAngle->SetAngle(angToFinal);
-  //   turnToAngle->Schedule();
-  //   firstTurn = 1;
-  // } 
-  // else if ((firstTurn = 1) && (turnToAngle->IsFinished())) {
-  //   firstTurn = 2;
-  // }
-  // else if (firstTurn = 2) {
-  
-  if (true) {
+  if (movementStage == 0) {
+    if (angToFinal < 0) {
+      //Turn left
+      leftPower = -1 * baseSpeed;
+      rightPower = 1 * baseSpeed;
+    }
+    else {
+      //Turn right
+      leftPower = 1 * baseSpeed;
+      rightPower = -1 * baseSpeed;
+    }
+    if (abs(angToFinal) < 2) {
+      movementStage = 1;
+    }
+  } 
+  else if (movementStage == 1) {
+  // if (true) {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
 
     if (abs(angToFinal) > 20) {
       if (angToFinal < 0) {
         //Turn left
-        leftPower = -1.5 * baseSpeed;
-        rightPower = 1.5 * baseSpeed;
+        leftPower = -.5 * baseSpeed;
+        rightPower = .5 * baseSpeed;
       }
       else {
         //Turn right
-        leftPower = 1.5 * baseSpeed;
-        rightPower = -1.5 * baseSpeed;
+        leftPower = .5 * baseSpeed;
+        rightPower = -.5 * baseSpeed;
       }
     }
     else if (abs(angToFinal) > 10) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 4;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 4;
-      }
-    }
-    else if (abs(angToFinal) > 5) {
       if (angToFinal < 0) {
         //Corrections to the left
         leftPower = baseSpeed / 5;
@@ -104,11 +102,31 @@ void MoveToCoordinate::Execute() {
         rightPower = baseSpeed / 5;
       }
     }
+    else if (abs(angToFinal) > 5) {
+      if (angToFinal < 0) {
+        //Corrections to the left
+        leftPower = baseSpeed / 3;
+      }
+      else {
+        //Corrections to the right
+        rightPower = baseSpeed / 3;
+      }
+    }
+    else {
+        movementStage = 0;
+    }
+  }
+  if (abs(leftPower) > baseSpeed) {
+    leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
+  }
+  if (abs(rightPower) > baseSpeed) {
+    rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-  frc::SmartDashboard::PutNumber("leftPower",leftPower);
-  frc::SmartDashboard::PutNumber("rightPower",rightPower);
+  
+  frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
+  frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
 }  
@@ -116,11 +134,13 @@ void MoveToCoordinate::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
+  movementStage = 2;
+  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (abs(distance) < 3) {
+  if (abs(distance) < 0.45) {
     return true;
   }
   else {
