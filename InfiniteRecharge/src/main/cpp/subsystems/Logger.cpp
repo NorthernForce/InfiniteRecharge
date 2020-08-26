@@ -11,14 +11,18 @@
 #include <ctime>
 using namespace std;
 
-Logger::Logger() {}
-void Logger::Periodic() {}
+ofstream outFS;
 
-
-void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
-    ofstream outFS;
+Logger::Logger() {
 	//automatically only goes to logFile right now, would change if new file should be created everytime
 	outFS.open("logFile.txt");
+}
+
+void Logger::Periodic() {}
+
+//doesn't need the fileName param at the moment but leaving it for now
+void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
+	
 	//checks to make sure the file was found and opened successfully
 	if (!outFS.is_open()) {
 		cout << "Could not open file logFile.txt." << endl;
