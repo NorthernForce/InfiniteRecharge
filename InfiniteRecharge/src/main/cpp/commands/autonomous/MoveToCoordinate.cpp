@@ -47,7 +47,7 @@ void MoveToCoordinate::Execute() {
 
   // Removing Jumps in angle value
   bool close = false;
-  for (int i; i < previousAngToFinals.size(); i++) {
+  for (unsigned i = 0; i < previousAngToFinals.size(); i++) {
     if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
       previousAngToFinals.assign(1,angToFinal);
       close = true;

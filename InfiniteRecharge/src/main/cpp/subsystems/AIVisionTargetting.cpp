@@ -67,10 +67,11 @@ bool AIVisionTargetting::IsTargetLocked() {
 }
 
 double AIVisionTargetting::GetRobotDistToTarget() {
+    mainTriangle = GetMainTriangle();
     double calculatedDist = 0;
 
     try {
-        calculatedDist = GetMainTriangle().GetSideB();
+        calculatedDist = GetMainTriangle()->GetSideB();
     }
     catch (const TriangleCalculator::BaseException& e) {
         std::cout << e.what() << '\n';
@@ -79,12 +80,17 @@ double AIVisionTargetting::GetRobotDistToTarget() {
 }
 
 double AIVisionTargetting::GetRobotAngleToTarget() {
+    mainTriangle = GetMainTriangle();
+    precisionTriangle = GetPrecisionTriangle();
+    complementaryTriangle = GetComplementaryMainTriangle();
+    finalTriangle = GetFinalTriangle();
+
     double calculatedAngle = 0;
 
     try {
-        // calculatedAngle = GetPrecisionTriangle().GetAngleB();
-        calculatedAngle = GetPrecisionTriangle().GetAngleA() - 30;
-        calculatedAngle = GetFinalTriangle().GetAngleC();
+        // // calculatedAngle = precisionTriangle.GetAngleB();
+        // calculatedAngle = precisionTriangle.GetAngleA() - 30;
+        calculatedAngle = finalTriangle->GetAngleC();
     }
     catch (const TriangleCalculator::BaseException& e) {
         std::cout << e.what() << '\n';
@@ -116,60 +122,60 @@ void AIVisionTargetting::RegisterFoundTargets() {
     }
 }
 
-Triangle AIVisionTargetting::GetMainTriangle() {
+std::unique_ptr<Triangle> AIVisionTargetting::GetMainTriangle() {
     // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
     double a_1 = GetCameraDistToTargetFromArea(GetArea());
-    double c_1 = centerTriangle.GetSideB();
+    double c_1 = centerTriangle->GetSideB();
     double B_1 = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
 
     std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a_1, 0, c_1, 0, B_1, 0);
-    std::unique_ptr<TriangleCalculator> mainCalculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
-    return mainCalculator->SAS();
+    calculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    return calculator->SAS();
 }
 
-Triangle AIVisionTargetting::GetPrecisionTriangle() {
-    auto mainTriangle = GetMainTriangle();
+std::unique_ptr<Triangle> AIVisionTargetting::GetPrecisionTriangle() {
+    mainTriangle = GetMainTriangle();
 
-    double a_2 = mainTriangle.GetSideA();
-    double c_2 = 12.5;
-    double B_2 = mainTriangle.GetAngleA() + centerTriangle.GetAngleB();
+    double a_2 = mainTriangle->GetSideA();
+    double c_2 = centerTriangle->GetSideA();
+    double B_2 = mainTriangle->GetAngleA() + centerTriangle->GetAngleB();
 
     std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a_2, 0, c_2, 0, B_2, 0);
-    std::unique_ptr<TriangleCalculator> precisionCalculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
-    return precisionCalculator->SAS();
+    calculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    return calculator->SAS();
 }
 
-Triangle AIVisionTargetting::GetComplementaryMainTriangle() {
-    auto mainTriangle = GetMainTriangle();
+std::unique_ptr<Triangle> AIVisionTargetting::GetComplementaryMainTriangle() {
+    mainTriangle = GetMainTriangle();
     
-    double b_3 = mainTriangle.GetSideB();
-    double c_3 = mainTriangle.GetSideC();
-    double A_3 = 90 - mainTriangle.GetAngleC();
+    double b_3 = mainTriangle->GetSideB();
+    double c_3 = mainTriangle->GetSideC();
+    double A_3 = 90 - mainTriangle->GetAngleC();
 
     auto rawTriangle = std::make_unique<Triangle>(0, b_3, c_3, A_3, 0, 0);
-    std::unique_ptr<TriangleCalculator> complementaryCalculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
-    return complementaryCalculator->SAS();
+    calculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    return calculator->SAS();
 }
 
-Triangle AIVisionTargetting::GetFinalTriangle() {
-    auto complementaryTriangle = GetComplementaryMainTriangle();
-    auto precisionTriangle = GetPrecisionTriangle();
+std::unique_ptr<Triangle> AIVisionTargetting::GetFinalTriangle() {
+    complementaryTriangle = GetComplementaryMainTriangle();
+    precisionTriangle = GetPrecisionTriangle();
 
-    double a_4 = centerTriangle.GetSideC() + complementaryTriangle.GetSideB();
-    double b_4 = precisionTriangle.GetSideB();
-    double c_4 = complementaryTriangle.GetSideC();
+    double a_4 = centerTriangle->GetSideC() + complementaryTriangle->GetSideB();
+    double b_4 = precisionTriangle->GetSideB();
+    double c_4 = complementaryTriangle->GetSideC();
 
     auto rawTriangle = std::make_unique<Triangle>(a_4, b_4, c_4, 0, 0, 0);
-    std::unique_ptr<TriangleCalculator> finalTriangleCalc = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
-    return finalTriangleCalc->SSS();
+    calculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    return calculator->SSS();
 }
 
-Triangle AIVisionTargetting::GetCenterTriangle() {
-    double a = 12.5; //Constants::camDistFromRoboCenter;
-    double b = 8.5; //9;
-    double c = 12; //16;
+std::unique_ptr<Triangle> AIVisionTargetting::GetCenterTriangle() {
+    double a = Constants::camDistFromRoboCenter;
+    double b = 8.5;
+    double c = 12;
 
-    auto triangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
-    std::unique_ptr<TriangleCalculator> centerTriangleCalc = std::make_unique<TriangleCalculator>(std::move(triangle));
-    return centerTriangleCalc->SSS();
+    auto rawTriangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
+    calculator = std::make_unique<TriangleCalculator>(std::move(rawTriangle));
+    return calculator->SSS();
 }
