@@ -33,7 +33,7 @@ class MoveToCoordinate
   bool IsFinished() override;
 
 
-  std::shared_ptr<TurnToAngle> turnToAngle;
+  std::unique_ptr<TurnToAngle> turnToAngle;
 
   int xFinal;
   int yFinal;
