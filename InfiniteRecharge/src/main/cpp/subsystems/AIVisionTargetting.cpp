@@ -61,9 +61,8 @@ bool AIVisionTargetting::IsTargetLocked() {
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
     int currentPan = RobotContainer::cameraMount->GetCurrentPan();
     int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
-    frc::SmartDashboard::PutNumber("avgOfRecentPans", avgOfRecentPans);
-    frc::SmartDashboard::PutNumber("currentPan", currentPan);
-    return (IsXInRange(avgOfRecentPans-3, avgOfRecentPans+3, currentPan) and isTargetFound);
+
+    return (IsXInRange(currentPan, avgOfRecentPans-3, avgOfRecentPans+3) and isTargetFound);
 }
 
 double AIVisionTargetting::GetRobotDistToTarget() {
@@ -80,11 +79,6 @@ double AIVisionTargetting::GetRobotDistToTarget() {
 }
 
 double AIVisionTargetting::GetRobotAngleToTarget() {
-    mainTriangle = GetMainTriangle();
-    precisionTriangle = GetPrecisionTriangle();
-    complementaryTriangle = GetComplementaryMainTriangle();
-    finalTriangle = GetFinalTriangle();
-
     double calculatedAngle = 0;
 
     try {
