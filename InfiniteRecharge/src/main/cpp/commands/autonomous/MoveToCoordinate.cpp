@@ -16,10 +16,10 @@
 #include "subsystems/Drivetrain.h"
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
-  AddRequirements(RobotContainer::drivetrain.get());
-  turnToAngle = std::make_shared<TurnToAngle>();
+  turnToAngle = std::make_unique<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
+  movementStage = 0;
 }
 
 // Called when the command is initially scheduled.
@@ -48,7 +48,7 @@ void MoveToCoordinate::Execute() {
 
   // Removing Jumps in angle value
   bool close = false;
-  for (int i; i < previousAngToFinals.size(); i++) {
+  for (unsigned i = 0; i < previousAngToFinals.size(); i++) {
     if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
       previousAngToFinals.assign(1,angToFinal);
       close = true;
@@ -61,20 +61,26 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
-    if (angToFinal < 0) {
-      //Turn left
-      leftPower = -1 * baseSpeed;
-      rightPower = 1 * baseSpeed;
+    // if (angToFinal < 0) {
+    //   //Turn left
+    //   leftPower = -1 * baseSpeed;
+    //   rightPower = 1 * baseSpeed;
+    // }
+    // else {
+    //   //Turn right
+    //   leftPower = 1 * baseSpeed;
+    //   rightPower = -1 * baseSpeed;
+    // }
+    // if (abs(angToFinal) < 2) {
+    //   movementStage = 1;
+    // }
+    if (turnToAngle->GetIsFinished())
+        movementStage = 1;
+    else if (!turnToAngle->IsScheduled()) {
+        turnToAngle->SetAngle(angToFinal);
+        turnToAngle->Schedule();
     }
-    else {
-      //Turn right
-      leftPower = 1 * baseSpeed;
-      rightPower = -1 * baseSpeed;
-    }
-    if (abs(angToFinal) < 2) {
-      movementStage = 1;
-    }
-  } 
+  }
   else if (movementStage == 1) {
   // if (true) {
     rightPower = baseSpeed;
@@ -112,9 +118,9 @@ void MoveToCoordinate::Execute() {
         rightPower = baseSpeed / 3;
       }
     }
-    else {
-        movementStage = 0;
-    }
+    // else {
+    //     movementStage = 0;
+    // }
   }
   if (abs(leftPower) > baseSpeed) {
     leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
