@@ -30,18 +30,18 @@ class AIVisionTargetting : public frc2::SubsystemBase {
 
  private:
     void RegisterFoundTargets();
-    std::unique_ptr<Triangle> GetMainTriangle();
-    std::unique_ptr<Triangle> GetPrecisionTriangle();
-    std::unique_ptr<Triangle> GetComplementaryMainTriangle();
-    std::unique_ptr<Triangle> GetFinalTriangle();
-    std::unique_ptr<Triangle> GetCenterTriangle();
+    Triangle GetMainTriangle();
+    Triangle GetPrecisionTriangle();
+    Triangle GetComplementaryMainTriangle();
+    Triangle GetFinalTriangle();
+    Triangle GetCenterTriangle();
+    Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
 
-
-    std::unique_ptr<Triangle> mainTriangle;
-    std::unique_ptr<Triangle> precisionTriangle;
-    std::unique_ptr<Triangle> complementaryTriangle;
-    std::unique_ptr<Triangle> finalTriangle;
-    std::unique_ptr<Triangle> centerTriangle;
+    Triangle mainTriangle;
+    Triangle precisionTriangle;
+    Triangle complementaryTriangle;
+    Triangle finalTriangle;
+    Triangle centerTriangle;
 
     std::unique_ptr<TriangleCalculator> calculator;
 

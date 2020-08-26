@@ -14,11 +14,11 @@
 class TriangleCalculator {
  public:
     TriangleCalculator(std::unique_ptr<Triangle> t);
-    std::unique_ptr<Triangle> SAS();
-    std::unique_ptr<Triangle> AAS();
-    std::unique_ptr<Triangle> ASA();
-    std::unique_ptr<Triangle> SSS();
-    std::unique_ptr<Triangle> HL();
+    Triangle SAS();
+    Triangle AAS();
+    Triangle ASA();
+    Triangle SSS();
+    Triangle HL();
 
     double ThirdAngleCalc(double angle_a, double angle_b);
     double ThirdSideCalc(double side, double angle_a, double angle_c);

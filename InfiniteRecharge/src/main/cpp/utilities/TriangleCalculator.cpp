@@ -8,6 +8,7 @@
 #include <cmath>
 #include "utilities/TriangleCalculator.h"
 #include <memory>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 TriangleCalculator::TriangleCalculator(std::unique_ptr<Triangle> t) {
     side_a = t->GetSideA();
@@ -19,7 +20,7 @@ TriangleCalculator::TriangleCalculator(std::unique_ptr<Triangle> t) {
 }
 
 // can handle any valid angle with neighboring sides
-std::unique_ptr<Triangle> TriangleCalculator::SAS() {
+Triangle TriangleCalculator::SAS() {
     if (side_b && side_c && angle_a != 0) {
         ThrowExceptionOnErrors({side_b, side_c, angle_a});
         side_a = sqrt(pow(side_b,2) + pow(side_c,2) - 2*side_b*side_c * cos(DegToRad(angle_a)));
@@ -40,40 +41,40 @@ std::unique_ptr<Triangle> TriangleCalculator::SAS() {
 }
 
 // expects: (x, x, num, num, num, x)
-std::unique_ptr<Triangle> TriangleCalculator::AAS() {
+Triangle TriangleCalculator::AAS() {
     ThrowExceptionOnErrors({side_c, angle_a, angle_b});
 
     angle_c = ThirdAngleCalc(angle_a, angle_c);
     side_a = ThirdSideCalc(side_c, angle_b, angle_c);
     side_b = ThirdSideCalc(side_c, angle_b, angle_c);
 
-    return std::make_unique<Triangle>(side_a, side_b, side_c, angle_a, angle_b, angle_c);
+    return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
 // expects: (x, x, num, num, num, x)
-std::unique_ptr<Triangle> TriangleCalculator::ASA() {
+Triangle TriangleCalculator::ASA() {
     ThrowExceptionOnErrors({side_c, angle_a, side_b});
 
     angle_c = ThirdAngleCalc(angle_a, angle_b);
     side_a = ThirdSideCalc(side_c, angle_a, angle_c);
     side_b = ThirdSideCalc(side_c, angle_b, angle_c);
 
-    return std::make_unique<Triangle>(side_a, side_b, side_c, angle_a, angle_b, angle_c);
+    return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
 // expects: (num, num, num, x, x, x)
-std::unique_ptr<Triangle> TriangleCalculator::SSS() {
+Triangle TriangleCalculator::SSS() {
     ThrowExceptionOnErrors({side_a, side_b, side_c});
 
     angle_a = RadToDeg(acos((pow(side_b,2) + pow(side_c,2) - pow(side_a,2)) / (2 * side_b * side_c)));
     angle_b = RadToDeg(acos((pow(side_c,2) + pow(side_a,2) - pow(side_b,2)) / (2 * side_c * side_a)));
     angle_c = ThirdAngleCalc(angle_a, angle_b);
 
-    return std::make_unique<Triangle>(side_a, side_b, side_c, angle_a, angle_b, angle_c);
+    return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
 // expects: (x, num, num, x, x, x)
-std::unique_ptr<Triangle> TriangleCalculator::HL() {
+Triangle TriangleCalculator::HL() {
     angle_c = 90;
     ThrowExceptionOnErrors({side_b, side_c, angle_c});
 
@@ -81,7 +82,7 @@ std::unique_ptr<Triangle> TriangleCalculator::HL() {
     angle_a = RadToDeg(acos((pow(side_b,2) + pow(side_a,2) - pow(side_a,2)) / (2 * side_b * side_a)));
     angle_b = RadToDeg(acos((pow(side_c,2) + pow(side_a,2) - pow(side_b,2)) / (2 * side_c * side_a)));
 
-    return std::make_unique<Triangle>(side_a, side_b, side_c, angle_a, angle_b, angle_c);
+    return Triangle(side_a, side_b, side_c, angle_a, angle_b, angle_c);
 }
 
 double TriangleCalculator::ThirdAngleCalc(double ang_a, double ang_b) {
