@@ -20,8 +20,8 @@ Logger::Logger() {
 
 void Logger::Periodic() {}
 
-//doesn't need the fileName param at the moment but leaving it for now
-void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
+//double variable
+void Logger::LoadDataToFile(string varName, double varValue) {
 	
 	//checks to make sure the file was found and opened successfully
 	if (!outFS.is_open()) {
@@ -32,12 +32,48 @@ void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
     
     char* dt = ctime(&ttime);
 
-	while (!outFS.eof()) {
-        outFS << dt << endl;
-		outFS << varName << ": " << varValue;
-		outFS << endl;
-	}
-	cout << "Load complete" << endl;
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
  
+
+}
+
+//string variable
+void Logger::LoadDataToFile(string varName, string varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
+ 
+
+}
+
+//int variable
+void Logger::LoadDataToFile(string varName, int varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+    outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
 
 }
