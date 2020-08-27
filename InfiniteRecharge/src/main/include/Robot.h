@@ -21,6 +21,7 @@
 
 #include "RobotContainer.h"
 #include "utilities/AutoCommandScheduler.h"
+#include "subsystems/Logger.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -36,6 +37,7 @@ class Robot : public frc::TimedRobot {
   static void CameraInit();
   
   bool AutonomousIsRunning = false;
+  static std::unique_ptr<Logger> logger;
 
  private:
   // Have it null by default so that if testing teleop it

@@ -37,6 +37,7 @@
 
 void Robot::RobotInit() {
     container = std::make_shared<RobotContainer>();
+    logger = std::make_unique<Logger>();
 
     frc::SmartDashboard::PutString("auto string input 1", "insert here");
     frc::SmartDashboard::PutNumber("auto 1 parameter", 0);
@@ -134,7 +135,7 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new MoveToCoordinate(0, 12, 0.1)
+        new MoveToCoordinate(0, -12, 0.1)
         // new AutonomousBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
