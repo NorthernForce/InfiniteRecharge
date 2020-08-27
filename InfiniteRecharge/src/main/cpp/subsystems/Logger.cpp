@@ -32,12 +32,9 @@ void Logger::LoadDataToFile(string varName, double varValue) {
     
     char* dt = ctime(&ttime);
 
-	while (!outFS.eof()) {
-        outFS << dt << endl;
-		outFS << varName << ": " << varValue;
-		outFS << endl;
-	}
-	cout << "Load complete" << endl;
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
  
 
 }
@@ -54,12 +51,10 @@ void Logger::LoadDataToFile(string varName, string varValue) {
     
     char* dt = ctime(&ttime);
 
-	while (!outFS.eof()) {
-        outFS << dt << endl;
-		outFS << varName << ": " << varValue;
-		outFS << endl;
-	}
-	cout << "Load complete" << endl;
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
  
 
 }
@@ -76,12 +71,9 @@ void Logger::LoadDataToFile(string varName, int varValue) {
     
     char* dt = ctime(&ttime);
 
-	while (!outFS.eof()) {
-        outFS << dt << endl;
-		outFS << varName << ": " << varValue;
-		outFS << endl;
-	}
-	cout << "Load complete" << endl;
- 
+    outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
 
 }
