@@ -91,7 +91,7 @@ void MoveToCoordinate::Execute() {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
 
-    if (abs(angToFinal) > 3) {
+    if (abs(angToFinal) > 5) {
         movementStage = 0;
         RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
     }
