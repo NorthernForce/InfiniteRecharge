@@ -134,10 +134,8 @@ void MoveToCoordinate::Execute() {
   // }
   // if (abs(rightPower) > baseSpeed) {
   //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
-  }
 
-    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-  }
+  RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
   
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
