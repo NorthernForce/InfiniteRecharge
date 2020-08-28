@@ -19,4 +19,5 @@ class Logger : public frc2::SubsystemBase {
   void LoadDataToFile(string varName, double varValue);
   void LoadDataToFile(string varName, string varValue);
   void LoadDataToFile(string varName, int varValue);
+  void LoadDataToFile(string varName, bool varValue);
 };

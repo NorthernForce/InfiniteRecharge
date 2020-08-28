@@ -77,3 +77,22 @@ void Logger::LoadDataToFile(string varName, int varValue) {
 
 
 }
+
+//bool variable
+void Logger::LoadDataToFile(string varName, bool varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+    outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
+
+}
