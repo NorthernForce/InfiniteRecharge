@@ -26,6 +26,11 @@ class MoveToCoordinate
 
   void Initialize() override;
 
+  // double RemoveJumps(double angToFinalWithJumps);
+  double Limit(double value, double limit);
+  double TurnPID();
+  double DrivePID();
+
   void Execute() override;
 
   void End(bool interrupted) override;
@@ -38,14 +43,24 @@ class MoveToCoordinate
   int xFinal;
   int yFinal;
   const double baseSpeed;
+
+  double angleError;
+  double totalAngleError;
+  double distanceError;
+  double totalDistanceError;
+
   double xCurrent;
   double yCurrent;
   double angToFinal;
-  double turnSpeed;
   double distance;
-  double distanceSpeed;
+
+  double turnSpeed;
+  double driveSpeed;
+
   std::vector<double> previousAngToFinals;
+
   double leftPower;
   double rightPower;
+
   int movementStage;
 };

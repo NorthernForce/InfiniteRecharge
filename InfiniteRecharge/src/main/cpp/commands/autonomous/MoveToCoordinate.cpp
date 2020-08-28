@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//Version 0.25
+//Version 1.1
 
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
@@ -25,6 +25,52 @@ MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(s
 // Called when the command is initially scheduled.
 void MoveToCoordinate::Initialize() {}
 
+// double MoveToCoordinate::RemoveJumps(double angToFinalWithJumps) {
+//   bool close = false;
+//   for (unsigned i = 0; i < previousAngToFinals.size(); i++) {
+//     if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
+//       previousAngToFinals.assign(1,angToFinal);
+//       close = true;
+//     }
+//   }
+//   if (!close) {
+//     previousAngToFinals.push_back(angToFinal);
+//   }
+// }
+
+double MoveToCoordinate::Limit(double value, double limit) {
+  if (value < - abs(limit))
+    return -abs(limit);
+  else if (value > abs(limit))
+    return abs(limit);
+  else
+    return value;
+}
+
+double MoveToCoordinate::TurnPID() {
+  angleError = angToFinal / 180;
+  totalAngleError += angleError;
+  if (angleError == 0)
+    totalAngleError = 0;
+  
+  double p = 1.6;
+  double i = 0.05;
+
+  return Limit(((p * angToFinal) + (i * totalAngleError)), baseSpeed);
+}
+
+double MoveToCoordinate::DrivePID() {
+  distanceError = distance / 12;
+  totalDistanceError += distanceError;
+  if (distanceError == 0)
+    totalDistanceError = 0;
+\
+  double p = 1.6;
+  double i = 0.5;
+
+  return Limit(((p * distanceError) + (i * totalDistanceError)), baseSpeed);
+}
+
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {
   xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
@@ -34,46 +80,23 @@ void MoveToCoordinate::Execute() {
   //Converts final coordinates into angle from robot and subtracts it from current angle.
   angToFinal = RobotContainer::navigation->AngleToPoint(xFinal,yFinal);
   
-  //Higher number -> Sharper Turn
-  // turnSpeed = 1 + (int)(angToFinal > 3) + 2 * (int)(angToFinal > 5) + (int)(angToFinal > 7);
-
   //Distance formula between current point and destination point.
   distance = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
 
-  //Outputs a value that changes how quickly the robot drives
-  // distanceSpeed = .1 * (int)(distance > 0) + .1 * (int)(distance >= 1) + .3 * (int)(distance >= 6) + .5 * (int)(distance >= 12);
-  if (abs(angToFinal) < 10) {
-    distanceSpeed = 1 - .5 * (int)(distance < 12);
+  turnSpeed = TurnPID();
+  driveSpeed = DrivePID();
+  if (turnSpeed < 0) {
+    leftPower = driveSpeed - turnSpeed;
+    rightPower = driveSpeed;
   }
-
-  // Removing Jumps in angle value
-  bool close = false;
-  for (unsigned i = 0; i < previousAngToFinals.size(); i++) {
-    if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
-      previousAngToFinals.assign(1,angToFinal);
-      close = true;
-    }
-  }
-  if (!close) {
-    previousAngToFinals.push_back(angToFinal);
+  else {
+    leftPower = driveSpeed;
+    rightPower = DrivePID() - turnSpeed;
   }
   
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
-    // if (angToFinal < 0) {
-    //   //Turn left
-    //   leftPower = -1 * baseSpeed;
-    //   rightPower = 1 * baseSpeed;
-    // }
-    // else {
-    //   //Turn right
-    //   leftPower = 1 * baseSpeed;
-    //   rightPower = -1 * baseSpeed;
-    // }
-    // if (abs(angToFinal) < 2) {
-    //   movementStage = 1;
-    // }
     if (turnToAngle->GetIsFinished())
         movementStage = 1;
     else if (!turnToAngle->IsScheduled()) {
@@ -82,51 +105,29 @@ void MoveToCoordinate::Execute() {
     }
   }
   else if (movementStage == 1) {
-  // if (true) {
-    rightPower = baseSpeed;
-    leftPower = baseSpeed;
+      turnSpeed = TurnPID();
+      driveSpeed = DrivePID();
+      if (turnSpeed < 0) {
+        leftPower = driveSpeed - turnSpeed;
+        rightPower = driveSpeed;
+      }
+      else {
+        leftPower = driveSpeed;
+        rightPower = DrivePID() - turnSpeed;
+      }
+  //   rightPower = baseSpeed;
+  //   leftPower = baseSpeed;
 
-    if (abs(angToFinal) > 20) {
-      if (angToFinal < 0) {
-        //Turn left
-        leftPower = -.5 * baseSpeed;
-        rightPower = .5 * baseSpeed;
-      }
-      else {
-        //Turn right
-        leftPower = .5 * baseSpeed;
-        rightPower = -.5 * baseSpeed;
-      }
-    }
-    else if (abs(angToFinal) > 10) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 5;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 5;
-      }
-    }
-    else if (abs(angToFinal) > 5) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 3;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 3;
-      }
-    }
-    // else {
-    //     movementStage = 0;
-    // }
-  }
-  if (abs(leftPower) > baseSpeed) {
-    leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
-  }
-  if (abs(rightPower) > baseSpeed) {
-    rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
+  //   if (abs(angToFinal) > 3) {
+  //     movementStage = 0;
+  //   }
+  // }
+
+  // if (abs(leftPower) > baseSpeed) {
+  //   leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
+  // }
+  // if (abs(rightPower) > baseSpeed) {
+  //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   }
 
   RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
