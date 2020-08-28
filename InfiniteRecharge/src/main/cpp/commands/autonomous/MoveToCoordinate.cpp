@@ -56,8 +56,8 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.1;
-  double i = 0.001;
+  double p = 0.04;
+  double i = 0.00075;
 
   return Limit(((p * angToFinal) + (i * totalAngleError)), 2*baseSpeed);
 }
@@ -109,6 +109,7 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - turnSpeed;
     }
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
   }
   //   rightPower = baseSpeed;
   //   leftPower = baseSpeed;
@@ -123,8 +124,6 @@ void MoveToCoordinate::Execute() {
   // }
   // if (abs(rightPower) > baseSpeed) {
   //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
-
-  RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
   
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
