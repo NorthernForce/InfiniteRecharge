@@ -72,7 +72,7 @@ double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
 double TurnToAngle::GetRotationMultiplier() {
     double rotMultiplier;
     if (error < 0)
-        rotMultiplier = 0.05 * pow(3.2, -error);
+        rotMultiplier = 0.05 * pow(3.2, -1*error);
     else
         rotMultiplier = 0.05 * pow(3.2, error);
     frc::SmartDashboard::PutNumber("tta: error", error);

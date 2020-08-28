@@ -56,10 +56,10 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 1.6;
-  double i = 0.05;
+  double p = 0.1;
+  double i = 0.001;
 
-  return Limit(((p * angToFinal) + (i * totalAngleError)), baseSpeed);
+  return Limit(((p * angToFinal) + (i * totalAngleError)), 2*baseSpeed);
 }
 
 double MoveToCoordinate::DrivePID() {
@@ -68,8 +68,8 @@ double MoveToCoordinate::DrivePID() {
   if (distanceError == 0)
     totalDistanceError = 0;
 \
-  double p = 1.6;
-  double i = 0.5;
+  double p = 1.2;
+  double i = 0.3;
 
   return Limit(((p * distanceError) + (i * totalDistanceError)), baseSpeed);
 }
@@ -85,17 +85,6 @@ void MoveToCoordinate::Execute() {
   
   //Distance formula between current point and destination point.
   distance = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
-
-  turnSpeed = TurnPID();
-  driveSpeed = DrivePID();
-  if (turnSpeed < 0) {
-    leftPower = driveSpeed - turnSpeed;
-    rightPower = driveSpeed;
-  }
-  else {
-    leftPower = driveSpeed;
-    rightPower = DrivePID() - turnSpeed;
-  }
   
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
@@ -113,12 +102,12 @@ void MoveToCoordinate::Execute() {
     turnSpeed = TurnPID();
     driveSpeed = DrivePID();
     if (turnSpeed < 0) {
-      leftPower = driveSpeed - turnSpeed;
+      leftPower = driveSpeed + turnSpeed;
       rightPower = driveSpeed;
     }
     else {
       leftPower = driveSpeed;
-      rightPower = DrivePID() - turnSpeed;
+      rightPower = driveSpeed - turnSpeed;
     }
   }
   //   rightPower = baseSpeed;
@@ -141,6 +130,9 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
+  frc::SmartDashboard::PutNumber("driveSpeed", driveSpeed);
+  frc::SmartDashboard::PutNumber("turnSpeed", turnSpeed);
+
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
 //   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);

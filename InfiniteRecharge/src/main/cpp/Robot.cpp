@@ -137,11 +137,11 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new TurnToAngle(-90)
-        // new MoveToCoordinate(0, -12, 0.1),
-        // new MoveToCoordinate(0, 0, 0.1),
-        // new MoveToCoordinate(12, 12, 0.1),
-        // new MoveToCoordinate(12, -12, 0.1)
+        // new TurnToAngle(5)
+        new MoveToCoordinate(0, -12, 0.15),
+        new MoveToCoordinate(0, 0, 0.15),
+        new MoveToCoordinate(12, 12, 0.15),
+        new MoveToCoordinate(12, -12, 0.15)
         // new AutonomousBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
