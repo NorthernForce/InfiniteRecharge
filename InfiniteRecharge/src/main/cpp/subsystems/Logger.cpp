@@ -11,14 +11,18 @@
 #include <ctime>
 using namespace std;
 
-Logger::Logger() {}
-void Logger::Periodic() {}
+ofstream outFS;
 
-
-void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
-    ofstream outFS;
+Logger::Logger() {
 	//automatically only goes to logFile right now, would change if new file should be created everytime
 	outFS.open("logFile.txt");
+}
+
+void Logger::Periodic() {}
+
+//double variable
+void Logger::LoadDataToFile(string varName, double varValue) {
+	
 	//checks to make sure the file was found and opened successfully
 	if (!outFS.is_open()) {
 		cout << "Could not open file logFile.txt." << endl;
@@ -28,12 +32,67 @@ void Logger::LoadDataToFile(string fileName, string varName, double varValue) {
     
     char* dt = ctime(&ttime);
 
-	while (!outFS.eof()) {
-        outFS << dt << endl;
-		outFS << varName << ": " << varValue;
-		outFS << endl;
-	}
-	cout << "Load complete" << endl;
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
  
+
+}
+
+//string variable
+void Logger::LoadDataToFile(string varName, string varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+	outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
+ 
+
+}
+
+//int variable
+void Logger::LoadDataToFile(string varName, int varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+    outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
+
+}
+
+//bool variable
+void Logger::LoadDataToFile(string varName, bool varValue) {
+	
+	//checks to make sure the file was found and opened successfully
+	if (!outFS.is_open()) {
+		cout << "Could not open file logFile.txt." << endl;
+	}
+
+    time_t ttime = time(0);
+    
+    char* dt = ctime(&ttime);
+
+    outFS << dt << endl;
+	outFS << varName << ": " << varValue;
+	outFS << endl;
+
 
 }

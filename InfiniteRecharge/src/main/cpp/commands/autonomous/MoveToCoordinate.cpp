@@ -14,6 +14,9 @@
 #include <memory>
 #include <cmath>
 #include "subsystems/Drivetrain.h"
+#include "Robot.h"
+
+std::unique_ptr<Logger> Robot::logger;
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
   turnToAngle = std::make_unique<TurnToAngle>();
@@ -97,24 +100,27 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
-    if (turnToAngle->GetIsFinished())
+    if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
+        turnToAngle.reset(new TurnToAngle);
+    }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
         turnToAngle->Schedule();
     }
   }
   else if (movementStage == 1) {
-      turnSpeed = TurnPID();
-      driveSpeed = DrivePID();
-      if (turnSpeed < 0) {
-        leftPower = driveSpeed - turnSpeed;
-        rightPower = driveSpeed;
-      }
-      else {
-        leftPower = driveSpeed;
-        rightPower = DrivePID() - turnSpeed;
-      }
+    turnSpeed = TurnPID();
+    driveSpeed = DrivePID();
+    if (turnSpeed < 0) {
+      leftPower = driveSpeed - turnSpeed;
+      rightPower = driveSpeed;
+    }
+    else {
+      leftPower = driveSpeed;
+      rightPower = DrivePID() - turnSpeed;
+    }
+  }
   //   rightPower = baseSpeed;
   //   leftPower = baseSpeed;
 
@@ -130,19 +136,23 @@ void MoveToCoordinate::Execute() {
   //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   }
 
-  RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+  }
   
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
+
+//   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
+//   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
 }  
 
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
-  movementStage = 2;
-  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
+//   movementStage = 2;
+//   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
 
 // Returns true when the command should end.
