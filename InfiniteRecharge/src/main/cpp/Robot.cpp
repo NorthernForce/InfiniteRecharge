@@ -112,6 +112,8 @@ void Robot::AutonomousInit() {
     dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 4 parameter", 0));
     dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 5 parameter", 0));
 
+    RobotContainer::imu->ZeroRotation();
+
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
     //   SimpleCrossAutoLine(),
@@ -135,7 +137,11 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        new MoveToCoordinate(0, -12, 0.1)
+        new TurnToAngle(-90)
+        // new MoveToCoordinate(0, -12, 0.1),
+        // new MoveToCoordinate(0, 0, 0.1),
+        // new MoveToCoordinate(12, 12, 0.1),
+        // new MoveToCoordinate(12, -12, 0.1)
         // new AutonomousBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
