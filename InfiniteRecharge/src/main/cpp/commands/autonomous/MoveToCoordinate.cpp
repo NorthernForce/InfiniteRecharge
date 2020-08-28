@@ -14,6 +14,9 @@
 #include <memory>
 #include <cmath>
 #include "subsystems/Drivetrain.h"
+#include "Robot.h"
+
+std::unique_ptr<Logger> Robot::logger;
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
   turnToAngle = std::make_unique<TurnToAngle>();
@@ -74,8 +77,10 @@ void MoveToCoordinate::Execute() {
     // if (abs(angToFinal) < 2) {
     //   movementStage = 1;
     // }
-    if (turnToAngle->GetIsFinished())
+    if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
+        turnToAngle.reset(new TurnToAngle);
+    }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
         turnToAngle->Schedule();
@@ -86,62 +91,68 @@ void MoveToCoordinate::Execute() {
     rightPower = baseSpeed;
     leftPower = baseSpeed;
 
-    if (abs(angToFinal) > 20) {
-      if (angToFinal < 0) {
-        //Turn left
-        leftPower = -.5 * baseSpeed;
-        rightPower = .5 * baseSpeed;
-      }
-      else {
-        //Turn right
-        leftPower = .5 * baseSpeed;
-        rightPower = -.5 * baseSpeed;
-      }
+    if (abs(angToFinal) > 3) {
+        movementStage = 0;
+        RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
     }
-    else if (abs(angToFinal) > 10) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 5;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 5;
-      }
-    }
-    else if (abs(angToFinal) > 5) {
-      if (angToFinal < 0) {
-        //Corrections to the left
-        leftPower = baseSpeed / 3;
-      }
-      else {
-        //Corrections to the right
-        rightPower = baseSpeed / 3;
-      }
-    }
-    // else {
-    //     movementStage = 0;
-    // }
-  }
-  if (abs(leftPower) > baseSpeed) {
-    leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
-  }
-  if (abs(rightPower) > baseSpeed) {
-    rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
-  }
 
-  RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    // if (abs(angToFinal) > 20) {
+    //   if (angToFinal < 0) {
+    //     //Turn left
+    //     leftPower = -.5 * baseSpeed;
+    //     rightPower = .5 * baseSpeed;
+    //   }
+    //   else {
+    //     //Turn right
+    //     leftPower = .5 * baseSpeed;
+    //     rightPower = -.5 * baseSpeed;
+    //   }
+    // }
+    // else if (abs(angToFinal) > 10) {
+    //   if (angToFinal < 0) {
+    //     //Corrections to the left
+    //     leftPower = baseSpeed / 5;
+    //   }
+    //   else {
+    //     //Corrections to the right
+    //     rightPower = baseSpeed / 5;
+    //   }
+    // }
+    // else if (abs(angToFinal) > 5) {
+    //   if (angToFinal < 0) {
+    //     //Corrections to the left
+    //     leftPower = baseSpeed / 3;
+    //   }
+    //   else {
+    //     //Corrections to the right
+    //     rightPower = baseSpeed / 3;
+    //   }
+    // }
+
+    if (abs(leftPower) > baseSpeed) {
+        leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
+    }
+    if (abs(rightPower) > baseSpeed) {
+        rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
+    }
+
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+  }
   
   frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
+
+//   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
+//   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
 }  
 
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
-  movementStage = 2;
-  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
+//   movementStage = 2;
+//   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
 
 // Returns true when the command should end.
