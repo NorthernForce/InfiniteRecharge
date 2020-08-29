@@ -26,7 +26,9 @@ MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(s
 }
 
 // Called when the command is initially scheduled.
-void MoveToCoordinate::Initialize() {}
+void MoveToCoordinate::Initialize() {
+  previousDistanceError = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
+}
 
 // double MoveToCoordinate::RemoveJumps(double angToFinalWithJumps) {
 //   bool close = false;
@@ -51,27 +53,37 @@ double MoveToCoordinate::Limit(double value, double limit) {
 }
 
 double MoveToCoordinate::TurnPID() {
-  angleError = angToFinal / 180;
+  angleError = (angToFinal / 180) / cyclePerSecond;
   totalAngleError += angleError;
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.1;
-  double i = 0.001;
+  double p = 1.6;
+  double i = 0.02;
+
+  if (totalAngleError > (2 * baseSpeed / i))
+    totalAngleError = 0;
 
   return Limit(((p * angToFinal) + (i * totalAngleError)), 2*baseSpeed);
 }
 
 double MoveToCoordinate::DrivePID() {
-  distanceError = distance / 12;
+  distanceError = distance / cyclePerSecond;
   totalDistanceError += distanceError;
   if (distanceError == 0)
     totalDistanceError = 0;
-\
-  double p = 1.2;
-  double i = 0.3;
 
-  return Limit(((p * distanceError) + (i * totalDistanceError)), baseSpeed);
+  double p = 1.6;
+  double i = 0.6;
+  double d = 0.001;
+
+  if ((p * distanceError) > baseSpeed)
+    totalDistanceError = 0;
+  
+  double errorChange = distanceError - previousDistanceError;
+  previousDistanceError = distanceError;
+
+  return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -102,12 +114,12 @@ void MoveToCoordinate::Execute() {
     turnSpeed = TurnPID();
     driveSpeed = DrivePID();
     if (turnSpeed < 0) {
-      leftPower = driveSpeed + turnSpeed;
+      leftPower = driveSpeed - abs(turnSpeed);
       rightPower = driveSpeed;
     }
     else {
       leftPower = driveSpeed;
-      rightPower = driveSpeed - turnSpeed;
+      rightPower = driveSpeed - abs(turnSpeed);
     }
   }
   //   rightPower = baseSpeed;

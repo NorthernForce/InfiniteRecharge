@@ -44,10 +44,13 @@ class MoveToCoordinate
   int yFinal;
   const double baseSpeed;
 
+  const int cyclePerSecond = 20;
+
   double angleError;
   double totalAngleError;
   double distanceError;
   double totalDistanceError;
+  double previousDistanceError;
 
   double xCurrent;
   double yCurrent;
