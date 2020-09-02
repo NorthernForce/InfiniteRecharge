@@ -157,6 +157,9 @@ void MoveToCoordinate::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
+  Drivetrain::leftPrimarySpark->StopMotor();
+  Drivetrain::rightPrimarySpark->StopMotor();
+
 //   movementStage = 2;
 //   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
