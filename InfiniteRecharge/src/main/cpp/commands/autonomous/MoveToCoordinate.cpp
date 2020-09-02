@@ -53,7 +53,7 @@ double MoveToCoordinate::Limit(double value, double limit) {
 }
 
 double MoveToCoordinate::TurnPID() {
-  angleError = (angToFinal / 180) / cyclePerSecond;
+  angleError = ((angToFinal / 180) / cyclePerSecond);
   totalAngleError += angleError;
   if (angleError == 0)
     totalAngleError = 0;
@@ -68,7 +68,7 @@ double MoveToCoordinate::TurnPID() {
 }
 
 double MoveToCoordinate::DrivePID() {
-  distanceError = distance / cyclePerSecond;
+  distanceError = (distance / cyclePerSecond)  * (1 - 2 * (abs(angToFinal) > 90));
   totalDistanceError += distanceError;
   if (distanceError == 0)
     totalDistanceError = 0;
