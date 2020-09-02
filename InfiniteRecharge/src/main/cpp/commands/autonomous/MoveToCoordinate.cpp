@@ -58,7 +58,7 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.8;
+  double p = 0.025;
   double i = 0.002;
 
   if (totalAngleError > (2 * baseSpeed / i))
@@ -74,8 +74,9 @@ double MoveToCoordinate::DrivePID() {
     totalDistanceError = 0;
 
   double p = 1.6;
-  double i = 0.6;
-  double d = 0.001;
+//   double i = 0.06;
+  double d = 0.003;
+  double i = 0;
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -113,6 +114,10 @@ void MoveToCoordinate::Execute() {
   else if (movementStage == 1) {
     turnSpeed = TurnPID();
     driveSpeed = DrivePID();
+
+    frc::SmartDashboard::PutNumber("driveSpeed", driveSpeed);
+    frc::SmartDashboard::PutNumber("turnSpeed", turnSpeed);
+
     if (turnSpeed < 0) {
       leftPower = driveSpeed - abs(turnSpeed);
       rightPower = driveSpeed;
@@ -121,7 +126,11 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - abs(turnSpeed);
     }
-    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
+    frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
+    // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    Drivetrain::leftPrimarySpark->Set(leftPower);
+    Drivetrain::rightPrimarySpark->Set(rightPower);
   }
   //   rightPower = baseSpeed;
   //   leftPower = baseSpeed;
@@ -137,12 +146,8 @@ void MoveToCoordinate::Execute() {
   // if (abs(rightPower) > baseSpeed) {
   //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   
-  frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
-  frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
-  frc::SmartDashboard::PutNumber("driveSpeed", driveSpeed);
-  frc::SmartDashboard::PutNumber("turnSpeed", turnSpeed);
 
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
