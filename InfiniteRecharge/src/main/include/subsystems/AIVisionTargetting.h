@@ -27,19 +27,18 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     double GetRobotAngleToTarget();
     double GetCameraDistToTargetFromArea(int area);
     int GetArea();
+    double GetHeightOfTriangle(Triangle t, double base);
 
  private:
     void RegisterFoundTargets();
     Triangle GetMainTriangle();
-    Triangle GetPrecisionTriangle();
-    Triangle GetComplementaryMainTriangle();
+    Triangle GetRightHelperTriangle();
     Triangle GetFinalTriangle();
     Triangle GetCenterTriangle();
     Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
 
     Triangle mainTriangle;
-    Triangle precisionTriangle;
-    Triangle complementaryTriangle;
+    Triangle rightHelperTriangle;
     Triangle finalTriangle;
     Triangle centerTriangle;
 

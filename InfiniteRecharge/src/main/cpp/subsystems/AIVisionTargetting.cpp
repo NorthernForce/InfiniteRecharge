@@ -82,8 +82,15 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
     double calculatedAngle = 0;
     finalTriangle = GetFinalTriangle();
 
-    calculatedAngle = finalTriangle.GetAngleC();
-    // return (-1*(calculatedAngle - servoToRobotCenterAngleOffset));
+    try {
+        calculatedAngle = finalTriangle.GetAngleB();
+        if (RobotContainer::cameraMount->GetPanDirection() == 'l')
+            calculatedAngle *= -1;
+    }
+    catch (const TriangleCalculator::BaseException& e) {
+        std::cout << e.what() << '\n';
+    }
+
     return calculatedAngle;
 }
 
@@ -98,7 +105,6 @@ int AIVisionTargetting::GetArea() {
 }
 
 void AIVisionTargetting::RegisterFoundTargets() {
-
     if (RobotContainer::aiComms->IsTargetFound() && !targetHasBeenRegistered) {
         loopCyclesSinceTargetRegistered = 0;
         targetHasBeenRegistered = true;
@@ -112,46 +118,52 @@ void AIVisionTargetting::RegisterFoundTargets() {
 
 Triangle AIVisionTargetting::GetMainTriangle() {
     // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
-    double a_1 = GetCameraDistToTargetFromArea(GetArea());
-    double c_1 = centerTriangle.GetSideB();
-    double B_1 = 180 - RobotContainer::cameraMount->GetCurrentPan() + (0.7 * pcOffsetInCam);
+    double a = GetCameraDistToTargetFromArea(GetArea());
+    double c = centerTriangle.GetSideB();
+    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + (0.7 * pcOffsetInCam);
 
-    std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a_1, 0, c_1, 0, B_1, 0);
+    std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
     return CalculateTriangle(std::move(rawTriangle), "SAS");
 }
 
-Triangle AIVisionTargetting::GetPrecisionTriangle() {
+Triangle AIVisionTargetting::GetRightHelperTriangle() {
     mainTriangle = GetMainTriangle();
 
-    double a_2 = mainTriangle.GetSideA();
-    double c_2 = centerTriangle.GetSideA();
-    double B_2 = mainTriangle.GetAngleB() + centerTriangle.GetAngleC();
+    double a = mainTriangle.GetSideA();
+    double c = GetHeightOfTriangle(mainTriangle, mainTriangle.GetSideC());
+    double B = 90 - mainTriangle.GetAngleA();
 
-    std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a_2, 0, c_2, 0, B_2, 0);
-    return CalculateTriangle(std::move(rawTriangle), "SAS");
-}
-
-Triangle AIVisionTargetting::GetComplementaryMainTriangle() {
-    mainTriangle = GetMainTriangle();
-    
-    double b_3 = mainTriangle.GetSideB();
-    double c_3 = mainTriangle.GetSideC();
-    double A_3 = 90 - mainTriangle.GetAngleC();
-
-    auto rawTriangle = std::make_unique<Triangle>(0, b_3, c_3, A_3, 0, 0);
+    std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
     return CalculateTriangle(std::move(rawTriangle), "SAS");
 }
 
 Triangle AIVisionTargetting::GetFinalTriangle() {
-    complementaryTriangle = GetComplementaryMainTriangle();
-    precisionTriangle = GetPrecisionTriangle();
+    std::unique_ptr<Triangle> rawTriangle;
+    double b, c;
+    char panDir = RobotContainer::cameraMount->GetPanDirection();
 
-    double a_4 = centerTriangle.GetSideC() + complementaryTriangle.GetSideB();
-    double b_4 = precisionTriangle.GetSideB();
-    double c_4 = complementaryTriangle.GetSideC();
+    if (panDir == 'l') {
+        mainTriangle = GetMainTriangle();
 
-    auto rawTriangle = std::make_unique<Triangle>(a_4, b_4, c_4, 0, 0, 0);
-    return CalculateTriangle(std::move(rawTriangle), "SSS");
+        b = mainTriangle.GetSideB();
+        c = centerTriangle.GetSideC();
+        double A = 360 - (centerTriangle.GetAngleA() + mainTriangle.GetAngleA());
+
+        rawTriangle = std::make_unique<Triangle>(0, b, c, A, 0, 0);
+        finalTriangle = CalculateTriangle(std::move(rawTriangle), "SAS");
+    }
+    else if (panDir == 'r') {
+        rightHelperTriangle = GetRightHelperTriangle();
+
+        b = rightHelperTriangle.GetSideB();
+        c = rightHelperTriangle.GetSideC() + centerTriangle.GetSideC();
+        double a = sqrt(pow(b, 2) + pow(c, 2));
+
+        rawTriangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
+        finalTriangle = CalculateTriangle(std::move(rawTriangle), "SSS");
+    }
+
+    return finalTriangle;
 }
 
 Triangle AIVisionTargetting::GetCenterTriangle() {
@@ -178,4 +190,16 @@ Triangle AIVisionTargetting::CalculateTriangle(std::unique_ptr<Triangle> rawTria
         std::cout << "Angles: " << finishedTriangle.GetAngleA() << ", " << finishedTriangle.GetAngleB() << ", " << finishedTriangle.GetAngleC() << '\n';
     }
     return finishedTriangle;
+}
+
+double AIVisionTargetting::GetHeightOfTriangle(Triangle t, double base) {
+    double a = t.GetSideA();
+    double b = t.GetSideB();
+    double c = t.GetSideC();
+    double s = (a + b + c) / 2;
+
+    double area = sqrt(s * (s-a) * (s-b) * (s-c));
+    double height = (2 * area) / base;
+
+    return height;
 }
