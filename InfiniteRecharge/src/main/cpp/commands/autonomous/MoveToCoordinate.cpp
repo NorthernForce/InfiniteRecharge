@@ -73,10 +73,9 @@ double MoveToCoordinate::DrivePID() {
   if (distanceError == 0)
     totalDistanceError = 0;
 
-  double p = 1.6;
-//   double i = 0.06;
-  double d = 0.003;
-  double i = 0;
+  double p = 0.9;
+  double i = 0.06;
+  double d = 0.007;
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -84,6 +83,7 @@ double MoveToCoordinate::DrivePID() {
   double errorChange = distanceError - previousDistanceError;
   previousDistanceError = distanceError;
 
+  frc::SmartDashboard::PutNumber("distanceError", distanceError);
   return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
 }
 
@@ -126,11 +126,14 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - abs(turnSpeed);
     }
-    frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
-    frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
-    // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-    Drivetrain::leftPrimarySpark->Set(leftPower);
-    Drivetrain::rightPrimarySpark->Set(rightPower);
+    frc::SmartDashboard::PutNumber("leftPower", leftPower);
+    frc::SmartDashboard::PutNumber("rightPower", rightPower);
+    Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
+    Robot::logger->LoadDataToFile("rightPower", Drivetrain::rightPrimarySpark->Get());
+
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    // Drivetrain::leftPrimarySpark->Set(leftPower);
+    // Drivetrain::rightPrimarySpark->Set(rightPower);
   }
   //   rightPower = baseSpeed;
   //   leftPower = baseSpeed;

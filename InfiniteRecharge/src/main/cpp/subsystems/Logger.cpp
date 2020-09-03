@@ -9,13 +9,14 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <frc/smartdashboard/SmartDashboard.h>
 using namespace std;
 
 ofstream outFS;
 
 Logger::Logger() {
 	//automatically only goes to logFile right now, would change if new file should be created everytime
-	outFS.open("logFile.txt");
+	outFS.open("/home/lvuser/logFile.txt");
 }
 
 void Logger::Periodic() {}
