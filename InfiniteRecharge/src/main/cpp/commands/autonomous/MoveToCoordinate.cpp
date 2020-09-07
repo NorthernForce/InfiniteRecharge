@@ -19,7 +19,6 @@
 std::unique_ptr<Logger> Robot::logger;
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
-  turnToAngle = std::make_unique<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
@@ -102,9 +101,12 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
+    if (turnToAngle == nullptr)
+        turnToAngle = std::make_unique<TurnToAngle>();
+
     if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
-        turnToAngle.reset(new TurnToAngle);
+        turnToAngle.reset();
     }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
