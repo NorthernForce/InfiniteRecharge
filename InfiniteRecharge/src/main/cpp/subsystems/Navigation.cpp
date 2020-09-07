@@ -40,7 +40,7 @@ void Navigation::Periodic() {
         frc::SmartDashboard::PutNumber("Right Inches", totalInchesTravelled.second);
         frc::SmartDashboard::PutNumber("xPostition: ", xPosition);
         frc::SmartDashboard::PutNumber("yPosition: ", yPosition);
-        frc::SmartDashboard::PutNumber("angleToFinal", AngleToPoint(0,-12));
+        frc::SmartDashboard::PutNumber("angleToFinal", AngleToPoint(12,0));
     }
 }
 

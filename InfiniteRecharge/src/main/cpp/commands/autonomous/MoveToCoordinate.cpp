@@ -19,7 +19,6 @@
 std::unique_ptr<Logger> Robot::logger;
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
-  turnToAngle = std::make_unique<TurnToAngle>();
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
@@ -73,10 +72,9 @@ double MoveToCoordinate::DrivePID() {
   if (distanceError == 0)
     totalDistanceError = 0;
 
-  double p = 1.6;
-//   double i = 0.06;
-  double d = 0.003;
-  double i = 0;
+  double p = 0.9;
+  double i = 0.06;
+  double d = 0.007;
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -84,6 +82,7 @@ double MoveToCoordinate::DrivePID() {
   double errorChange = distanceError - previousDistanceError;
   previousDistanceError = distanceError;
 
+  frc::SmartDashboard::PutNumber("distanceError", distanceError);
   return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
 }
 
@@ -102,9 +101,12 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
+    if (turnToAngle == nullptr)
+        turnToAngle = std::make_unique<TurnToAngle>();
+
     if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
-        turnToAngle.reset(new TurnToAngle);
+        turnToAngle.reset();
     }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
@@ -126,11 +128,14 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - abs(turnSpeed);
     }
-    frc::SmartDashboard::PutNumber("leftPower", Drivetrain::leftPrimarySpark->Get());
-    frc::SmartDashboard::PutNumber("rightPower", Drivetrain::rightPrimarySpark->Get());
-    // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-    Drivetrain::leftPrimarySpark->Set(leftPower);
-    Drivetrain::rightPrimarySpark->Set(rightPower);
+    frc::SmartDashboard::PutNumber("leftPower", leftPower);
+    frc::SmartDashboard::PutNumber("rightPower", rightPower);
+    Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
+    Robot::logger->LoadDataToFile("rightPower", Drivetrain::rightPrimarySpark->Get());
+
+    RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+    // Drivetrain::leftPrimarySpark->Set(leftPower);
+    // Drivetrain::rightPrimarySpark->Set(rightPower);
   }
   //   rightPower = baseSpeed;
   //   leftPower = baseSpeed;
@@ -157,6 +162,9 @@ void MoveToCoordinate::Execute() {
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
+  Drivetrain::leftPrimarySpark->StopMotor();
+  Drivetrain::rightPrimarySpark->StopMotor();
+
 //   movementStage = 2;
 //   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
