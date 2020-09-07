@@ -30,8 +30,10 @@ void AutonomousBallSeek::Execute() {
             SetDistanceToTargetAndDrive();
         }
         else {
-            if (!intakeBall->IsScheduled())
+            if (!intakeHasBeenScheduled) {
                 intakeBall->Schedule();
+                intakeHasBeenScheduled = true;
+            }
         }
     }
 }
@@ -51,12 +53,16 @@ void AutonomousBallSeek::DriveToTargetAndStop() {
         autoDrive->Schedule();
         driveHasBeenScheduled = true;
     }
-    else if  (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() != 0)
-        hasDriven = true;        
+    else if  (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() != 0) {
+        autoDrive->Cancel();
+        hasDriven = true;
+    }
 }
 
 void AutonomousBallSeek::End(bool interrupted) {
     intakeBall->Cancel();
 }
 
-bool AutonomousBallSeek::IsFinished() { return false; }
+bool AutonomousBallSeek::IsFinished() {
+    return (!intakeBall->IsScheduled() && intakeHasBeenScheduled);
+}

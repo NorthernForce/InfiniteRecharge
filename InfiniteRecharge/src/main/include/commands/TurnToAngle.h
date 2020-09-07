@@ -43,6 +43,7 @@ class TurnToAngle
   static double targetAngle;
   double distanceToTargetAngle = 0;
   double currentAngle;
+  double prevAngle;
   int defaultPeriodInMs = 20;
 
   const double pValue = 1.6;
