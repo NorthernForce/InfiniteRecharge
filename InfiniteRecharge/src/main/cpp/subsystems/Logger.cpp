@@ -90,9 +90,8 @@ void Logger::LoadDataToFile(string varName, bool varValue) {
     
     char* dt = ctime(&ttime);
 
-    outFS << dt << endl;
-	outFS << varName << ": " << varValue;
-	outFS << endl;
+    outFS << dt;
+	outFS << varName << ": " << varValue << endl;
 
 
 }
