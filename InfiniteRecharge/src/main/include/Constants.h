@@ -61,7 +61,7 @@ namespace Constants {
 
     namespace Shifting {
         const double lowMultiplier = .7179821429;
-        const double highMultiplier = 0.2935380740740741;
+        const double highMultiplier = 0.2892773749374815;
     }
 
     namespace DigitalPort { 
