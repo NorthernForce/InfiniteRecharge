@@ -54,7 +54,7 @@ class TurnToAngle
   const double dValue = 0;
 
   const double maxTurnSpeed = 0.4;
-  const double minError = 0.01;
+  const double minError = 0.025;
   double error;
   double errorPrior = 0;
   double integral = 0;

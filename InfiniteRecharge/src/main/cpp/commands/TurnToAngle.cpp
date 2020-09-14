@@ -108,7 +108,7 @@ double TurnToAngle::GetAbsoluteAngleFromStartAndDistance(double start, double di
 double TurnToAngle::ConvertAngleTo360DegreeScale(double angle) {
     angle = (fmod(angle, 360) + (angle - trunc(angle)));
 
-    if(angle > 0)
+    if (angle > 0)
         return angle;
     else
         return angle + 360;
@@ -134,8 +134,10 @@ bool TurnToAngle::GetIsAngleBetweenBoundingAngles(double input, double bound_a, 
 
 bool TurnToAngle::HasPassedTargetAngle() {
     targetAngle = GetAbsoluteAngleFromStartAndDistance(startingAngle, distanceToTargetAngle);
+    bool isAngleInArea = GetIsAngleBetweenBoundingAngles(currentAngle, startingAngle, targetAngle);
+    bool isNearTarget = abs(currentAngle) >= abs(targetAngle)-1 && abs(currentAngle) <= abs(targetAngle)+1;
 
-    return GetIsAngleBetweenBoundingAngles(currentAngle, startingAngle, targetAngle);
+    return isAngleInArea && isNearTarget;
 }
 
 bool TurnToAngle::IsFinished() {
