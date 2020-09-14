@@ -74,7 +74,7 @@ double MoveToCoordinate::DrivePID() {
 
   double p = 0.9;
   double i = 0.06;
-  double d = 0.007;
+  double d = 0.009;
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
