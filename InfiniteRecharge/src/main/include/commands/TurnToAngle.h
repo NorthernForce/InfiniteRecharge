@@ -20,11 +20,15 @@
 class TurnToAngle
     : public frc2::CommandHelper<frc2::CommandBase, TurnToAngle> {
  public:
-  TurnToAngle(double target=targetAngle);
+  TurnToAngle(double target=distanceToTargetAngle);
   void SetAngle(double angle);
   void Initialize() override;
   void Execute() override;
   void End(bool interrupted) override;
+  double GetAbsoluteAngleFromStartAndDistance(double start, double distance);
+  double ConvertAngleTo360DegreeScale(double angle);
+  bool GetIsAngleBetweenBoundingAngles(double input, double bound_a, double bound_b);
+  bool HasPassedTargetAngle();
   bool IsFinished() override;
   double GetCurrentError();
   double GetMinimumError();
@@ -40,8 +44,8 @@ class TurnToAngle
   double GetRotationMultiplier();
   double LimitMaxTurnSpeed(double currentSpeed);
 
-  static double targetAngle;
-  double distanceToTargetAngle = 0;
+  double rawTargetAngle = 0;
+  static double distanceToTargetAngle;
   double currentAngle;
   int defaultPeriodInMs = 20;
 
@@ -56,6 +60,7 @@ class TurnToAngle
   double integral = 0;
   double derivative = 0;
   double startingAngle = 0;
+  double targetAngle = 0;
   
   static bool isTurnFinished;
 };

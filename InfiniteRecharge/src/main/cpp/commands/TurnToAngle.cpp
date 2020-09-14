@@ -10,7 +10,7 @@
 #include <frc/TimedRobot.h>
 #include "RobotContainer.h"
 
-double TurnToAngle::targetAngle;
+double TurnToAngle::distanceToTargetAngle;
 bool TurnToAngle::isTurnFinished;
 
 TurnToAngle::TurnToAngle(double target) {
@@ -28,14 +28,14 @@ TurnToAngle::TurnToAngle(double target) {
 }
 
 void TurnToAngle::SetAngle(double angle) {
-    targetAngle = angle;
+    distanceToTargetAngle = angle;
 }
 
 // Called when the command is initially scheduled.
 void TurnToAngle::Initialize() {
     currentAngle = RobotContainer::imu->GetRotation();
     startingAngle = currentAngle;
-    distanceToTargetAngle = currentAngle + targetAngle;
+    rawTargetAngle = currentAngle + distanceToTargetAngle;
     integral = 0;
 }
 
@@ -58,7 +58,7 @@ void TurnToAngle::Execute() {
 }
 
 double TurnToAngle::GetRotationFromPID(double p, double i, double d) {
-    error = (currentAngle - distanceToTargetAngle) / 180;
+    error = (currentAngle - rawTargetAngle) / 180;
     if (error == 0)
         integral = 0;
 
@@ -88,18 +88,60 @@ double TurnToAngle::LimitMaxTurnSpeed(double currentSpeed) {
     return speed;
 }
 
-void TurnToAngle::End(bool interrupted) {}
+void TurnToAngle::End(bool interrupted) {
+    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
+}
+
+double TurnToAngle::GetAbsoluteAngleFromStartAndDistance(double start, double distance) {
+    double outputAngle;
+
+    if (distance + start >= 180)
+        outputAngle = -360 + (distance + start);
+    else if (distance + start <= -180)
+        outputAngle = 360 + (distance + start);
+    else
+        outputAngle = rawTargetAngle;
+
+    return outputAngle;
+}
+
+double TurnToAngle::ConvertAngleTo360DegreeScale(double angle) {
+    angle = (fmod(angle, 360) + (angle - trunc(angle)));
+
+    if(angle > 0)
+        return angle;
+    else
+        return angle + 360;
+}
+
+bool TurnToAngle::GetIsAngleBetweenBoundingAngles(double input, double bound_a, double bound_b) {
+    bool isAngleBetween;
+
+    input = ConvertAngleTo360DegreeScale(input);
+    bound_a = ConvertAngleTo360DegreeScale(bound_a);
+    bound_b = ConvertAngleTo360DegreeScale(bound_b);
+
+    if (bound_a < bound_b)
+        isAngleBetween = bound_a <= input && input <= bound_b;
+    else
+        isAngleBetween = bound_a <= input || input <= bound_b;
+
+    if (distanceToTargetAngle >= 0)
+        isAngleBetween = !isAngleBetween;
+
+    return isAngleBetween;
+}
+
+bool TurnToAngle::HasPassedTargetAngle() {
+    targetAngle = GetAbsoluteAngleFromStartAndDistance(startingAngle, distanceToTargetAngle);
+
+    return GetIsAngleBetweenBoundingAngles(currentAngle, startingAngle, targetAngle);
+}
 
 bool TurnToAngle::IsFinished() {
     isTurnFinished = std::abs(error) < minError;
-
-    bool hasPassedAngle;
-    if (targetAngle < startingAngle)
-        hasPassedAngle = currentAngle <= targetAngle;
-    else
-        hasPassedAngle = currentAngle >= targetAngle;
         
-    return (isTurnFinished || hasPassedAngle);
+    return (isTurnFinished || HasPassedTargetAngle());
 }
 
 double TurnToAngle::GetCurrentError() {
