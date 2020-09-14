@@ -157,6 +157,12 @@ void MoveToCoordinate::Execute() {
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
 //   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
+  if (abs(distance) < 0.45) {
+    finishCounter++;
+  }
+  else {
+    finishCounter = 0;
+  }
 }  
 
 // Called once the command ends or is interrupted.
@@ -171,7 +177,7 @@ void MoveToCoordinate::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (abs(distance) < 0.45) {
+  if (finishCounter > 20) {
     return true;
   }
   else {
