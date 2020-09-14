@@ -24,6 +24,7 @@ void TurnToTarget::Initialize() {
     RobotContainer::cameraMount->Tilt(0);
     turningMode = false;
     hasTurned = false;
+    turnToAngle.reset(new TurnToAngle);
 }
 
 void TurnToTarget::EnableTurningMode() {

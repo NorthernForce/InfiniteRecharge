@@ -20,8 +20,9 @@ void AutonomousBallSeek::Initialize() {
 }
 
 void AutonomousBallSeek::Execute() {
-    int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
-    bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
+    // int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    // bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
+    bool ballIsCentered = abs(RobotContainer::aiVisionTargetting->GetRobotAngleToTarget()) < 3;
 
     if (turnToTarget->HasRobotTurned() && ballIsCentered) {
         if (!hasDriven) {
@@ -29,11 +30,14 @@ void AutonomousBallSeek::Execute() {
             turnToTarget->Cancel();
             SetDistanceToTargetAndDrive();
         }
-        else {
-            if (!intakeHasBeenScheduled) {
-                intakeBall->Schedule();
-                intakeHasBeenScheduled = true;
-            }
+    } else if (turnToTarget->HasRobotTurned()) {
+        turnToTarget.reset(new TurnToTarget());
+        turnToTarget->EnableTurningMode();
+    }
+    else if (hasDriven) {
+        if (!intakeHasBeenScheduled) {
+            intakeBall->Schedule();
+            intakeHasBeenScheduled = true;
         }
     }
 }
