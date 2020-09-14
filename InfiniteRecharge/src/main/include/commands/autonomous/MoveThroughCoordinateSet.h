@@ -9,8 +9,8 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "commands/TurnToAngle.h"
-#include <memory>
+#include "commands/autonomous/MoveToCoordinate.h"
+#include <vector>
 
 /**
  * An example command.
@@ -19,17 +19,12 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class MoveToCoordinate
-    : public frc2::CommandHelper<frc2::CommandBase, MoveToCoordinate> {
+class MoveThroughCoordinateSet
+    : public frc2::CommandHelper<frc2::CommandBase, MoveThroughCoordinateSet> {
  public:
-  MoveToCoordinate(int xPos, int yPos, double speed=0.3);
+  MoveThroughCoordinateSet();
 
   void Initialize() override;
-
-  // double RemoveJumps(double angToFinalWithJumps);
-  double Limit(double value, double limit);
-  double TurnPID();
-  double DrivePID();
 
   void Execute() override;
 
@@ -37,35 +32,13 @@ class MoveToCoordinate
 
   bool IsFinished() override;
 
+  //make this the smart dashboard label
+  const std::string coordinateSetLabel = "";
 
-  std::unique_ptr<TurnToAngle> turnToAngle;
+  std::vector<double> coordinateSet;
 
-  int xFinal;
-  int yFinal;
-  const double baseSpeed;
-
-  const int cyclePerSecond = 20;
-
-  double angleError;
-  double totalAngleError;
-  double distanceError;
-  double totalDistanceError;
-  double previousDistanceError;
-
-  double xCurrent;
-  double yCurrent;
-  double angToFinal;
-  double distance;
-
-  double turnSpeed;
-  double driveSpeed;
-
-  std::vector<double> previousAngToFinals;
-
-  double leftPower;
-  double rightPower;
-
-  int movementStage;
-
-  int finishCounter = 0;
+  int numOfSets = 0;
+  int status = 1;
+  int xPos;
+  int yPos;
 };
