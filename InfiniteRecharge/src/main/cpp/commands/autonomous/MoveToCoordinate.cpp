@@ -57,7 +57,7 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.025;
+  double p = 0.015;
   double i = 0.002;
 
   if (totalAngleError > (2 * baseSpeed / i))
@@ -76,9 +76,9 @@ double MoveToCoordinate::DrivePID() {
   // double i = 0.06;
   // double d = 0.009;
 
-  double p = SmartDashboard::GetNumber("DriveP: ", 0);
-  double i = SmartDashboard::GetNumber("DriveI: ", 0);
-  double d = SmartDashboard::GetNumber("DriveD: ", 0);
+  double p = frc::SmartDashboard::GetNumber("DriveP: ", 0);
+  double i = frc::SmartDashboard::GetNumber("DriveI: ", 0);
+  double d = frc::SmartDashboard::GetNumber("DriveD: ", 0);
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
