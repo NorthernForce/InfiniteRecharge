@@ -32,5 +32,5 @@ class DriveShifter : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANSparkMax> leftSideSpark;
   std::shared_ptr<rev::CANSparkMax> rightSideSpark;
   mutable int shiftCountdown;
-  const int velocityForShift = 4000;
+  const int velocityForShift = 1000;
 };

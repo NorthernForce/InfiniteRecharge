@@ -54,8 +54,8 @@ void DriveShifter::Shift(Gear gear) {
 void DriveShifter::CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM) {
 	int averageSpeedInRPM = (abs(leftSpeedInRPM) + abs(rightSpeedInRPM)) / 2;
 	if(averageSpeedInRPM > velocityForShift) {
-		leftSideSpark->Set(leftSpeedInRPM > 0 ? 1 : -1);
-		rightSideSpark->Set(rightSpeedInRPM > 0 ? 1 : -1);
+		leftSideSpark->Set(leftSpeedInRPM >= 0 ? 1 : -1);
+		rightSideSpark->Set(rightSpeedInRPM >= 0 ? 1 : -1);
 	}
 }
 
