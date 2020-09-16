@@ -31,7 +31,7 @@ void AutonomousBallSeek::Execute() {
             SetDistanceToTargetAndDrive();
         }
     } else if (turnToTarget->HasRobotTurned()) {
-        turnToTarget.reset(new TurnToTarget());
+        turnToTarget->Reset();
         turnToTarget->EnableTurningMode();
     }
     else if (hasDriven) {

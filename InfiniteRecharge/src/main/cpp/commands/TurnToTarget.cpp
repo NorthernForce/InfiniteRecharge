@@ -16,15 +16,11 @@ int TurnToTarget::distanceToTargetBeforeTurn;
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());
     AddRequirements(RobotContainer::aiVisionTargetting.get());
-    turnToAngle = std::make_shared<TurnToAngle>();
 }
 
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
-    RobotContainer::cameraMount->Tilt(0);
-    turningMode = false;
-    hasTurned = false;
-    turnToAngle.reset(new TurnToAngle);
+    Reset();
 }
 
 void TurnToTarget::EnableTurningMode() {
@@ -89,6 +85,17 @@ bool TurnToTarget::IsTurningScheduled() {
 // Called once the command ends or is interrupted.
 void TurnToTarget::End(bool interrupted) {
     hasStartedTurn = false;
+}
+
+void::TurnToTarget::Reset() {
+    RobotContainer::cameraMount->Tilt(0);
+    RobotContainer::cameraMount->Pan(0);
+
+    turningMode = false;
+    hasTurned = false;
+    hasStartedTurn = false;
+    distanceToTargetBeforeTurn = 0;
+    turnToAngle.reset(new TurnToAngle);
 }
 
 // Returns true when the command should end.

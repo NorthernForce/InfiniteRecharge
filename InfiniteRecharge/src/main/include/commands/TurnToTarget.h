@@ -29,6 +29,7 @@ class TurnToTarget
   bool IsTurningScheduled();
   void End(bool interrupted) override;
   bool IsFinished() override;
+  void Reset();
 
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;
