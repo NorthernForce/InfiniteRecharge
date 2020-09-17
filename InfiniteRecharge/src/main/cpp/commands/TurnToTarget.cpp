@@ -20,6 +20,8 @@ TurnToTarget::TurnToTarget() {
 
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
+    RobotContainer::cameraMount->Tilt(0);
+    RobotContainer::cameraMount->Pan(90);
     Reset();
 }
 
@@ -32,7 +34,9 @@ void TurnToTarget::DisableTurningMode() {
 }
 
 bool TurnToTarget::IsTurnOnButtonEnabled() {
-    return (RobotContainer::oi->manipulatorController->GetRawButton(OI::Xbox::menu_button));
+    if (hasTurned)
+        Reset();
+    return RobotContainer::oi->manipulatorController->GetRawButton(OI::Xbox::menu_button);
 }
 
 bool TurnToTarget::IsAutoTurningEnabled() {
@@ -54,9 +58,7 @@ void TurnToTarget::TurnRobotToTarget() {
         TurnToAng(targetAng);
 }
 
-void TurnToTarget::TurnToAng(int ang) {
-    frc::SmartDashboard::PutNumber("Target Angle:", ang);
-
+void TurnToTarget::TurnToAng(double ang) {
     if (distanceToTargetBeforeTurn == 0)
         distanceToTargetBeforeTurn = 0.85 * RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
 
@@ -88,9 +90,6 @@ void TurnToTarget::End(bool interrupted) {
 }
 
 void::TurnToTarget::Reset() {
-    RobotContainer::cameraMount->Tilt(0);
-    RobotContainer::cameraMount->Pan(0);
-
     turningMode = false;
     hasTurned = false;
     hasStartedTurn = false;

@@ -33,6 +33,8 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     void RegisterFoundTargets();
     Triangle GetMainTriangle();
     Triangle GetRightHelperTriangle();
+    Triangle GetRightFinalTriangle();
+    Triangle GetLeftFinalTriangle();
     Triangle GetFinalTriangle();
     Triangle GetCenterTriangle();
     Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);

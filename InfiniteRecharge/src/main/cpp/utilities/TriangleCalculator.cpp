@@ -106,16 +106,28 @@ double TriangleCalculator::RadToDeg(double rad) {
 
 void TriangleCalculator::ThrowExceptionOnErrors(std::vector<double> measurements) {
     for (auto prop : measurements) {
-        if (prop == 0)
+        if (prop == 0) {
+            calculatedTriangleHasErrors = true;
             throw ZeroError();
-        if (prop < 0)
+        }
+        if (prop < 0) {
+            calculatedTriangleHasErrors = true;
             throw NegativeError();
+        }
     }
     std::vector<double> angles = {angle_a, angle_b, angle_c};
     for (auto ang : angles) {
-        if (abs(ang) > 185)
+        if (abs(ang) > 185) {
+            calculatedTriangleHasErrors = true;
             throw AngleError();
+        }
     }
-    if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 185)
+    if (abs(angle_a) + abs(angle_b) + abs(angle_c) > 185) {
+        calculatedTriangleHasErrors = true;
         throw AngleError();
+    }
+}
+
+bool TriangleCalculator::CalculatedTriangleHasErrors() {
+    return calculatedTriangleHasErrors;
 }

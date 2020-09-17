@@ -22,7 +22,8 @@ void AutonomousBallSeek::Initialize() {
 void AutonomousBallSeek::Execute() {
     // int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
     // bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
-    bool ballIsCentered = abs(RobotContainer::aiVisionTargetting->GetRobotAngleToTarget()) < 3;
+    double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
+    bool ballIsCentered = abs(angleToTarget) < 3;
 
     if (turnToTarget->HasRobotTurned() && ballIsCentered) {
         if (!hasDriven) {

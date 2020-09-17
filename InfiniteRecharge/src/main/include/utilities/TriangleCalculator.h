@@ -25,6 +25,7 @@ class TriangleCalculator {
     double DegToRad(double deg);
     double RadToDeg(double rad);
     void ThrowExceptionOnErrors(std::vector<double> measurements);
+    bool CalculatedTriangleHasErrors();
 
     struct BaseException : public std::exception {};
     struct ZeroError : public BaseException {
@@ -50,4 +51,6 @@ class TriangleCalculator {
     double angle_a;
     double angle_b;
     double angle_c;
+
+    bool calculatedTriangleHasErrors;
 };

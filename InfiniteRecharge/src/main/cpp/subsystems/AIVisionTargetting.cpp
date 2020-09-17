@@ -137,30 +137,57 @@ Triangle AIVisionTargetting::GetRightHelperTriangle() {
     return CalculateTriangle(std::move(rawTriangle), "SAS");
 }
 
-Triangle AIVisionTargetting::GetFinalTriangle() {
+Triangle AIVisionTargetting::GetRightFinalTriangle() {
     std::unique_ptr<Triangle> rawTriangle;
-    double b, c;
-    char panDir = RobotContainer::cameraMount->GetPanDirection();
+    double b, c, a;
+    rightHelperTriangle = GetRightHelperTriangle();
 
-    if (panDir == 'l') {
-        mainTriangle = GetMainTriangle();
+    b = rightHelperTriangle.GetSideB();
+    c = rightHelperTriangle.GetSideC() + centerTriangle.GetSideC();
+    a = sqrt(pow(b, 2) + pow(c, 2));
 
-        b = mainTriangle.GetSideB();
-        c = centerTriangle.GetSideC();
-        double A = 360 - (centerTriangle.GetAngleA() + mainTriangle.GetAngleA());
+    rawTriangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
+    
+    return CalculateTriangle(std::move(rawTriangle), "SSS");
+}
 
-        rawTriangle = std::make_unique<Triangle>(0, b, c, A, 0, 0);
-        finalTriangle = CalculateTriangle(std::move(rawTriangle), "SAS");
+Triangle AIVisionTargetting::GetLeftFinalTriangle() {
+    std::unique_ptr<Triangle> rawTriangle;
+    double b, c, A;
+    mainTriangle = GetMainTriangle();
+
+    b = mainTriangle.GetSideB();
+    c = centerTriangle.GetSideC();
+    A = 360 - (centerTriangle.GetAngleA() + mainTriangle.GetAngleA());
+
+    rawTriangle = std::make_unique<Triangle>(0, b, c, A, 0, 0);
+    return CalculateTriangle(std::move(rawTriangle), "SAS");
+}
+
+Triangle AIVisionTargetting::GetFinalTriangle() {
+    char turnDir = RobotContainer::cameraMount->GetPanDirection();
+    Triangle leftFinalTriangle = GetLeftFinalTriangle();
+    Triangle rightFinalTriangle = GetRightFinalTriangle();
+
+    if (2 == 2) {
+        double leftFinalAng = leftFinalTriangle.GetAngleB();
+        double rightFinalAng = rightFinalTriangle.GetAngleB();
+
+        if (rightFinalTriangle.())
+            turnDir = 'l';
+        else if (leftFinalTriangle.())
+            turnDir = 'r';
+
+        if (abs(leftFinalAng) < abs(rightFinalAng))
+            turnDir = 'l';
+        else 
+            turnDir = 'r';
     }
-    else if (panDir == 'r') {
-        rightHelperTriangle = GetRightHelperTriangle();
-
-        b = rightHelperTriangle.GetSideB();
-        c = rightHelperTriangle.GetSideC() + centerTriangle.GetSideC();
-        double a = sqrt(pow(b, 2) + pow(c, 2));
-
-        rawTriangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
-        finalTriangle = CalculateTriangle(std::move(rawTriangle), "SSS");
+    else if (turnDir == 'l') {
+        finalTriangle = GetLeftFinalTriangle();
+    }
+    else if (turnDir == 'r') {
+        finalTriangle = GetRightFinalTriangle();
     }
 
     return finalTriangle;

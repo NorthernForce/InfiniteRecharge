@@ -23,7 +23,7 @@ class TurnToTarget
   bool IsAutoTurningEnabled();
   void Execute() override;
   void TurnRobotToTarget();
-  void TurnToAng(int ang);
+  void TurnToAng(double ang);
   int GetDistanceToTargetBeforeTurn();
   bool HasRobotTurned();
   bool IsTurningScheduled();
