@@ -32,8 +32,7 @@ class MoveThroughCoordinateSet
 
   bool IsFinished() override;
 
-  //make this the smart dashboard label
-  const std::string coordinateSetLabel = "";
+  const std::string coordinateSetLabel = "Coordinate Set";
 
   std::vector<double> coordinateSet;
 
