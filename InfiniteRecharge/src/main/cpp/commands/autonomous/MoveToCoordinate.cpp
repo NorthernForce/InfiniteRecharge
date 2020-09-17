@@ -57,7 +57,7 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.025;
+  double p = 0.015;
   double i = 0.002;
 
   if (totalAngleError > (2 * baseSpeed / i))
@@ -72,9 +72,13 @@ double MoveToCoordinate::DrivePID() {
   if (distanceError == 0)
     totalDistanceError = 0;
 
-  double p = 0.9;
-  double i = 0.06;
-  double d = 0.009;
+  // double p = 0.9;
+  // double i = 0.06;
+  // double d = 0.009;
+
+  double p = frc::SmartDashboard::GetNumber("DriveP: ", 0);
+  double i = frc::SmartDashboard::GetNumber("DriveI: ", 0);
+  double d = frc::SmartDashboard::GetNumber("DriveD: ", 0);
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -157,6 +161,12 @@ void MoveToCoordinate::Execute() {
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
 //   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
+  if (abs(distance) < 0.45) {
+    finishCounter++;
+  }
+  else {
+    finishCounter = 0;
+  }
 }  
 
 // Called once the command ends or is interrupted.
@@ -171,7 +181,7 @@ void MoveToCoordinate::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (abs(distance) < 0.45) {
+  if (finishCounter > 20) {
     return true;
   }
   else {

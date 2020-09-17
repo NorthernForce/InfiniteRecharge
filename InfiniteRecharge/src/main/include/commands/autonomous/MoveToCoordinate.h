@@ -66,4 +66,6 @@ class MoveToCoordinate
   double rightPower;
 
   int movementStage;
+
+  int finishCounter = 0;
 };
