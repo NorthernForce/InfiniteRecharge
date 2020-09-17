@@ -65,7 +65,7 @@ void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std:
 void AutoCommandScheduler::RunSequential() {
     if (isFinished)
         EndIfGoneThroughAllIndexes();
-    else if (isUsingAuto == false or (isUsingAuto == true and hasScheduledAuto == true))
+    else if (!isUsingAuto || (isUsingAuto && hasScheduledAuto))
         ScheduleInSequence();
 }
 
@@ -99,16 +99,14 @@ void AutoCommandScheduler::ScheduleInParallel() {
             CheckAllCommandsHaveFinished();
     }
     else
-        throw CommandConflictError();
+        std::cerr << CommandConflictError().what() << '\n';
 }
 
 bool AutoCommandScheduler::CheckForSubsystemConflictsInCommandQueue() {
     for (int currInd = 0; currInd < maxIndex; currInd++) {
         double nextInd = currInd + 1;
-        if (commandQueue[currInd] == commandQueue[nextInd]) {
-            commandQueue.erase(commandQueue.begin() + currInd);
-            currInd--;
-        }
+        if (commandQueue[currInd] == commandQueue[nextInd])
+            return true;
     }
     return false;
 }
