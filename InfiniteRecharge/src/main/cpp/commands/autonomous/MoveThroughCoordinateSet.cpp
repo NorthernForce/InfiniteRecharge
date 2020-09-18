@@ -14,7 +14,6 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
-  //need to assign the label to the smart dashboard title
   coordinateSet = frc::SmartDashboard::GetNumberArray(coordinateSetLabel, -1);
   numOfSets = coordinateSet.size() / 2;
   xPos = 0;

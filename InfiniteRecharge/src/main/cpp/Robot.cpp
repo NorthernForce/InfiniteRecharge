@@ -49,6 +49,7 @@ void Robot::RobotInit() {
     frc::SmartDashboard::PutNumber("auto 4 parameter", 0);
     frc::SmartDashboard::PutString("auto string input 5", "insert here");
     frc::SmartDashboard::PutNumber("auto 5 parameter", 0);
+    frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
 
 
     ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
