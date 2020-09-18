@@ -61,8 +61,8 @@ void Navigation::ChangeInDistanceTravelled() {
         rightDistTravelled /= Constants::Shifting::highMultiplier;
     }
     else {
-        leftDistTravelled /= Constants::Shifting::lowMultiplier;
-        rightDistTravelled /= Constants::Shifting::lowMultiplier;
+        leftDistTravelled /= Constants::Shifting::highMultiplier;
+        rightDistTravelled /= Constants::Shifting::highMultiplier;
     }
     changeInDistanceTravelled = std::make_pair(leftDistTravelled, rightDistTravelled);
 }
