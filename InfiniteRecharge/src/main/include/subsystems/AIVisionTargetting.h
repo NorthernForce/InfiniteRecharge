@@ -23,14 +23,30 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     Target CheckTargetType();
     int TimeSinceTargetRegisteredInMillis();
     bool IsTargetLocked();
+    std::pair<double, double> GetFieldCoordinatesOfTarget();
     double GetRobotDistToTarget();
     double GetRobotAngleToTarget();
+    char GetSideOfIntakeWithTarget();
     double GetCameraDistToTargetFromArea(int area);
     int GetArea();
+    double GetHeightOfTriangle(Triangle t, double base);
 
  private:
     void RegisterFoundTargets();
-    std::unique_ptr<Triangle> GetTargetTriangle();
+    Triangle GetMainTriangle();
+    Triangle GetRightHelperTriangle();
+    Triangle GetRightFinalTriangle();
+    Triangle GetLeftFinalTriangle();
+    Triangle GetFinalTriangle();
+    Triangle GetCenterTriangle();
+    Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
+
+    Triangle mainTriangle;
+    Triangle rightHelperTriangle;
+    Triangle finalTriangle;
+    Triangle centerTriangle;
+
+    std::unique_ptr<TriangleCalculator> calculator;
 
     double camAngleOffset;
     int servoToRobotCenterAngleOffset = 90;

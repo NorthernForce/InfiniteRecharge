@@ -95,8 +95,6 @@ void Intake::SetArmUp() {
     }
 }
 
-
-////TODO: Set Camera to low position before the arm is commanded
 void Intake::SetArmDown() {
     double tolerance = 3;
     armSpark->Set(0.5);

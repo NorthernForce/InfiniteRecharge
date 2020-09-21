@@ -23,8 +23,6 @@ double Navigation::xPosition;
 double Navigation::yPosition;
 
 Navigation::Navigation() {}
-
-////TODO: Need to calculate position
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();
@@ -61,8 +59,8 @@ void Navigation::ChangeInDistanceTravelled() {
         rightDistTravelled /= Constants::Shifting::highMultiplier;
     }
     else {
-        leftDistTravelled /= Constants::Shifting::highMultiplier;
-        rightDistTravelled /= Constants::Shifting::highMultiplier;
+        leftDistTravelled /= Constants::Shifting::lowMultiplier;
+        rightDistTravelled /= Constants::Shifting::lowMultiplier;
     }
     changeInDistanceTravelled = std::make_pair(leftDistTravelled, rightDistTravelled);
 }

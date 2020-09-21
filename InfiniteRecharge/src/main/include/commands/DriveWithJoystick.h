@@ -23,6 +23,7 @@ class DriveWithJoystick
 
  private:
   static int countForShiftEligibility;
+  bool IsXWithinThresholdOfY(double x, double y, double threshold);
   void ShiftIfEligible(bool isEligible);
   double speed;
   double rotation;

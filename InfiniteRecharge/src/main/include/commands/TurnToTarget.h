@@ -23,12 +23,13 @@ class TurnToTarget
   bool IsAutoTurningEnabled();
   void Execute() override;
   void TurnRobotToTarget();
-  void TurnToAng(int ang);
+  void TurnToAng(double ang);
   int GetDistanceToTargetBeforeTurn();
   bool HasRobotTurned();
   bool IsTurningScheduled();
   void End(bool interrupted) override;
   bool IsFinished() override;
+  void Reset();
 
  private:
   std::shared_ptr<TurnToAngle> turnToAngle;

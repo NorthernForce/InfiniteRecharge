@@ -56,8 +56,5 @@ double IMU::GetAcceleration() {
 }
 
 bool IMU::IsMoreTorqueNeeded() {
-    if (accelerationRateTimer->Get() < 0.1)
-        return true;
-    else
-        return false;
+    return accelerationRateTimer->Get() < 0.1;
 }

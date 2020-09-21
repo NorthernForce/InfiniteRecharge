@@ -10,36 +10,29 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "commands/TurnToTarget.h"
-#include "commands/AutoDrive.h"
+#include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/IntakePowerCell.h"
 #include <memory>
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending CommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class AutoBallSeek
     : public frc2::CommandHelper<frc2::CommandBase, AutoBallSeek> {
  public:
   AutoBallSeek();
-  void DriveToTarget();
   void Initialize() override;
   void Execute() override;
+  void SetDistanceToTargetAndDrive();
+  void DriveToTargetAndStop();
   void End(bool interrupted) override;
   bool IsFinished() override;
 
  private:
     std::unique_ptr<TurnToTarget> turnToTarget = std::make_unique<TurnToTarget>();
-    std::unique_ptr<AutoDrive> autoDrive = std::make_unique<AutoDrive>();
+    std::unique_ptr<MoveToCoordinate> moveToCoordinate;
     std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
-    double distToTarget;
-    bool isTargetLocked = false;
-    bool distHasBeenSet = true;
+
+    double inchesToTarget;
     bool hasDriven = false;
-    bool hasCompletedIntake = false;
-    bool hasGottenDistToTarget = false;
-    bool hasStartedDriving = false;
+    bool distHasBeenSet = false;
+    bool driveHasBeenScheduled = false;
+    bool intakeHasBeenScheduled = false;
 };

@@ -18,6 +18,7 @@ class Triangle {
     double GetSideA();
     double GetSideB();
     double GetSideC();
+    bool HasErrors();
 
  private:
     double a;

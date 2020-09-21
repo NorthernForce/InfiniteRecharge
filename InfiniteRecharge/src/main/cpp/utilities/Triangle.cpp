@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "utilities/Triangle.h"
+#include "utilities/TriangleCalculator.h"
 
 // creates an empty triangle
 Triangle::Triangle() {}
@@ -24,3 +25,23 @@ double Triangle::GetSideA() { return a; }
 double Triangle::GetSideB() { return b; }
 
 double Triangle::GetSideC() { return c; }
+
+bool Triangle::HasErrors() {
+    std::vector<double> allTriangleProps= {a, b, c, A, B, C};
+    std::vector<double> angles = {A, B, C};
+
+    for (auto prop : allTriangleProps) {
+        if (prop == 0)
+            return true;
+        if (prop < 0)
+            return true;
+    }
+    for (auto ang : angles)
+        if (abs(ang) >= 180) {
+            return true;
+    }
+    if (abs(angles[0]) + abs(angles[1]) + abs(angles[2]) > 180)
+        return true;
+        
+    return false;
+}

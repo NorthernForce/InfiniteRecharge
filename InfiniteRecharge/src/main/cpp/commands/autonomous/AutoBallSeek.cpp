@@ -7,49 +7,65 @@
 
 #include "commands/autonomous/AutoBallSeek.h"
 #include "RobotContainer.h"
-#include "frc/smartdashboard/SmartDashboard.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
-AutoBallSeek::AutoBallSeek() {}
+AutoBallSeek::AutoBallSeek() {
+    distHasBeenSet = false;
+    driveHasBeenScheduled = false;
+    inchesToTarget = 0;
+}
 
-// Called when the command is initially scheduled.
-void AutoBallSeek::Initialize() {}
+void AutoBallSeek::Initialize() {
+    turnToTarget->EnableTurningMode();
+}
 
-// Called repeatedly when this Command is scheduled to run
 void AutoBallSeek::Execute() {
+    double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
+
     if (turnToTarget->HasRobotTurned()) {
-        if (!turnToTarget->IsAutoTurningEnabled())
-            turnToTarget->EnableTurningMode();
+        if (!hasDriven) {
+            turnToTarget->DisableTurningMode();
+            turnToTarget->Cancel();
+            SetDistanceToTargetAndDrive();
+        }
+    } else if (turnToTarget->HasRobotTurned()) {
+        turnToTarget->Reset();
+        turnToTarget->EnableTurningMode();
     }
-    if (turnToTarget->HasRobotTurned() && !turnToTarget->IsTurningScheduled()) {
-        if (hasDriven)
+    else if (hasDriven) {
+        if (!intakeHasBeenScheduled) {
             intakeBall->Schedule();
-        else
-            DriveToTarget();
+            intakeHasBeenScheduled = true;
+        }
     }
 }
 
-void AutoBallSeek::DriveToTarget() {
-    if (!hasGottenDistToTarget) {
-        distToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
-        frc::SmartDashboard::PutNumber("distToTarget", distToTarget);
-        autoDrive->SetDist(0.8*distToTarget);
-        if (distToTarget != 0)
-            hasGottenDistToTarget = true;
+void AutoBallSeek::SetDistanceToTargetAndDrive() {
+    inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
+    if (inchesToTarget != 0 && !distHasBeenSet) {
+        std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
+        moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second));
+        distHasBeenSet = true;
     }
+    if (distHasBeenSet)
+        DriveToTargetAndStop();
+}
 
-    if (!hasStartedDriving) {
-        autoDrive->Schedule();
-        hasStartedDriving = true;
-    }    
-    if (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() > 0)
+void AutoBallSeek::DriveToTargetAndStop() {
+    if (!driveHasBeenScheduled) {
+        moveToCoordinate->Schedule();
+        driveHasBeenScheduled = true;
+    }
+    else if  (!moveToCoordinate->IsScheduled()) {
+        moveToCoordinate->Cancel();
         hasDriven = true;
-
+    }
 }
 
-// Called once the command ends or is interrupted.
 void AutoBallSeek::End(bool interrupted) {
-    turnToTarget->DisableTurningMode();
+    intakeBall->Cancel();
 }
 
-// Returns true when the command should end.
-bool AutoBallSeek::IsFinished() { return hasCompletedIntake; }
+bool AutoBallSeek::IsFinished() {
+    return (!intakeBall->IsScheduled() && intakeHasBeenScheduled);
+}
