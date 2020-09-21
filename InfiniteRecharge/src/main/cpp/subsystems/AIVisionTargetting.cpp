@@ -104,25 +104,6 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
     return calculatedAngle;
 }
 
-// char AIVisionTargetting::GetRobotSideThatHasTarget() {
-//     Triangle leftFinalTriangle = GetLeftFinalTriangle();
-//     Triangle rightFinalTriangle = GetRightFinalTriangle();
-
-//     double leftFinalAng = leftFinalTriangle.GetAngleB();
-//     double rightFinalAng = rightFinalTriangle.GetAngleB();
-
-//     if (rightFinalTriangle.HasErrors())
-//         return 'l';
-//     else if (leftFinalTriangle.HasErrors())
-//         return 'r';
-//     else if (abs(leftFinalAng) < abs(rightFinalAng))
-//         return 'l';
-//     else if (abs(leftFinalAng) > abs(rightFinalAng))
-//         return 'r';
-//     else
-//         return RobotContainer::cameraMount->GetPanDirection();
-// }
-
 char AIVisionTargetting::GetSideOfIntakeWithTarget() {
     double angFromIntakeCenter = GetMainTriangle().GetAngleA();
     double servoPan = RobotContainer::cameraMount->GetCurrentPan();
