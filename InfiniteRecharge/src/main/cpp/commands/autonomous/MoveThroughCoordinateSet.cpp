@@ -7,6 +7,7 @@
 
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "commands/autonomous/MoveToCoordinate.h"
 
 MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -18,6 +19,7 @@ void MoveThroughCoordinateSet::Initialize() {
   numOfSets = coordinateSet.size() / 2;
   xPos = 0;
   yPos = 1;
+  moveToCoordinate.reset(new MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos)));
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -25,10 +27,14 @@ void MoveThroughCoordinateSet::Execute() {
   //checks to make sure there is another set of coordinates
   if (status != numOfSets + 1) {
     //move robot to that coordinates
-    MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
-    status++;
-    xPos += 2;
-    yPos += 2;
+   // MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
+   //is this good here? can they be nested this way?
+    if (moveToCoordinate->IsScheduled()) {
+      moveToCoordinate->Schedule();
+      status++;
+      xPos += 2;
+      yPos += 2;
+    }
   }
 }
 

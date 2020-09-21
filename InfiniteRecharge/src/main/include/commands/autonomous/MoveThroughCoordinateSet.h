@@ -36,6 +36,8 @@ class MoveThroughCoordinateSet
 
   std::vector<double> coordinateSet;
 
+  std::unique_ptr<MoveToCoordinate> moveToCoordinate;
+
   int numOfSets = 0;
   int status = 1;
   int xPos;
