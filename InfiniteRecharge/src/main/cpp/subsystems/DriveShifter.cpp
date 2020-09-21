@@ -22,6 +22,7 @@ DriveShifter::DriveShifter() :
 {
     shifter = std::make_shared<frc::Solenoid>(Constants::PCMCanBusID, 0);
     BeginShift(false);
+    currentGear = Gear::High;
 }
 
 // This method will be called once per scheduler run

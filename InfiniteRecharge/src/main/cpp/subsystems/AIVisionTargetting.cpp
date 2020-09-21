@@ -65,6 +65,14 @@ bool AIVisionTargetting::IsTargetLocked() {
     return (IsXInRange(currentPan, avgOfRecentPans-3, avgOfRecentPans+3) and isTargetFound);
 }
 
+std::pair<double, double> AIVisionTargetting::GetFieldCoordinatesOfTarget() {
+    double distance = GetRobotDistToTarget();
+    double angle = GetRobotAngleToTarget();
+    double x = distance * cos(angle);
+    double y = distance * sin(angle);
+    return std::make_pair(x, y);
+}
+
 double AIVisionTargetting::GetRobotDistToTarget() {
     mainTriangle = GetMainTriangle();
     double calculatedDist = 0;
@@ -80,11 +88,13 @@ double AIVisionTargetting::GetRobotDistToTarget() {
 
 double AIVisionTargetting::GetRobotAngleToTarget() {
     double calculatedAngle = 0;
+    char sideOfIntakeWithTarget = GetSideOfIntakeWithTarget();
     finalTriangle = GetFinalTriangle();
+
 
     try {
         calculatedAngle = finalTriangle.GetAngleB();
-        if (RobotContainer::cameraMount->GetPanDirection() == 'l')
+        if (sideOfIntakeWithTarget == 'l')
             calculatedAngle *= -1;
     }
     catch (const TriangleCalculator::BaseException& e) {
@@ -92,6 +102,37 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
     }
 
     return calculatedAngle;
+}
+
+// char AIVisionTargetting::GetRobotSideThatHasTarget() {
+//     Triangle leftFinalTriangle = GetLeftFinalTriangle();
+//     Triangle rightFinalTriangle = GetRightFinalTriangle();
+
+//     double leftFinalAng = leftFinalTriangle.GetAngleB();
+//     double rightFinalAng = rightFinalTriangle.GetAngleB();
+
+//     if (rightFinalTriangle.HasErrors())
+//         return 'l';
+//     else if (leftFinalTriangle.HasErrors())
+//         return 'r';
+//     else if (abs(leftFinalAng) < abs(rightFinalAng))
+//         return 'l';
+//     else if (abs(leftFinalAng) > abs(rightFinalAng))
+//         return 'r';
+//     else
+//         return RobotContainer::cameraMount->GetPanDirection();
+// }
+
+char AIVisionTargetting::GetSideOfIntakeWithTarget() {
+    double angFromIntakeCenter = GetMainTriangle().GetAngleA();
+    double servoPan = RobotContainer::cameraMount->GetCurrentPan();
+
+    if (angFromIntakeCenter < 90 || servoPan > 90)
+        return 'r';
+    else if (angFromIntakeCenter > 90)
+        return 'l';
+    else
+        return 'c';
 }
 
 double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
@@ -120,7 +161,7 @@ Triangle AIVisionTargetting::GetMainTriangle() {
     // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
     double a = GetCameraDistToTargetFromArea(GetArea());
     double c = centerTriangle.GetSideB();
-    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + (0.7 * pcOffsetInCam);
+    double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
 
     std::unique_ptr<Triangle> rawTriangle = std::make_unique<Triangle>(a, 0, c, 0, B, 0);
     return CalculateTriangle(std::move(rawTriangle), "SAS");
@@ -165,30 +206,12 @@ Triangle AIVisionTargetting::GetLeftFinalTriangle() {
 }
 
 Triangle AIVisionTargetting::GetFinalTriangle() {
-    char turnDir = RobotContainer::cameraMount->GetPanDirection();
-    Triangle leftFinalTriangle = GetLeftFinalTriangle();
-    Triangle rightFinalTriangle = GetRightFinalTriangle();
-
-    if (2 == 2) {
-        double leftFinalAng = leftFinalTriangle.GetAngleB();
-        double rightFinalAng = rightFinalTriangle.GetAngleB();
-
-        if (rightFinalTriangle.())
-            turnDir = 'l';
-        else if (leftFinalTriangle.())
-            turnDir = 'r';
-
-        if (abs(leftFinalAng) < abs(rightFinalAng))
-            turnDir = 'l';
-        else 
-            turnDir = 'r';
-    }
-    else if (turnDir == 'l') {
+    char turnDir = GetSideOfIntakeWithTarget();
+        
+    if (turnDir == 'l')
         finalTriangle = GetLeftFinalTriangle();
-    }
-    else if (turnDir == 'r') {
+    else if (turnDir == 'r')
         finalTriangle = GetRightFinalTriangle();
-    }
 
     return finalTriangle;
 }

@@ -11,7 +11,6 @@
 bool TurnToTarget::turningMode;
 bool TurnToTarget::hasTurned;
 int TurnToTarget::distanceToTargetBeforeTurn;
-////TODO: make not static if possible
 
 TurnToTarget::TurnToTarget() {
     AddRequirements(RobotContainer::cameraMount.get());

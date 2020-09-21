@@ -23,8 +23,10 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     Target CheckTargetType();
     int TimeSinceTargetRegisteredInMillis();
     bool IsTargetLocked();
+    std::pair<double, double> GetFieldCoordinatesOfTarget();
     double GetRobotDistToTarget();
     double GetRobotAngleToTarget();
+    char GetSideOfIntakeWithTarget();
     double GetCameraDistToTargetFromArea(int area);
     int GetArea();
     double GetHeightOfTriangle(Triangle t, double base);
