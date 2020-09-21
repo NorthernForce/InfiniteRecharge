@@ -60,8 +60,6 @@ class MoveToCoordinate
   double turnSpeed;
   double driveSpeed;
 
-  int letsSlowMotors;
-
   std::vector<double> previousAngToFinals;
 
   double leftPower;

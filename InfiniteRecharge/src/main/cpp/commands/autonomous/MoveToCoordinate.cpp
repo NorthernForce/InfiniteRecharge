@@ -135,16 +135,10 @@ void MoveToCoordinate::Execute() {
     frc::SmartDashboard::PutNumber("leftPower", leftPower);
     frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
-    letsSlowMotors++;
-
-
     // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
 
-    if (letsSlowMotors % 2 == 2) {
-      Drivetrain::leftPrimarySpark->Set(leftPower);
-      Drivetrain::rightPrimarySpark->Set(rightPower); 
-      letsSlowMotors = 0; 
-    }
+    Drivetrain::leftPrimarySpark->Set(leftPower);
+    Drivetrain::rightPrimarySpark->Set(rightPower); 
 
 
     Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
