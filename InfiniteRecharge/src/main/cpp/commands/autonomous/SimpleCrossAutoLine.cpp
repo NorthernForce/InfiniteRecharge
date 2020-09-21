@@ -20,7 +20,9 @@ void SimpleCrossAutoLine::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void SimpleCrossAutoLine::Execute() {
-    RobotContainer::drivetrain->DriveUsingSpeeds(.2, .2);
+    // RobotContainer::drivetrain->DriveUsingSpeeds(.13, .13);
+    RobotContainer::drivetrain->rightPrimarySpark->Set(0.13);
+    RobotContainer::drivetrain->leftPrimarySpark->Set(-0.13);
 }
 
 void SimpleCrossAutoLine::SetDistance(double distance) {

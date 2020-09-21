@@ -132,13 +132,14 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - abs(turnSpeed);
     }
+    
     frc::SmartDashboard::PutNumber("leftPower", leftPower);
     frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
     // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
 
-    Drivetrain::leftPrimarySpark->Set(leftPower);
-    Drivetrain::rightPrimarySpark->Set(rightPower); 
+    Drivetrain::leftPrimarySpark->Set(-leftPower);
+    Drivetrain::rightPrimarySpark->Set(rightPower);
 
 
     Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
