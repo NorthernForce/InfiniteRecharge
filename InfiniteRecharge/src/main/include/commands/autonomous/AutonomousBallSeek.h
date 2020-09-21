@@ -41,4 +41,5 @@ class AutonomousBallSeek
     bool hasDriven = false;
     bool distHasBeenSet = false;
     bool driveHasBeenScheduled = false;
+    bool intakeHasBeenScheduled = false;
 };

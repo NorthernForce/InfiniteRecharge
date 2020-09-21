@@ -23,8 +23,6 @@ double Navigation::xPosition;
 double Navigation::yPosition;
 
 Navigation::Navigation() {}
-
-////TODO: Need to calculate position
 // This method will be called once per scheduler run
 void Navigation::Periodic() {
     robotCurrentAngle = RobotContainer::imu->GetRotation();

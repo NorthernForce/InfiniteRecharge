@@ -20,8 +20,10 @@ void AutonomousBallSeek::Initialize() {
 }
 
 void AutonomousBallSeek::Execute() {
-    int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
-    bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
+    // int averageCameraPan = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    // bool ballIsCentered = averageCameraPan > 85 && averageCameraPan < 95;
+    double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
+    bool ballIsCentered = abs(angleToTarget) < 3;
 
     if (turnToTarget->HasRobotTurned() && ballIsCentered) {
         if (!hasDriven) {
@@ -29,9 +31,14 @@ void AutonomousBallSeek::Execute() {
             turnToTarget->Cancel();
             SetDistanceToTargetAndDrive();
         }
-        else {
-            if (!intakeBall->IsScheduled())
-                intakeBall->Schedule();
+    } else if (turnToTarget->HasRobotTurned()) {
+        turnToTarget->Reset();
+        turnToTarget->EnableTurningMode();
+    }
+    else if (hasDriven) {
+        if (!intakeHasBeenScheduled) {
+            intakeBall->Schedule();
+            intakeHasBeenScheduled = true;
         }
     }
 }
@@ -51,12 +58,16 @@ void AutonomousBallSeek::DriveToTargetAndStop() {
         autoDrive->Schedule();
         driveHasBeenScheduled = true;
     }
-    else if  (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() != 0)
-        hasDriven = true;        
+    else if  (autoDrive->HasReachedTargetDistance() && autoDrive->GetDist() != 0) {
+        autoDrive->Cancel();
+        hasDriven = true;
+    }
 }
 
 void AutonomousBallSeek::End(bool interrupted) {
     intakeBall->Cancel();
 }
 
-bool AutonomousBallSeek::IsFinished() { return false; }
+bool AutonomousBallSeek::IsFinished() {
+    return (!intakeBall->IsScheduled() && intakeHasBeenScheduled);
+}

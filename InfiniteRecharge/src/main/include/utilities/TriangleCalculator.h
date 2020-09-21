@@ -24,7 +24,7 @@ class TriangleCalculator {
     double ThirdSideCalc(double side, double angle_a, double angle_c);
     double DegToRad(double deg);
     double RadToDeg(double rad);
-    void ThrowExceptionOnErrors(std::vector<double> measurements);
+    static void ThrowExceptionOnErrors(Triangle triangle);
 
     struct BaseException : public std::exception {};
     struct ZeroError : public BaseException {

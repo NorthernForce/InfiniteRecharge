@@ -36,7 +36,6 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::InitSubsystems() {
-    ////TODO: convert all .reset() initializations to make_shared or make_unique to reduce memory allocation time
     drivetrain.reset(new Drivetrain);
     pcm.reset(new PCM);
     driveShifter.reset(new DriveShifter);

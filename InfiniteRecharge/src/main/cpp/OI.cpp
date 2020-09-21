@@ -5,7 +5,6 @@
 
 #include "utilities/ComboControl.h"
 
-#include "commands/TurnToTarget.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/ShiftGear.h"
 #include "commands/TurnToTarget.h"
