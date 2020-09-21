@@ -20,8 +20,6 @@ void AutoBallSeek::Initialize() {
 }
 
 void AutoBallSeek::Execute() {
-    double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-
     if (turnToTarget->HasRobotTurned()) {
         if (!hasDriven) {
             turnToTarget->DisableTurningMode();
