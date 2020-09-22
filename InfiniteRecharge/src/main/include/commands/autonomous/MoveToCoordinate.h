@@ -61,6 +61,8 @@ class MoveToCoordinate
   double driveSpeed;
 
   std::vector<double> previousAngToFinals;
+  std::vector<double> averageLeft;
+  std::vector<double> averageRight;
 
   double leftPower;
   double rightPower;

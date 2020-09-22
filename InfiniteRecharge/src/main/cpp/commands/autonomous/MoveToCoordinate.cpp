@@ -15,6 +15,7 @@
 #include <cmath>
 #include "subsystems/Drivetrain.h"
 #include "Robot.h"
+#include <vector>
 
 std::unique_ptr<Logger> Robot::logger;
 
@@ -137,6 +138,25 @@ void MoveToCoordinate::Execute() {
     frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
     // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
+
+    double pastLeftPowerTotal;
+    double pastRightPowerTotal;
+
+    averageLeft.push_back(leftPower);
+    if (averageLeft.size() > 4) {
+      averageLeft.erase(averageLeft.begin());
+    }
+    averageRight.push_back(rightPower);
+    if (averageRight.size() > 4) {
+      averageRight.erase(averageRight.begin());
+    }
+
+    for (unsigned i = 0; i < averageLeft.size(); i++) {
+      pastLeftPowerTotal += averageLeft[i];
+      pastRightPowerTotal += averageRight[i];
+    }
+    pastLeftPowerTotal /= 4;
+    pastRightPowerTotal /= 4;
 
     Drivetrain::leftPrimarySpark->Set(-leftPower);
     Drivetrain::rightPrimarySpark->Set(rightPower);
