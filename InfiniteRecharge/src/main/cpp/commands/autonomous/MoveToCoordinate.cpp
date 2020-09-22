@@ -133,14 +133,11 @@ void MoveToCoordinate::Execute() {
       leftPower = driveSpeed;
       rightPower = driveSpeed - abs(turnSpeed);
     }
-    
-    frc::SmartDashboard::PutNumber("leftPower", leftPower);
-    frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
     // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
 
-    double pastLeftPowerTotal;
-    double pastRightPowerTotal;
+    frc::SmartDashboard::PutNumber("leftPower", leftPower);
+    frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
     averageLeft.push_back(leftPower);
     if (averageLeft.size() > 4) {
@@ -150,6 +147,9 @@ void MoveToCoordinate::Execute() {
     if (averageRight.size() > 4) {
       averageRight.erase(averageRight.begin());
     }
+
+    double pastLeftPowerTotal;
+    double pastRightPowerTotal;
 
     for (unsigned i = 0; i < averageLeft.size(); i++) {
       pastLeftPowerTotal += averageLeft[i];
@@ -162,6 +162,9 @@ void MoveToCoordinate::Execute() {
     Drivetrain::rightPrimarySpark->Set(rightPower);
 
 
+
+    frc::SmartDashboard::PutNumber("leftPower", leftPower);
+    frc::SmartDashboard::PutNumber("rightPower", rightPower);
     Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
     Robot::logger->LoadDataToFile("rightPower", Drivetrain::rightPrimarySpark->Get());
   }
