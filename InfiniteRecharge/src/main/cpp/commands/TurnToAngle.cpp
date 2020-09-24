@@ -9,14 +9,22 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/TimedRobot.h>
 #include "RobotContainer.h"
+#include <frc2/command/CommandScheduler.h>
 
 double TurnToAngle::distanceToTargetAngle;
 bool TurnToAngle::isTurnFinished;
 
 TurnToAngle::TurnToAngle(double target) {
     SetName("TurnToAngle");
-    //AddRequirements(RobotContainer::drivetrain.get());
     AddRequirements(RobotContainer::imu.get());
+    try {
+        frc2::Command* cmd = frc2::CommandScheduler::GetInstance().Requiring(RobotContainer::drivetrain.get());
+        if (cmd == nullptr)
+            AddRequirements(RobotContainer::drivetrain.get());
+        else if (!(cmd->GetName() == "MoveToCoordinate"))
+            AddRequirements(RobotContainer::drivetrain.get());
+    }
+    catch (...) {}
 
     frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
     frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);

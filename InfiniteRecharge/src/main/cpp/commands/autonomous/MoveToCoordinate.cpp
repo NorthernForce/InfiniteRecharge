@@ -21,6 +21,7 @@ std::unique_ptr<Logger> Robot::logger;
 
 MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) : baseSpeed(speed) {
   AddRequirements(RobotContainer::drivetrain.get());
+  SetName("MoveToCoordinate");
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
@@ -113,6 +114,7 @@ void MoveToCoordinate::Execute() {
     if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
         turnToAngle->Cancel();
+        turnToAngle.reset();
     }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
