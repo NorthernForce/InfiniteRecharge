@@ -15,7 +15,7 @@ bool TurnToAngle::isTurnFinished;
 
 TurnToAngle::TurnToAngle(double target) {
     SetName("TurnToAngle");
-    AddRequirements(RobotContainer::drivetrain.get());
+    //AddRequirements(RobotContainer::drivetrain.get());
     AddRequirements(RobotContainer::imu.get());
 
     frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);

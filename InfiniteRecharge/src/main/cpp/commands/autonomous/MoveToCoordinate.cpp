@@ -19,7 +19,8 @@
 
 std::unique_ptr<Logger> Robot::logger;
 
-MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed):baseSpeed(speed) {
+MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) : baseSpeed(speed) {
+  AddRequirements(RobotContainer::drivetrain.get());
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
@@ -44,7 +45,7 @@ void MoveToCoordinate::Initialize() {
 // }
 
 double MoveToCoordinate::Limit(double value, double limit) {
-  if (value < - abs(limit))
+  if (value < -abs(limit))
     return -abs(limit);
   else if (value > abs(limit))
     return abs(limit);
@@ -111,7 +112,7 @@ void MoveToCoordinate::Execute() {
 
     if (turnToAngle->GetIsFinished()) {
         movementStage = 1;
-        turnToAngle.reset();
+        turnToAngle->Cancel();
     }
     else if (!turnToAngle->IsScheduled()) {
         turnToAngle->SetAngle(angToFinal);
@@ -198,6 +199,7 @@ void MoveToCoordinate::Execute() {
 
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
+  frc::SmartDashboard::PutBoolean("hasEnded", true);
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
   Drivetrain::leftPrimarySpark->StopMotor();
   Drivetrain::rightPrimarySpark->StopMotor();
