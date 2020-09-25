@@ -15,11 +15,10 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
-  coordinateSet = frc::SmartDashboard::GetNumberArray(coordinateSetLabel, -1);
+  coordinateSet = std::vector<double>{ 0, -12, 0, 0, 12, 12, 12, -12 };
   numOfSets = coordinateSet.size() / 2;
   xPos = 0;
   yPos = 1;
-  moveToCoordinate.reset(new MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos)));
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -29,7 +28,8 @@ void MoveThroughCoordinateSet::Execute() {
     //move robot to that coordinates
    // MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
    //is this good here? can they be nested this way?
-    if (moveToCoordinate->IsScheduled()) {
+    if (!moveToCoordinate->IsScheduled()) {
+      moveToCoordinate.reset(new MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos), 0.13));
       moveToCoordinate->Schedule();
       status++;
       xPos += 2;

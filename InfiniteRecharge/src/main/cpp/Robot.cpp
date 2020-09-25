@@ -30,6 +30,7 @@
 #include "commands/autonomous/AutonomousBallSeek.h"
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
+#include "commands/autonomous/MoveThroughCoordinateSet.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -139,11 +140,12 @@ void Robot::AutonomousInit() {
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
         // new TurnToAngle(90)
-        // new MoveToCoordinate(0, -12, 0.12),
+        new MoveToCoordinate(0, -36, 0.15),
         // new MoveToCoordinate(0, 0, 0.12),
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
-        new MoveToCoordinate(-36, 0, 0.13)
+        // new MoveToCoordinate(-36, 0, 0.13)
+        // new MoveThroughCoordinateSet()
         // new AutonomousBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
