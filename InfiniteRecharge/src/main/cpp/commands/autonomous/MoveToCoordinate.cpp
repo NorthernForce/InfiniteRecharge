@@ -60,7 +60,7 @@ double MoveToCoordinate::TurnPID() {
   if (angleError == 0)
     totalAngleError = 0;
   
-  double p = 0.02;
+  double p = 0.017;
   double i = 0.002;
 
   if (totalAngleError > (2 * baseSpeed / i))
@@ -79,9 +79,9 @@ double MoveToCoordinate::DrivePID() {
   // double i = 0.06;
   // double d = 0.009;
 
-  double p = frc::SmartDashboard::GetNumber("DriveP: ", 0.31);
-  double i = frc::SmartDashboard::GetNumber("DriveI: ", 0.000006);
-  double d = frc::SmartDashboard::GetNumber("DriveD: ", 0.00112);
+  double p = frc::SmartDashboard::GetNumber("DriveP: ", 0.245);
+  double i = frc::SmartDashboard::GetNumber("DriveI: ", 0.002);
+  double d = frc::SmartDashboard::GetNumber("DriveD: ", 0.002);
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -122,7 +122,10 @@ void MoveToCoordinate::Execute() {
     }
   }
   else if (movementStage == 1) {
-    turnSpeed = TurnPID();
+    if (distance < 0.3)
+        turnSpeed = 0;
+    else
+        turnSpeed = TurnPID();
     driveSpeed = DrivePID();
 
     frc::SmartDashboard::PutNumber("driveSpeed", driveSpeed);
@@ -212,7 +215,7 @@ void MoveToCoordinate::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (finishCounter > 20) {
+  if (finishCounter > 30) {
     return true;
   }
   else {

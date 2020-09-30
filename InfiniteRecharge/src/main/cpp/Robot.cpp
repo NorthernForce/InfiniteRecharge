@@ -140,7 +140,7 @@ void Robot::AutonomousInit() {
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
         // new TurnToAngle(90)
-        new MoveToCoordinate(0, -36, 0.15),
+        new MoveToCoordinate(0, -36, 0.145),
         // new MoveToCoordinate(0, 0, 0.12),
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
