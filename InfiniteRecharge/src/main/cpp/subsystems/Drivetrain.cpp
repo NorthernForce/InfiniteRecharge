@@ -41,6 +41,49 @@ void Drivetrain::ConfigureAllControllers() {
     ConfigureController(*rightPrimarySpark);
     ConfigureController(*rightFollowerSpark1);
     ConfigureController(*rightFollowerSpark2);
+
+////Configure SPARK PID Controllers
+    leftPID  = std::make_shared<rev::CANPIDController>(leftPrimarySpark->GetPIDController());
+    rightPID = std::make_shared<rev::CANPIDController>(rightPrimarySpark->GetPIDController());
+
+    this->setPID();
+
+}
+
+////JJC: Sets the SPARK Inernal PID Controller Parameters
+void Drivetrain::setPID()
+{
+
+ //// read PID coefficients from SmartDashboard
+    double p = frc::SmartDashboard::GetNumber("P Gain", 0);
+    double i = frc::SmartDashboard::GetNumber("I Gain", 0);
+    double d = frc::SmartDashboard::GetNumber("D Gain", 0);
+    double iz = frc::SmartDashboard::GetNumber("I Zone", 0);
+    double ff = frc::SmartDashboard::GetNumber("Feed Forward", 0);
+    double max = frc::SmartDashboard::GetNumber("Max Output", 0);
+    double min = frc::SmartDashboard::GetNumber("Min Output", 0);
+
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { leftPID->SetP(p); rightPID->SetP(p); kP = p; }
+    if((i != kI)) { leftPID->SetI(i); rightPID->SetI(i); kI = i; }
+    if((d != kD)) { leftPID->SetD(d); rightPID->SetD(d); kD = d; }
+    if((iz != kIz)) { leftPID->SetIZone(iz); rightPID->SetIZone(iz); kIz = iz; }
+    if((ff != kFF)) { leftPID->SetFF(ff); rightPID->SetFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) 
+    { 
+      leftPID->SetOutputRange(min, max); 
+      rightPID->SetOutputRange(min, max); 
+      kMaxOutput = max; 
+    }
+
+    frc::SmartDashboard::PutNumber("P Gain", kP);
+    frc::SmartDashboard::PutNumber("I Gain", kI);
+    frc::SmartDashboard::PutNumber("D Gain", kD);
+    frc::SmartDashboard::PutNumber("I Zone", kIz);
+    frc::SmartDashboard::PutNumber("Feed Forward", kFF);
+    frc::SmartDashboard::PutNumber("Min Output", kMinOutput);
+    frc::SmartDashboard::PutNumber("Max Output", kMaxOutput);
+
 }
 
 void Drivetrain::Drive(double speed, double rotation) {
@@ -48,7 +91,10 @@ void Drivetrain::Drive(double speed, double rotation) {
 }
 
 void Drivetrain::DriveUsingSpeeds(double leftSpeed, double rightSpeed) {
+    this->setPID();
+    leftPID->SetReference(-leftSpeed, rev::ControlType::kVelocity);
     leftPrimarySpark->Set(-leftSpeed);
+    rightPID->SetReference(rightSpeed, rev::ControlType::kVelocity);
     rightPrimarySpark->Set(rightSpeed);
 }
 

@@ -39,6 +39,8 @@ class Drivetrain : public frc2::SubsystemBase {
   const int loopCyclesInOneSecond = 50;
 
  private:
+  void setPID();
+  
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
 
@@ -48,4 +50,18 @@ class Drivetrain : public frc2::SubsystemBase {
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   double rampRate = 0.2;
+
+  //////////////////////////////////////////////////////
+  std::shared_ptr<rev::CANPIDController> leftPID;
+  std::shared_ptr<rev::CANPIDController> rightPID;
+
+  double kP;
+  double kI;
+  double kD;
+  double kFF;
+  double kIz;
+  double kMinOutput;
+  double kMaxOutput;
+
+
 };
