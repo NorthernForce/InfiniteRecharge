@@ -73,6 +73,7 @@ void Drivetrain::setPID()
     { 
       leftPID->SetOutputRange(min, max); 
       rightPID->SetOutputRange(min, max); 
+      kMinOutput = min;
       kMaxOutput = max; 
     }
 
