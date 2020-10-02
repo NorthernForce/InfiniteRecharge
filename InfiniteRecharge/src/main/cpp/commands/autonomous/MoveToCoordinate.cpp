@@ -194,7 +194,7 @@ void MoveToCoordinate::Execute() {
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
 //   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
-  if (abs(distance) < 0.45) {
+  if (abs(distance) < 0.9) {
     finishCounter++;
   }
   else {
