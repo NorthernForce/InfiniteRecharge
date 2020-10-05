@@ -12,7 +12,7 @@
 TuneValue::TuneValue(int valueToTune, std::unique_ptr<frc2::Command>pid, std::vector<double>pidValues, double increment, double accuracy) {
   tunedValue = valueToTune;
   //need command pointer
-  values.swap(pidValues);
+  values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
 

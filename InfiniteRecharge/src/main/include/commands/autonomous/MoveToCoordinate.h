@@ -28,8 +28,14 @@ class MoveToCoordinate
 
   // double RemoveJumps(double angToFinalWithJumps);
   double Limit(double value, double limit);
+
   double TurnPID();
+
+  void Set(std::vector<double>pidValues); //Sets drive pid values
+
   double DrivePID();
+
+  bool HasOscillated();
 
   void Execute() override;
 
@@ -37,7 +43,7 @@ class MoveToCoordinate
 
   bool IsFinished() override;
 
-
+ private:
   std::unique_ptr<TurnToAngle> turnToAngle;
 
   int xFinal;
@@ -45,6 +51,8 @@ class MoveToCoordinate
   const double baseSpeed;
 
   const int cyclePerSecond = 20;
+
+  std::vector<double>driveValues = {0.245, 0.002, 0.002};
 
   double angleError;
   double totalAngleError;
@@ -59,6 +67,8 @@ class MoveToCoordinate
 
   double turnSpeed;
   double driveSpeed;
+
+  bool hasOscillated;
 
   std::vector<double> previousAngToFinals;
   std::vector<double> averageLeft;

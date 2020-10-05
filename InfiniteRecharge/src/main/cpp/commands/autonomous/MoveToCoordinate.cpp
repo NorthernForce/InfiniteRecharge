@@ -69,19 +69,23 @@ double MoveToCoordinate::TurnPID() {
   return Limit(((p * angToFinal) + (i * totalAngleError)), 2*baseSpeed);
 }
 
+void MoveToCoordinate::Set(std::vector<double>pidValues) {
+  driveValues = pidValues;
+}
+
 double MoveToCoordinate::DrivePID() {
   distanceError = (distance / cyclePerSecond)  * (1 - 2 * (abs(angToFinal) > 90));
   totalDistanceError += distanceError;
   if (distanceError == 0)
     totalDistanceError = 0;
 
-  // double p = 0.9;
-  // double i = 0.06;
-  // double d = 0.009;
+  double p = driveValues[0];
+  double i = driveValues[1];
+  double d = driveValues[2];
 
-  double p = frc::SmartDashboard::GetNumber("DriveP: ", 0.245);
-  double i = frc::SmartDashboard::GetNumber("DriveI: ", 0.002);
-  double d = frc::SmartDashboard::GetNumber("DriveD: ", 0.002);
+  // double p = frc::SmartDashboard::GetNumber("DriveP: ", 0.245);
+  // double i = frc::SmartDashboard::GetNumber("DriveI: ", 0.002);
+  // double d = frc::SmartDashboard::GetNumber("DriveD: ", 0.002);
 
   if ((p * distanceError) > baseSpeed)
     totalDistanceError = 0;
@@ -91,6 +95,13 @@ double MoveToCoordinate::DrivePID() {
 
   frc::SmartDashboard::PutNumber("distanceError", distanceError);
   return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
+}
+
+bool MoveToCoordinate::HasOscillated() {
+  if (driveSpeed < 0) {
+    hasOscillated = true;
+  }
+  return hasOscillated;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -174,19 +185,6 @@ void MoveToCoordinate::Execute() {
     Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
     Robot::logger->LoadDataToFile("rightPower", Drivetrain::rightPrimarySpark->Get());
   }
-  //   rightPower = baseSpeed;
-  //   leftPower = baseSpeed;
-
-  //   if (abs(angToFinal) > 3) {
-  //     movementStage = 0;
-  //   }
-  // }
-
-  // if (abs(leftPower) > baseSpeed) {
-  //   leftPower = baseSpeed * (1 - 2 * (int)(leftPower < 0));
-  // }
-  // if (abs(rightPower) > baseSpeed) {
-  //   rightPower = baseSpeed * (1 - 2 * (int)(rightPower < 0));
   
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());

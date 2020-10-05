@@ -30,6 +30,7 @@ class TuneValue
 
   bool IsFinished() override;
 
+ private:
   int tunedValue;
   std::vector<double>values;
   double tuneIncremenet;
