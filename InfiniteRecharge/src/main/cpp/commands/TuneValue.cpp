@@ -9,9 +9,9 @@
 
 ////TODO: Make valueToTune char
 
-TuneValue::TuneValue(int valueToTune, std::unique_ptr<frc2::Command>pid, std::vector<double>pidValues, double increment, double accuracy) {
+TuneValue::TuneValue(int valueToTune, std::unique_ptr<frc2::Command> pidCommand, std::vector<double> pidValues, double increment, double accuracy) {
   tunedValue = valueToTune;
-  //need command pointer
+  commandToTune = std::move(pidCommand);
   values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
@@ -23,7 +23,9 @@ void TuneValue::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void TuneValue::Execute() {
-  //Schedule pidCommand
+  if (!commandToTune->IsScheduled())
+    commandToTune->Schedule();
+
   if (true) {
       values[tunedValue] -= tuneIncremenet;
       tuneIncremenet /= 3;
@@ -38,10 +40,5 @@ void TuneValue::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool TuneValue::IsFinished() { 
-  if (tuneIncremenet < tuneAccuracy) {
-    return true;
-  }
-  else {
-    return false;
-  }
- }
+  return (tuneIncremenet < tuneAccuracy);
+}
