@@ -55,13 +55,13 @@ class Drivetrain : public frc2::SubsystemBase {
   std::shared_ptr<rev::CANPIDController> leftPID;
   std::shared_ptr<rev::CANPIDController> rightPID;
 
-  double kP;
+  double kP = 0.3;
   double kI;
   double kD;
-  double kFF;
+  double kFF = 0.25;
   double kIz;
-  double kMinOutput;
-  double kMaxOutput;
+  double kMinOutput = -1;
+  double kMaxOutput = 1;
 
 
 };
