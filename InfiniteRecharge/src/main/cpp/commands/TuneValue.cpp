@@ -23,17 +23,21 @@ void TuneValue::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void TuneValue::Execute() {
-  if (!commandToTune->IsScheduled())
+  if (!commandToTune->IsScheduled() && scheduleCommand) {
+    commandToTune->Set(values);
     commandToTune->Schedule();
-
-  if (true) {
+    scheduleCommand = false;
+  }   
+  if (!commandToTune->IsScheduled() && !scheduleCommand) {
+    scheduleCommand = true;
+    if (!commandToTune->HasOscillated()) {
       values[tunedValue] -= tuneIncremenet;
       tuneIncremenet /= 3;
-  }
-  else {
+    }
+    else {
       values[tunedValue] += tuneIncremenet;
+    }
   }
-}
 
 // Called once the command ends or is interrupted.
 void TuneValue::End(bool interrupted) {}

@@ -36,4 +36,5 @@ class TuneValue
   std::vector<double>values;
   double tuneIncremenet;
   double tuneAccuracy;
+  bool scheduleCommand = true;
 };
