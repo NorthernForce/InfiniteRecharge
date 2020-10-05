@@ -9,13 +9,12 @@
 
 ////TODO: Make valueToTune char
 
-TuneValue::TuneValue(int valueToTune, std::unique_ptr<frc2::Command> pidCommand, std::vector<double> pidValues, double increment, double accuracy) {
+TuneValue::TuneValue(int valueToTune, std::unique_ptr<MoveToCoordinate> pidCommand, std::vector<double> pidValues, double increment, double accuracy) {
   tunedValue = valueToTune;
   commandToTune = std::move(pidCommand);
   values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
-
 }
 
 // Called when the command is initially scheduled.
@@ -38,6 +37,7 @@ void TuneValue::Execute() {
       values[tunedValue] += tuneIncremenet;
     }
   }
+}
 
 // Called once the command ends or is interrupted.
 void TuneValue::End(bool interrupted) {}

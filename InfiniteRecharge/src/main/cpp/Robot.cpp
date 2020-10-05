@@ -145,8 +145,8 @@ void Robot::AutonomousInit() {
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
         // new MoveToCoordinate(-36, 0, 0.13)
-        // new MoveThroughCoordinateSet()
-        new AutoBallSeek
+        new MoveThroughCoordinateSet()
+        // new AutoBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }

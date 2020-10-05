@@ -17,7 +17,6 @@ bool TurnToAngle::isTurnFinished;
 TurnToAngle::TurnToAngle(double target) {
     SetName("TurnToAngle");
     AddRequirements(RobotContainer::imu.get());
-    AddRequirements(RobotContainer::drivetrain.get());
 
     try {
         frc2::Command* cmd = frc2::CommandScheduler::GetInstance().Requiring(RobotContainer::drivetrain.get());

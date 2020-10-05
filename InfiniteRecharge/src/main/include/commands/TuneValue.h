@@ -9,6 +9,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/autonomous/MoveToCoordinate.h"
 
 /**
  * An example command.
@@ -20,7 +21,7 @@
 class TuneValue
     : public frc2::CommandHelper<frc2::CommandBase, TuneValue> {
  public:
-  TuneValue(int valueToTune, std::unique_ptr<frc2::Command> pidCommand, std::vector<double> pidValues, double increment = 0.1, double accuracy = 0.01);
+  TuneValue(int valueToTune, std::unique_ptr<MoveToCoordinate> pidCommand, std::vector<double> pidValues, double increment = 0.1, double accuracy = 0.01);
 
   void Initialize() override;
 
@@ -32,7 +33,7 @@ class TuneValue
 
  private:
   int tunedValue;
-  std::unique_ptr<frc2::Command> commandToTune;
+  std::unique_ptr<MoveToCoordinate> commandToTune;
   std::vector<double>values;
   double tuneIncremenet;
   double tuneAccuracy;
