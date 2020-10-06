@@ -31,7 +31,7 @@ void TuneValue::Execute() {
     scheduleCommand = true;
     if (!commandToTune->HasOscillated()) {
       values[tunedValue] -= tuneIncremenet;
-      tuneIncremenet /= 3;
+      tuneIncremenet /= 4;
     }
     else {
       values[tunedValue] += tuneIncremenet;
