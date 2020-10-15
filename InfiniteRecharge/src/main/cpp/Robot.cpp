@@ -31,6 +31,7 @@
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
+#include "commands/TuneValue.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -145,7 +146,8 @@ void Robot::AutonomousInit() {
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
         // new MoveToCoordinate(-36, 0, 0.13)
-        new MoveThroughCoordinateSet()
+        // new MoveThroughCoordinateSet()
+        new TuneValue(0, std::make_unique<MoveToCoordinate>(-36, 0, 0.145), {0.2, 0, 0}, 0.1, 0.0001)
         // new AutoBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
