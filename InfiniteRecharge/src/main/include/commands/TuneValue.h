@@ -38,4 +38,5 @@ class TuneValue
   double tuneIncremenet;
   double tuneAccuracy;
   bool scheduleCommand = true;
+  int commandFail;
 };

@@ -27,14 +27,21 @@ void TuneValue::Execute() {
     commandToTune->Schedule();
     scheduleCommand = false;
   }   
-  if (!commandToTune->IsScheduled() && !scheduleCommand) {
+  else if (!commandToTune->IsScheduled() && !scheduleCommand) {
     scheduleCommand = true;
     if (!commandToTune->HasOscillated()) {
       values[tunedValue] -= tuneIncremenet;
       tuneIncremenet /= 3;
     }
     else {
-      values[tunedValue] += tuneIncremenet;
+      values[tunedValue] += tuneIncremenet; 
+    }
+  }
+  else if (commandToTune->IsScheduled()) {
+    commandFail++;
+    if (commandFail > 200) {
+      commandFail = 0;
+      commandToTune->Cancel();
     }
   }
 }
