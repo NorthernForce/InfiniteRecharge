@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/TuneValue.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 ////TODO: Make valueToTune char
 
@@ -18,10 +19,13 @@ TuneValue::TuneValue(int valueToTune, std::unique_ptr<MoveToCoordinate> pidComma
 }
 
 // Called when the command is initially scheduled.
-void TuneValue::Initialize() {}
+void TuneValue::Initialize() {
+    commandFail = 0;
+}
 
 // Called repeatedly when this Command is scheduled to run
 void TuneValue::Execute() {
+  frc::SmartDashboard::PutBoolean("executing pid command", commandToTune->IsScheduled());
   if (!commandToTune->IsScheduled() && scheduleCommand) {
     commandToTune->Set(values);
     commandToTune->Schedule();
@@ -38,8 +42,10 @@ void TuneValue::Execute() {
     }
   }
   else if (commandToTune->IsScheduled()) {
+    frc::SmartDashboard::PutNumber("commandFail", commandFail);
+    scheduleCommand = false;
     commandFail++;
-    if (commandFail > 200) {
+    if (commandFail > 1000) {
       commandFail = 0;
       commandToTune->Cancel();
     }
