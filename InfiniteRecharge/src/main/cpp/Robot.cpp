@@ -141,13 +141,15 @@ void Robot::AutonomousInit() {
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
         // new TurnToAngle(90)
-        // new MoveToCoordinate(0, -36, 0.145),
-        // new MoveToCoordinate(0, 0, 0.12),
+        new MoveToCoordinate(72, 0, 0.145),
+        new MoveToCoordinate(0, 0, 0.145),
+        new MoveToCoordinate(72, 0, 0.145),
+        new MoveToCoordinate(0, 0, 0.145)
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
         // new MoveToCoordinate(-36, 0, 0.13)
         // new MoveThroughCoordinateSet()
-        new TuneValue(0, std::make_unique<MoveToCoordinate>(-36, 0, 0.145), {0.2, 0, 0}, 0.1, 0.0001)
+        // new TuneValue(0, std::make_unique<MoveToCoordinate>(-36, 0, 0.145), {0.2, 0, 0}, 0.1, 0.0001)
         // new AutoBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);

@@ -68,8 +68,10 @@ bool AIVisionTargetting::IsTargetLocked() {
 std::pair<double, double> AIVisionTargetting::GetFieldCoordinatesOfTarget() {
     double distance = GetRobotDistToTarget();
     double angle = GetRobotAngleToTarget();
-    double x = distance * cos(angle);
-    double y = distance * sin(angle);
+    double currentX = RobotContainer::navigation->GetCoordinatePosition().first;
+    double currentY = RobotContainer::navigation->GetCoordinatePosition().second; 
+    double x = (distance * sin(angle)) + currentX;
+    double y = (distance * cos(angle)) + currentY;
     return std::make_pair(x, y);
 }
 

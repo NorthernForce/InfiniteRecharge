@@ -42,7 +42,9 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
     inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
     if (inchesToTarget != 0 && !distHasBeenSet) {
         std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
-        moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second));
+        frc::SmartDashboard::PutNumber("aiMoveToX", targetCoords.first);
+        frc::SmartDashboard::PutNumber("aiMoveToY", targetCoords.second);
+        moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
         distHasBeenSet = true;
     }
     if (distHasBeenSet)
