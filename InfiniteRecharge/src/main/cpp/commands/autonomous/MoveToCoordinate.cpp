@@ -119,6 +119,9 @@ void MoveToCoordinate::Execute() {
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 
   if (movementStage == 0) {
+    totalAngleError = 0;
+    totalDistanceError = 0;
+    previousDistanceError = 0;
     if (turnToAngle == nullptr)
         turnToAngle = std::make_unique<TurnToAngle>();
 
