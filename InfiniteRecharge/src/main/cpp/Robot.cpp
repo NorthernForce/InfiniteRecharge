@@ -142,9 +142,9 @@ void Robot::AutonomousInit() {
     autoCommandScheduler.reset(new AutoCommandScheduler({
         // new TurnToAngle(90)
         new MoveToCoordinate(72, 0, 0.145),
+        new MoveToCoordinate(72, -72, 0.145),
         new MoveToCoordinate(0, 0, 0.145),
-        new MoveToCoordinate(72, 0, 0.145),
-        new MoveToCoordinate(0, 0, 0.145)
+        new TurnToAngle(-RobotContainer::imu->GetRotation())
         // new MoveToCoordinate(12, 12, 0.1)
         // new MoveToCoordinate(12, -12, 0.12)
         // new MoveToCoordinate(-36, 0, 0.13)
