@@ -45,7 +45,7 @@ void TuneValue::Execute() {
     frc::SmartDashboard::PutNumber("commandFail", commandFail);
     scheduleCommand = false;
     commandFail++;
-    if (commandFail > 1000) {
+    if (commandFail > 200) {
       commandFail = 0;
       commandToTune->Cancel();
     }

@@ -12,6 +12,7 @@
 #include "commands/TurnToTarget.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/IntakePowerCell.h"
+#include "commands/TurnToAngle.h"
 #include <memory>
 
 class AutoBallSeek
@@ -27,12 +28,14 @@ class AutoBallSeek
 
  private:
     std::unique_ptr<TurnToTarget> turnToTarget = std::make_unique<TurnToTarget>();
+    std::unique_ptr<TurnToAngle> turnToAngle = std::make_unique<TurnToAngle>();
     std::unique_ptr<MoveToCoordinate> moveToCoordinate;
     std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
 
     double inchesToTarget;
-    bool hasDriven = false;
-    bool distHasBeenSet = false;
-    bool driveHasBeenScheduled = false;
-    bool intakeHasBeenScheduled = false;
+    bool hasDriven;
+    bool distHasBeenSet;
+    bool driveHasBeenScheduled;
+    bool intakeHasBeenScheduled;
+    bool turnToAngleHasBeenScheduled;
 };

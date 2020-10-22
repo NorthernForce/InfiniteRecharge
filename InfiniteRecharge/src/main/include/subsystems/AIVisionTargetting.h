@@ -26,10 +26,13 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     std::pair<double, double> GetFieldCoordinatesOfTarget();
     double GetRobotDistToTarget();
     double GetRobotAngleToTarget();
-    char GetSideOfIntakeWithTarget();
+    double GetRobotAngleToTargetIntakeCam();
+    char GetSideOfIntakeWithTargetFromMainCam();
+    char GetSideOfIntakeWithTargetFromIntakeCam();
     double GetCameraDistToTargetFromArea(int area);
     int GetArea();
     double GetHeightOfTriangle(Triangle t, double base);
+    double GetPowercellOffsetInIntakeCam();
 
  private:
     void RegisterFoundTargets();
@@ -39,6 +42,7 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     Triangle GetLeftFinalTriangle();
     Triangle GetFinalTriangle();
     Triangle GetCenterTriangle();
+    Triangle GetIntakeTriangle();
     Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
 
     Triangle mainTriangle;
