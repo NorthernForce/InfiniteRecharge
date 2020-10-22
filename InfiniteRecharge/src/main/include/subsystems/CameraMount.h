@@ -20,6 +20,8 @@ class CameraMount : public frc2::SubsystemBase {
   int GetServoAngleToTarget();
   void SmartSweep();
   void Sweep();
+  void PauseSweep();
+  void ResumeSweep();
   void CenterTarget();
   void MoveServoBackToTarget();
   void SetToZero();
@@ -53,6 +55,7 @@ class CameraMount : public frc2::SubsystemBase {
   int cycleCounter;
   int recentSweepStops;
   int cycleThresh = 3;
+  bool overrideSweep;
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;

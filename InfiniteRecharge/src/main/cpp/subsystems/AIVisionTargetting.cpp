@@ -67,9 +67,12 @@ bool AIVisionTargetting::IsTargetLocked() {
 
 std::pair<double, double> AIVisionTargetting::GetFieldCoordinatesOfTarget() {
     double distance = GetRobotDistToTarget();
-    double angle = GetRobotAngleToTarget();
-    double x = distance * cos(angle);
-    double y = distance * sin(angle);
+    double robotCurrentAngle = RobotContainer::imu->GetRotation();
+    double angle = robotCurrentAngle + GetRobotAngleToTarget();
+    double currentX = RobotContainer::navigation->GetCoordinatePosition().first;
+    double currentY = RobotContainer::navigation->GetCoordinatePosition().second;
+    double x = (distance * cos(angle * Constants::degreesToRadians)) + currentX;
+    double y = -(distance * sin(angle * Constants::degreesToRadians)) + currentY;
     return std::make_pair(x, y);
 }
 
@@ -88,9 +91,8 @@ double AIVisionTargetting::GetRobotDistToTarget() {
 
 double AIVisionTargetting::GetRobotAngleToTarget() {
     double calculatedAngle = 0;
-    char sideOfIntakeWithTarget = GetSideOfIntakeWithTarget();
+    char sideOfIntakeWithTarget = GetSideOfIntakeWithTargetFromMainCam();
     finalTriangle = GetFinalTriangle();
-
 
     try {
         calculatedAngle = finalTriangle.GetAngleB();
@@ -104,7 +106,26 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
     return calculatedAngle;
 }
 
-char AIVisionTargetting::GetSideOfIntakeWithTarget() {
+double AIVisionTargetting::GetRobotAngleToTargetIntakeCam() {
+    double calculatedAngle = 0;
+    char sideOfIntakeWithTarget = GetSideOfIntakeWithTargetFromIntakeCam();
+    Triangle intakeTriangle = GetIntakeTriangle();
+
+    try {
+        calculatedAngle = intakeTriangle.GetAngleB();
+        if (sideOfIntakeWithTarget == 'l')
+            calculatedAngle *= -1;
+        else if (sideOfIntakeWithTarget == 'c')
+            calculatedAngle = 0;
+    }
+    catch (const TriangleCalculator::BaseException& e) {
+        std::cout << e.what() << '\n';
+    }
+
+    return calculatedAngle;
+}
+
+char AIVisionTargetting::GetSideOfIntakeWithTargetFromMainCam() {
     double angFromIntakeCenter = GetMainTriangle().GetAngleA();
     double servoPan = RobotContainer::cameraMount->GetCurrentPan();
 
@@ -112,6 +133,19 @@ char AIVisionTargetting::GetSideOfIntakeWithTarget() {
         return 'r';
     else if (angFromIntakeCenter > 90)
         return 'l';
+    else
+        return 'c';
+}
+
+char AIVisionTargetting::GetSideOfIntakeWithTargetFromIntakeCam() {
+    double xCoord = frc::SmartDashboard::GetNumber("AI: IntakeOffsetX", 0);
+    double x_max = 205;
+    double x_min = 165;
+
+    if (xCoord < x_max)
+        return 'l';
+    else if (xCoord > x_min)
+        return 'r';
     else
         return 'c';
 }
@@ -187,7 +221,7 @@ Triangle AIVisionTargetting::GetLeftFinalTriangle() {
 }
 
 Triangle AIVisionTargetting::GetFinalTriangle() {
-    char turnDir = GetSideOfIntakeWithTarget();
+    char turnDir = GetSideOfIntakeWithTargetFromMainCam();
         
     if (turnDir == 'l')
         finalTriangle = GetLeftFinalTriangle();
@@ -204,6 +238,28 @@ Triangle AIVisionTargetting::GetCenterTriangle() {
 
     auto rawTriangle = std::make_unique<Triangle>(a, b, c, 0, 0, 0);
     return CalculateTriangle(std::move(rawTriangle), "SSS");
+}
+
+double AIVisionTargetting::GetPowercellOffsetInIntakeCam() {
+    int px_per_inch = 40; ////TODO: populate these with the correct values
+    int x_intake_center = 185;
+    double xCoord = frc::SmartDashboard::GetNumber("AI: IntakeOffsetX", 0);
+    
+    double xError = x_intake_center - xCoord;
+    double pcOffsetInches = xError / px_per_inch;
+    return pcOffsetInches;
+}
+
+Triangle AIVisionTargetting::GetIntakeTriangle() {
+    std::unique_ptr<Triangle> rawTriangle;
+    double b, c, A;
+
+    b = GetPowercellOffsetInIntakeCam();
+    c = Constants::intakeDistFromRoboCenter;
+    A = 90;
+
+    rawTriangle = std::make_unique<Triangle>(0, b, c, A, 0, 0);
+    return CalculateTriangle(std::move(rawTriangle), "SAS");
 }
 
 Triangle AIVisionTargetting::CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod) {

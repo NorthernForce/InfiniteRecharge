@@ -44,7 +44,7 @@ void CameraMount::SmartSweep() {
         hasMovedServoBackToTarget = false;
         if (isTargetFound)
             CenterTarget();
-        else
+        else if (!overrideSweep)
             Sweep();
     }
     else if (!hasMovedServoBackToTarget)
@@ -52,15 +52,6 @@ void CameraMount::SmartSweep() {
 }
 
 void CameraMount::Sweep() {
-    // if (recentSweepStops > 4)
-    //     cycleThresh++;
-    // else
-    //     cycleThresh = 2;
-
-    // if (cycleCounter % 300 == 0)
-    //     recentSweepStops = 0;
-
-
     if (cycleCounter % cycleThresh != 0) {
         if (lastNonZeroPcOffset < -6 || sweepPassCount % 2 == 0) {
             currentPan++;
@@ -78,6 +69,14 @@ void CameraMount::Sweep() {
         RecoverOutOfRangeServo();
     }
     cycleCounter++;
+}
+
+void CameraMount::PauseSweep() {
+    overrideSweep = true;
+}
+
+void CameraMount::ResumeSweep() {
+    overrideSweep = false;
 }
 
 void CameraMount::CenterTarget() {
