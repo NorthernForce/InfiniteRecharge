@@ -21,6 +21,7 @@ namespace Constants {
     const double camDistFromRoboFrontCent = 9;
     const double camDistFromRoboSideCent = 9;
     const double camDistFromRoboCenter = 13.5;
+    const double intakeDistFromRoboCenter = 22;
 
     const double ultrasonicDistFromRoboCent = 14;
 
