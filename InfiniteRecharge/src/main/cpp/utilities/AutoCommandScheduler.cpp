@@ -12,6 +12,7 @@
 #include "commands/ShootCell.h"
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/IntakePowerCell.h"
+#include "commands/autonomous/MoveToCoordinate.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 int AutoCommandScheduler::currIndex;
@@ -26,6 +27,15 @@ AutoCommandScheduler::AutoCommandScheduler() {
     isUsingAuto = true;
 }
 
+std::vector<double> AutoCommandScheduler::DashParamToDouble(std::string, unsigned int) {
+
+
+    String[] animalsArray = animals.split("\\s*,\\s*")
+
+return dashParams;
+}
+
+
 void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<double> dashboardParams) {
     for (unsigned i = 0; i < driverInput.size(); i++) {
         std::string dashInput;
@@ -34,11 +44,12 @@ void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std:
         switch (commandType)
         {
         case CommandTypes::Drive:
-            commandQueue.push_back(new AutoDrive(dashboardParams[i]));
+        //send dashboard param to parser here, already have i value then reintroduce in push back
+            commandQueue.push_back(new AutoDrive(dashParams[1]));
             break;
         
         case CommandTypes::Turn:
-            commandQueue.push_back(new TurnToAngle(dashboardParams[i]));
+            commandQueue.push_back(new TurnToAngle(dashParams[1]));
             break;
         
         case CommandTypes::Intake:
@@ -52,6 +63,10 @@ void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std:
         case CommandTypes::AutoBallSeek:
             commandQueue.push_back(new AutoBallSeek());
             break;
+        
+        case CommandTypes::Coordinate:
+           commandQueue.push_back(new MoveToCoordinate(dashParams[1], dashParams[2], dashParams[3]));
+           break;
         
         default:
             break;

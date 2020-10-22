@@ -58,7 +58,7 @@ class Robot : public frc::TimedRobot {
   //std::string chooserAutoSelected;
   std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
   std::vector<std::string> dashboardInput;
-  std::vector<double> dashboardParams;
+  std::vector<std::string> dashboardParams;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
