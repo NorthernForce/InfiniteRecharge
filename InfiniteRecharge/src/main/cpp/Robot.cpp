@@ -140,17 +140,14 @@ void Robot::AutonomousInit() {
     //     new AutoDrive(24)
     // }));
     autoCommandScheduler.reset(new AutoCommandScheduler({
-        // new TurnToAngle(90)
-        new MoveToCoordinate(72, 0, 0.145),
-        new MoveToCoordinate(72, -72, 0.145),
-        new MoveToCoordinate(0, 0, 0.145),
-        new TurnToAngle(-RobotContainer::imu->GetRotation())
-        // new MoveToCoordinate(12, 12, 0.1)
-        // new MoveToCoordinate(12, -12, 0.12)
-        // new MoveToCoordinate(-36, 0, 0.13)
+        
+        // new MoveToCoordinate(72, 0, 0.145),
+        // new MoveToCoordinate(72, -72, 0.145),
+        // new MoveToCoordinate(0, 0, 0.145),
+        // new TurnToAngle(-RobotContainer::imu->GetRotation())
         // new MoveThroughCoordinateSet()
-        // new TuneValue(0, std::make_unique<MoveToCoordinate>(-36, 0, 0.145), {0.2, 0, 0}, 0.1, 0.0001)
-        // new AutoBallSeek
+        // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
+        new AutoBallSeek
     }));
     // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }

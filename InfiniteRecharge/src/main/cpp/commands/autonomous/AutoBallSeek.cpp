@@ -10,17 +10,10 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 AutoBallSeek::AutoBallSeek() {
-    distHasBeenSet = false;
-    driveHasBeenScheduled = false;
     inchesToTarget = 0;
 }
 
 void AutoBallSeek::Initialize() {
-    bool hasDriven = false;
-    bool distHasBeenSet = false;
-    bool driveHasBeenScheduled = false;
-    bool intakeHasBeenScheduled = false;
-    bool turnToAngleHasBeenScheduled = false;
     turnToTarget->EnableTurningMode();
 }
 

@@ -88,9 +88,9 @@ void CameraMount::CenterTarget() {
 
 void CameraMount::MoveServoBackToTarget() {
     if (lastNonZeroPcOffset < -6)
-        currentPan += 10;
+        currentPan += 15;
     else if (lastNonZeroPcOffset > 6)
-        currentPan -= 10;
+        currentPan -= 15;
     panServo->SetAngle(currentPan);
     hasMovedServoBackToTarget = true;
     recentSweepStops++;

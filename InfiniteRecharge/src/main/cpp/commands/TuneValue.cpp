@@ -10,12 +10,13 @@
 
 ////TODO: Make valueToTune char
 
-TuneValue::TuneValue(int valueToTune, std::unique_ptr<MoveToCoordinate> pidCommand, std::vector<double> pidValues, double increment, double accuracy) {
+TuneValue::TuneValue(int valueToTune, std::vector<double> parameters, std::vector<double> pidValues, double increment, double accuracy) {
   tunedValue = valueToTune;
-  commandToTune = std::move(pidCommand);
+  commandToTune = std::make_unique<MoveToCoordinate>(parameters[0], parameters[1], parameters[2]);
   values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
+  commandToTuneParams = parameters;
 }
 
 // Called when the command is initially scheduled.
@@ -48,6 +49,7 @@ void TuneValue::Execute() {
     if (commandFail > 200) {
       commandFail = 0;
       commandToTune->Cancel();
+      commandToTune.reset(new MoveToCoordinate(commandToTuneParams[0], commandToTuneParams[1], commandToTuneParams[2]));
     }
   }
 }

@@ -102,7 +102,6 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
     catch (const TriangleCalculator::BaseException& e) {
         std::cout << e.what() << '\n';
     }
-
     return calculatedAngle;
 }
 
@@ -241,7 +240,7 @@ Triangle AIVisionTargetting::GetCenterTriangle() {
 }
 
 double AIVisionTargetting::GetPowercellOffsetInIntakeCam() {
-    int px_per_inch = 40; ////TODO: populate these with the correct values
+    int px_per_inch = 40;
     int x_intake_center = 185;
     double xCoord = frc::SmartDashboard::GetNumber("AI: IntakeOffsetX", 0);
     

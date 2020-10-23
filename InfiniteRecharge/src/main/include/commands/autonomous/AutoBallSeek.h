@@ -32,10 +32,10 @@ class AutoBallSeek
     std::unique_ptr<MoveToCoordinate> moveToCoordinate;
     std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
 
-    double inchesToTarget;
-    bool hasDriven;
-    bool distHasBeenSet;
-    bool driveHasBeenScheduled;
-    bool intakeHasBeenScheduled;
-    bool turnToAngleHasBeenScheduled;
+    double inchesToTarget = 0;
+    bool hasDriven = false;
+    bool distHasBeenSet = false;
+    bool driveHasBeenScheduled = false;
+    bool intakeHasBeenScheduled = false;
+    bool turnToAngleHasBeenScheduled = false;
 };

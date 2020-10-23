@@ -21,7 +21,7 @@
 class TuneValue
     : public frc2::CommandHelper<frc2::CommandBase, TuneValue> {
  public:
-  TuneValue(int valueToTune, std::unique_ptr<MoveToCoordinate> pidCommand, std::vector<double> pidValues, double increment = 0.1, double accuracy = 0.01);
+  TuneValue(int valueToTune, std::vector<double> parameters, std::vector<double> pidValues, double increment = 0.1, double accuracy = 0.01);
 
   void Initialize() override;
 
@@ -34,6 +34,7 @@ class TuneValue
  private:
   int tunedValue;
   std::unique_ptr<MoveToCoordinate> commandToTune;
+  std::vector<double> commandToTuneParams;
   std::vector<double>values;
   double tuneIncremenet;
   double tuneAccuracy;
