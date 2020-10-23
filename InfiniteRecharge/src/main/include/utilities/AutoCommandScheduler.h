@@ -21,6 +21,7 @@ class AutoCommandScheduler {
   std::vector<frc2::Command*> commandQueue;
 
  private:
+    std::vector<double> DashParamToDouble(std::string, unsigned int);
     int GetPrevIndex();
     void ScheduleInSequence();
     void ScheduleInParallel();
@@ -30,6 +31,7 @@ class AutoCommandScheduler {
     void CheckAllCommandsHaveFinished();
     void CleanUpArray(std::vector<frc2::Command*> array);
 
+    std::vector<double> dashParams;
     static int currIndex;
     int maxIndex;
     bool isFinished = false;
@@ -52,13 +54,15 @@ class AutoCommandScheduler {
         Turn,
         Intake,
         Shoot,
-        AutoBallSeek
+        AutoBallSeek,
+        Coordinate
     };
     std::map<std::string, CommandTypes> stringToCommandTypes = {
         { "Drive", CommandTypes::Drive },
         { "Turn", CommandTypes::Turn },
         { "Intake", CommandTypes::Intake },
         { "Shoot", CommandTypes::Shoot },
-        { "AutoBallSeek", CommandTypes::AutoBallSeek }
+        { "AutoBallSeek", CommandTypes::AutoBallSeek },
+        {"Coordinate", CommandTypes::Coordinate }
     };
 };

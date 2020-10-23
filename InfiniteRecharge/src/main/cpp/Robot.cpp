@@ -109,11 +109,11 @@ void Robot::AutonomousInit() {
     dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 4", "insert here"));
     dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 5", "insert here"));
 
-    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 1 parameter", 0));
-    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 2 parameter", 0));
-    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 3 parameter", 0));
-    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 4 parameter", 0));
-    dashboardParams.push_back(frc::SmartDashboard::GetNumber("auto 5 parameter", 0));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 1 parameter", "insert here"));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 2 parameter", "insert here"));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 3 parameter", "insert here"));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 4 parameter", "insert here"));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 5 parameter", "insert here"));
 
     RobotContainer::imu->ZeroRotation();
 
