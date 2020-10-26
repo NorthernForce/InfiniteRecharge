@@ -42,16 +42,20 @@ void Robot::RobotInit() {
     logger = std::make_unique<Logger>();
 
     frc::SmartDashboard::PutString("auto string input 1", "insert here");
-    frc::SmartDashboard::PutNumber("auto 1 parameter", 0);
     frc::SmartDashboard::PutString("auto string input 2", "insert here");
-    frc::SmartDashboard::PutNumber("auto 2 parameter", 0);
     frc::SmartDashboard::PutString("auto string input 3", "insert here");
-    frc::SmartDashboard::PutNumber("auto 3 parameter", 0);
     frc::SmartDashboard::PutString("auto string input 4", "insert here");
-    frc::SmartDashboard::PutNumber("auto 4 parameter", 0);
     frc::SmartDashboard::PutString("auto string input 5", "insert here");
-    frc::SmartDashboard::PutNumber("auto 5 parameter", 0);
+
+    frc::SmartDashboard::PutString("auto 1 parameter", "insert here");
+    frc::SmartDashboard::PutString("auto 2 parameter", "insert here");
+    frc::SmartDashboard::PutString("auto 3 parameter", "insert here");
+    frc::SmartDashboard::PutString("auto 4 parameter", "insert here");
+    frc::SmartDashboard::PutString("auto 5 parameter", "insert here");
+
     frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
+
+
 
 
     ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
