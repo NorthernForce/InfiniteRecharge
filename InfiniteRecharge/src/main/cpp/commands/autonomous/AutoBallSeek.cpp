@@ -18,6 +18,7 @@ void AutoBallSeek::Initialize() {
 }
 
 void AutoBallSeek::Execute() {
+    frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
     if (turnToTarget->HasRobotTurned()) {
         RobotContainer::cameraMount->PauseSweep();
         if (!hasDriven) {
@@ -28,10 +29,13 @@ void AutoBallSeek::Execute() {
     }
     else if (hasDriven) {
         if (!turnToAngle->IsScheduled() && !turnToAngleHasBeenScheduled) {
+            frc::SmartDashboard::PutNumber("AI Cam", 1);
             double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTargetIntakeCam();
-            turnToAngle->SetAngle(angleToTarget);
-            turnToAngle->Schedule();
-            turnToAngleHasBeenScheduled = true;
+            if (angleToTarget != 0) {
+                turnToAngle->SetAngle(angleToTarget);
+                turnToAngle->Schedule();
+                turnToAngleHasBeenScheduled = true;
+            }
         }
         if (!intakeHasBeenScheduled && turnToAngleHasBeenScheduled) {
             intakeBall->Schedule();
@@ -52,26 +56,19 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
 }
 
 void AutoBallSeek::DriveToTargetAndStop() {
-    if (RobotContainer::ultrasonic->GetDistance() < 18) {
+    if (!driveHasBeenScheduled) {
+        moveToCoordinate->Schedule();
+        driveHasBeenScheduled = true;
+    }
+    else if (!moveToCoordinate->IsScheduled()) {
         moveToCoordinate->Cancel();
-        moveToCoordinate == nullptr;
+        hasDriven = true;
     }
-    if (moveToCoordinate != nullptr) {
-        if (!driveHasBeenScheduled) {
-            moveToCoordinate->Schedule();
-            driveHasBeenScheduled = true;
-        }
-        else if  (!moveToCoordinate->IsScheduled()) {
-            moveToCoordinate->Cancel();
-            hasDriven = true;
-        }
-    }
-    else
-        this->Cancel();
 }
 
 void AutoBallSeek::End(bool interrupted) {
     intakeBall->Cancel();
+    frc::SmartDashboard::PutNumber("AI Cam", 0);
     RobotContainer::cameraMount->ResumeSweep();
 }
 
