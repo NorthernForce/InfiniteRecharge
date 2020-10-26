@@ -9,6 +9,7 @@
 #include "RobotContainer.h"
 #include <frc2/command/Command.h>
 #include <vector>
+#include <string>
 
 class AutoCommandScheduler {
  public:
@@ -16,12 +17,13 @@ class AutoCommandScheduler {
   AutoCommandScheduler();
   void RunSequential();
   void RunParallel();
-  void CustomAuto(std::vector<std::string> driverInput, std::vector<double> dashboardParams);
+  void CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams);
   bool IsFinished();
   std::vector<frc2::Command*> commandQueue;
 
  private:
-    std::vector<double> DashParamToDouble(std::string, unsigned int);
+
+    std::vector<double> StringSplitter(std::string input, std::string delim = ", ");
     int GetPrevIndex();
     void ScheduleInSequence();
     void ScheduleInParallel();
@@ -31,7 +33,6 @@ class AutoCommandScheduler {
     void CheckAllCommandsHaveFinished();
     void CleanUpArray(std::vector<frc2::Command*> array);
 
-    std::vector<double> dashParams;
     static int currIndex;
     int maxIndex;
     bool isFinished = false;
