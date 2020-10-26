@@ -14,8 +14,10 @@
 #include "commands/IntakePowerCell.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <math.h>
 
 int AutoCommandScheduler::currIndex;
+
 
 AutoCommandScheduler::AutoCommandScheduler(std::vector<frc2::Command*> &&commandQueue) {
     this->commandQueue = commandQueue;
@@ -27,29 +29,45 @@ AutoCommandScheduler::AutoCommandScheduler() {
     isUsingAuto = true;
 }
 
-std::vector<double> AutoCommandScheduler::DashParamToDouble(std::string, unsigned int) {
+// std::vector<double> AutoCommandScheduler::DashParamToDouble(std::string rawParam, unsigned int) {
+
+//     std::string[3] paramArray = rawParam.split("\\s*,\\s*");
+
+//     dashParams.push_back(paramArray[1]);
+//     dashParams.push_back(paramArray[2]);
+//     dashParams.push_back(paramArray[3]);
 
 
-    String[] animalsArray = animals.split("\\s*,\\s*")
+// return dashParams;
+// }
 
-return dashParams;
+std::vector<double> AutoCommandScheduler::StringSplitter(std::string input, std::string delim) {
+    std::vector<double> tokens;
+
+    unsigned pos = 0;
+    while ((pos = input.find(delim)) != std::string::npos) {
+        tokens.push_back(std::stod(input.substr(0, pos)));
+        input.erase(0, pos + delim.length());
+    }
+    tokens.push_back(std::stod(input.substr(0, pos)));
+    return tokens;
 }
 
-
-void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<double> dashboardParams) {
+void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams) {
     for (unsigned i = 0; i < driverInput.size(); i++) {
         std::string dashInput;
         CommandTypes commandType = stringToCommandTypes[dashInput];
+        std::vector<double> cmdParams = StringSplitter(dashboardParams[i]);
 
         switch (commandType)
         {
         case CommandTypes::Drive:
         //send dashboard param to parser here, already have i value then reintroduce in push back
-            commandQueue.push_back(new AutoDrive(dashParams[1]));
+            commandQueue.push_back(new AutoDrive(cmdParams[0], cmdParams[1], cmdParams[2]));
             break;
         
         case CommandTypes::Turn:
-            commandQueue.push_back(new TurnToAngle(dashParams[1]));
+            commandQueue.push_back(new TurnToAngle(cmdParams[0]));
             break;
         
         case CommandTypes::Intake:
@@ -65,7 +83,7 @@ void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std:
             break;
         
         case CommandTypes::Coordinate:
-           commandQueue.push_back(new MoveToCoordinate(dashParams[1], dashParams[2], dashParams[3]));
+           commandQueue.push_back(new MoveToCoordinate(cmdParams[0], cmdParams[1], cmdParams[2]));
            break;
         
         default:
