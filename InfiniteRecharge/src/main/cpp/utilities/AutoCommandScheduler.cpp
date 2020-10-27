@@ -55,8 +55,7 @@ std::vector<double> AutoCommandScheduler::StringSplitter(std::string input, std:
 
 void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams) {
     for (unsigned i = 0; i < driverInput.size(); i++) {
-        std::string dashInput;
-        CommandTypes commandType = stringToCommandTypes[dashInput];
+        CommandTypes commandType = stringToCommandTypes[driverInput[i]];
         std::vector<double> cmdParams = StringSplitter(dashboardParams[i]);
 
         switch (commandType)

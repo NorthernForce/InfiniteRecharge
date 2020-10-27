@@ -55,9 +55,6 @@ void Robot::RobotInit() {
 
     frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
 
-
-
-
     ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
     /*
     autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
@@ -143,17 +140,18 @@ void Robot::AutonomousInit() {
     //     new TurnToAngle(90),
     //     new AutoDrive(24)
     // }));
-    autoCommandScheduler.reset(new AutoCommandScheduler({
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
         
-        // new MoveToCoordinate(72, 0, 0.145),
-        // new MoveToCoordinate(72, -72, 0.145),
-        // new MoveToCoordinate(0, 0, 0.145),
-        // new TurnToAngle(-RobotContainer::imu->GetRotation())
-        // new MoveThroughCoordinateSet()
-        // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-        new AutoBallSeek
-    }));
-    // autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
+    //     // new MoveToCoordinate(72, 0, 0.145),
+    //     // new MoveToCoordinate(72, -72, 0.145),
+    //     // new MoveToCoordinate(0, 0, 0.145),
+    //     // new TurnToAngle(-RobotContainer::imu->GetRotation())
+    //     // new MoveThroughCoordinateSet()
+    //     // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
+    //     new AutoBallSeek
+    // }));
+    autoCommandScheduler.reset(new AutoCommandScheduler);
+    autoCommandScheduler->CustomAuto(dashboardInput, dashboardParams);
 }
 
 void Robot::AutonomousPeriodic() {
