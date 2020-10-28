@@ -10,6 +10,7 @@
 #include <frc2/command/Command.h>
 #include <vector>
 #include <string>
+#include <map>
 
 class AutoCommandScheduler {
  public:
@@ -17,7 +18,7 @@ class AutoCommandScheduler {
   AutoCommandScheduler();
   void RunSequential();
   void RunParallel();
-  void CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams);
+  void DashboardAuto(std::vector<std::string> &&driverInput, std::vector<std::string> &&dashboardParams);
   bool IsFinished();
   std::vector<frc2::Command*> commandQueue;
 
@@ -40,6 +41,7 @@ class AutoCommandScheduler {
     bool parallelScheduledOnce = false;
     bool isUsingAuto = false;
     bool hasScheduledAuto = false;
+    int paramIndexCorrector = 0;
 
     struct BaseException : public std::exception {};
     struct CommandConflictError : public BaseException {
@@ -58,12 +60,28 @@ class AutoCommandScheduler {
         AutoBallSeek,
         Coordinate
     };
+    enum class RequiresParams {
+        Drive = 1,
+        Turn = 1,
+        Intake = 0,
+        Shoot = 0,
+        AutoBallSeek = 0,
+        Coordinate = 1
+    };
     std::map<std::string, CommandTypes> stringToCommandTypes = {
         { "Drive", CommandTypes::Drive },
         { "Turn", CommandTypes::Turn },
         { "Intake", CommandTypes::Intake },
         { "Shoot", CommandTypes::Shoot },
         { "AutoBallSeek", CommandTypes::AutoBallSeek },
-        {"Coordinate", CommandTypes::Coordinate }
+        { "Coordinate", CommandTypes::Coordinate }
+    };
+    std::map<CommandTypes, bool> commandTypeRequiresParams = {
+        { CommandTypes::Drive, bool(RequiresParams::Drive) },
+        { CommandTypes::Turn, bool(RequiresParams::Turn) },
+        { CommandTypes::Intake, bool(RequiresParams::Intake) },
+        { CommandTypes::Shoot, bool(RequiresParams::Shoot) },
+        { CommandTypes::AutoBallSeek, bool(RequiresParams::AutoBallSeek) },
+        { CommandTypes::Coordinate, bool(RequiresParams::Coordinate) }
     };
 };

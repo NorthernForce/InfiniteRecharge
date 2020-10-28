@@ -29,69 +29,16 @@ AutoCommandScheduler::AutoCommandScheduler() {
     isUsingAuto = true;
 }
 
-// std::vector<double> AutoCommandScheduler::DashParamToDouble(std::string rawParam, unsigned int) {
-
-//     std::string[3] paramArray = rawParam.split("\\s*,\\s*");
-
-//     dashParams.push_back(paramArray[1]);
-//     dashParams.push_back(paramArray[2]);
-//     dashParams.push_back(paramArray[3]);
-
-
-// return dashParams;
-// }
-
 std::vector<double> AutoCommandScheduler::StringSplitter(std::string input, std::string delim) {
     std::vector<double> tokens;
 
-    unsigned pos = 0;
+    size_t pos = 0;
     while ((pos = input.find(delim)) != std::string::npos) {
         tokens.push_back(std::stod(input.substr(0, pos)));
         input.erase(0, pos + delim.length());
     }
     tokens.push_back(std::stod(input.substr(0, pos)));
     return tokens;
-}
-
-void AutoCommandScheduler::CustomAuto(std::vector<std::string> driverInput, std::vector<std::string> dashboardParams) {
-    for (unsigned i = 0; i < driverInput.size(); i++) {
-        CommandTypes commandType = stringToCommandTypes[driverInput[i]];
-        std::vector<double> cmdParams = StringSplitter(dashboardParams[i]);
-
-        switch (commandType)
-        {
-        case CommandTypes::Drive:
-        //send dashboard param to parser here, already have i value then reintroduce in push back
-            commandQueue.push_back(new AutoDrive(cmdParams[0], cmdParams[1], cmdParams[2]));
-            break;
-        
-        case CommandTypes::Turn:
-            commandQueue.push_back(new TurnToAngle(cmdParams[0]));
-            break;
-        
-        case CommandTypes::Intake:
-            commandQueue.push_back(new IntakePowerCell());
-            break;
-        
-        case CommandTypes::Shoot:
-            commandQueue.push_back(new AutoShootCell());
-            break;
-        
-        case CommandTypes::AutoBallSeek:
-            commandQueue.push_back(new AutoBallSeek());
-            break;
-        
-        case CommandTypes::Coordinate:
-           commandQueue.push_back(new MoveToCoordinate(cmdParams[0], cmdParams[1], cmdParams[2]));
-           break;
-        
-        default:
-            break;
-        }
-    }
-
-    maxIndex = commandQueue.size() - 1;
-    hasScheduledAuto = true;
 }
 
 void AutoCommandScheduler::RunSequential() {
@@ -134,6 +81,53 @@ void AutoCommandScheduler::ScheduleInParallel() {
         std::cerr << CommandConflictError().what() << '\n';
 }
 
+void AutoCommandScheduler::DashboardAuto(std::vector<std::string> &&driverInput, std::vector<std::string> &&dashboardParams) {
+    std::vector<double> cmdParams;
+
+    for (unsigned i = 0; i < driverInput.size(); i++) {
+        std::string dashInput = driverInput[i];
+        CommandTypes commandType = stringToCommandTypes[dashInput];
+
+        if (commandTypeRequiresParams[commandType])
+            cmdParams = StringSplitter(dashboardParams[i+paramIndexCorrector]);
+        else
+            paramIndexCorrector--;
+
+        switch (commandType) {
+            case CommandTypes::Drive:
+            //send dashboard param to parser here, already have i value then reintroduce in push back
+                commandQueue.push_back(new AutoDrive(cmdParams[0], cmdParams[1], cmdParams[2]));
+                break;
+            
+            case CommandTypes::Turn:
+                commandQueue.push_back(new TurnToAngle(cmdParams[0]));
+                break;
+            
+            case CommandTypes::Intake:
+                commandQueue.push_back(new IntakePowerCell());
+                break;
+            
+            case CommandTypes::Shoot:
+                commandQueue.push_back(new AutoShootCell());
+                break;
+            
+            case CommandTypes::AutoBallSeek:
+                commandQueue.push_back(new AutoBallSeek());
+                break;
+            
+            case CommandTypes::Coordinate:
+                commandQueue.push_back(new MoveToCoordinate(cmdParams[0], cmdParams[1], cmdParams[2]));
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    maxIndex = driverInput.size() - 1;
+    hasScheduledAuto = true;
+}
+
 bool AutoCommandScheduler::CheckForSubsystemConflictsInCommandQueue() {
     for (int currInd = 0; currInd < maxIndex; currInd++) {
         double nextInd = currInd + 1;
@@ -148,7 +142,7 @@ std::vector<frc2::Subsystem*> AutoCommandScheduler::GetRequiredSubsystems() {
 
     for (auto cmd : commandQueue) {
         for (auto requirement : cmd->GetRequirements())
-        requirements.push_back(requirement);
+            requirements.push_back(requirement);
     }
     return requirements;
 }
