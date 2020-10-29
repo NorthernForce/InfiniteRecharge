@@ -29,16 +29,22 @@ AutoCommandScheduler::AutoCommandScheduler() {
     isUsingAuto = true;
 }
 
-std::vector<double> AutoCommandScheduler::StringSplitter(std::string input, std::string delim) {
+std::vector<double> AutoCommandScheduler::StringTokenizer(std::string stringOfNumbers, std::string delim) {
     std::vector<double> tokens;
+    stringOfNumbers = RemoveWhiteSpace(stringOfNumbers);
 
     size_t pos = 0;
-    while ((pos = input.find(delim)) != std::string::npos) {
-        tokens.push_back(std::stod(input.substr(0, pos)));
-        input.erase(0, pos + delim.length());
+    while ((pos = stringOfNumbers.find(delim)) != std::string::npos) {
+        tokens.push_back(std::stod(stringOfNumbers.substr(0, pos)));
+        stringOfNumbers.erase(0, pos + delim.length());
     }
-    tokens.push_back(std::stod(input.substr(0, pos)));
+    tokens.push_back(std::stod(stringOfNumbers.substr(0, pos)));
     return tokens;
+}
+
+std::string AutoCommandScheduler::RemoveWhiteSpace(std::string str) {
+    str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+    return str;
 }
 
 void AutoCommandScheduler::RunSequential() {
@@ -89,7 +95,7 @@ void AutoCommandScheduler::DashboardAuto(std::vector<std::string> &&driverInput,
         CommandTypes commandType = stringToCommandTypes[dashInput];
 
         if (commandTypeRequiresParams[commandType])
-            cmdParams = StringSplitter(dashboardParams[i+paramIndexCorrector]);
+            cmdParams = StringTokenizer(dashboardParams[i+paramIndexCorrector]);
         else
             paramIndexCorrector--;
 

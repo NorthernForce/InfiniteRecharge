@@ -24,7 +24,8 @@ class AutoCommandScheduler {
 
  private:
 
-    std::vector<double> StringSplitter(std::string input, std::string delim = ", ");
+    std::vector<double> StringTokenizer(std::string stringOfNumbers, std::string delim = ",");
+    std::string RemoveWhiteSpace(std::string str);
     int GetPrevIndex();
     void ScheduleInSequence();
     void ScheduleInParallel();
