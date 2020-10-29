@@ -23,6 +23,9 @@
 #include "utilities/AutoCommandScheduler.h"
 #include "subsystems/Logger.h"
 
+//Supported Autonomous Custom Commands
+//Autodrive(old), TurnToAngle, Intake(not thoroughly tested), Shoot, AutoBallSeek(kind of working), MoveToCoordinate
+
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
