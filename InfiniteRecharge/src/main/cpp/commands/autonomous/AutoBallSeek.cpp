@@ -19,17 +19,14 @@ void AutoBallSeek::Initialize() {
 
 void AutoBallSeek::Execute() {
     frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
-    if (turnToTarget->HasRobotTurned()) {
+    if (turnToTarget->HasRobotTurned() && !hasDriven) {
         RobotContainer::cameraMount->PauseSweep();
-        if (!hasDriven) {
-            turnToTarget->DisableTurningMode();
-            turnToTarget->Cancel();
-            SetDistanceToTargetAndDrive();
-        }
+        turnToTarget->DisableTurningMode();
+        turnToTarget->Cancel();
+        SetDistanceToTargetAndDrive();
     }
     else if (hasDriven) {
         if (!turnToAngle->IsScheduled() && !turnToAngleHasBeenScheduled) {
-            frc::SmartDashboard::PutNumber("AI Cam", 1);
             double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTargetIntakeCam();
             if (angleToTarget != 0) {
                 turnToAngle->SetAngle(angleToTarget);
@@ -48,6 +45,7 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
     inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
     if (inchesToTarget != 0 && !distHasBeenSet) {
         std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
+        RobotContainer::aiComms->SwitchCameraToIntake();
         moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
         distHasBeenSet = true;
     }
@@ -56,19 +54,19 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
 }
 
 void AutoBallSeek::DriveToTargetAndStop() {
-    if (!driveHasBeenScheduled) {
-        moveToCoordinate->Schedule();
-        driveHasBeenScheduled = true;
-    }
-    else if (!moveToCoordinate->IsScheduled()) {
+    if (driveHasBeenScheduled && !moveToCoordinate->IsScheduled()) {
         moveToCoordinate->Cancel();
         hasDriven = true;
+    }
+    else {
+        moveToCoordinate->Schedule();
+        driveHasBeenScheduled = true;
     }
 }
 
 void AutoBallSeek::End(bool interrupted) {
     intakeBall->Cancel();
-    frc::SmartDashboard::PutNumber("AI Cam", 0);
+    RobotContainer::aiComms->SwitchCameraToGimbal();
     RobotContainer::cameraMount->ResumeSweep();
 }
 

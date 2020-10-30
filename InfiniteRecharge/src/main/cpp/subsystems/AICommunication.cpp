@@ -53,3 +53,11 @@ std::vector<double> AICommunication::GetValueArray(std::string key) {
 double AICommunication::GetNumber(std::string key) {
     return frc::SmartDashboard::GetNumber(key, -1);
 }
+
+void AICommunication::SwitchCameraToIntake() {
+    frc::SmartDashboard::PutNumber("AI Cam", 1);
+}
+
+void AICommunication::SwitchCameraToGimbal() {
+    frc::SmartDashboard::PutNumber("AI Cam", 0);
+}
