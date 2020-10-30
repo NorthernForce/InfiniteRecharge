@@ -54,7 +54,7 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
 }
 
 void AutoBallSeek::DriveToTargetAndStop() {
-    if (driveHasBeenScheduled) {
+    if (driveHasBeenScheduled && !moveToCoordinate->IsScheduled()) {
         moveToCoordinate->Cancel();
         hasDriven = true;
     }
