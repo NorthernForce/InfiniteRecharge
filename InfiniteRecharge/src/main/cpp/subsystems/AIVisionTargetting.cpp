@@ -27,6 +27,7 @@ AIVisionTargetting::AIVisionTargetting() {
 void AIVisionTargetting::Periodic() {
     pcOffsetInCam = RobotContainer::aiComms->GetPCOffsetInCameraX();
     RegisterFoundTargets();
+    frc::SmartDashboard::PutNumber("distanceToTarget", GetCameraDistToTargetFromArea(GetArea()));
 }
 
 bool AIVisionTargetting::CheckForTarget(Target type) {
@@ -98,6 +99,8 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
         calculatedAngle = finalTriangle.GetAngleB();
         if (sideOfIntakeWithTarget == 'l')
             calculatedAngle *= -1;
+        else
+            calculatedAngle *= 1.2;
     }
     catch (const TriangleCalculator::BaseException& e) {
         std::cout << e.what() << '\n';
@@ -127,8 +130,9 @@ double AIVisionTargetting::GetRobotAngleToTargetIntakeCam() {
 char AIVisionTargetting::GetSideOfIntakeWithTargetFromMainCam() {
     double angFromIntakeCenter = GetMainTriangle().GetAngleA();
     double servoPan = RobotContainer::cameraMount->GetCurrentPan();
+    frc::SmartDashboard::PutNumber("servo pan", servoPan);
 
-    if (angFromIntakeCenter < 90 || servoPan > 90)
+    if (angFromIntakeCenter < 90 || servoPan < 90)
         return 'r';
     else if (angFromIntakeCenter > 90)
         return 'l';

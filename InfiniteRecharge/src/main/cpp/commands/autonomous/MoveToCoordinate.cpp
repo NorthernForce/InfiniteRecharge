@@ -216,10 +216,10 @@ void MoveToCoordinate::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool MoveToCoordinate::IsFinished() {
-  if (finishCounter > 30) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  isFinished = (finishCounter > 30);
+  return isFinished;
+}
+
+bool MoveToCoordinate::GetIsFinished() {
+  return isFinished;
 }

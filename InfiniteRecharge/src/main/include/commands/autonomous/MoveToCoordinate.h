@@ -43,6 +43,8 @@ class MoveToCoordinate
 
   bool IsFinished() override;
 
+  bool GetIsFinished();
+
  private:
   std::unique_ptr<TurnToAngle> turnToAngle;
 
@@ -80,4 +82,5 @@ class MoveToCoordinate
   int movementStage;
 
   int finishCounter = 0;
+  bool isFinished;
 };
