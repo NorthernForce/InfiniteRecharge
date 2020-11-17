@@ -31,6 +31,8 @@ class IntakePowerCell
 
   bool IsFinished() override;
 
+  bool GetIsFinished();
+
  private:
   int emptyPosition;
   int conveyorBackwardsCounter = 0;
@@ -43,6 +45,6 @@ class IntakePowerCell
   bool emptyPositionTriggered = false;
   bool fiveReached = false;
   bool badIntake = false;
-
+  bool isIntakeFinished = false;
 
 };

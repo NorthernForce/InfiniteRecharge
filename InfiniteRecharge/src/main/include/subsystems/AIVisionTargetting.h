@@ -44,6 +44,7 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     Triangle GetCenterTriangle();
     Triangle GetIntakeTriangle();
     Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
+    char GetPrecisePowercellSideOfIntake();
 
     Triangle mainTriangle;
     Triangle rightHelperTriangle;

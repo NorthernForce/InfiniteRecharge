@@ -17,6 +17,7 @@ void AutoBallSeek::Initialize() {
     RobotContainer::aiComms->SwitchCameraToGimbal();
     RobotContainer::cameraMount->ResumeSweep();
     inchesToTarget = 0;
+    hasTurned = false;
     hasDriven = false;
     distHasBeenSet = false;
     driveHasBeenScheduled = false;
@@ -28,16 +29,20 @@ void AutoBallSeek::Initialize() {
 
 void AutoBallSeek::Execute() {
     frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
-    if (turnToTarget->HasRobotTurned() && !hasDriven) {
+    if (turnToTarget->HasRobotTurned())
+        hasTurned = true;
+
+    if (hasTurned && !hasDriven) {
         RobotContainer::cameraMount->PauseSweep();
         RobotContainer::cameraMount->Pan(90);
         turnToTarget->DisableTurningMode();
-        turnToTarget->Cancel();
         SetDistanceToTargetAndDrive();
     }
     else if (hasDriven) {
+        RobotContainer::aiComms->SwitchCameraToIntake();
         if (!turnToAngle->IsScheduled() && !turnToAngleHasBeenScheduled) {
             double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTargetIntakeCam();
+            frc::SmartDashboard::PutNumber("angleInIntakeCam", angleToTarget);
             if (angleToTarget != 0) {
                 turnToAngle->SetAngle(angleToTarget);
                 turnToAngle->Schedule();
@@ -55,24 +60,24 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
     inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
     if (inchesToTarget != 0 && !distHasBeenSet) {
         std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
-        moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
-        distHasBeenSet = true;
+        if (targetCoords.first != 0 || targetCoords.second != 0) {
+            moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
+            distHasBeenSet = true;
+        }
     }
     if (distHasBeenSet)
         DriveToTargetAndStop();
 }
 
 void AutoBallSeek::DriveToTargetAndStop() {
-    if (driveHasBeenScheduled) {
-        RobotContainer::aiComms->SwitchCameraToIntake();
-        if (moveToCoordinate->GetIsFinished()) {
-            moveToCoordinate->Cancel();
-            hasDriven = true;
-        }
-    }
-    else {
+    if (!driveHasBeenScheduled){
         moveToCoordinate->Schedule();
         driveHasBeenScheduled = true;
+    }
+    else if (moveToCoordinate->GetIsFinished() || !moveToCoordinate->IsScheduled()) {
+        RobotContainer::aiComms->SwitchCameraToIntake();
+        moveToCoordinate->Cancel();
+        hasDriven = true;
     }
 }
 
@@ -83,5 +88,5 @@ void AutoBallSeek::End(bool interrupted) {
 }
 
 bool AutoBallSeek::IsFinished() {
-    return (!intakeBall->IsScheduled() && intakeHasBeenScheduled);
+    return intakeBall->GetIsFinished();
 }

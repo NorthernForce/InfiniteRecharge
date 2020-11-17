@@ -293,3 +293,18 @@ double AIVisionTargetting::GetHeightOfTriangle(Triangle t, double base) {
 
     return height;
 }
+
+char AIVisionTargetting::GetPrecisePowercellSideOfIntake() {
+    RobotContainer::cameraMount->Pan(110);
+    double x = RobotContainer::aiComms->GetPCOffsetInCameraX();
+    double y = RobotContainer::aiComms->GetPCOffsetInCameraY();
+
+    double lineX = 0.33*y - 211.11;
+    
+    if (x > lineX)
+        return 'l';
+    else if (x < lineX)
+        return 'r';
+    else
+        return 'c';
+}

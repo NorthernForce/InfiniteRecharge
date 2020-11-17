@@ -33,6 +33,7 @@ class AutoBallSeek
     std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
 
     double inchesToTarget = 0;
+    bool hasTurned = false;
     bool hasDriven = false;
     bool distHasBeenSet = false;
     bool driveHasBeenScheduled = false;

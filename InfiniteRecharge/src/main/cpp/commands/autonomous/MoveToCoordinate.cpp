@@ -25,6 +25,7 @@ MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) : baseSpeed
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
+  isFinished = false;
 }
 
 // Called when the command is initially scheduled.

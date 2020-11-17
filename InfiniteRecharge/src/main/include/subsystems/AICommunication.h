@@ -23,6 +23,7 @@ class AICommunication : public frc2::SubsystemBase {
   std::vector<double> GetValueArray(std::string key);
   double GetNumber(std::string key);
   double GetPCOffsetInCameraX();
+  double GetPCOffsetInCameraY();
   const std::string pcOffsetInCam_label =  "PC Offset in AI Cam: ";
   const std::string distanceToPcFromCam_label = "Distance to PC from Cam:";
   void SwitchCameraToIntake();

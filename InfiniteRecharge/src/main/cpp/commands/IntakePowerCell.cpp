@@ -27,6 +27,7 @@ void IntakePowerCell::Initialize() {
   oneTriggered = false;
   badIntake = false;
   zeroTriggered = false;
+  isIntakeFinished = false;
 }
 
 //***************************************************************************
@@ -131,8 +132,10 @@ void IntakePowerCell::End(bool interrupted) {
 // Returns true when the command should end.
 bool IntakePowerCell::IsFinished() {
   //makes sure power cell has advanced to empty position and there aren't any gaps before stopping
-  if (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT)
-    return true;
-  else
-    return false; 
+  isIntakeFinished = (emptyPositionTriggered == true && RobotContainer::intake->GetInventory(1) == Intake::StorageState::PRESENT);
+  return isIntakeFinished;
+}
+
+bool IntakePowerCell::GetIsFinished() {
+    return isIntakeFinished;
 }
