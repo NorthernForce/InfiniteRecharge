@@ -54,7 +54,7 @@ class MoveToCoordinate
 
   const int cyclePerSecond = 20;
 
-  std::vector<double>driveValues = {0.245, 0.002, 0.002};
+  std::vector<double>driveValues = {0.245, 0.0027, 0.002};
 
   double angleError;
   double totalAngleError;

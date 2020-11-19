@@ -137,7 +137,7 @@ void MoveToCoordinate::Execute() {
     }
   }
   else if (movementStage == 1) {
-    if (distance < 0.5)
+    if (distance < 0.6)
         turnSpeed = 0;
     else
         turnSpeed = TurnPID();
