@@ -11,8 +11,6 @@
 
 #include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
-#include "commands/IntakeDown.h"
-#include "commands/IntakeUp.h"
 #include "commands/IntakePowerCell.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
@@ -25,7 +23,6 @@ InFrontOfGoal::InFrontOfGoal() {
     TurnToAngle(90),
     AutoDrive(48),
     TurnToAngle(90),
-    IntakeDown(),
   };
 
     frc2::ParallelCommandGroup {

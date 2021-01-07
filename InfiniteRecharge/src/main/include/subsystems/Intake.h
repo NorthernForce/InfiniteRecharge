@@ -16,11 +16,6 @@
 
 class Intake : public frc2::SubsystemBase {
  public:
-  enum class ArmState {
-    armIsUp,
-    armIsDown
-  };
-
 //"StorageState" = whether there is a PC (Ball) at a Conveyor Position
   enum class StorageState {
     PRESENT,                  //Have Ball
@@ -40,11 +35,6 @@ class Intake : public frc2::SubsystemBase {
   void PushOutPowerCell();
   int GetPowerCellCount();
   void Stop();
-  void SetArmUp();
-  void SetArmDown();
-  void SetArm(double speed);
-  double GetArmPosition();
-  ArmState GetArmState();
   void RunConveyor();
   void RunConveyorToShoot();
   void StopConveyor();
@@ -72,14 +62,12 @@ class Intake : public frc2::SubsystemBase {
 
  private:
 
-  ArmState currentArmState;
   StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position
   const bool ballDetected = false;
 
   std::vector<frc::DigitalInput*> ballPosition;
 
   std::shared_ptr<WPI_TalonSRX> intakeTalon;
-  std::shared_ptr<rev::CANSparkMax> armSpark;
   std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
 

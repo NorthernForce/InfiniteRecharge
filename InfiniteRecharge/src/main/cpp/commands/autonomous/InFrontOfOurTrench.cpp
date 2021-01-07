@@ -10,16 +10,13 @@
 #include <iostream>
 
 #include "commands/TurnToAngle.h"
-#include "commands/IntakeDown.h"
 #include "commands/AutoDrive.h"
-#include "commands/IntakeUp.h"
+
 
 InFrontOfOurTrench::InFrontOfOurTrench() {
   std::cout << "Your auto is a failure" << '\n';
   frc2::SequentialCommandGroup {
     TurnToAngle(180),
-    IntakeDown(),
     AutoDrive(144),
-    IntakeUp()
   };
 }

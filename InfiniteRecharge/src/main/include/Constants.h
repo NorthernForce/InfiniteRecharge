@@ -43,7 +43,6 @@ namespace Constants {
 
         const int intake = 13;  
 
-        const int intakeArm = 9;
         const int conveyor1 = 10;
         const int conveyor2 = 12;
 

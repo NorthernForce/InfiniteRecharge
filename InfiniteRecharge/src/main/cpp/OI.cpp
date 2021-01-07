@@ -10,7 +10,6 @@
 #include "commands/TurnToTarget.h"
 #include "commands/IntakePowerCell.h"
 #include "commands/PushOutPowerCell.h"
-#include "commands/ToggleArm.h"
 #include "commands/ShootCell.h"
 #include "commands/PositionControl.h"
 #include "commands/RotationControl.h"
@@ -30,8 +29,6 @@
 #include "commands/ReverseConveyor.h"
 #include "commands/ResetCoordinates.h"
 #include "commands/IndexPowerCells.h"
-#include "commands/IntakeUp.h"
-#include "commands/IntakeDown.h"
 #include "commands/DecreaseShooterRPM.h"
 #include "commands/IncreaseShooterRPM.h"
 #include "commands/ManualIntake.h"
@@ -69,10 +66,9 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
+    //a and x no onger in use
     SimpleButton(manipulatorController, Xbox::Y_button).WhenPressed(new AimShooterUp);
     SimpleButton(manipulatorController, Xbox::B_button).WhenPressed(new AimShooterDown());
-    SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
-    SimpleButton(manipulatorController, Xbox::X_button).WhileHeld(new IntakeUp);
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
     SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
     SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);

@@ -5,27 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+////TODO: add piston movements to relevant methods
+
 #include "subsystems/Intake.h"
 #include "RobotContainer.h"
 #include <iostream>
 
-using ArmState = Intake::ArmState;
 using StorageState = Intake::StorageState;
 
 Intake::Intake() {
     InitMotorControllers();
     InitBallPositionSensors();
     SetInvertedFollower();
-    currentArmState = ArmState::armIsUp;
 
 }
 
 void Intake::InitMotorControllers() {
     intakeTalon = std::make_shared<WPI_TalonSRX>(Constants::MotorIDs::intake);
-    armSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless);
-    armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    armSpark->SetSmartCurrentLimit(60);
 
+    //check that these are brushless still
     primaryConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless);
     followerConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless);
 
@@ -43,6 +41,7 @@ void Intake::InitBallPositionSensors() {
     };
 }
 
+//check direction of the second motor is still oposite
 void Intake::SetInvertedFollower() {
     followerConveyorSpark->Follow(*primaryConveyorSpark, true);
 }
@@ -80,48 +79,6 @@ int Intake::GetPowerCellCount() {
 
 void Intake::Stop() {
     intakeTalon->Set(0);
-}
-
-void Intake::SetArmUp() {
-    double tolerance = 3;
-    if (currentArmState == ArmState::armIsDown) {
-        armSpark->Set(-0.8);
-        double armEncoderPos = armSpark->GetEncoder().GetPosition();
-        if (abs(armEncoderPos) + tolerance >= 49 && abs(armEncoderPos) + tolerance > 0)
-            currentArmState = ArmState::armIsUp;
-        else
-            currentArmState = ArmState::armIsDown;
-        armSpark->Set(0);
-    }
-}
-
-void Intake::SetArmDown() {
-    double tolerance = 3;
-    armSpark->Set(0.5);
-    if (currentArmState == ArmState::armIsUp) {
-        if (abs(armSpark->GetEncoder().GetPosition()) + tolerance >= 0) {
-            currentArmState = ArmState::armIsDown;
-            armSpark->GetEncoder().SetPosition(0);
-            armSpark->Set(0);
-        }
-        else
-            currentArmState = ArmState::armIsUp;
-    }
-}
-
-//runs arm motors regardless of arm state
-////TODO: Block until Camera is safe
-void Intake::SetArm(double speed) {
-    armSpark->Set(speed);
-    std::cout << "Arm Position" << GetArmPosition() << '\n';
-}
-
-double Intake::GetArmPosition() {
-    return armSpark->GetEncoder().GetPosition();
-}
-
-ArmState Intake::GetArmState() {
-    return currentArmState;
 }
 
 void Intake::RunConveyor() {

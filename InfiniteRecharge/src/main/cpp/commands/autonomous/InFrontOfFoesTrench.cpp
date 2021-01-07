@@ -11,15 +11,12 @@
 
 #include "commands/TurnToAngle.h"
 #include "commands/AutoDrive.h"
-#include "commands/IntakeDown.h"
-#include "commands/IntakeUp.h"
 #include "commands/IntakePowerCell.h"
 
 InFrontOfFoesTrench::InFrontOfFoesTrench() {
   frc2::SequentialCommandGroup {
     TurnToAngle(180),
     AutoDrive(72),
-    IntakeDown(),
 
     frc2::ParallelCommandGroup {
       IntakePowerCell(),
