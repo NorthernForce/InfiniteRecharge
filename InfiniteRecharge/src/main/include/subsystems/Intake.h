@@ -11,6 +11,7 @@
 #include <ctre/Phoenix.h>
 #include <rev/CANSparkMax.h>
 #include <frc/DigitalInput.h>
+#include <frc/Solenoid.h>
 #include "Constants.h"
 
 
@@ -44,6 +45,11 @@ class Intake : public frc2::SubsystemBase {
   bool TrevinIntake();
   bool NewTrevinIntake();
   bool IsConveyorEmpty();
+  void IntakeOut();
+  void IntakeIn();
+
+  const bool shiftOut = true;
+  const bool shiftIn = false;
 
   //Checks each Conveyor Storage Location and sets its "StorageState" in the array powerCellPosition
   void InventoryPowerCells(); ///set array and then set a counter
@@ -70,6 +76,7 @@ class Intake : public frc2::SubsystemBase {
   std::shared_ptr<WPI_TalonSRX> intakeTalon;
   std::shared_ptr<rev::CANSparkMax> primaryConveyorSpark;
   std::shared_ptr<rev::CANSparkMax> followerConveyorSpark;
+  std::shared_ptr<frc::Solenoid> intakePiston;
 
   bool zeroHasBeenTripped = false;
   bool fourHasBeenTripped = false;

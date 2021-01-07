@@ -18,6 +18,9 @@ Intake::Intake() {
     InitBallPositionSensors();
     SetInvertedFollower();
 
+    //id and channel correct?
+    intakePiston.reset(new frc::Solenoid(Constants::PCMCanBusID, 2));
+
 }
 
 void Intake::InitMotorControllers() {
@@ -218,4 +221,12 @@ int Intake::LowestFullPosition() {
         position = i;
     }
     return position;
+}
+
+void Intake::IntakeOut() {
+    intakePiston->Set(shiftOut); 
+}
+
+void Intake::IntakeIn() {
+    intakePiston->Set(shiftIn);
 }

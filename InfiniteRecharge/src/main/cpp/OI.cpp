@@ -66,7 +66,7 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
-    //a and x no onger in use
+    //a and x no longer in use
     SimpleButton(manipulatorController, Xbox::Y_button).WhenPressed(new AimShooterUp);
     SimpleButton(manipulatorController, Xbox::B_button).WhenPressed(new AimShooterDown());
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
