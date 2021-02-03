@@ -10,7 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 IMU::IMU() {
-    ahrs = std::make_shared<AHRS>(SPI::Port::kMXP);
+    ahrs = std::make_shared<AHRS>(frc::SPI::Port::kMXP);
     Init();
     accelerationRateTimer = std::make_shared<frc::Timer>();
     accelerationRateTimer->Start();
