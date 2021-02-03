@@ -12,19 +12,17 @@
 //all digital stuff is commented out
 Ultrasonic::Ultrasonic() {
     analogUltrasonic.reset(new frc::AnalogInput(Constants::ultrasonicRangeFinder));
-    //ctrl.reset(new frc::DigitalOutput(Constants::Ultrasonic::digitalCtrlPort));
 }
 
 void Ultrasonic::Periodic() {
     isObstacleDetected = IsObstacleAt(12);
     distance = GetDistance();
-    //std::cout << distance << "\n";
     frc::SmartDashboard::PutNumber("Ultrasonic distance: ", distance);
 }
 
 
 bool Ultrasonic::IsObstacleAt(int targetDistance) {
-    if(distance < targetDistance) {
+    if (distance < targetDistance) {
         return true;
     } else {
         return false;
@@ -38,11 +36,9 @@ double Ultrasonic::GetDistance() {
 
 void Ultrasonic::Enable() {
     ultrasonicState = ultrasonicOn;
-   // ctrl->Set(ultrasonicOn);
 }
 
 void Ultrasonic::Disable() {
     ultrasonicState = ultrasonicOff;
-  //  ctrl->Set(ultrasonicOff);
 }
 

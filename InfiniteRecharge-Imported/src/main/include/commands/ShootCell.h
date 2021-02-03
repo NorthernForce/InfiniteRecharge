@@ -30,4 +30,5 @@ class ShootCell
 
  private:
   int conveyorBackwardsCounter = 0;
+  const double conveyorShooterSpeed = -0.5;
 };

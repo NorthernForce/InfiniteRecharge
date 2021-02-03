@@ -20,8 +20,9 @@ class ShiftGear
   ShiftGear(Gear gear);
   void Initialize() override;
   bool IsFinished() override;
+  void End(bool interrupted) override;
 
  private:
-  Gear m_gear;
+  Gear gear;
   char logMessage[32];
 };

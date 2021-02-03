@@ -9,7 +9,8 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <frc/Servo.h>
-#include <functional>
+#include "subsystems/AIVisionTargetting.h"
+#include <deque>
 
 class CameraMount : public frc2::SubsystemBase {
  public:
@@ -17,10 +18,16 @@ class CameraMount : public frc2::SubsystemBase {
   void Init();
   void Periodic();
   int GetServoAngleToTarget();
-  void SweepForPowercells();
+  void SmartSweep();
+  void Sweep();
+  void PauseSweep();
+  void ResumeSweep();
+  void CenterTarget();
+  void MoveServoBackToTarget();
   void SetToZero();
   int GetCurrentPan();
   int GetPreviousPan();
+  int GetAvgOfRecentPans();
   void Pan(int degrees);
   int GetCurrentTilt();
   int GetPreviousTilt();
@@ -28,14 +35,27 @@ class CameraMount : public frc2::SubsystemBase {
   char GetPanDirection();
 
  private:
+  void RecoverOutOfRangeServo();
+  void SetLastNonZeroPcOffset();
+  void LimitStoredAngles();
+
   int currentPan;
   int currentTilt;
   int previousPan;
+  std::deque<int> recentPanAngles;
   int previousTilt;
   char panDirection;
   char tiltDirection;
   int servoAngleToTarget;
   static int sweepPassCount;
+  int offsetCorrectLimiter;
+  double pcOffset;
+  double lastNonZeroPcOffset;
+  bool hasMovedServoBackToTarget = false;
+  int cycleCounter;
+  int recentSweepStops;
+  int cycleThresh = 3;
+  bool overrideSweep;
 
   std::shared_ptr<frc::Servo> panServo;
   std::shared_ptr<frc::Servo> tiltServo;

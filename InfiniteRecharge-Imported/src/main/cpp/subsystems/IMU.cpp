@@ -7,11 +7,12 @@
 
 #include "subsystems/IMU.h"
 #include <frc/SPI.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 IMU::IMU() {
-    ahrs.reset(new AHRS(frc::SPI::Port::kMXP));
+    ahrs = std::make_shared<AHRS>(frc::SPI::Port::kMXP);
     Init();
-    accelerationRateTimer.reset(new frc::Timer());
+    accelerationRateTimer = std::make_shared<frc::Timer>();
     accelerationRateTimer->Start();
 }
 
@@ -31,7 +32,7 @@ void IMU::Periodic() {
         accelerationRateTimer->Reset();
         accelerationRateTimer->Start();
     }
-    //std::cout << "currentrot: " << GetRotation() << "\n";
+    frc::SmartDashboard::PutNumber("Robot angle: ", GetRotation());
 }
 
 double IMU::GetRollAngle() {
@@ -55,8 +56,5 @@ double IMU::GetAcceleration() {
 }
 
 bool IMU::IsMoreTorqueNeeded() {
-    if (accelerationRateTimer->Get() < 0.1)
-        return true;
-    else
-        return false;
+    return accelerationRateTimer->Get() < 0.1;
 }

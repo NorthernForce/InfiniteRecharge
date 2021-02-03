@@ -10,6 +10,9 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 
+#include "RobotContainer.h"
+#include "commands/SafeCamera.h"
+
 /**
  * An example command.
  *
@@ -20,13 +23,16 @@
 class IntakeDown
     : public frc2::CommandHelper<frc2::CommandBase, IntakeDown> {
  public:
-  IntakeDown();
+    IntakeDown();
 
-  void Initialize() override;
+    void Initialize() override;
 
-  void Execute() override;
+    void Execute() override;
 
-  void End(bool interrupted) override;
+    void End(bool interrupted) override;
 
-  bool IsFinished() override;
+    bool IsFinished() override;
+
+ private:
+    std::unique_ptr<SafeCamera> safeCameraCmd;
 };

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc2/command/Command.h>
+#include <memory>
 #include "OI.h"
 
 #include "subsystems/Drivetrain.h"
@@ -24,10 +25,6 @@
 #include "subsystems/WackyWheel.h"
 #include "subsystems/Climber.h"
 #include "subsystems/Limelight.h"
-
-#include "commands/DriveWithJoystick.h"
-#include "commands/Climb.h"
-#include "commands/SweepAICamera.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since

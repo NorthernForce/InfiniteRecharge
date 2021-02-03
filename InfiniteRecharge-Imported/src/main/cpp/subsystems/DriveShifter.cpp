@@ -20,8 +20,9 @@ DriveShifter::DriveShifter() :
   leftSideSpark(Drivetrain::leftPrimarySpark),
   rightSideSpark(Drivetrain::rightPrimarySpark)
 {
-    shifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 0));
+    shifter = std::make_shared<frc::Solenoid>(Constants::PCMCanBusID, 0);
     BeginShift(false);
+    currentGear = Gear::High;
 }
 
 // This method will be called once per scheduler run
@@ -54,8 +55,8 @@ void DriveShifter::Shift(Gear gear) {
 void DriveShifter::CheckVelocityForShift(int leftSpeedInRPM, int rightSpeedInRPM) {
 	int averageSpeedInRPM = (abs(leftSpeedInRPM) + abs(rightSpeedInRPM)) / 2;
 	if(averageSpeedInRPM > velocityForShift) {
-		leftSideSpark->Set(leftSpeedInRPM > 0 ? 1 : -1);
-		rightSideSpark->Set(rightSpeedInRPM > 0 ? 1 : -1);
+		leftSideSpark->Set(leftSpeedInRPM >= 0 ? 1 : -1);
+		rightSideSpark->Set(rightSpeedInRPM >= 0 ? 1 : -1);
 	}
 }
 

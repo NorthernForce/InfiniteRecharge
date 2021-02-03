@@ -21,24 +21,26 @@ Intake::Intake() {
 }
 
 void Intake::InitMotorControllers() {
-    intakeTalon.reset(new WPI_TalonSRX(Constants::MotorIDs::intake));
-    armSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless));
+    intakeTalon = std::make_shared<WPI_TalonSRX>(Constants::MotorIDs::intake);
+    armSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::intakeArm, rev::CANSparkMax::MotorType::kBrushless);
     armSpark->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     armSpark->SetSmartCurrentLimit(60);
 
-    primaryConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless));
-    followerConveyorSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless));
+    primaryConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor1, rev::CANSparkMax::MotorType::kBrushless);
+    followerConveyorSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::conveyor2, rev::CANSparkMax::MotorType::kBrushless);
 
     intakeTalon->ConfigPeakCurrentLimit(5);
 }
 
 void Intake::InitBallPositionSensors() {
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort0));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort1));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort2));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort3));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort4));
-    ballPosition.push_back(new frc::DigitalInput(Constants::DigitalPort::ballPort5));
+    ballPosition = {
+        new frc::DigitalInput(Constants::DigitalPort::ballPort0),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort1),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort2),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort3),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort4),
+        new frc::DigitalInput(Constants::DigitalPort::ballPort5)
+    };
 }
 
 void Intake::SetInvertedFollower() {
@@ -52,15 +54,19 @@ void Intake::Periodic() {
     for(int i=0; i<6; i++) {
         if (GetInventory(i) == StorageState::PRESENT) {
            std::cout << "Position " << i <<  " full\n";
-    }
+        }
         else {
            std::cout << "Position " << i <<  " empty\n";
         }
-   }
+    }
 }
 
 void Intake::TakeInPowerCell() {
     intakeTalon->Set(0.6);
+}
+
+void Intake::SetIntakeSpeed(double speed) {
+    intakeTalon->Set(speed);
 }
 
 void Intake::PushOutPowerCell() {
@@ -89,8 +95,6 @@ void Intake::SetArmUp() {
     }
 }
 
-
-////TODO: Set Camera to low position before the arm is commanded
 void Intake::SetArmDown() {
     double tolerance = 3;
     armSpark->Set(0.5);
@@ -139,11 +143,73 @@ void Intake::ConveyorSetSpeed(double speed) {
         //increases speed based on whether conveyor is moving forward or backward
         if (speed < 0) {
             primaryConveyorSpark->Set(speed - 0.15);
-       }
-       else {
-           primaryConveyorSpark->Set(speed + 0.15);
-       }
+        }
+        else {
+            primaryConveyorSpark->Set(speed + 0.15);
+        }
     }
+}
+
+void Intake::NewRunConveyer(double speed) {
+    primaryConveyorSpark->Set(speed);
+}
+
+double Intake::GetConveyerSpeed() {
+    sparkSpeed = primaryConveyorSpark->Get();
+    return sparkSpeed;
+}
+
+bool Intake::TrevinIntake() {
+    bool stop;
+    if (GetInventory(5) == StorageState::PRESENT) {
+        StopConveyor();
+        Stop();
+        stop = true;
+    }
+    if (GetInventory(4) == StorageState::PRESENT) {
+        fourHasBeenTripped = true;
+    }
+    if (GetInventory(0) == StorageState::PRESENT) {
+        zeroHasBeenTripped = true;
+        Stop();
+        if (fourHasBeenTripped) {
+            NewRunConveyer(Constants::Intake::slow);
+        }
+        else {
+            NewRunConveyer();
+        }
+    }
+    else if (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped) {
+        StopConveyor();
+        stop = true;
+    }
+    return stop;
+}
+
+bool Intake::NewTrevinIntake() {
+    bool stop;
+    if (GetInventory(5) == StorageState::PRESENT || (GetInventory(0) == StorageState::EMPTY && zeroHasBeenTripped)) {
+        std::cout << "Stopping Conveyers";
+        StopConveyor();
+        stop = true;
+    }
+    if (GetInventory(5) == StorageState::PRESENT || GetInventory(0) == StorageState::PRESENT) {
+        Stop();
+        std::cout << "Stopping Wheels";
+    }
+    else {
+        std::cout << "Running Wheels";
+        intakeTalon->Set(0.6);
+    }
+    if (GetInventory(0) == StorageState::PRESENT && GetInventory(4) == StorageState::PRESENT) {
+        std::cout << "Running Slow";
+        NewRunConveyer(Constants::Intake::slow);
+    }
+    else if (GetInventory(0) == StorageState::PRESENT) {
+        std::cout << "Running Conveyers";
+        NewRunConveyer();
+    }
+    return stop;
 }
 
 ////TODO: Set Convey to reverse for perhaps 0.5 seconds or 10 loop cycles.
@@ -167,15 +233,11 @@ StorageState Intake::GetInventory(int position) {
 }
 
 bool Intake::IsConveyorEmpty() {
-    int emptyCounter = 0;
-    bool isEmpty;
     for (int pos=0; pos<6; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::EMPTY)
-            emptyCounter++;
-    if (emptyCounter == 6)
-        isEmpty = true;
+        if (GetInventory(pos) == Intake::StorageState::PRESENT)
+            return false;
     }
-    return isEmpty;
+    return true;
 }
 
 //Return the First Position in the Conveyor Storage that is empty (no PC).

@@ -9,9 +9,17 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "utilities/AutoCommandScheduler.h"
 
 class CrossAutoLine
     : public frc2::CommandHelper<frc2::CommandBase, CrossAutoLine> {
  public:
   CrossAutoLine();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+
+ private:
+    std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
+
 };
