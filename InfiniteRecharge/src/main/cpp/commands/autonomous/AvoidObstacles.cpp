@@ -12,16 +12,12 @@ AvoidObstacles::AvoidObstacles() {
 void AvoidObstacles::Initialize() {}
 
 bool AvoidObstacles::TestForCollision(double xTarget, double yTarget) {
-  double xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
-  double yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
+  auto coordinates = RobotContainer::navigation->GetCoordinatePosition();
+  double xCurrent = coordinates.first;
+  double yCurrent = coordinates.second;
   auto point = std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30);
   
-  if (sqrt(pow((xCurrent - point.first),2) + pow((xCurrent - point.second),2)) < Constants::robotRadius) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  return (sqrt(pow((xCurrent - point.first),2) + pow((xCurrent - point.second),2)) < Constants::robotRadius);
 }
 
 
