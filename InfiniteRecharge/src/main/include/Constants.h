@@ -17,6 +17,7 @@ namespace Constants {
     const double roboWidth = 29;
     const double roboLength = 30.5;
     const double bumperThickness = 3;
+    const double robotRadius = sqrt(pow((roboWidth / 2),2) + pow(((roboLength + 12) / 2), 2));
 
     const double camDistFromRoboFrontCent = 9;
     const double camDistFromRoboSideCent = 9;

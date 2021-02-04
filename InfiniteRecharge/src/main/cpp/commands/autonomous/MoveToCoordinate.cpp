@@ -19,7 +19,7 @@
 
 std::unique_ptr<Logger> Robot::logger;
 
-MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) : baseSpeed(speed) {
+MoveToCoordinate::MoveToCoordinate(double xPos, double yPos, double speed) : baseSpeed(speed) {
   AddRequirements(RobotContainer::drivetrain.get());
   SetName("MoveToCoordinate");
   xFinal = xPos;
