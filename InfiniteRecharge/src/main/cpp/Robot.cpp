@@ -9,44 +9,74 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <frc2/command/SequentialCommandGroup.h>
 #include <cameraserver/CameraServer.h>
 #include <string>
+#include <memory>
 
 #include "Constants.h"
 #include "OI.h"
 
 #include "commands/InventoryPowerCells.h"
-#include "commands/autonomous/CrossAutoLine.h"
-#include "commands/autonomous/InFrontOfGoal.h"
-#include "commands/autonomous/InFrontOfOurTrench.h"
-#include "commands/autonomous/InFrontOfFoesTrench.h"
-#include "commands/autonomous/DoNothing.h"
+#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
+#include "commands/AutoDrive.h"
+#include "commands/ShiftGear.h"
+#include "commands/SafeCamera.h"
+#include "commands/TurnToAngle.h"
+#include "commands/ShootCell.h"
+#include "commands/MoveToLimelight.h"
+#include "commands/autonomous/AutonomousBallSeek.h"
+#include "commands/autonomous/AutoBallSeek.h"
+#include "commands/autonomous/MoveToCoordinate.h"
+#include "commands/autonomous/MoveThroughCoordinateSet.h"
+#include "commands/TuneValue.h"
 
 #include <cameraserver/CameraServer.h>
+#include <frc2/command/ParallelCommandGroup.h>
+
 
 void Robot::RobotInit() {
-  container.reset(new RobotContainer());
-////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
-/*
-  autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
-  autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
-  autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
-  autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
-  autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
-  frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
-*/
-  chooserAuto = new frc::SendableChooser<std::string>;
-  chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
-  chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
-  chooserAuto->AddOption("InFrontOfGoal", "InFrontOfGoal");
-  chooserAuto->AddOption("SimpleCrossAutoLine", "SimpleCrossAutoLine");
-  chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
-  chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
-  frc::SmartDashboard::PutData(chooserAuto);
+    container = std::make_shared<RobotContainer>();
+    logger = std::make_unique<Logger>();
 
-  CameraServer::GetInstance()->StartAutomaticCapture();
+    frc::SmartDashboard::PutString("auto string input 1", "insert here");
+    frc::SmartDashboard::PutString("auto 1 parameter", "");
+    frc::SmartDashboard::PutString("auto string input 2", "insert here");
+    frc::SmartDashboard::PutString("auto 2 parameter", "");
+    frc::SmartDashboard::PutString("auto string input 3", "insert here");
+    frc::SmartDashboard::PutString("auto 3 parameter", "");
+    frc::SmartDashboard::PutString("auto string input 4", "insert here");
+    frc::SmartDashboard::PutString("auto 4 parameter", "");
+    frc::SmartDashboard::PutString("auto string input 5", "insert here");
+    frc::SmartDashboard::PutString("auto 5 parameter", "");
+    frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
+
+
+    ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
+    /*
+    autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
+    autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
+    autonomousChooser.AddOption("3) In front of our trench", new InFrontOfOurTrench());
+    autonomousChooser.AddOption("4) In front of foe's trench", new InFrontOfFoesTrench());
+    autonomousChooser.AddOption("4) Do Nothing", new DoNothing());
+    frc::SmartDashboard::PutData("Autonomous Modes", &autonomousChooser);
+    */
+    /*
+
+    chooserAuto = new frc::SendableChooser<std::string>;
+    chooserAuto->SetDefaultOption("DoNothing", "DoNothing");
+    chooserAuto->AddOption("CrossAutoLine", "CrossAutoLine");
+    chooserAuto->AddOption("InFrontOfGoal", "InFrontOfGoal");
+    chooserAuto->AddOption("SimpleCrossAutoLine", "SimpleCrossAutoLine");
+    chooserAuto->AddOption("InFrontOfOurTrench", "InFrontOfOurTrench");
+    chooserAuto->AddOption("InFrontOfFoesTrench", "InFrontOfFoesTrench");
+    frc::SmartDashboard::PutData(chooserAuto);
+
+    */
+
+    frc::CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -73,83 +103,56 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-/*
-	autonomousCommand.reset(autonomousChooser.GetSelected());
-  if(autonomousCommand != nullptr)
-      autonomousCommand->Schedule();
-*/
-////TODO: Figure out if this should go in periodic or Init
-  /*
-  chooserAutoSelected = chooserAuto->GetSelected();
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 1", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 2", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 3", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 4", "insert here"));
+    dashboardInput.push_back(frc::SmartDashboard::GetString("auto string input 5", "insert here"));
 
-    if (chooserAutoSelected == "CrossAutoLine") {
-        new CrossAutoLine;
-    }
-    else if (chooserAutoSelected == "DoNothing") {
-       new DoNothing;
-    }
-    else if (chooserAutoSelected == "InFrontOfGoal") {
-       new InFrontOfGoal;
-    }
-    else if (chooserAutoSelected == "InFrontOfFoesTrench") {
-      new InFrontOfFoesTrench;
-    }
-    else if (chooserAutoSelected == "InFrontOfOurTrench") {
-      new InFrontOfOurTrench;
-    }
-    else {
-      new DoNothing;
-    }
-*/
-  RobotContainer::drivetrain->SetEncoderPosition(0);
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 1 parameter", ""));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 2 parameter", ""));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 3 parameter", ""));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 4 parameter", ""));
+    dashboardParams.push_back(frc::SmartDashboard::GetString("auto 5 parameter", ""));
+
+    RobotContainer::imu->ZeroRotation();
+
+    //   frc2::SequentialCommandGroup{
+    //   TurnToAngle(90),
+    //   SimpleCrossAutoLine(),
+    // };
+
+
+    // Aiden's stuff
+    // autoTurnToAngle.reset(new TurnToAngle);
+    //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
+    //autoShootCell.reset(new AutoShootCell);
+
+    // RobotContainer::drivetrain->SetEncoderPosition(0);
+    //autoTurnToAngle->SetAngle(90);
+    // isTurnFinished = false;
+    // isForwardFinished = false;
+    // isShooterFinished = false;
+
+    // auto command scheduler init
+    // autoCommandScheduler.reset(new AutoCommandScheduler({
+        
+    //     // new MoveToCoordinate(72, 0, 0.145),
+    //     // new MoveToCoordinate(72, -72, 0.145),
+    //     // new MoveToCoordinate(0, 0, 0.145),
+    //     // new TurnToAngle(-RobotContainer::imu->GetRotation())
+    //     // new MoveThroughCoordinateSet()
+    //     // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
+    //     new AutoBallSeek
+    // }));
+    autoCommandScheduler.reset(new AutoCommandScheduler);
+    autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }
 
-
 void Robot::AutonomousPeriodic() {
-  ////TODO: Make any of this work
 
-  int autoCounter = 0;
-  if((!autoMoveToLimelight->IsScheduled()) && (autoCounter == 0)) {
-    autoMoveToLimelight->Schedule();
-    autoCounter++;
-  }
-
-  if((!autoShooter->IsScheduled()) && (autoCounter == 1)) {
-    while((RobotContainer::intake->IsConveyorEmpty()) == false) {
-      autoShooter->Schedule();
-      autoCounter++;
-    }
-  }
-
-    if ((!autoTurnToAngle->IsScheduled()) && (autoCounter == 2)) {
-    autoTurnToAngle->SetAngle(-90);
-    autoTurnToAngle->Schedule();
-    autoCounter++;
-  }
-
-  if ((!simpleDriveForward->IsScheduled()) && (autoCounter == 3)) {
-    simpleDriveForward->Schedule();
-    autoCounter++;
-    printf("I'm working????? \n");
-  }
-  
-
-  
-  /* Working autonomous code
-  auto encoderRotations = RobotContainer::drivetrain->GetEncoderRotations();
-  RobotContainer::drivetrain->DriveUsingSpeeds(-0.2, -0.2);
-  if (((encoderRotations.second)*Constants::Shifting::highMultiplier) > 35) {
-    RobotContainer::drivetrain->DriveUsingSpeeds(0, 0);
-  */
-
-/*
-    1) make it drive backwards
-    2) make it go to position to shoot from
-    3) make piston go up
-    4) make arm go down
-    5) start shooter
-    4) shoot 
-*/
+  // auto command scheduler execution
+  autoCommandScheduler->RunSequential();
 }
 
 void Robot::TeleopInit() {

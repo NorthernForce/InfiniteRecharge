@@ -6,8 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
+
 #include <frc2/command/RunCommand.h>
-#include "Constants.h" 
+#include "commands/DriveWithJoystick.h"
+#include "commands/Climb.h"
+#include "commands/TurnToTarget.h"
 
 std::shared_ptr<OI> RobotContainer::oi;
 std::shared_ptr<Drivetrain> RobotContainer::drivetrain;
@@ -26,36 +29,36 @@ std::shared_ptr<WackyWheel> RobotContainer::wackyWheel;
 std::shared_ptr<Limelight> RobotContainer::limelight;
 
 RobotContainer::RobotContainer() {
-  oi.reset(new OI());
-  InitSubsystems();
-  oi->MapControllerButtons();
-  InitDefaultCommands();
+    oi.reset(new OI());
+    InitSubsystems();
+    oi->MapControllerButtons();
+    InitDefaultCommands();
 }
 
 void RobotContainer::InitSubsystems() {
-  drivetrain.reset(new Drivetrain);
-  pcm.reset(new PCM);
-  driveShifter.reset(new DriveShifter);
-  imu.reset(new IMU);
-  navigation.reset(new Navigation);
-  aiComms.reset(new AICommunication);
-  aiVisionTargetting.reset(new AIVisionTargetting);
-  cameraMount.reset(new CameraMount);
-  ultrasonic.reset(new Ultrasonic);
-  intake.reset(new Intake);
-  shooter.reset(new Shooter);
-  climber.reset(new Climber);
-  limelight.reset(new Limelight);
+    drivetrain.reset(new Drivetrain);
+    pcm.reset(new PCM);
+    driveShifter.reset(new DriveShifter);
+    imu.reset(new IMU);
+    navigation.reset(new Navigation);
+    aiComms.reset(new AICommunication);
+    aiVisionTargetting.reset(new AIVisionTargetting);
+    cameraMount.reset(new CameraMount);
+    ultrasonic.reset(new Ultrasonic);
+    intake.reset(new Intake);
+    shooter.reset(new Shooter);
+    climber.reset(new Climber);
+    limelight.reset(new Limelight);
 }
 
 void RobotContainer::InitDefaultCommands() {
-  drivetrain->SetDefaultCommand(DriveWithJoystick());
+    drivetrain->SetDefaultCommand(DriveWithJoystick());
 
-  climber->SetDefaultCommand(Climb( 
-    [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
-  ));
+    climber->SetDefaultCommand(Climb( 
+        [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
+    ));
 
-  cameraMount->SetDefaultCommand(SweepAICamera());
+    cameraMount->SetDefaultCommand(TurnToTarget());
 }
 
 void RobotContainer::InitAutonomousCommands() {

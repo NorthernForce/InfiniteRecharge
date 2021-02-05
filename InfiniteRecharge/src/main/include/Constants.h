@@ -20,13 +20,15 @@ namespace Constants {
 
     const double camDistFromRoboFrontCent = 9;
     const double camDistFromRoboSideCent = 9;
+    const double camDistFromRoboCenter = 13.5;
+    const double intakeDistFromRoboCenter = 22;
 
     const double ultrasonicDistFromRoboCent = 14;
 
     const double pi = 3.141592653589793;
     const double degreesToRadians = pi/180;
 
-    const int XResetMultiplier = 0.996194698092;
+    const double XResetMultiplier = 0.996194698092;
     
     namespace MotorIDs {
         const int driveLeftPrimary = 5;
@@ -52,9 +54,15 @@ namespace Constants {
 
     }
 
+    namespace Intake {
+        const double slow = -0.325;
+        const double normal = -0.45;
+        const double fast = -0.7;
+    }
+
     namespace Shifting {
-        const double lowMultiplier = 4.286;
-        const double highMultiplier = 1.39383333333333333333;
+        const double lowMultiplier = .7179821429;
+        const double highMultiplier = 0.2892773749374815;
     }
 
     namespace DigitalPort { 

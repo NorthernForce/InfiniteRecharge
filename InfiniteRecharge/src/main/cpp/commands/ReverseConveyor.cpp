@@ -22,7 +22,9 @@ void ReverseConveyor::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void ReverseConveyor::End(bool interrupted) {}
+void ReverseConveyor::End(bool interrupted) {
+  RobotContainer::intake->StopConveyor();
+}
 
 // Returns true when the command should end.
 bool ReverseConveyor::IsFinished() { return false; }

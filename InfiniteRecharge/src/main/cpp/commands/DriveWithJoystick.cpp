@@ -40,28 +40,34 @@ void DriveWithJoystick::End(bool interrupted) {
 bool DriveWithJoystick::IsFinished() { return false; }
 
 void DriveWithJoystick::AutoShiftIfPermitted() {
-  double positiveAcceleration = abs(RobotContainer::imu->GetAcceleration());
+  double acceleration = RobotContainer::imu->GetAcceleration();
   bool isEligibleForShift;
 
-  if (positiveAcceleration > 0.1 && countForShiftEligibility >= 25)
+  if (abs(acceleration) > 0.1 && countForShiftEligibility >= 25)
     isEligibleForShift = true;
 
   if (isEligibleForShift) {
     ShiftIfEligible(isEligibleForShift);
-    std::cout << "Eligible for shift!\n";
+   // std::cout << "Eligible for shift!\n";
   }
   countForShiftEligibility++;
 }
 
+bool DriveWithJoystick::IsXWithinThresholdOfY(double x, double y, double threshold) {
+    double low = y - abs(threshold);
+    double high = y + abs(threshold);
+    return (low <= x && x <= high);
+}
+
 void DriveWithJoystick::ShiftIfEligible(bool isEligible) {
-  bool isDrivingStraight = (abs(speed) > 0.75 && abs(rotation) < 0.15);
-  if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded() == true) {
+  double leftMotorSpeed = RobotContainer::drivetrain->leftPrimarySpark->Get();
+  double rightMotorSpeed = RobotContainer::drivetrain->rightPrimarySpark->Get();
+  bool isDrivingStraight = IsXWithinThresholdOfY(leftMotorSpeed, rightMotorSpeed, 0.05) &&
+                           IsXWithinThresholdOfY(rightMotorSpeed, leftMotorSpeed, 0.05);
+
+  if (isDrivingStraight && RobotContainer::imu->IsMoreTorqueNeeded())
     ShiftGear(ShiftGear::Gear::Low);
-    std::cout << "shiftgear low\n";
-  }
-  else {
+  else
     ShiftGear(ShiftGear::Gear::High);
-    std::cout << "shiftgear high\n";
-  }
   countForShiftEligibility = 0;
 }

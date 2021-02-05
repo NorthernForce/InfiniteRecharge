@@ -8,31 +8,54 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include "utilities/TriangleCalculator.h"
 
 class AIVisionTargetting : public frc2::SubsystemBase {
  public:
-  AIVisionTargetting();
-  enum class Target {
-    Powercell,
-    Goal,
-    None
-  };
-  bool CheckForTarget(Target type);
-  Target CheckTargetType();
-  void RefreshTargetPositioning();
-  double RoboAngleToTarget();
-  double RoboDistToTarget();
-
-  /*
-    Will be called periodically whenever the CommandScheduler runs.
-   */
-
-  void Periodic();
+    enum class Target {
+        Powercell,
+        Goal,
+        None
+    };
+    AIVisionTargetting();
+    void Periodic();
+    bool CheckForTarget(Target type=Target::Powercell);
+    Target CheckTargetType();
+    int TimeSinceTargetRegisteredInMillis();
+    bool IsTargetLocked();
+    std::pair<double, double> GetFieldCoordinatesOfTarget();
+    double GetRobotDistToTarget();
+    double GetRobotAngleToTarget();
+    double GetRobotAngleToTargetIntakeCam();
+    char GetSideOfIntakeWithTargetFromMainCam();
+    char GetSideOfIntakeWithTargetFromIntakeCam();
+    double GetCameraDistToTargetFromArea(int area);
+    int GetArea();
+    double GetHeightOfTriangle(Triangle t, double base);
+    double GetPowercellOffsetInIntakeCam();
 
  private:
-  
-  bool targetFound;
-  double targetPositionX;
-  double targetPositionY;
+    void RegisterFoundTargets();
+    Triangle GetMainTriangle();
+    Triangle GetRightHelperTriangle();
+    Triangle GetRightFinalTriangle();
+    Triangle GetLeftFinalTriangle();
+    Triangle GetFinalTriangle();
+    Triangle GetCenterTriangle();
+    Triangle GetIntakeTriangle();
+    Triangle CalculateTriangle(std::unique_ptr<Triangle> rawTriangle, std::string calcMethod);
 
+    Triangle mainTriangle;
+    Triangle rightHelperTriangle;
+    Triangle finalTriangle;
+    Triangle centerTriangle;
+
+    std::unique_ptr<TriangleCalculator> calculator;
+
+    double camAngleOffset;
+    int servoToRobotCenterAngleOffset = 90;
+    double pcOffsetInCam;
+
+    int loopCyclesSinceTargetRegistered;
+    bool targetHasBeenRegistered;
 };

@@ -22,18 +22,25 @@ class Drivetrain : public frc2::SubsystemBase {
   void ConfigureController(rev::CANSparkMax& controller);
   double GetRightRPM();
   double GetLeftRPM();
+  double GetAvgRPM();
   std::pair<double, double> GetEncoderRotations();
-  void SetEncoderPosition(double position);
+  double GetAvgEncoderRotations();
   void SimpleDriveWithEncoder(double desiredEncoder);
-  void SimpleTurnToAngle(double limeLightOffset);
+  void SetEncoderPosition(double position);
+  int GetSpeedInInchesPerSecond();
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
 
   bool continueDrive;
+  int currentEncoder;
+  int prevEncoder;
+  const int loopCyclesInOneSecond = 50;
 
  private:
+  void setPID();
+  
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark1;
   std::shared_ptr<rev::CANSparkMax> leftFollowerSpark2;
 
@@ -43,4 +50,18 @@ class Drivetrain : public frc2::SubsystemBase {
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
   double rampRate = 0.2;
+
+  //////////////////////////////////////////////////////
+  std::shared_ptr<rev::CANPIDController> leftPID;
+  std::shared_ptr<rev::CANPIDController> rightPID;
+
+  double kP = 0.3;
+  double kI;
+  double kD;
+  double kFF = 0.25;
+  double kIz;
+  double kMinOutput = -1;
+  double kMaxOutput = 1;
+
+
 };

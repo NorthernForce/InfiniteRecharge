@@ -14,9 +14,17 @@
 #include "commands/ShootCell.h"
 #include "commands/TurnToAngle.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/AutoDrive.h"
+#include "commands/autonomous/CrossAutoLine.h"
+#include "commands/autonomous/AutoShootCell.h"
 #include <thread>
 
 #include "RobotContainer.h"
+#include "utilities/AutoCommandScheduler.h"
+#include "subsystems/Logger.h"
+
+//Supported Autonomous Custom Commands
+//Autodrive(old), TurnToAngle, Intake(not thoroughly tested), Shoot, AutoBallSeek(kind of working), MoveToCoordinate
 
 class Robot : public frc::TimedRobot {
  public:
@@ -30,6 +38,9 @@ class Robot : public frc::TimedRobot {
   void TeleopPeriodic() override;
   void TestPeriodic() override;
   static void CameraInit();
+  
+  bool AutonomousIsRunning = false;
+  static std::unique_ptr<Logger> logger;
 
  private:
   // Have it null by default so that if testing teleop it
@@ -38,13 +49,28 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<RobotContainer> container;
   //std::unique_ptr<frc2::Command> autonomousCommand;
   //frc::SendableChooser<frc2::Command*> autonomousChooser;
-  frc::SendableChooser<std::string> *chooserAuto;
-  SimpleCrossAutoLine* simpleDriveForward;
-  MoveToLimelight* autoMoveToLimelight;
-  TurnToAngle* autoTurnToAngle;
-  ShootCell* autoShooter;
-  std::string chooserAutoSelected;
+  //frc::SendableChooser<std::string> *chooserAuto;
+  //SimpleCrossAutoLine* simpleDriveForward;
+  //MoveToLimelight* autoMoveToLimelight;
+  //AutoDrive* autoDrive;
+    std::shared_ptr<TurnToAngle> autoTurnToAngle;
+    std::shared_ptr<SimpleCrossAutoLine> simpleCrossAutoLine;
+    std::shared_ptr<AutoShootCell> autoShootCell;
+  //std::shared_ptr<CrossAutoLine> autoTestDrive;
+  //ShootCell* autoShooter;
+  //std::string chooserAutoSelected;
+  std::unique_ptr<AutoCommandScheduler> autoCommandScheduler;
+  std::vector<std::string> dashboardInput;
+  std::vector<std::string> dashboardParams;
 
   bool reachedEncoderPos = false;
   bool readyToShoot = false;
+  int autoCounter;
+  bool autoStepOne = false;
+  bool autoStepTwo = false;
+  bool autoStepThree = false;
+  bool autoStepFour = false;
+  bool autoStepFive = false;
+  bool autoPointOne = false;
+  bool autoPointTwo = false;
 };

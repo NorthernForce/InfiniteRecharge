@@ -15,27 +15,34 @@ class Navigation : public frc2::SubsystemBase {
  public:
   Navigation();
   void Periodic();
-  std::pair<double, double> GetInchesTravelled();
+  void ChangeInDistanceTravelled();
+  void TotalInchesTravelled();
   void ResetPosition();
+  void ZeroPosition();
   void CoordinatePosition();
   std::pair<double, double> GetCoordinatePosition();
+  double AngleToPoint(double xPos, double yPos);
 
  private:
+    int smartdashCycles;
     double robotStartingAngle;
     double robotCurrentAngle;
     double robotAngleDifference = robotStartingAngle - robotCurrentAngle;
-    double cameraStartingAngle;
-    double cameraCurrentAngle;
-    double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
+    // double cameraStartingAngle;
+    // double cameraCurrentAngle;
+    // double cameraAngleDifference = cameraStartingAngle - cameraCurrentAngle;
     double previousLeftEncoder = 0;
     double previousRightEncoder = 0;
+    std::pair<double, double> changeInDistanceTravelled;
+    std::pair<double, double> totalInchesTravelled;
 
     double averageSpeedInRPM;
     double totalDistanceTravelled;
     double lastDistanceTravelled;
 
-    double xPosition;
-    double yPosition;
+    static double xPosition;
+    static double yPosition;
+
     double NavXScaling = Constants::XResetMultiplier;
 
     // const double cameraOffsetFromCenter;

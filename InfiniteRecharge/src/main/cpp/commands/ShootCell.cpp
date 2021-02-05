@@ -15,10 +15,7 @@ ShootCell::ShootCell() {
   AddRequirements(RobotContainer::intake.get());
 }
 
-void ShootCell::Initialize() {
-  double ramp = RobotContainer::oi->GetShooterRampRate();
-  RobotContainer::shooter->ConfigureSpark(ramp);
-}
+void ShootCell::Initialize() {}
 
 void ShootCell::Execute() {
   double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
@@ -28,8 +25,8 @@ void ShootCell::Execute() {
     std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
     std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
     RobotContainer::shooter->Shoot();
-    if (RobotContainer::shooter->GetError() > 100) {
-      RobotContainer::intake->ConveyorSetSpeed(-0.75);
+    if (RobotContainer::shooter->GetError() < 100) {
+      RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
     }
     else {
       if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY)
