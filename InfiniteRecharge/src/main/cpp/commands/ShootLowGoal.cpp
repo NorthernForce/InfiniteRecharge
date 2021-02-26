@@ -19,7 +19,8 @@ void ShootLowGoal::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void ShootLowGoal::Execute() {
   RobotContainer::shooter->Shoot();
-    if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+    //changed from 5 to 4
+    if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY) {
       RobotContainer::intake->RunConveyor();
     }
     else {
