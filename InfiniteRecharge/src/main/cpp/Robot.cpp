@@ -32,6 +32,7 @@
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "commands/TuneValue.h"
+#include "commands/TestServo.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -135,16 +136,16 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    autoCommandScheduler.reset(new AutoCommandScheduler({
         
-    //     // new MoveToCoordinate(72, 0, 0.145),
-    //     // new MoveToCoordinate(72, -72, 0.145),
-    //     // new MoveToCoordinate(0, 0, 0.145),
-    //     // new TurnToAngle(-RobotContainer::imu->GetRotation())
-    //     // new MoveThroughCoordinateSet()
-    //     // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-    //     new AutoBallSeek
-    // }));
+        // new MoveToCoordinate(72, 0, 0.145),
+        // new MoveToCoordinate(72, -72, 0.145),
+        // new MoveToCoordinate(0, 0, 0.145),
+        // new TurnToAngle(-RobotContainer::imu->GetRotation())
+        // new MoveThroughCoordinateSet()
+        // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
+        new TestServo
+    }));
     autoCommandScheduler.reset(new AutoCommandScheduler);
     autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }
