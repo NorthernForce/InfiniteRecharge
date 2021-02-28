@@ -14,6 +14,7 @@ AutoBallSeek::AutoBallSeek() {
 }
 
 void AutoBallSeek::Initialize() {
+    RobotContainer::cameraMount->ResumeSweep();
     turnToTarget->EnableTurningMode();
 }
 
