@@ -18,7 +18,8 @@ void PowerCellToShooter::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void PowerCellToShooter::Execute() {
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+  //changed from 5 to 4
+  if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY) {
      RobotContainer::intake->RunConveyor();
   }
 }
@@ -28,7 +29,8 @@ void PowerCellToShooter::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool PowerCellToShooter::IsFinished() { 
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+  //changed from 5 to 4
+  if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->StopConveyor();
     return true;
   }

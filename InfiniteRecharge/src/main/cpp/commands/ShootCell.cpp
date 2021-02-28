@@ -29,7 +29,8 @@ void ShootCell::Execute() {
       RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
     }
     else {
-      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY)
+      //changed from 5 to 4
+      if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
         RobotContainer::intake->RunConveyor();
       else {
         conveyorBackwardsCounter++;

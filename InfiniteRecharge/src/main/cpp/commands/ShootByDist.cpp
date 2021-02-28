@@ -22,7 +22,8 @@ void ShootByDist::Initialize() {
 
 void ShootByDist::Execute() {
       RobotContainer::shooter->Shoot();
-      if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+      //changed from 5 to 4
+      if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY) {
         RobotContainer::intake->RunConveyor();
       }
       else {

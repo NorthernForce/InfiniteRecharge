@@ -73,7 +73,7 @@ class Intake : public frc2::SubsystemBase {
  private:
 
   ArmState currentArmState;
-  StorageState powerCellPosition[6];   //Holds the StorageState of the associated Conveyor Position
+  StorageState powerCellPosition[5]; //changed to 5 from 6  //Holds the StorageState of the associated Conveyor Position
   const bool ballDetected = false;
 
   std::vector<frc::DigitalInput*> ballPosition;
@@ -85,7 +85,7 @@ class Intake : public frc2::SubsystemBase {
 
   bool zeroHasBeenTripped = false;
   bool fourHasBeenTripped = false;
-  bool ballOccupancy[6];
+  bool ballOccupancy[5]; //changed from 6 to 5
   int powerCellCount = 0;
   double sparkSpeed;
 };
