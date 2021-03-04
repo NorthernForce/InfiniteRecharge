@@ -38,4 +38,7 @@ class AutoBallSeek
     bool driveHasBeenScheduled = false;
     bool intakeHasBeenScheduled = false;
     bool turnToAngleHasBeenScheduled = false;
+
+    double previousEncoder = 0;
+    double currentEncoder = 0;
 };

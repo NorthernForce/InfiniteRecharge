@@ -21,7 +21,7 @@ CameraMount::CameraMount() {
 void CameraMount::Init() {
     currentPan = 90;
     currentTilt = 0;
-    previousPan = 90;
+    CameraMount::previousPan = 90;
     previousTilt = 0;
 }
 
@@ -106,7 +106,7 @@ int CameraMount::GetCurrentPan() {
 }
 
 int CameraMount::GetPreviousPan() {
-    return previousPan;
+    return CameraMount::previousPan;
 }
 
 int CameraMount::GetAvgOfRecentPans() {
@@ -127,7 +127,7 @@ int CameraMount::GetPreviousTilt() {
 }
 
 void CameraMount::Pan(int degrees) {
-    previousPan = currentPan;
+    CameraMount::previousPan = currentPan;
     currentPan = degrees;
     panServo->SetAngle(degrees);
 }

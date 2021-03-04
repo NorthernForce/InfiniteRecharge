@@ -144,10 +144,10 @@ void Robot::AutonomousInit() {
         // new TurnToAngle(-RobotContainer::imu->GetRotation())
         // new MoveThroughCoordinateSet()
         // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-        new TestServo
+        new AutoBallSeek
     }));
-    autoCommandScheduler.reset(new AutoCommandScheduler);
-    autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
+    //autoCommandScheduler.reset(new AutoCommandScheduler);
+    //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }
 
 void Robot::AutonomousPeriodic() {
