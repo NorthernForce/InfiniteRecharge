@@ -30,6 +30,8 @@ class MoveToCoordinate
   // double RemoveJumps(double angToFinalWithJumps);
   double Limit(double value, double limit);
 
+  void AvoidRedirection(double correctionAmount);
+
   double TurnPID();
 
   void Set(std::vector<double>pidValues); //Sets drive pid values
@@ -82,6 +84,7 @@ class MoveToCoordinate
 
   int finishCounter = 0;
 
+  double avoidAmount;
 };
 
 namespace CoordinatePlane {

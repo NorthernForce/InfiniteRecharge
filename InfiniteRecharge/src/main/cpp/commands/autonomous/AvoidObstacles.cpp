@@ -11,18 +11,35 @@ AvoidObstacles::AvoidObstacles() {
 // Called when the command is initially scheduled.
 void AvoidObstacles::Initialize() {}
 
-bool AvoidObstacles::TestForCollision(double xTarget, double yTarget) {
-  auto coordinates = RobotContainer::navigation->GetCoordinatePosition();
-  double xCurrent = coordinates.first;
-  double yCurrent = coordinates.second;
-  auto point = std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30);
-  
-  return (sqrt(pow((xCurrent - point.first),2) + pow((xCurrent - point.second),2)) < Constants::robotRadius);
+auto AvoidObstacles::NearestGameCoordinate() {
+  return std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30); 
 }
 
+void AvoidObstacles::UpdatePosition() {
+  auto coordinates = RobotContainer::navigation->GetCoordinatePosition();
+  xCurrent = coordinates.first;
+  yCurrent = coordinates.second;
+  ngc = NearestGameCoordinate();
+}
+
+double AvoidObstacles::NGCAngle() {
+  return RobotContainer::navigation->AngleToPoint(ngc.first, ngc.second);
+}
+
+double AvoidObstacles::NGCDistance() {
+  return sqrt(pow((xCurrent - ngc.first),2) + pow((xCurrent - ngc.second),2));
+}
+
+bool AvoidObstacles::WillHitNGC() {
+  double horizontalDistance = NGCDistance() * sin(NGCAngle());
+  return (horizontalDistance < Constants::robotRadius);
+}
 
 // Called repeatedly when this Command is scheduled to run
-void AvoidObstacles::Execute() {}
+void AvoidObstacles::Execute() {
+  UpdatePosition();
+
+}
 
 // Called once the command ends or is interrupted.
 void AvoidObstacles::End(bool interrupted) {}

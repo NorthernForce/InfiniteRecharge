@@ -24,9 +24,24 @@ class AvoidObstacles
 
   bool TestForCollision(double xTarget, double yTarget);
 
+  auto NearestGameCoordinate();
+
+  void UpdatePosition();
+
+  double NGCAngle();
+
+  double NGCDistance();
+
+  bool WillHitNGC();
+
   void Execute() override;
 
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+ private:
+  double xCurrent;
+  double yCurrent;
+  std::pair<double, double> ngc;
 };

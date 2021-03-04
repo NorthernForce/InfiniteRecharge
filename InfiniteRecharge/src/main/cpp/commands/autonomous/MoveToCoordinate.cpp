@@ -54,8 +54,12 @@ double MoveToCoordinate::Limit(double value, double limit) {
     return value;
 }
 
+void MoveToCoordinate::AvoidRedirection(double correctionAmount) {
+  avoidAmount = correctionAmount;
+}
+
 double MoveToCoordinate::TurnPID() {
-  angleError = ((angToFinal / 180) / cyclePerSecond);
+  angleError = (((angToFinal + avoidAmount) / 180) / cyclePerSecond);
   totalAngleError += angleError;
   if (angleError == 0)
     totalAngleError = 0;
