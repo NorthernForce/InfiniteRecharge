@@ -7,6 +7,8 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "RobotContainer.h"
+ #include "commands/autonomous/MoveThroughCoordinateSet.h"
+#include <cmath>
 
 /**
  * An example command.
@@ -34,6 +36,8 @@ class AvoidObstacles
 
   bool WillHitNGC();
 
+  double CorrectionAmount();
+
   void Execute() override;
 
   void End(bool interrupted) override;
@@ -41,7 +45,9 @@ class AvoidObstacles
   bool IsFinished() override;
 
  private:
+
   double xCurrent;
   double yCurrent;
   std::pair<double, double> ngc;
+  double horizontalDistance;
 };

@@ -4,6 +4,8 @@
 
 #include "commands/autonomous/AvoidObstacles.h"
 
+std::shared_ptr<MoveToCoordinate> moveToCoordinate;
+
 AvoidObstacles::AvoidObstacles() {
   // Use addRequirements() here to declare subsystem dependencies.
 }
@@ -20,6 +22,7 @@ void AvoidObstacles::UpdatePosition() {
   xCurrent = coordinates.first;
   yCurrent = coordinates.second;
   ngc = NearestGameCoordinate();
+  horizontalDistance= NGCDistance() * sin(NGCAngle() * Constants::degreesToRadians);
 }
 
 double AvoidObstacles::NGCAngle() {
@@ -31,14 +34,29 @@ double AvoidObstacles::NGCDistance() {
 }
 
 bool AvoidObstacles::WillHitNGC() {
-  double horizontalDistance = NGCDistance() * sin(NGCAngle());
-  return (horizontalDistance < Constants::robotRadius);
+  return (horizontalDistance < Constants::obstacleDistance);
+}
+
+double AvoidObstacles::CorrectionAmount() {
+  double horizontalCorrection = Constants::obstacleDistance - horizontalDistance;
+  if (horizontalCorrection > 0) {
+    double angleCorrection = asin(horizontalCorrection/NGCDistance()) / Constants::degreesToRadians;
+    if (NGCAngle() > 0) {
+      return angleCorrection;
+    }
+    else {
+      return -angleCorrection;
+    }
+  }
+  else {
+    return 0;
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AvoidObstacles::Execute() {
   UpdatePosition();
-
+  moveToCoordinate->AvoidRedirection(CorrectionAmount()); 
 }
 
 // Called once the command ends or is interrupted.
@@ -46,5 +64,6 @@ void AvoidObstacles::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool AvoidObstacles::IsFinished() {
-  return false;
+  return !moveToCoordinate->IsScheduled();
 }
+ 

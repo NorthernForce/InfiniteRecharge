@@ -7,7 +7,6 @@
 
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "frc/smartdashboard/SmartDashboard.h"
-#include "commands/autonomous/MoveToCoordinate.h"
 
 MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -15,7 +14,7 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
-  coordinateSet = std::vector<double>{ 0,0, 10,40, 20,0, -10,24, 24,24, 0,0 };
+  coordinateSet = std::vector<double>{0,0, 12,12, 24,0, 12,24, 12,12, 0,0};
   numOfSets = coordinateSet.size() / 2;
   xPos = 0;
   yPos = 1;

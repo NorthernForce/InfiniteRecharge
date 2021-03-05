@@ -10,8 +10,8 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "commands/TurnToAngle.h"
+#include "commands/autonomous/AvoidObstacles.h"
 #include "Constants.h"
-#include <memory>
 
 /**
  * An example command.
@@ -87,7 +87,7 @@ class MoveToCoordinate
   double avoidAmount;
 };
 
-namespace CoordinatePlane {
+namespace CPlane {
     class Point {
         public:
         double x,y;
@@ -155,3 +155,5 @@ namespace CoordinatePlane {
     const Point E10 = Point(300,30);
     const Point E11 = Point(330,30);
 }
+
+  static std::shared_ptr<MoveToCoordinate> moveToCoordinate;
