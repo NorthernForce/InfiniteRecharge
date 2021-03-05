@@ -45,6 +45,10 @@ double AICommunication::GetPCOffsetInCameraX() {
     return RobotContainer::aiComms->GetCamTargetOffsets(powercell)[0];
 }
 
+double AICommunication::GetDistanceToTarget() {
+    return frc::SmartDashboard::GetNumber("Distance To Target:", 0);
+}
+
 std::vector<double> AICommunication::GetValueArray(std::string key) {
     auto data = frc::SmartDashboard::GetNumberArray(key, -1);
     return data;

@@ -176,7 +176,7 @@ void AIVisionTargetting::RegisterFoundTargets() {
 
 Triangle AIVisionTargetting::GetMainTriangle() {
     // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
-    double a = GetCameraDistToTargetFromArea(GetArea());
+    double a = RobotContainer::aiComms->GetDistanceToTarget();
     double c = centerTriangle.GetSideB();
     double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
 

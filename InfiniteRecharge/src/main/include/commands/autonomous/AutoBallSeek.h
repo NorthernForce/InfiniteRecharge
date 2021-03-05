@@ -9,6 +9,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include <frc/Timer.h>
 #include "commands/TurnToTarget.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/IntakePowerCell.h"
@@ -31,6 +32,7 @@ class AutoBallSeek
     std::unique_ptr<TurnToAngle> turnToAngle = std::make_unique<TurnToAngle>();
     std::unique_ptr<MoveToCoordinate> moveToCoordinate;
     std::unique_ptr<IntakePowerCell> intakeBall = std::make_unique<IntakePowerCell>();
+    std::unique_ptr<frc::Timer> intakeTimer = std::make_unique<frc::Timer>();
 
     double inchesToTarget = 0;
     bool hasDriven = false;
@@ -38,7 +40,4 @@ class AutoBallSeek
     bool driveHasBeenScheduled = false;
     bool intakeHasBeenScheduled = false;
     bool turnToAngleHasBeenScheduled = false;
-
-    double previousEncoder = 0;
-    double currentEncoder = 0;
 };
