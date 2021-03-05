@@ -4,15 +4,17 @@
 
 #include "commands/autonomous/AvoidObstacles.h"
 
-AvoidObstacles::AvoidObstacles() {
+AvoidObstacles::AvoidObstacles(double xPos, double yPos, double speed, std::vector<CPlane::Point> obstacles) {
+moveToCoordinate = std::make_unique<MoveToCoordinate>(xPos, yPos, speed);
   // Use addRequirements() here to declare subsystem dependencies.
 }
 
 // Called when the command is initially scheduled.
-void AvoidObstacles::Initialize() {}
+void AvoidObstacles::Initialize() {} 
 
 auto AvoidObstacles::NearestGameCoordinate() {
-  return std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30); 
+  auto point = std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30);
+  return point;
 }
 
 void AvoidObstacles::UpdatePosition() {
@@ -32,19 +34,37 @@ double AvoidObstacles::NGCDistance() {
 
 bool AvoidObstacles::WillHitNGC() {
   double horizontalDistance = NGCDistance() * sin(NGCAngle());
-  return (horizontalDistance < Constants::robotRadius);
+  return (horizontalDistance < Constants::obstacleDistance);
+}
+
+double AvoidObstacles::CorrectionAmount() {
+  double horizontalCorrection = Constants::obstacleDistance - horizontalDistance;
+  if (horizontalCorrection > 0) {
+    double angleCorrection = asin(horizontalCorrection/NGCDistance()) / Constants::degreesToRadians;
+    if (NGCAngle() > 0) {
+      return angleCorrection;
+    }
+    else {
+      return -angleCorrection;
+    }
+  }
+  else {
+    return 0;
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AvoidObstacles::Execute() {
   UpdatePosition();
-
+  moveToCoordinate->AvoidRedirection(CorrectionAmount());
 }
 
 // Called once the command ends or is interrupted.
-void AvoidObstacles::End(bool interrupted) {}
+void AvoidObstacles::End(bool interrupted) {
+  moveToCoordinate->Cancel();
+}
 
 // Returns true when the command should end.
 bool AvoidObstacles::IsFinished() {
-  return false;
+  return (!moveToCoordinate->IsScheduled());
 }

@@ -6,6 +6,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
 
 /**
@@ -18,7 +19,7 @@
 class AvoidObstacles
     : public frc2::CommandHelper<frc2::CommandBase, AvoidObstacles> {
  public:
-  AvoidObstacles();
+  AvoidObstacles(double xPos, double yPos,  std::vector<CPlane::Point> obstacles={}, double speed=0.3);
 
   void Initialize() override;
 
@@ -34,6 +35,8 @@ class AvoidObstacles
 
   bool WillHitNGC();
 
+  double CorrectionAmount();
+
   void Execute() override;
 
   void End(bool interrupted) override;
@@ -41,7 +44,10 @@ class AvoidObstacles
   bool IsFinished() override;
 
  private:
+  std::unique_ptr<MoveToCoordinate> moveToCoordinate;
+  std::vector<CPlane::Point> obstacleList;
   double xCurrent;
   double yCurrent;
   std::pair<double, double> ngc;
+  double horizontalDistance;
 };

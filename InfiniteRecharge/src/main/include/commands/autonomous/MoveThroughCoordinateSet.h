@@ -35,6 +35,7 @@ class MoveThroughCoordinateSet
   const std::string coordinateSetLabel = "Coordinate Set";
 
   std::vector<double> coordinateSet;
+  std::vector<CPlane::Point> obstacles;
 
   std::unique_ptr<MoveToCoordinate> moveToCoordinate;
 

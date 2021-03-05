@@ -87,7 +87,7 @@ class MoveToCoordinate
   double avoidAmount;
 };
 
-namespace CoordinatePlane {
+namespace CPlane {
     class Point {
         public:
         double x,y;

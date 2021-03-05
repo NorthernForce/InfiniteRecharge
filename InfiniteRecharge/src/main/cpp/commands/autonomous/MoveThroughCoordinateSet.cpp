@@ -16,6 +16,7 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
   coordinateSet = std::vector<double>{ 0,0, 10,40, 20,0, -10,24, 24,24, 0,0 };
+  obstacles = std::vector<CPlane::Point>{};
   numOfSets = coordinateSet.size() / 2;
   xPos = 0;
   yPos = 1;
