@@ -59,7 +59,7 @@ void TurnToTarget::TurnRobotToTarget() {
 
 void TurnToTarget::TurnToAng(double ang) {
     if (distanceToTargetBeforeTurn == 0)
-        distanceToTargetBeforeTurn = 0.85 * RobotContainer::aiVisionTargetting->GetRobotDistToTarget();
+        distanceToTargetBeforeTurn = 0.85 * RobotContainer::aiVisionTargetting->GetCenterRobotDistToTarget();
 
     if (ang != 0 && !hasStartedTurn) {
         turnToAngle->SetAngle(ang);

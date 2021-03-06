@@ -66,7 +66,7 @@ bool AIVisionTargetting::IsTargetLocked() {
 }
 
 std::pair<double, double> AIVisionTargetting::GetFieldCoordinatesOfTarget() {
-    double distance = GetRobotDistToTarget();
+    double distance = GetCenterRobotDistToTarget();
     double robotCurrentAngle = RobotContainer::imu->GetRotation();
     double angle = robotCurrentAngle + GetRobotAngleToTarget();
     double currentX = RobotContainer::navigation->GetCoordinatePosition().first;
@@ -76,7 +76,17 @@ std::pair<double, double> AIVisionTargetting::GetFieldCoordinatesOfTarget() {
     return std::make_pair(x, y);
 }
 
-double AIVisionTargetting::GetRobotDistToTarget() {
+double AIVisionTargetting::GetCameraDistToTarget() {
+    double approxDist = GetCameraDistToTargetFromArea(GetArea());
+    double irDist = RobotContainer::aiComms->GetDistanceToTarget();
+
+    if (IsXInRange(irDist, (approxDist-3), (approxDist+3)))
+        return irDist;
+    else
+        return approxDist;
+}
+
+double AIVisionTargetting::GetCenterRobotDistToTarget() {
     mainTriangle = GetMainTriangle();
     double calculatedDist = 0;
 
@@ -176,7 +186,7 @@ void AIVisionTargetting::RegisterFoundTargets() {
 
 Triangle AIVisionTargetting::GetMainTriangle() {
     // uppercase and lowercase letters follow standard triangle naming (such as in law of cosines form, etc.)
-    double a = RobotContainer::aiComms->GetDistanceToTarget();
+    double a = GetCameraDistToTarget();
     double c = centerTriangle.GetSideB();
     double B = 180 - RobotContainer::cameraMount->GetCurrentPan() + pcOffsetInCam;
 
