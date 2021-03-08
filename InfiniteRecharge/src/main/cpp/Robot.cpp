@@ -27,13 +27,11 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
-#include "commands/autonomous/AutonomousBallSeek.h"
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "commands/TuneValue.h"
 #include "commands/TestServo.h"
-
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
 
