@@ -10,6 +10,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include "commands/autonomous/MoveToCoordinate.h"
+#include "commands/autonomous/AvoidObstacles.h"
 #include <vector>
 
 /**
@@ -37,7 +38,7 @@ class MoveThroughCoordinateSet
   std::vector<double> coordinateSet;
   std::vector<CPlane::Point> obstacles;
 
-  std::unique_ptr<MoveToCoordinate> moveToCoordinate;
+  std::unique_ptr<AvoidObstacles> avoidObstacles;
 
   int numOfSets = 0;
   int status = 1;

@@ -29,9 +29,9 @@ void MoveThroughCoordinateSet::Execute() {
     //move robot to that coordinates
    // MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
    //is this good here? can they be nested this way?
-    if (!moveToCoordinate->IsScheduled()) {
-      moveToCoordinate.reset(new MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos), 0.13));
-      moveToCoordinate->Schedule();
+    if (!avoidObstacles->IsScheduled()) {
+      avoidObstacles.reset(new AvoidObstacles(coordinateSet.at(xPos), coordinateSet.at(yPos), obstacles, 0.13));
+      avoidObstacles->Schedule();
       status++;
       xPos += 2;
       yPos += 2;
