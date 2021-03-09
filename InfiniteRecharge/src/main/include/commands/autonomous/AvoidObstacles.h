@@ -19,7 +19,7 @@
 class AvoidObstacles
     : public frc2::CommandHelper<frc2::CommandBase, AvoidObstacles> {
  public:
-  AvoidObstacles(double xPos, double yPos,  std::vector<CPlane::Point> obstacles={}, double speed=0.3);
+  AvoidObstacles(double xPos, double yPos, std::vector<CPlane::Point> obstacles={}, double speed=0.3);
 
   void Initialize() override;
 
@@ -35,6 +35,8 @@ class AvoidObstacles
 
   bool WillHitNGC();
 
+  bool NGCisObstacle();
+
   double CorrectionAmount();
 
   void Execute() override;
@@ -46,8 +48,7 @@ class AvoidObstacles
  private:
   std::unique_ptr<MoveToCoordinate> moveToCoordinate;
   std::vector<CPlane::Point> obstacleList;
-  double xCurrent;
-  double yCurrent;
-  std::pair<double, double> ngc;
+  CPlane::Point robot;
+  CPlane::Point ngc;
   double horizontalDistance;
 };

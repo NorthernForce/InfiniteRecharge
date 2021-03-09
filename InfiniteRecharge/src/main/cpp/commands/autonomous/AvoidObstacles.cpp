@@ -4,8 +4,9 @@
 
 #include "commands/autonomous/AvoidObstacles.h"
 
-AvoidObstacles::AvoidObstacles(double xPos, double yPos, double speed, std::vector<CPlane::Point> obstacles) {
+AvoidObstacles::AvoidObstacles(double xPos, double yPos, std::vector<CPlane::Point> obstacles, double speed) {
 moveToCoordinate = std::make_unique<MoveToCoordinate>(xPos, yPos, speed);
+obstacleList = obstacles;
   // Use addRequirements() here to declare subsystem dependencies.
 }
 
@@ -13,28 +14,34 @@ moveToCoordinate = std::make_unique<MoveToCoordinate>(xPos, yPos, speed);
 void AvoidObstacles::Initialize() {} 
 
 auto AvoidObstacles::NearestGameCoordinate() {
-  auto point = std::make_pair(round(xCurrent/30)*30,round(yCurrent/30)*30);
+  CPlane::Point point = CPlane::Point((round(robot.x/30)*30),(round(robot.y/30)*30));
   return point;
 }
 
 void AvoidObstacles::UpdatePosition() {
   auto coordinates = RobotContainer::navigation->GetCoordinatePosition();
-  xCurrent = coordinates.first;
-  yCurrent = coordinates.second;
+  robot = CPlane::Point(coordinates.first,coordinates.second);
   ngc = NearestGameCoordinate();
 }
 
 double AvoidObstacles::NGCAngle() {
-  return RobotContainer::navigation->AngleToPoint(ngc.first, ngc.second);
+  return RobotContainer::navigation->AngleToPoint(ngc.x, ngc.y);
 }
 
 double AvoidObstacles::NGCDistance() {
-  return sqrt(pow((xCurrent - ngc.first),2) + pow((xCurrent - ngc.second),2));
+  return sqrt(pow((robot.x - ngc.x),2) + pow((robot.y - ngc.y),2));
 }
 
 bool AvoidObstacles::WillHitNGC() {
   double horizontalDistance = NGCDistance() * sin(NGCAngle());
   return (horizontalDistance < Constants::obstacleDistance);
+}
+
+bool AvoidObstacles::NGCisObstacle() {
+  for(auto element : obstacleList) {
+    if ((element.x == ngc.x) && (element.y == ngc.y)) {return true;}
+  }
+  return false;
 }
 
 double AvoidObstacles::CorrectionAmount() {
@@ -56,7 +63,9 @@ double AvoidObstacles::CorrectionAmount() {
 // Called repeatedly when this Command is scheduled to run
 void AvoidObstacles::Execute() {
   UpdatePosition();
-  moveToCoordinate->AvoidRedirection(CorrectionAmount());
+  if (WillHitNGC() && NGCisObstacle()) { //If it will pass through a point checks if it is an obstacle    
+    moveToCoordinate->AvoidRedirection(CorrectionAmount());
+  }
 }
 
 // Called once the command ends or is interrupted.

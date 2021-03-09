@@ -91,9 +91,14 @@ namespace CPlane {
     class Point {
         public:
         double x,y;
-        Point(double x, double y)
+        Point(double x=0, double y=0)
         : x(x), y(y) {}
     };
+
+    const Point up = Point(0,Constants::obstacleDistance);
+    const Point right = Point(Constants::obstacleDistance,0);
+    const Point down = Point(0,-Constants::obstacleDistance);
+    const Point left = Point(-Constants::obstacleDistance,0);
 
     const Point A1 = Point(30,150);
     const Point A2 = Point(60,150);
