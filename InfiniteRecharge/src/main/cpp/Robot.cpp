@@ -135,18 +135,21 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    // autoCommandScheduler.reset(new AutoCommandScheduler({
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+
+        new MoveToCoordinate(60, 0, 0.13),
+        new MoveThroughCoordinateSet()
         
-    //     // new MoveToCoordinate(72, 0, 0.145),
-    //     // new MoveToCoordinate(72, -72, 0.145),
-    //     // new MoveToCoordinate(0, 0, 0.145),
-    //     // new TurnToAngle(-RobotContainer::imu->GetRotation())
-    //     // new MoveThroughCoordinateSet()
-    //     // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-    //     new AutoBallSeek
-    // }));
-    autoCommandScheduler.reset(new AutoCommandScheduler);
-    autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
+        // new MoveToCoordinate(72, 0, 0.145),
+        // new MoveToCoordinate(72, -72, 0.145),
+        // new MoveToCoordinate(0, 0, 0.145),
+        // new TurnToAngle(-RobotContainer::imu->GetRotation())
+        // new MoveThroughCoordinateSet()
+        // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
+        // new AutoBallSeek
+    }));
+    // autoCommandScheduler.reset(new AutoCommandScheduler);
+    // autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }
 
 void Robot::AutonomousPeriodic() {
