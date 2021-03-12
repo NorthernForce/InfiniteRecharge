@@ -137,7 +137,6 @@ void Robot::AutonomousInit() {
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
 
-        new MoveToCoordinate(60, 0, 0.13),
         new MoveThroughCoordinateSet()
         
         // new MoveToCoordinate(72, 0, 0.145),
