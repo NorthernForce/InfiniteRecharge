@@ -45,9 +45,8 @@ bool AvoidObstacles::NGCisObstacle() {
 }
 
 double AvoidObstacles::CorrectionAmount() {
-  double horizontalCorrection = Constants::obstacleDistance - horizontalDistance;
-  if (horizontalCorrection > 0) {
-    double angleCorrection = asin(horizontalCorrection/NGCDistance()) / Constants::degreesToRadians;
+  double angleCorrection = abs(asin(Constants::obstacleDistance/NGCDistance())) / Constants::degreesToRadians - abs(NGCAngle());
+  if (angleCorrection > 0) {
     if (NGCAngle() > 0) {
       return angleCorrection;
     }
