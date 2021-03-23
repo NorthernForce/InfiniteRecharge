@@ -15,22 +15,24 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
-  coordinateSet = std::vector<double>{0,0};
-  obstacles = std::vector<CPlane::Point>{};
+  coordinateSet = std::vector<double>{60,0, 0,0};
+  obstacles = std::vector<CPlane::Point>{CPlane::Point(30,5)};
   numOfSets = coordinateSet.size() / 2;
+  status = 0;
   xPos = 0;
   yPos = 1;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveThroughCoordinateSet::Execute() {
+  frc::SmartDashboard::PutNumber("MTCS Point", status);  
   //checks to make sure there is another set of coordinates
   if (status != numOfSets + 1) {
     //move robot to that coordinates
    // MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
    //is this good here? can they be nested this way?
     if (!avoidObstacles->IsScheduled()) {
-      avoidObstacles.reset(new AvoidObstacles(coordinateSet.at(xPos), coordinateSet.at(yPos), obstacles, 0.13));
+      avoidObstacles.reset(new AvoidObstacles(coordinateSet[xPos], coordinateSet[yPos], obstacles, 0.13));
       avoidObstacles->Schedule();
       status++;
       xPos += 2;

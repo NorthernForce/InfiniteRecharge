@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/autonomous/AvoidObstacles.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 AvoidObstacles::AvoidObstacles(double xPos, double yPos, std::vector<CPlane::Point> obstacles, double speed) {
 moveToCoordinate = std::make_unique<MoveToCoordinate>(xPos, yPos, speed);
@@ -11,7 +12,9 @@ obstacleList = obstacles;
 }
 
 // Called when the command is initially scheduled.
-void AvoidObstacles::Initialize() {} 
+void AvoidObstacles::Initialize() {
+  moveToCoordinate->Schedule();
+} 
 
 auto AvoidObstacles::NearestGameCoordinate() {
   CPlane::Point point = CPlane::Point((round(robot.x/30)*30),(round(robot.y/30)*30));
@@ -34,7 +37,7 @@ double AvoidObstacles::NGCDistance() {
 
 bool AvoidObstacles::WillHitNGC() {
   double horizontalDistance = NGCDistance() * sin(NGCAngle());
-  return (horizontalDistance < Constants::obstacleDistance);
+  return (abs(horizontalDistance) < Constants::obstacleDistance);
 }
 
 bool AvoidObstacles::NGCisObstacle() {
@@ -61,6 +64,7 @@ double AvoidObstacles::CorrectionAmount() {
 
 // Called repeatedly when this Command is scheduled to run
 void AvoidObstacles::Execute() {
+  frc::SmartDashboard::PutNumber("Recorrection Amount: ", CorrectionAmount());
   UpdatePosition();
   if (WillHitNGC() && NGCisObstacle()) { //If it will pass through a point checks if it is an obstacle    
     moveToCoordinate->AvoidRedirection(CorrectionAmount());
@@ -68,7 +72,7 @@ void AvoidObstacles::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void AvoidObstacles::End(bool interrupted) {
+void AvoidObstacles::End(bool interrupted) { 
   moveToCoordinate->Cancel();
 }
 
