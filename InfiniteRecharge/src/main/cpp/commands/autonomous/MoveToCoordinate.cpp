@@ -19,17 +19,16 @@
 
 std::unique_ptr<Logger> Robot::logger;
 
-MoveToCoordinate::MoveToCoordinate(double xPos, double yPos, double speed) : baseSpeed(speed) {
+MoveToCoordinate::MoveToCoordinate(CPlane::Point end, double speed) : baseSpeed(speed) {
   AddRequirements(RobotContainer::drivetrain.get());
   SetName("MoveToCoordinate");
-  xFinal = xPos;
-  yFinal = yPos;
+  finalPos = end;
   movementStage = 0;
 }
 
 // Called when the command is initially scheduled.
 void MoveToCoordinate::Initialize() {
-  previousDistanceError = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
+  previousDistanceError = sqrt((finalPos.x - robotPos.x) * (finalPos.x - robotPos.x) + (finalPos.y - robotPos.y) * (finalPos.y - robotPos.y));
 }
 
 // double MoveToCoordinate::RemoveJumps(double angToFinalWithJumps) {
@@ -110,15 +109,15 @@ bool MoveToCoordinate::HasOscillated() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {
-  xCurrent = RobotContainer::navigation->GetCoordinatePosition().first;
-  yCurrent = RobotContainer::navigation->GetCoordinatePosition().second;
+  robotPos.x = RobotContainer::navigation->GetCoordinatePosition().first;
+  robotPos.y = RobotContainer::navigation->GetCoordinatePosition().second;
 
 
   //Converts final coordinates into angle from robot and subtracts it from current angle.
-  angToFinal = RobotContainer::navigation->AngleToPoint(xFinal,yFinal);
+  angToFinal = RobotContainer::navigation->AngleToPoint(finalPos.x,finalPos.y);
   
   //Distance formula between current point and destination point.
-  distance = sqrt((xFinal - xCurrent) * (xFinal - xCurrent) + (yFinal - yCurrent) * (yFinal - yCurrent));
+  distance = sqrt((finalPos.x - robotPos.x) * (finalPos.x - robotPos.x) + (finalPos.y - robotPos.y) * (finalPos.y - robotPos.y));
   
   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 

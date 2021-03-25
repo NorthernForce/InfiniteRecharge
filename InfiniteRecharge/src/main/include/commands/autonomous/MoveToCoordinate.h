@@ -23,7 +23,7 @@
 class MoveToCoordinate
     : public frc2::CommandHelper<frc2::CommandBase, MoveToCoordinate> {
  public:
-  MoveToCoordinate(double xPos, double yPos, double speed=0.3);
+  MoveToCoordinate(CPlane::Point end, double speed=0.3);
 
   void Initialize() override;
 
@@ -49,8 +49,7 @@ class MoveToCoordinate
  private:
   std::unique_ptr<TurnToAngle> turnToAngle;
 
-  double xFinal;
-  double yFinal;
+  CPlane::Point finalPos;
   const double baseSpeed;
 
   const int cyclePerSecond = 20;
@@ -63,8 +62,7 @@ class MoveToCoordinate
   double totalDistanceError;
   double previousDistanceError;
 
-  double xCurrent;
-  double yCurrent;
+  CPlane::Point robotPos;
   double angToFinal;
   double distance;
 
