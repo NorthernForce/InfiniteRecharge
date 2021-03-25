@@ -19,8 +19,6 @@ void MoveThroughCoordinateSet::Initialize() {
   obstacles = std::vector<CPlane::Point>{CPlane::E1};
   numOfSets = coordinateSet.size() / 2;
   status = 0;
-  xPos = 0;
-  yPos = 1;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -32,11 +30,9 @@ void MoveThroughCoordinateSet::Execute() {
    // MoveToCoordinate(coordinateSet.at(xPos), coordinateSet.at(yPos));
    //is this good here? can they be nested this way?
     if (!avoidObstacles->IsScheduled()) {
-      avoidObstacles.reset(new AvoidObstacles(coordinateSet[xPos], coordinateSet[yPos], obstacles, 0.13));
+      avoidObstacles.reset(new AvoidObstacles(coordinateSet[status], obstacles, 0.13));
       avoidObstacles->Schedule();
       status++;
-      xPos += 2;
-      yPos += 2;
     }
   }
 }
