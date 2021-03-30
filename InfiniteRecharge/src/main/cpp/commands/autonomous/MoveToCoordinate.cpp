@@ -22,7 +22,8 @@ std::unique_ptr<Logger> Robot::logger;
 MoveToCoordinate::MoveToCoordinate(CPlane::Point end, double speed) : baseSpeed(speed) {
   AddRequirements(RobotContainer::drivetrain.get());
   SetName("MoveToCoordinate");
-  finalPos = end;
+  finalPos.x = end.x;
+  finalPos.y = end.y;
   movementStage = 0;
 }
 
@@ -112,6 +113,9 @@ void MoveToCoordinate::Execute() {
   robotPos.x = RobotContainer::navigation->GetCoordinatePosition().first;
   robotPos.y = RobotContainer::navigation->GetCoordinatePosition().second;
 
+  frc::SmartDashboard::PutNumber("FinalX",finalPos.x);
+  frc::SmartDashboard::PutNumber("FinalY",finalPos.y);
+
 
   //Converts final coordinates into angle from robot and subtracts it from current angle.
   angToFinal = RobotContainer::navigation->AngleToPoint(finalPos.x,finalPos.y);
@@ -194,6 +198,7 @@ void MoveToCoordinate::Execute() {
   
   frc::SmartDashboard::PutNumber("distance", distance);
   frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
+  frc::SmartDashboard::PutNumber("angleToTarget", angToFinal);
 
 
 //   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);

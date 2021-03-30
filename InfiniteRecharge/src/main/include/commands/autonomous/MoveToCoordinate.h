@@ -84,5 +84,5 @@ class MoveToCoordinate
 
   int finishCounter = 0;
 
-  double avoidAmount;
+  double avoidAmount = 0 ;
 };
