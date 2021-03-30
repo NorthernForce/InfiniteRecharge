@@ -5,8 +5,8 @@
 #include "commands/autonomous/AvoidObstacles.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
-AvoidObstacles::AvoidObstacles(double xPos, double yPos, std::vector<CPlane::Point> obstacles, double speed) {
-moveToCoordinate = std::make_unique<MoveToCoordinate>(xPos, yPos, speed);
+AvoidObstacles::AvoidObstacles(CPlane::Point end, std::vector<CPlane::Point> obstacles, double speed) {
+moveToCoordinate = std::make_unique<MoveToCoordinate>(end, speed);
 obstacleList = obstacles;
   // Use addRequirements() here to declare subsystem dependencies.
 }

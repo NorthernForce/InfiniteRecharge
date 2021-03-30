@@ -12,7 +12,7 @@
 
 TuneValue::TuneValue(int valueToTune, std::vector<double> parameters, std::vector<double> pidValues, double increment, double accuracy) {
   tunedValue = valueToTune;
-  commandToTune = std::make_unique<MoveToCoordinate>(parameters[0], parameters[1], parameters[2]);
+  commandToTune = std::make_unique<MoveToCoordinate>(CPlane::Point(parameters[0], parameters[1]), parameters[2]);
   values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
@@ -49,7 +49,7 @@ void TuneValue::Execute() {
     if (commandFail > 200) {
       commandFail = 0;
       commandToTune->Cancel();
-      commandToTune.reset(new MoveToCoordinate(commandToTuneParams[0], commandToTuneParams[1], commandToTuneParams[2]));
+      commandToTune.reset(new MoveToCoordinate(CPlane::Point(commandToTuneParams[0], commandToTuneParams[1]), commandToTuneParams[2]));
     }
   }
 }
