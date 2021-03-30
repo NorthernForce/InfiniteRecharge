@@ -38,7 +38,10 @@ namespace Constants {
         const int driveRightFollower1 = 2;
         const int driveRightFollower2 = 4;
 
-        const int shooter = 8;
+        const int susan = 8;
+        const int hood = 7;
+
+        const int shooter = 17;
         const int wackyWheel = 11; 
 
         const int intake = 13;  
@@ -71,7 +74,7 @@ namespace Constants {
         const int ballPort2 = 2;
         const int ballPort3 = 3;
         const int ballPort4 = 4;
-      //  const int ballPort5 = 5;
+        const int ballPort5 = 5;
 
         const int redRGB = 10;
         const int greenRGB = 11;

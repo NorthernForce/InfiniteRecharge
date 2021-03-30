@@ -9,26 +9,35 @@
 #include "Constants.h"
 #include "RobotContainer.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <ctre/Phoenix.h>
+#include <ctre/phoenix/motorcontrol/can/TalonFX.h>
+
+double Shooter::rampRate;
 
 Shooter::Shooter() {
-    shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
-    pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
-    shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
-    timer.reset(new frc::Timer());
+    shooterTalon = std::make_unique<WPI_TalonFX>(Constants::MotorIDs::shooter);
+    hoodTalon = std::make_unique<WPI_TalonSRX>(Constants::MotorIDs::hood);
+    susanSpark = std::make_unique<rev::CANSparkMax>(Constants::MotorIDs::susan, rev::CANSparkMax::MotorType::kBrushless);
+    //pidController.reset(new rev::CANPIDController(shooterTalon->rev::CANSparkMax::GetPIDController()));
+    shooterShifter = std::make_unique<frc::Solenoid>(Constants::PCMCanBusID, 1);
+    timer = std::make_unique<frc::Timer>();
+    sexyLimitSwitch = std::make_unique<frc::DigitalInput>(Constants::MotorIDs::susan);
+    hoodLimitSwitch = std::make_unique<frc::DigitalInput>(Constants::MotorIDs::hood);
 
+/*
     pidController->SetP(p);
     pidController->SetI(i);
     pidController->SetD(d);
     pidController->SetFF(ff); 
     pidController->SetIMaxAccum(maxI);
     pidController->SetOutputRange(minOutput, maxOutput);
-
-    ConfigureSpark();
+    ConfigureSpark(.2);
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
     frc::SmartDashboard::PutNumber("Shooter P: ", p);
     frc::SmartDashboard::PutNumber("Shooter I: ", i);
     frc::SmartDashboard::PutNumber("Shooter D: ", d);
     frc::SmartDashboard::PutNumber("Shooter FF: ", ff);
+    */
 }
 
 // This method will be called once per scheduler run
@@ -39,6 +48,7 @@ void Shooter::Periodic() {
     d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
     ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
 
+/*
     if (pidController->GetP() != p)
         pidController->SetP(p);
     if (pidController->GetI() != i)
@@ -49,35 +59,63 @@ void Shooter::Periodic() {
         pidController->SetIMaxAccum(maxI);
     if (pidController->GetOutputMin() != minOutput || pidController->GetOutputMax() != maxOutput)
         pidController->SetOutputRange(minOutput, maxOutput);   
+        */
+
+    frc::SmartDashboard::PutBoolean("sexy", sexyLimitSwitch->Get());
+    frc::SmartDashboard::PutBoolean("hood", hoodLimitSwitch->Get());
 }
 
-void Shooter::ConfigureSpark() {
-    auto &controller = *shooterSpark; //nice
+bool Shooter::GetLazySusanLimitSwitch() {
+    return !sexyLimitSwitch->Get();
+}
+
+bool Shooter::GetHoodLimitSwitch() {
+    return hoodLimitSwitch->Get();
+}
+
+void Shooter::ConfigureSpark(double ramp) {
+    /*
+    auto &controller = *shooterTalon; //nice
+    rampRate = ramp;
     controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
     controller.SetSmartCurrentLimit(currentLimit);
     controller.SetClosedLoopRampRate(rampRate);
     controller.SetOpenLoopRampRate(rampRate);
     controller.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    */
 }
 
 void Shooter::IdleShooter() {
+    /*
     pidController->SetReference(targetRPM * idlePercentage, rev::ControlType::kVelocity);
+    */
 }
 
 void Shooter::Shoot() {
+    /*
     pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
+    */
 }
 
 void Shooter::SetRawSpeed(double speed) {
-    shooterSpark->Set(speed);
+    shooterTalon->Set(speed);
+}
+
+void Shooter::SetHoodSpeed(double speed){
+    hoodTalon->Set(speed);
 }
 
 int Shooter::GetCurrentRPM() {
-    return shooterSpark->GetEncoder().GetVelocity();
+    return shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
+    /*
+    return shooterTalon->GetActiveTrajectoryVelocity();
+    */
 }
 
 void Shooter::SetCurrentRPMTo(int rpm) {
+    /*
     pidController->SetReference(rpm, rev::ControlType::kVelocity);
+    */
 }
 
 int Shooter::GetTargetRPM() {
@@ -89,7 +127,7 @@ void Shooter::SetTargetRPM(int rpm) {
 }
 
 int Shooter::GetError() {
-    return abs(targetRPM - GetCurrentRPM());
+    return targetRPM - GetCurrentRPM();
 }
 
 void Shooter::ShooterUp() {
@@ -98,4 +136,9 @@ void Shooter::ShooterUp() {
 
 void Shooter::ShooterDown() {
     shooterShifter->Set(shiftOff);
+}
+
+void Shooter::SetSusanSpeed(double speed) {
+    if (!GetLazySusanLimitSwitch() || speed > 0)
+        susanSpark->Set(speed);      
 }

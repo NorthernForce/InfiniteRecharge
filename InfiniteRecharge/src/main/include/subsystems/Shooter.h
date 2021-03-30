@@ -11,16 +11,21 @@
 #include <rev/CANSparkMax.h>
 #include <frc/Solenoid.h>
 #include <frc/Timer.h>
+#include <ctre/Phoenix.h>
+#include <frc/DigitalInput.h>
 
 class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
   void Periodic();
-  void ConfigureSpark();
+  bool GetLazySusanLimitSwitch();
+  bool GetHoodLimitSwitch();
+  void ConfigureSpark(double ramp=rampRate);
   void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
   void Shoot();
   void SetRawSpeed(double speed);
+  void SetHoodSpeed(double speed);
   int GetCurrentRPM();
   void SetCurrentRPMTo(int rpm);
   int GetTargetRPM();
@@ -28,15 +33,21 @@ class Shooter : public frc2::SubsystemBase {
   int GetError();
   void ShooterUp();
   void ShooterDown();
+  void SetSusanSpeed(double speed);
+  
 
   const bool shiftOn = true;
   const bool shiftOff = false;
 
  private:
-  std::shared_ptr<rev::CANSparkMax> shooterSpark;
-  std::shared_ptr<rev::CANPIDController> pidController;
-  std::shared_ptr<frc::Solenoid> shooterShifter;
-  std::shared_ptr<frc::Timer> timer;
+  std::unique_ptr<WPI_TalonFX> shooterTalon;
+  std::unique_ptr<WPI_TalonSRX> hoodTalon;
+  std::unique_ptr<rev::CANSparkMax> susanSpark;
+  std::unique_ptr<rev::CANPIDController> pidController;
+  std::unique_ptr<frc::Solenoid> shooterShifter;
+  std::unique_ptr<frc::Timer> timer;
+
+
 
   double p = 0.4;
   double i = 0;
@@ -53,7 +64,9 @@ class Shooter : public frc2::SubsystemBase {
 
   int currentLimit = 60;
   int secondaryCurrentLimit = 80;
-  const double rampRate = 0;
+  static double rampRate;
   int targetRPM = 2200;
   double idlePercentage = 0.6; //units are decimals from 0-1
+  std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
+  std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
 };

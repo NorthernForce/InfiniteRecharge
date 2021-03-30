@@ -30,4 +30,8 @@ class ManualShooter
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+  private:
+  const double conveyorShooterSpeed = -0.5;
+
 };
