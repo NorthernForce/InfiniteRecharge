@@ -98,6 +98,7 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
+
 void Robot::DisabledInit() {
   RobotContainer::drivetrain->WriteLeftMotorPos("LeftTest");
   RobotContainer::drivetrain->WriteRightMotorPos("RightTest");
@@ -124,12 +125,12 @@ void Robot::AutonomousInit() {
 
     RobotContainer::imu->ZeroRotation();
 
-    //RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals("left"), RobotContainer::drivetrain->GetMotorVals("right"));
+    //RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals("l"), RobotContainer::drivetrain->GetMotorVals("r"));
 
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
     //   SimpleCrossAutoLine(),
-    // };
+    // }
 
 
     // Aiden's stuff

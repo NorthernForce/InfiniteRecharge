@@ -32,7 +32,7 @@ class Drivetrain : public frc2::SubsystemBase {
   void WriteLeftMotorPos(std::string fileName);
   void WriteRightMotorPos(std::string fileName);
   void PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals);
-  std::vector<double> GetMotorVals(std::string side);
+  std::vector<double> GetMotorVals(char side);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;

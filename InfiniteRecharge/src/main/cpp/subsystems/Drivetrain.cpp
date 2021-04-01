@@ -181,14 +181,14 @@ void Drivetrain::WriteRightMotorPos(std::string fileName) {
     RobotContainer::interactTextFiles->WriteTextFile(rightMotorPos, fileName);
 }
 
-std::vector<double> Drivetrain::GetMotorVals(std::string side) {
+std::vector<double> Drivetrain::GetMotorVals(char side) {
 
     std::vector<double> motorVals;
 
-    if(side == "left"){
+    if(side == 'l'){
         leftMotorPos = motorVals;
         return motorVals;
-    } else if(side == "right") {
+    } else if(side == 'r') {
         rightMotorPos = motorVals;
         return motorVals;
     } else {
@@ -201,14 +201,14 @@ void Drivetrain::PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<
     static int i = 0;
 
     for(; i < leftMotorVals.size(); i++) {
-        while(leftMotorVals[i] > leftPrimarySpark->GetEncoder().GetPosition()) {
+        while(leftMotorVals[i] > GetEncoderRotations().first) {
             leftPrimarySpark->Set(.13);
         }
-        while(rightMotorVals[i] > rightPrimarySpark->GetEncoder().GetPosition()) {
+        while(rightMotorVals[i] > GetEncoderRotations().second) {
             rightPrimarySpark->Set(.13);
         }
 
-        if((rightMotorVals[i] <= rightPrimarySpark->GetEncoder().GetPosition()) && (leftMotorVals[i] <= leftPrimarySpark->GetEncoder().GetPosition())) {
+        if((rightMotorVals[i] <= GetEncoderRotations().second) && (leftMotorVals[i] <= GetEncoderRotations().first)) {
             leftPrimarySpark->Set(0);
             rightPrimarySpark->Set(0);
         }
