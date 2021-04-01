@@ -36,6 +36,8 @@ class Shooter : public frc2::SubsystemBase {
   void SetSusanSpeed(double speed);
   void UpdateLazySusanAngle();
   double GetLazySusanAngle();  
+  void CalibrateHood();
+  bool IsSusanSpeedWithinLimits(double speed);
 
   const bool shiftOn = true;
   const bool shiftOff = false;

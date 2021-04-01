@@ -163,4 +163,16 @@ void Shooter::UpdateLazySusanAngle() {
 
 double Shooter::GetLazySusanAngle() {
     return lazySusanAngle;
+    if (IsSusanSpeedWithinLimits(speed))
+        susanSpark->Set(speed);      
+}
+
+bool Shooter::IsSusanSpeedWithinLimits(double speed) {
+    if (speed >= -1 || speed <= 1) {
+        if (!GetLazySusanLimitSwitch()) {
+            if (abs(GetLazySusanAngle()) <= 90)
+                return true;
+        }
+    }
+    return false;
 }
