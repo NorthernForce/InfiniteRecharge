@@ -34,7 +34,8 @@ class Shooter : public frc2::SubsystemBase {
   void ShooterUp();
   void ShooterDown();
   void SetSusanSpeed(double speed);
-  
+  void CalibrateHood();
+  bool IsSusanSpeedWithinLimits(double speed);
 
   const bool shiftOn = true;
   const bool shiftOff = false;

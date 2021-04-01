@@ -139,6 +139,16 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    if (!GetLazySusanLimitSwitch() || speed > 0)
+    if (IsSusanSpeedWithinLimits(speed))
         susanSpark->Set(speed);      
+}
+
+bool Shooter::IsSusanSpeedWithinLimits(double speed) {
+    if (speed >= -1 || speed <= 1) {
+        if (!GetLazySusanLimitSwitch()) {
+            if (abs(GetLazySusanAngle()) <= 90)
+                return true;
+        }
+    }
+    return false;
 }
