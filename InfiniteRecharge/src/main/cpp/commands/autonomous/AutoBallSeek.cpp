@@ -18,7 +18,6 @@ void AutoBallSeek::Initialize() {
 }
 
 void AutoBallSeek::Execute() {
-    frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
     if (turnToTarget->HasRobotTurned() && !hasDriven) {
         RobotContainer::cameraMount->PauseSweep();
         turnToTarget->DisableTurningMode();

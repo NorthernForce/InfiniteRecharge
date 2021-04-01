@@ -34,11 +34,10 @@ void Navigation::Periodic() {
     smartdashCycles++;
     smartdashCycles = smartdashCycles % 20;
     if(!smartdashCycles) {
-        frc::SmartDashboard::PutNumber("Left Inches", totalInchesTravelled.first);
-        frc::SmartDashboard::PutNumber("Right Inches", totalInchesTravelled.second);
+        // frc::SmartDashboard::PutNumber("Left Inches", totalInchesTravelled.first);
+        // frc::SmartDashboard::PutNumber("Right Inches", totalInchesTravelled.second);
         frc::SmartDashboard::PutNumber("xPostition: ", xPosition);
         frc::SmartDashboard::PutNumber("yPosition: ", yPosition);
-        frc::SmartDashboard::PutNumber("angleToFinal", AngleToPoint(12,0));
     }
 }
 
@@ -96,7 +95,6 @@ void Navigation::CoordinatePosition() {
     yPosition -= averageInchesChange * std::sin(Constants::degreesToRadians * -robotCurrentAngle); //90° & 270°
     //Updates the smartdash once per 20 cycles
     if(!smartdashCycles) {
-        frc::SmartDashboard::PutNumber("Nav Average inches: ", averageInchesChange);
     }
 }
 

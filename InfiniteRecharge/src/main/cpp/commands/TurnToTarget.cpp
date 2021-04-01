@@ -52,7 +52,7 @@ void TurnToTarget::Execute() {
 
 void TurnToTarget::TurnRobotToTarget() {
     double targetAng = RobotContainer::aiVisionTargetting->GetRobotAngleToTarget();
-    frc::SmartDashboard::PutNumber("angleToTarget", targetAng);
+    // frc::SmartDashboard::PutNumber("angleToTarget", targetAng);
     if (IsTurnOnButtonEnabled() || IsAutoTurningEnabled())
         TurnToAng(targetAng);
 }

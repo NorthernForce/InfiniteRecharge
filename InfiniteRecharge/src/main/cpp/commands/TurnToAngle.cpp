@@ -27,10 +27,6 @@ TurnToAngle::TurnToAngle(double target) {
     }
     catch (...) {}
 
-    frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
-    frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
-    frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
-
     if (target != 0)
         SetAngle(target);
     isTurnFinished = false;
@@ -51,16 +47,14 @@ void TurnToAngle::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
     currentAngle = RobotContainer::imu->GetRotation();
-    frc::SmartDashboard::PutNumber("Robot angle: ", currentAngle);
 
-    double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
-    double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
-    double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
+    double p = pValue;
+    double i = iValue;
+    double d = dValue;
 
     double rotRaw = GetRotationFromPID(p,i,d);
     double rotMult = GetRotationMultiplier();
     double rotLim = LimitMaxTurnSpeed(rotRaw * rotMult);
-    frc::SmartDashboard::PutNumber("rotation multiplier:", rotMult);
     
     auto driveControls = RobotContainer::oi->GetDriveControls();
     RobotContainer::drivetrain->Drive(driveControls.first, rotLim + driveControls.second * 0.5);
@@ -84,7 +78,6 @@ double TurnToAngle::GetRotationMultiplier() {
         rotMultiplier = 0.05 * pow(3.2, -1*error);
     else
         rotMultiplier = 0.05 * pow(3.2, error);
-    frc::SmartDashboard::PutNumber("tta: error", error);
     return rotMultiplier;
 }
 

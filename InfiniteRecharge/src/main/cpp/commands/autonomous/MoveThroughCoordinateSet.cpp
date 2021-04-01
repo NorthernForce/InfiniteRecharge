@@ -16,7 +16,7 @@ MoveThroughCoordinateSet::MoveThroughCoordinateSet() {
 // Called when the command is initially scheduled.
 void MoveThroughCoordinateSet::Initialize() {
   // coordinateSet = std::vector<CPlane::Point>{CPlane::C1, CPlane::C3, CPlane::D6, CPlane::E5, CPlane::D4, CPlane::B9, CPlane::A8, CPlane::B7, CPlane::D9, CPlane::E10, CPlane::D11, CPlane::C9, CPlane::C1};
-  coordinateSet = std::vector<CPlane::Point>{CPlane::Point(120,120)};
+  coordinateSet = std::vector<CPlane::Point>{CPlane::Point(70,70)};
   obstacles = std::vector<CPlane::Point>{CPlane::E1};
   numOfSets = coordinateSet.size() / 2;
   status = 0; 
@@ -24,7 +24,6 @@ void MoveThroughCoordinateSet::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void MoveThroughCoordinateSet::Execute() {
-  frc::SmartDashboard::PutNumber("MTCS Point", status);  
   //checks to make sure there is another set of coordinates
   if (status != numOfSets + 1) {
     //move robot to that coordinates

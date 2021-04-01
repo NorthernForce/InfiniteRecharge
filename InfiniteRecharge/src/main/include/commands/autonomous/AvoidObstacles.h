@@ -26,7 +26,7 @@ class AvoidObstacles
 
   bool TestForCollision(double xTarget, double yTarget);
 
-  auto NearestGameCoordinate();
+  auto NearestObstacle();
 
   void UpdatePosition();
 
@@ -50,6 +50,9 @@ class AvoidObstacles
   std::unique_ptr<MoveToCoordinate> moveToCoordinate;
   std::vector<CPlane::Point> obstacleList;
   CPlane::Point robot;
-  CPlane::Point ngc;
+  int obstacleListIndex;
+  CPlane::Point obstacle;
+  double obstacleDistance;
+  CPlane::Point newObstacle;
   double horizontalDistance;
 };

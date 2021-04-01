@@ -4,6 +4,7 @@
 
 #include "commands/autonomous/AvoidObstacles.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include <cmath>
 
 AvoidObstacles::AvoidObstacles(CPlane::Point end, std::vector<CPlane::Point> obstacles, double speed) {
 moveToCoordinate = std::make_unique<MoveToCoordinate>(end, speed);
@@ -16,7 +17,9 @@ void AvoidObstacles::Initialize() {
   moveToCoordinate->Schedule();
 } 
 
-auto AvoidObstacles::NearestGameCoordinate() {
+auto AvoidObstacles::NearestObstacle() { //Each call iterates through list of obstacle, updates after every cycle
+  CPlane::Point tempObstacle = obstacleList[obstacleListIndex];
+  double tempDistance = sqrt(pow((robot.x - tempObstacle.x),2) + pow((robot.y - tempObstacle.y),2));
   CPlane::Point point = CPlane::Point((round(robot.x/30)*30),(round(robot.y/30)*30));
   return point;
 }
@@ -32,7 +35,7 @@ double AvoidObstacles::NGCAngle() {
 }
 
 double AvoidObstacles::NGCDistance() {
-  return sqrt(pow((robot.x - ngc.x),2) + pow((robot.y - ngc.y),2));
+  return 
 }
 
 bool AvoidObstacles::WillHitNGC() {
@@ -49,6 +52,9 @@ bool AvoidObstacles::NGCisObstacle() {
 
 double AvoidObstacles::CorrectionAmount() {
   double angleCorrection = abs(asin(Constants::obstacleDistance/NGCDistance())) / Constants::degreesToRadians - abs(NGCAngle());
+  frc::SmartDashboard::PutNumber("absObstacleOffset: ",abs(NGCAngle()));
+  frc::SmartDashboard::PutNumber("angleCorrection", angleCorrection);
+  frc::SmartDashboard::PutNumber("obsacleSize: ", abs(asin(Constants::obstacleDistance/NGCDistance())) / Constants::degreesToRadians);
   if (angleCorrection > 0) {
     if (NGCAngle() > 0) {
       return angleCorrection;

@@ -46,9 +46,9 @@ std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
 
 OI::OI() {
-    frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
-    frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
-    frc::SmartDashboard::PutNumber("Shooter RPM: ", 0.5);    
+    // frc::SmartDashboard::PutNumber("Drive Speed:", 1.0);
+    // frc::SmartDashboard::PutNumber("Shooter Ramp Rate:", 0.2);
+    // frc::SmartDashboard::PutNumber("Shooter RPM: ", 0.5);    
     InitControllers();
 }
 

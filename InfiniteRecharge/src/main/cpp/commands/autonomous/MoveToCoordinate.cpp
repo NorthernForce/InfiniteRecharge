@@ -97,7 +97,6 @@ double MoveToCoordinate::DrivePID() {
   double errorChange = distanceError - previousDistanceError;
   previousDistanceError = distanceError;
 
-  frc::SmartDashboard::PutNumber("distanceError", distanceError);
   return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
 }
 
@@ -113,18 +112,12 @@ void MoveToCoordinate::Execute() {
   robotPos.x = RobotContainer::navigation->GetCoordinatePosition().first;
   robotPos.y = RobotContainer::navigation->GetCoordinatePosition().second;
 
-  frc::SmartDashboard::PutNumber("FinalX",finalPos.x);
-  frc::SmartDashboard::PutNumber("FinalY",finalPos.y);
-
-
   //Converts final coordinates into angle from robot and subtracts it from current angle.
   angToFinal = RobotContainer::navigation->AngleToPoint(finalPos.x,finalPos.y);
   
   //Distance formula between current point and destination point.
   distance = sqrt((finalPos.x - robotPos.x) * (finalPos.x - robotPos.x) + (finalPos.y - robotPos.y) * (finalPos.y - robotPos.y));
   
-  frc::SmartDashboard::PutNumber("firstTurn", movementStage);
-
   if (movementStage == 0) {
     totalAngleError = 0;
     totalDistanceError = 0;
@@ -149,9 +142,6 @@ void MoveToCoordinate::Execute() {
         turnSpeed = TurnPID();
     driveSpeed = DrivePID();
 
-    frc::SmartDashboard::PutNumber("driveSpeed", driveSpeed);
-    frc::SmartDashboard::PutNumber("turnSpeed", turnSpeed);
-
     if (turnSpeed < 0) {
       leftPower = driveSpeed - abs(turnSpeed);
       rightPower = driveSpeed;
@@ -162,9 +152,6 @@ void MoveToCoordinate::Execute() {
     }
 
     // RobotContainer::drivetrain->DriveUsingSpeeds(leftPower,rightPower);
-
-    frc::SmartDashboard::PutNumber("leftPower", leftPower);
-    frc::SmartDashboard::PutNumber("rightPower", rightPower);
 
     averageLeft.push_back(leftPower);
     if (averageLeft.size() > 4) {
@@ -187,22 +174,10 @@ void MoveToCoordinate::Execute() {
 
     Drivetrain::leftPrimarySpark->Set(-leftPower);
     Drivetrain::rightPrimarySpark->Set(rightPower);
-
-
-
-    frc::SmartDashboard::PutNumber("leftPower", leftPower);
-    frc::SmartDashboard::PutNumber("rightPower", rightPower);
-    Robot::logger->LoadDataToFile("leftPower", Drivetrain::leftPrimarySpark->Get());
-    Robot::logger->LoadDataToFile("rightPower", Drivetrain::rightPrimarySpark->Get());
   }
   
-  frc::SmartDashboard::PutNumber("distance", distance);
-  frc::SmartDashboard::PutNumber("turnIsScheduled", turnToAngle->IsScheduled());
   frc::SmartDashboard::PutNumber("angleToTarget", angToFinal);
 
-
-//   Robot::logger->LoadDataToFile("logFile.txt", "angToFinal", angToFinal);
-//   Robot::logger->LoadDataToFile("logFile.txt", "movementSpeed", movementStage);
   if (abs(distance) < 0.9) {
     finishCounter++;
   }
@@ -213,13 +188,9 @@ void MoveToCoordinate::Execute() {
 
 // Called once the command ends or is interrupted.
 void MoveToCoordinate::End(bool interrupted) {
-  frc::SmartDashboard::PutBoolean("hasEnded", true);
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
   Drivetrain::leftPrimarySpark->StopMotor();
   Drivetrain::rightPrimarySpark->StopMotor();
-
-//   movementStage = 2;
-//   frc::SmartDashboard::PutNumber("firstTurn", movementStage);
 }
 
 // Returns true when the command should end.
