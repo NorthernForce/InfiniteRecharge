@@ -43,6 +43,8 @@
 #include "commands/ZeroRobotPosition.h"
 #include "commands/LazySusanLeft.h"
 #include "commands/LazySusanRight.h"
+#include "commands/HoodUp.h"
+#include "commands/HoodDown.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -79,8 +81,8 @@ void OI::MapControllerButtons() {
     SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
     SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);
     SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
-    SimpleButton(manipulatorController, XboxPOV::up).WhenPressed(new IncreaseShooterRPM);
-    SimpleButton(manipulatorController, XboxPOV::down).WhenPressed(new DecreaseShooterRPM);
+    SimpleButton(manipulatorController, XboxPOV::up).WhileHeld(new HoodUp);
+    SimpleButton(manipulatorController, XboxPOV::down).WhileHeld(new HoodDown);
 
 }
 
