@@ -38,6 +38,7 @@ class Shooter : public frc2::SubsystemBase {
   double GetLazySusanAngle();  
   void CalibrateHood();
   bool IsSusanSpeedWithinLimits(double speed);
+  double GetHoodAngle();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
@@ -72,4 +73,5 @@ class Shooter : public frc2::SubsystemBase {
   std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
   std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
   double lazySusanAngle;
+  const double limitSwitchAngOffset = 0; ////TODO: update this value
 };
