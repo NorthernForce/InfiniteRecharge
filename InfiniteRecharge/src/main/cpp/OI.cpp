@@ -41,6 +41,8 @@
 #include "commands/TrevinIntake.h"
 #include "commands/ZeroRobotAngle.h"
 #include "commands/ZeroRobotPosition.h"
+#include "commands/LazySusanLeft.h"
+#include "commands/LazySusanRight.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -69,16 +71,17 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
-    SimpleButton(manipulatorController, Xbox::Y_button).WhenPressed(new AimShooterUp);
-    SimpleButton(manipulatorController, Xbox::B_button).WhenPressed(new AimShooterDown());
+    SimpleButton(manipulatorController, Xbox::X_button).WhileHeld(new LazySusanLeft());
+    SimpleButton(manipulatorController, Xbox::B_button).WhileHeld(new LazySusanRight());
     SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
-    SimpleButton(manipulatorController, Xbox::X_button).WhileHeld(new IntakeUp);
+    SimpleButton(manipulatorController, Xbox::Y_button).WhileHeld(new IntakeUp);
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
     SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
     SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);
     SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
     SimpleButton(manipulatorController, XboxPOV::up).WhenPressed(new IncreaseShooterRPM);
     SimpleButton(manipulatorController, XboxPOV::down).WhenPressed(new DecreaseShooterRPM);
+
 }
 
 std::pair<double, double> OI::GetDriveControls() {

@@ -34,7 +34,8 @@ class Shooter : public frc2::SubsystemBase {
   void ShooterUp();
   void ShooterDown();
   void SetSusanSpeed(double speed);
-  
+  void UpdateLazySusanAngle();
+  double GetLazySusanAngle();  
 
   const bool shiftOn = true;
   const bool shiftOff = false;
@@ -46,8 +47,6 @@ class Shooter : public frc2::SubsystemBase {
   std::unique_ptr<rev::CANPIDController> pidController;
   std::unique_ptr<frc::Solenoid> shooterShifter;
   std::unique_ptr<frc::Timer> timer;
-
-
 
   double p = 0.4;
   double i = 0;
@@ -67,6 +66,8 @@ class Shooter : public frc2::SubsystemBase {
   static double rampRate;
   int targetRPM = 2200;
   double idlePercentage = 0.6; //units are decimals from 0-1
+
   std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
   std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
+  double lazySusanAngle;
 };

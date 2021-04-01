@@ -48,6 +48,8 @@ void Shooter::Periodic() {
     d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
     ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
 
+    UpdateLazySusanAngle();
+
 /*
     if (pidController->GetP() != p)
         pidController->SetP(p);
@@ -63,10 +65,11 @@ void Shooter::Periodic() {
 
     frc::SmartDashboard::PutBoolean("sexy", sexyLimitSwitch->Get());
     frc::SmartDashboard::PutBoolean("hood", hoodLimitSwitch->Get());
+    frc::SmartDashboard::PutNumber("susanAngle", GetLazySusanAngle());
 }
 
 bool Shooter::GetLazySusanLimitSwitch() {
-    return !sexyLimitSwitch->Get();
+    return sexyLimitSwitch->Get();
 }
 
 bool Shooter::GetHoodLimitSwitch() {
@@ -139,6 +142,25 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    if (!GetLazySusanLimitSwitch() || speed > 0)
-        susanSpark->Set(speed);      
+    //if ((GetLazySusanLimitSwitch() && speed <= 0) || !GetLazySusanLimitSwitch())
+    susanSpark->Set(speed);
+}
+
+void Shooter::UpdateLazySusanAngle() {
+    double encoder;
+    if (GetLazySusanLimitSwitch())
+        encoder = 0;
+    else
+        encoder = susanSpark->GetEncoder().GetPosition();
+
+    double shaftWheelCirc = 1.125;
+    int lazySusanCirc = 14;
+    int gearRatio = 14; //14:1 motor:susan
+    int degs = 360;
+    
+    lazySusanAngle = (((encoder * shaftWheelCirc) / lazySusanCirc) / gearRatio) / degs;
+}
+
+double Shooter::GetLazySusanAngle() {
+    return lazySusanAngle;
 }
