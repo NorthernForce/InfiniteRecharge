@@ -42,6 +42,7 @@ void Robot::RobotInit() {
     container = std::make_shared<RobotContainer>();
     logger = std::make_unique<Logger>();
 
+    /*
     frc::SmartDashboard::PutString("auto string input 1", "insert here");
     frc::SmartDashboard::PutString("auto 1 parameter", "");
     frc::SmartDashboard::PutString("auto string input 2", "insert here");
@@ -53,6 +54,7 @@ void Robot::RobotInit() {
     frc::SmartDashboard::PutString("auto string input 5", "insert here");
     frc::SmartDashboard::PutString("auto 5 parameter", "");
     frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
+    */
 
 
     ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
@@ -138,18 +140,21 @@ void Robot::AutonomousInit() {
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
         
-      //Path A
-      //Red
-      new IntakePowerCell(),
-      new MoveToCoordinate(60, 30),
-      new IntakePowerCell(),
-      new MoveToCoordinate(120, 60),
-      new IntakePowerCell(),
-      new MoveToCoordinate(150, -30),
-      //Blue
-      new MoveToCoordinate(150, 60),
-      new MoveToCoordinate(180, -60),
-      new MoveToCoordinate(150, -30),
+        //Path A
+        //Red
+        new IntakePowerCell(),
+        new MoveToCoordinate(60, 30),
+        new IntakePowerCell(),
+        new MoveToCoordinate(120, 60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(150, -30),
+        //Blue
+        new IntakePowerCell(),
+        new MoveToCoordinate(150, 60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(180, -60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(240, -30),
         
         //Path B
         //Red

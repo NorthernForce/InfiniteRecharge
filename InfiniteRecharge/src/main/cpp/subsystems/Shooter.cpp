@@ -153,8 +153,8 @@ void Shooter::UpdateLazySusanAngle() {
     else
         encoder = susanSpark->GetEncoder().GetPosition();
 
-    double shaftWheelCirc = 1.125;
-    int lazySusanCirc = 14;
+    double shaftWheelCirc = (Constants::pi * 0.28125);
+    int lazySusanCirc = (Constants::pi * 3.5);
     int gearRatio = 14; //14:1 motor:susan
     int degs = 360;
     
@@ -173,4 +173,11 @@ bool Shooter::IsSusanSpeedWithinLimits(double speed) {
         }
     }
     return false;
+}
+
+double Shooter::GetHoodAngle() {
+    if (GetHoodLimitSwitch())
+        return 0;
+    else
+        return hoodTalon->GetSensorCollection().GetAnalogIn(); ////TODO: convert potentiometer reading to angle
 }
