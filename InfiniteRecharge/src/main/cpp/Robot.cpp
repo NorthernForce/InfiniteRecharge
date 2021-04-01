@@ -124,6 +124,8 @@ void Robot::AutonomousInit() {
 
     RobotContainer::imu->ZeroRotation();
 
+    //RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals("left"), RobotContainer::drivetrain->GetMotorVals("right"));
+
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
     //   SimpleCrossAutoLine(),

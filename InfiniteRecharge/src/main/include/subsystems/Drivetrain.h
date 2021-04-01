@@ -32,19 +32,20 @@ class Drivetrain : public frc2::SubsystemBase {
   void WriteLeftMotorPos(std::string fileName);
   void WriteRightMotorPos(std::string fileName);
   void PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals);
+  std::vector<double> GetMotorVals(std::string side);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
+
+  std::vector<double> leftMotorPos;
+  std::vector<double> rightMotorPos;
 
   bool continueDrive;
   bool hasDriven;
   int currentEncoder;
   int prevEncoder;
   const int loopCyclesInOneSecond = 50;
-  
-  std::vector<double> leftMotorPos;
-  std::vector<double> rightMotorPos;
 
 
  private:

@@ -181,6 +181,21 @@ void Drivetrain::WriteRightMotorPos(std::string fileName) {
     RobotContainer::interactTextFiles->WriteTextFile(rightMotorPos, fileName);
 }
 
+std::vector<double> Drivetrain::GetMotorVals(std::string side) {
+
+    std::vector<double> motorVals;
+
+    if(side == "left"){
+        leftMotorPos = motorVals;
+        return motorVals;
+    } else if(side == "right") {
+        rightMotorPos = motorVals;
+        return motorVals;
+    } else {
+        return motorVals;
+    }
+}
+
 void Drivetrain::PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals) {
     
     static int i = 0;
