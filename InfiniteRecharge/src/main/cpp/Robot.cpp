@@ -27,6 +27,7 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
+#include "commands/autonomous/AutoChallengeChooser.h"
 #include "commands/autonomous/AutonomousBallSeek.h"
 #include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
@@ -97,7 +98,10 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
-void Robot::DisabledInit() {}
+void Robot::DisabledInit() {
+  RobotContainer::drivetrain->WriteLeftMotorPos("LeftTest");
+  RobotContainer::drivetrain->WriteRightMotorPos("RightTest");
+}
 
 void Robot::DisabledPeriodic() {}
 
@@ -138,44 +142,8 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    autoCommandScheduler.reset(new AutoCommandScheduler({
-        
-        //Path A
-        //Red
-        new IntakePowerCell(),
-        new MoveToCoordinate(60, 30),
-        new IntakePowerCell(),
-        new MoveToCoordinate(120, 60),
-        new IntakePowerCell(),
-        new MoveToCoordinate(150, -30),
-        //Blue
-        new IntakePowerCell(),
-        new MoveToCoordinate(150, 60),
-        new IntakePowerCell(),
-        new MoveToCoordinate(180, -60),
-        new IntakePowerCell(),
-        new MoveToCoordinate(240, -30),
-        
-        //Path B
-        //Red
-        new IntakePowerCell(),
-        new MoveToCoordinate(60, 0),
-        new IntakePowerCell(),
-        new MoveToCoordinate(120, 60),
-        new IntakePowerCell(),
-        new MoveToCoordinate(180, 0),
-        //Blue
-        new IntakePowerCell(),
-        new MoveToCoordinate(150, 0),
-        new IntakePowerCell(),
-        new MoveToCoordinate(210, -60),
-        new IntakePowerCell(),
-        new MoveToCoordinate(270, 0),
-
-        // new TurnToAngle(-RobotContainer::imu->GetRotation())
-        // new MoveThroughCoordinateSet()
-        // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-        //new AutoBallSeek
+      autoCommandScheduler.reset(new AutoCommandScheduler({     
+        new AutoChallengeChooser(),
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
@@ -198,7 +166,9 @@ void Robot::TeleopInit() {
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  RobotContainer::drivetrain->RecordMotorPos();
+}
 
 /**
  * This function is called periodically during test mode.

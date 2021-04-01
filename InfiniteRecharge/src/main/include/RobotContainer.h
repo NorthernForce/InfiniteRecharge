@@ -26,6 +26,8 @@
 #include "subsystems/Climber.h"
 #include "subsystems/Limelight.h"
 
+#include "utilities/InteractTextFiles.h"
+
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -52,6 +54,7 @@ class RobotContainer {
   static std::shared_ptr<WackyWheel> wackyWheel;
   static std::shared_ptr<Climber> climber;
   static std::shared_ptr<Limelight> limelight;
+  static std::shared_ptr<InteractTextFiles> interactTextFiles;
 
  private:
   void InitSubsystems();

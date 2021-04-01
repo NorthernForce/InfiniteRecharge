@@ -27,6 +27,7 @@ std::shared_ptr<Shooter> RobotContainer::shooter;
 std::shared_ptr<Climber> RobotContainer::climber;
 std::shared_ptr<WackyWheel> RobotContainer::wackyWheel;
 std::shared_ptr<Limelight> RobotContainer::limelight;
+std::shared_ptr<InteractTextFiles> RobotContainer::interactTextFiles;
 
 RobotContainer::RobotContainer() {
     oi.reset(new OI());

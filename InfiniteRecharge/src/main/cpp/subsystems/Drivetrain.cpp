@@ -167,3 +167,35 @@ int Drivetrain::GetSpeedInInchesPerSecond() {
         
     return convertToInchesMultiplier * changeInPosition * loopCyclesInOneSecond;
 }
+
+void Drivetrain::RecordMotorPos(){
+    leftMotorPos.push_back(leftPrimarySpark->GetEncoder().GetPosition());
+    rightMotorPos.push_back(rightPrimarySpark->GetEncoder().GetPosition());
+}
+
+void Drivetrain::WriteLeftMotorPos(std::string fileName) {
+    RobotContainer::interactTextFiles->WriteTextFile(leftMotorPos, fileName);
+}
+
+void Drivetrain::WriteRightMotorPos(std::string fileName) {
+    RobotContainer::interactTextFiles->WriteTextFile(rightMotorPos, fileName);
+}
+
+void Drivetrain::PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals) {
+    
+    static int i = 0;
+
+    for(; i < leftMotorVals.size(); i++) {
+        while(leftMotorVals[i] > leftPrimarySpark->GetEncoder().GetPosition()) {
+            leftPrimarySpark->Set(.13);
+        }
+        while(rightMotorVals[i] > rightPrimarySpark->GetEncoder().GetPosition()) {
+            rightPrimarySpark->Set(.13);
+        }
+
+        if((rightMotorVals[i] <= rightPrimarySpark->GetEncoder().GetPosition()) && (leftMotorVals[i] <= leftPrimarySpark->GetEncoder().GetPosition())) {
+            leftPrimarySpark->Set(0);
+            rightPrimarySpark->Set(0);
+        }
+    }
+}
