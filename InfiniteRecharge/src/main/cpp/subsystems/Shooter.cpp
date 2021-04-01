@@ -142,8 +142,8 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    //if ((GetLazySusanLimitSwitch() && speed <= 0) || !GetLazySusanLimitSwitch())
-    susanSpark->Set(speed);
+    if (IsSusanSpeedWithinLimits(speed))
+        susanSpark->Set(speed);  
 }
 
 void Shooter::UpdateLazySusanAngle() {
@@ -158,19 +158,17 @@ void Shooter::UpdateLazySusanAngle() {
     int gearRatio = 14; //14:1 motor:susan
     int degs = 360;
     
-    lazySusanAngle = (((encoder * shaftWheelCirc) / lazySusanCirc) / gearRatio) / degs;
+    lazySusanAngle = ((((encoder * shaftWheelCirc) / lazySusanCirc) / gearRatio) / degs) - limitSwitchAngOffset;
 }
 
 double Shooter::GetLazySusanAngle() {
-    return lazySusanAngle;
-    if (IsSusanSpeedWithinLimits(speed))
-        susanSpark->Set(speed);      
+    return lazySusanAngle;    
 }
 
 bool Shooter::IsSusanSpeedWithinLimits(double speed) {
     if (speed >= -1 || speed <= 1) {
         if (!GetLazySusanLimitSwitch()) {
-            if (abs(GetLazySusanAngle()) <= 90)
+            if (abs(GetLazySusanAngle()) <= limitSwitchAngOffset)
                 return true;
         }
     }

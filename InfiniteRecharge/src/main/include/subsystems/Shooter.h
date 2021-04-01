@@ -72,4 +72,5 @@ class Shooter : public frc2::SubsystemBase {
   std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
   std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
   double lazySusanAngle;
+  const double limitSwitchAngOffset = 0; ////TODO: update this value
 };
