@@ -138,13 +138,39 @@ void Robot::AutonomousInit() {
     // auto command scheduler init
     autoCommandScheduler.reset(new AutoCommandScheduler({
         
-        // new MoveToCoordinate(72, 0, 0.145),
-        // new MoveToCoordinate(72, -72, 0.145),
-        // new MoveToCoordinate(0, 0, 0.145),
+      //Path A
+      //Red
+      new IntakePowerCell(),
+      new MoveToCoordinate(60, 30),
+      new IntakePowerCell(),
+      new MoveToCoordinate(120, 60),
+      new IntakePowerCell(),
+      new MoveToCoordinate(150, -30),
+      //Blue
+      new MoveToCoordinate(150, 60),
+      new MoveToCoordinate(180, -60),
+      new MoveToCoordinate(150, -30),
+        
+        //Path B
+        //Red
+        new IntakePowerCell(),
+        new MoveToCoordinate(60, 0),
+        new IntakePowerCell(),
+        new MoveToCoordinate(120, 60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(180, 0),
+        //Blue
+        new IntakePowerCell(),
+        new MoveToCoordinate(150, 0),
+        new IntakePowerCell(),
+        new MoveToCoordinate(210, -60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(270, 0),
+
         // new TurnToAngle(-RobotContainer::imu->GetRotation())
         // new MoveThroughCoordinateSet()
         // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-        new AutoBallSeek
+        //new AutoBallSeek
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
