@@ -100,8 +100,8 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  */
 
 void Robot::DisabledInit() {
-  RobotContainer::drivetrain->WriteLeftMotorPos("LeftTest");
-  RobotContainer::drivetrain->WriteRightMotorPos("RightTest");
+//   RobotContainer::drivetrain->WriteLeftMotorPos("LeftTest");
+//   RobotContainer::drivetrain->WriteRightMotorPos("RightTest");
 }
 
 void Robot::DisabledPeriodic() {}
@@ -170,7 +170,7 @@ void Robot::TeleopInit() {
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  RobotContainer::drivetrain->RecordMotorPos();
+//   RobotContainer::drivetrain->RecordMotorPos();
 }
 
 /**

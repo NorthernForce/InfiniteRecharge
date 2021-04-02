@@ -66,6 +66,7 @@ void Shooter::Periodic() {
     frc::SmartDashboard::PutBoolean("sexy", sexyLimitSwitch->Get());
     frc::SmartDashboard::PutBoolean("hood", hoodLimitSwitch->Get());
     frc::SmartDashboard::PutNumber("susanAngle", GetLazySusanAngle());
+    frc::SmartDashboard::PutNumber("hoodAngle", GetHoodAngle());
 }
 
 bool Shooter::GetLazySusanLimitSwitch() {
