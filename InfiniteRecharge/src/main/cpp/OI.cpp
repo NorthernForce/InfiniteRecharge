@@ -126,6 +126,6 @@ frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axi
     });
 }
 
-frc2::Button OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degs) {
-    return frc2::Button([this, controller, degs] { return (controller->GetPOV(degs) == degs); });
+frc2::POVButton OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degs) {
+    return frc2::POVButton(controller.get(), degs);
 }
