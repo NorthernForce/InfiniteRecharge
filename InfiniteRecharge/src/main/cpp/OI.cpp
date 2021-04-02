@@ -73,16 +73,16 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
-    SimpleAxis(manipulatorController, XboxAxis::lt_Y, 0.5).WhileHeld(new LazySusanLeft());
-    SimpleAxis(manipulatorController, XboxAxis::lt_Y, -0.5).WhileHeld(new LazySusanRight());
+    SimpleAxis(manipulatorController, XboxAxis::rt_X, 0.5).WhileHeld(new LazySusanLeft());
+    SimpleAxis(manipulatorController, XboxAxis::rt_X, -0.5).WhileHeld(new LazySusanRight());
     SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
     SimpleButton(manipulatorController, Xbox::Y_button).WhileHeld(new IntakeUp);
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
     SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
     SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);
     SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
-    SimpleAxis(manipulatorController, XboxAxis::rt_Y, 0.5).WhileHeld(new HoodUp);
-    SimpleAxis(manipulatorController, XboxAxis::rt_Y, -0.5).WhileHeld(new HoodDown);
+    SimpleAxis(manipulatorController, XboxAxis::lt_Y, 0.5).WhileHeld(new HoodUp);
+    SimpleAxis(manipulatorController, XboxAxis::lt_Y, -0.5).WhileHeld(new HoodDown);
 
 }
 
@@ -118,7 +118,12 @@ frc2::Button OI::SimpleButton(std::shared_ptr<frc::GenericHID> controller, int b
 }
 
 frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold) {
-    return frc2::Button([this, controller, axis, threshold] { return controller->GetRawAxis(axis) > threshold; });
+    return frc2::Button([this, controller, axis, threshold] {
+        if (threshold < 0)
+            return controller->GetRawAxis(axis) < threshold;
+        else
+            return controller->GetRawAxis(axis) > threshold;
+    });
 }
 
 frc2::Button OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degs) {
