@@ -30,13 +30,9 @@ class AvoidObstacles
 
   void UpdatePosition();
 
-  double NGCAngle();
+  double ObstacleAngle();
 
-  double NGCDistance();
-
-  bool WillHitNGC();
-
-  bool NGCisObstacle();
+  bool WillHitObstacle();
 
   double CorrectionAmount();
 
@@ -49,10 +45,14 @@ class AvoidObstacles
  private:
   std::unique_ptr<MoveToCoordinate> moveToCoordinate;
   std::vector<CPlane::Point> obstacleList;
+
   CPlane::Point robot;
   int obstacleListIndex;
   CPlane::Point obstacle;
   double obstacleDistance;
   CPlane::Point newObstacle;
+
   double horizontalDistance;
+
+  const int obstacleFOV = 100;
 };

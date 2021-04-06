@@ -17,46 +17,49 @@ void AvoidObstacles::Initialize() {
   moveToCoordinate->Schedule();
 } 
 
-auto AvoidObstacles::NearestObstacle() { //Each call iterates through list of obstacle, updates after every cycle
-  CPlane::Point tempObstacle = obstacleList[obstacleListIndex];
-  double tempDistance = sqrt(pow((robot.x - tempObstacle.x),2) + pow((robot.y - tempObstacle.y),2));
-  CPlane::Point point = CPlane::Point((round(robot.x/30)*30),(round(robot.y/30)*30));
-  return point;
+auto AvoidObstacles::NearestObstacle() { //Each call iterates through list of obstacle, updates after every full cycle
+  if (obstacleList.size() == 1) {
+    obstacle = obstacleList[0];
+  }
+  else {
+    CPlane::Point tempObstacle = obstacleList[obstacleListIndex];
+    tempObstacle.distance = sqrt(pow((robot.x - tempObstacle.x),2) + pow((robot.y - tempObstacle.y),2));
+
+    bool tempIsCloser = (tempObstacle.distance < newObstacle.distance);
+
+    bool tempInFOV = (abs(RobotContainer::navigation->AngleToPoint(tempObstacle.x,tempObstacle.y)) < obstacleFOV);
+    if (tempIsCloser && tempInFOV) {
+      newObstacle = tempObstacle;
+    }
+    if (obstacleListIndex >= (int)obstacleList.size()) {
+      obstacle = newObstacle;
+      obstacleListIndex = 0;
+      newObstacle.distance = 1000;
+    }
+  }
 }
 
 void AvoidObstacles::UpdatePosition() {
   auto coordinates = RobotContainer::navigation->GetCoordinatePosition();
   robot = CPlane::Point(coordinates.first,coordinates.second);
-  ngc = NearestGameCoordinate();
 }
 
-double AvoidObstacles::NGCAngle() {
-  return RobotContainer::navigation->AngleToPoint(ngc.x, ngc.y);
+double AvoidObstacles::ObstacleAngle() {
+  return RobotContainer::navigation->AngleToPoint(obstacle.x, obstacle.y);
 }
 
-double AvoidObstacles::NGCDistance() {
-  return 
-}
-
-bool AvoidObstacles::WillHitNGC() {
-  double horizontalDistance = NGCDistance() * sin(NGCAngle());
+bool AvoidObstacles::WillHitObstacle() {
+  double horizontalDistance = obstacle.distance * sin(ObstacleAngle());
   return (abs(horizontalDistance) < Constants::obstacleDistance);
 }
 
-bool AvoidObstacles::NGCisObstacle() {
-  for(auto element : obstacleList) {
-    if ((element.x == ngc.x) && (element.y == ngc.y)) {return true;}
-  }
-  return false;
-}
-
 double AvoidObstacles::CorrectionAmount() {
-  double angleCorrection = abs(asin(Constants::obstacleDistance/NGCDistance())) / Constants::degreesToRadians - abs(NGCAngle());
-  frc::SmartDashboard::PutNumber("absObstacleOffset: ",abs(NGCAngle()));
+  double angleCorrection = abs(asin(Constants::obstacleDistance/obstacle.distance)) / Constants::degreesToRadians - abs(ObstacleAngle());
+  frc::SmartDashboard::PutNumber("absObstacleOffset: ",abs(ObstacleAngle()));
   frc::SmartDashboard::PutNumber("angleCorrection", angleCorrection);
-  frc::SmartDashboard::PutNumber("obsacleSize: ", abs(asin(Constants::obstacleDistance/NGCDistance())) / Constants::degreesToRadians);
+  frc::SmartDashboard::PutNumber("obsacleSize: ", abs(asin(Constants::obstacleDistance/obstacle.distance)) / Constants::degreesToRadians);
   if (angleCorrection > 0) {
-    if (NGCAngle() > 0) {
+    if (ObstacleAngle() > 0) {
       return angleCorrection;
     }
     else {
@@ -70,10 +73,13 @@ double AvoidObstacles::CorrectionAmount() {
 
 // Called repeatedly when this Command is scheduled to run
 void AvoidObstacles::Execute() {
-  frc::SmartDashboard::PutNumber("Recorrection Amount: ", CorrectionAmount());
-  UpdatePosition();
-  if (WillHitNGC() && NGCisObstacle()) { //If it will pass through a point checks if it is an obstacle    
-    moveToCoordinate->AvoidRedirection(CorrectionAmount());
+  if (obstacleList.size()) {
+
+    UpdatePosition();
+    if (WillHitObstacle()) {
+      moveToCoordinate->AvoidRedirection(CorrectionAmount());
+    }
+
   }
 }
 

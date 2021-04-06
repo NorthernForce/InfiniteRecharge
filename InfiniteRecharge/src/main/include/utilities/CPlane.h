@@ -2,9 +2,9 @@
 namespace CPlane {
     class Point {
     public:
-        double x,y;
-        Point(double x=0, double y=0)
-        : x(x), y(y) {}
+        double x,y,distance;
+        Point(double x=0, double y=0, double distance=0)
+        : x(x), y(y), distance(distance) {}
     };
 
     const Point up = Point(0,Constants::obstacleDistance);
