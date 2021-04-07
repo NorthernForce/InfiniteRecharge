@@ -169,8 +169,8 @@ int Drivetrain::GetSpeedInInchesPerSecond() {
 }
 
 void Drivetrain::RecordMotorPos(){
-    leftMotorPos.push_back(leftPrimarySpark->GetEncoder().GetPosition());
-    rightMotorPos.push_back(rightPrimarySpark->GetEncoder().GetPosition());
+    leftMotorPos.push_back(GetEncoderRotations().first);
+    rightMotorPos.push_back(GetEncoderRotations().second);
 }
 
 void Drivetrain::WriteLeftMotorPos(std::string fileName) {
@@ -185,11 +185,11 @@ std::vector<double> Drivetrain::GetMotorVals(char side) {
 
     std::vector<double> motorVals;
 
-    if(side == 'l'){
-        leftMotorPos = motorVals;
+    if (side == 'l'){
+        motorVals = leftMotorPos;
         return motorVals;
     } else if(side == 'r') {
-        rightMotorPos = motorVals;
+       motorVals = rightMotorPos;
         return motorVals;
     } else {
         return motorVals;
@@ -198,9 +198,9 @@ std::vector<double> Drivetrain::GetMotorVals(char side) {
 
 void Drivetrain::PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals) {
     
-    static int i = 0;
+    static unsigned i = 0;
 
-    for(; i < leftMotorVals.size(); i++) {
+    for(; ((i < leftMotorVals.size()) && (i < rightMotorVals.size())); i++) {
         while(leftMotorVals[i] > GetEncoderRotations().first) {
             leftPrimarySpark->Set(.13);
         }

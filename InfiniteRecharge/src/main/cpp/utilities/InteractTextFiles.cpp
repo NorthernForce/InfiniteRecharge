@@ -30,20 +30,19 @@ std::vector<double> InteractTextFiles::ReadTextFile(std::string fileName){
 
 	std::ifstream input_file(fileName);
 	if (!input_file.is_open()) {
-		std::cout << "Could not open the file - '"
-			<< fileName << "'" << '\n';
-	}
+		std::cout << "Could not open the file - '" << fileName << "'" << '\n';
 
-	while (input_file >> number) {
-		doubleList.push_back(number);
-	}
+        while (input_file >> number) {
+            doubleList.push_back(number);
+        }
 
-	for (int i = 0; i < doubleList.size(); i++) {
-		std::cout << doubleList.at(i) << '\n';
-	}
+        for (int i = 0; i < doubleList.size(); i++) {
+            std::cout << doubleList.at(i) << '\n';
+        }
 	
-	std::cout << "\n";
-	input_file.close();
+        std::cout << "\n";
+        input_file.close();
+    }   
 
     return doubleList;
     
