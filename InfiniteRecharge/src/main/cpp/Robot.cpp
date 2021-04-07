@@ -154,7 +154,7 @@ void Robot::AutonomousInit() {
         new MoveToCoordinate(135, 60),
         new IntakePowerCell(),
         new MoveToCoordinate(165, -30),
-        new MoveToCoordinate(345, 0),
+        new MoveToCoordinate(330, 0),
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
