@@ -145,8 +145,16 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-      autoCommandScheduler.reset(new AutoCommandScheduler({     
-        new AutoChallengeChooser(),
+      autoCommandScheduler.reset(new AutoCommandScheduler({       
+        //Path A-Galactic
+        //Red
+        new IntakePowerCell(),
+        new MoveToCoordinate(60, 30),
+        new IntakePowerCell(),
+        new MoveToCoordinate(120, 60),
+        new IntakePowerCell(),
+        new MoveToCoordinate(150, -30),
+        new MoveToCoordinate(340, 0),
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
