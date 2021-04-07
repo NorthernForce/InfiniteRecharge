@@ -21,7 +21,7 @@ void ManualShooter::Execute() {
   if (rtTriggerAxis > 0.5) {
     RobotContainer::shooter->SetRawSpeed(-0.9);
 
-    if (RobotContainer::shooter->GetError() < 100)
+    if (RobotContainer::shooter->GetError() < -100)
         RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
     else if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
         RobotContainer::intake->RunConveyor();
