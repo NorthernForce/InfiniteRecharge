@@ -149,12 +149,12 @@ void Robot::AutonomousInit() {
         //Path A-Galactic
         //Red
         new IntakePowerCell(),
-        new MoveToCoordinate(60, 30),
+        new MoveToCoordinate(75, 30),
         new IntakePowerCell(),
-        new MoveToCoordinate(120, 60),
+        new MoveToCoordinate(135, 60),
         new IntakePowerCell(),
-        new MoveToCoordinate(150, -30),
-        new MoveToCoordinate(340, 0),
+        new MoveToCoordinate(165, -30),
+        new MoveToCoordinate(352, 0),
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
