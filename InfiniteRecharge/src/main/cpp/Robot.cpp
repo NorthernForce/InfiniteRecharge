@@ -149,11 +149,11 @@ void Robot::AutonomousInit() {
         //Path A-Galactic
         //Red
         new MoveToCoordinate(15, 0),
-        new MoveToCoordinate(75, 30),
+        new MoveToCoordinate(75, -30),
         new IntakePowerCell(),
-        new MoveToCoordinate(135, 60),
+        new MoveToCoordinate(135, -60),
         new IntakePowerCell(),
-        new MoveToCoordinate(165, -30),
+        new MoveToCoordinate(165, 30),
         new IntakePowerCell(),
         new MoveToCoordinate(330, 0),
     }));
