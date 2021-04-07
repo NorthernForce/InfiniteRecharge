@@ -23,7 +23,7 @@ void ManualShooter::Execute() {
 
     //if (RobotContainer::shooter->GetError() < -100)
         //RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
-    if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
+    //if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
         RobotContainer::intake->RunConveyor();
     std::cout << RobotContainer::shooter->GetCurrentRPM() << '\n';
   }
