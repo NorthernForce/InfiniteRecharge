@@ -157,7 +157,7 @@ void Robot::AutonomousInit() {
             new MoveToCoordinate(135, -60), new IntakePowerCell()
         }),
         new ParallelCommand({
-            new MoveToCoordinate(165, -30), new IntakePowerCell()
+            new MoveToCoordinate(165, 30), new IntakePowerCell()
         }),
         new MoveToCoordinate(330, 0)
     }));
