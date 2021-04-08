@@ -186,10 +186,10 @@ std::vector<double> Drivetrain::GetMotorVals(char side) {
     std::vector<double> motorVals;
 
     if (side == 'l'){
-        motorVals = leftMotorPos;
+        motorVals = RobotContainer::interactTextFiles->ReadTextFile("leftTest");
         return motorVals;
     } else if(side == 'r') {
-       motorVals = rightMotorPos;
+        motorVals = RobotContainer::interactTextFiles->ReadTextFile("rightTest");
         return motorVals;
     } else {
         return motorVals;
