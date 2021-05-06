@@ -25,6 +25,7 @@ MoveToCoordinate::MoveToCoordinate(int xPos, int yPos, double speed) : baseSpeed
   xFinal = xPos;
   yFinal = yPos;
   movementStage = 0;
+  origAngleToFinal = RobotContainer::navigation->AngleToPoint(xFinal, yFinal);
 }
 
 // Called when the command is initially scheduled.
@@ -209,6 +210,9 @@ void MoveToCoordinate::End(bool interrupted) {
   RobotContainer::drivetrain->DriveUsingSpeeds(0,0);
   Drivetrain::leftPrimarySpark->StopMotor();
   Drivetrain::rightPrimarySpark->StopMotor();
+
+  turnToAngle = std::make_unique<TurnToAngle>(origAngleToFinal);
+  turnToAngle->Schedule();
 
 //   movementStage = 2;
 //   frc::SmartDashboard::PutNumber("firstTurn", movementStage);

@@ -34,6 +34,7 @@
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "commands/TuneValue.h"
 #include "commands/TestServo.h"
+#include "commands/ParallelCommand.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -125,7 +126,7 @@ void Robot::AutonomousInit() {
 
     RobotContainer::imu->ZeroRotation();
 
-    //RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals("l"), RobotContainer::drivetrain->GetMotorVals("r"));
+    RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals('l'), RobotContainer::drivetrain->GetMotorVals('r'));
 
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
@@ -145,8 +146,20 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-      autoCommandScheduler.reset(new AutoCommandScheduler({     
-        new AutoChallengeChooser(),
+      autoCommandScheduler.reset(new AutoCommandScheduler({       
+        //Path A-Galactic
+        //Red
+        new MoveToCoordinate(15, 0),
+        new ParallelCommand({
+            new MoveToCoordinate(75, -30), new IntakePowerCell()
+        }),
+        new ParallelCommand({
+            new MoveToCoordinate(135, -60), new IntakePowerCell()
+        }),
+        new ParallelCommand({
+            new MoveToCoordinate(165, 30), new IntakePowerCell()
+        }),
+        new MoveToCoordinate(330, 0)
     }));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});

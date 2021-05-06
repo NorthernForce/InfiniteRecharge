@@ -19,11 +19,11 @@ void ManualShooter::Initialize() {}
 void ManualShooter::Execute() {
   double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
   if (rtTriggerAxis > 0.5) {
-    RobotContainer::shooter->SetRawSpeed(0.9);
+    RobotContainer::shooter->SetRawSpeed(-0.9);
 
-    if (RobotContainer::shooter->GetError() < 100)
-        RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
-    else if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
+    //if (RobotContainer::shooter->GetError() < -100)
+        //RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
+    //if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
         RobotContainer::intake->RunConveyor();
     std::cout << RobotContainer::shooter->GetCurrentRPM() << '\n';
   }

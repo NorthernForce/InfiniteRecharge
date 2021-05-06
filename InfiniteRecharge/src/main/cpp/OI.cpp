@@ -62,7 +62,7 @@ void OI::InitControllers() {
 }
 
 void OI::MapControllerButtons() {
-    SimpleAxis(driverController, XboxAxis::rt_trigger).WhileHeld(new ShootCell);
+    SimpleAxis(driverController, XboxAxis::rt_trigger).WhileHeld(new ManualShooter);
     SimpleButton(driverController, Xbox::B_button).WhileHeld(new PushOutPowerCell);
     SimpleButton(driverController, Xbox::lt_bumper).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     SimpleButton(driverController, Xbox::lt_bumper).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
