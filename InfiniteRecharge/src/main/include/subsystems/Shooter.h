@@ -45,7 +45,7 @@ class Shooter : public frc2::SubsystemBase {
 
  private:
   std::unique_ptr<WPI_TalonFX> shooterTalon;
-  std::unique_ptr<WPI_TalonSRX> hoodTalon;
+  std::unique_ptr<rev::CANSparkMax> hoodSpark;
   std::unique_ptr<rev::CANSparkMax> susanSpark;
   std::unique_ptr<rev::CANPIDController> pidController;
   std::unique_ptr<frc::Solenoid> shooterShifter;

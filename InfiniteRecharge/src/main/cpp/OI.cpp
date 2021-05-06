@@ -73,8 +73,8 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
-    SimpleAxis(manipulatorController, XboxAxis::rt_X, 0.5).WhileHeld(new LazySusanLeft());
-    SimpleAxis(manipulatorController, XboxAxis::rt_X, -0.5).WhileHeld(new LazySusanRight());
+    SimpleButton(manipulatorController, Xbox::X_button).WhileHeld(new LazySusanLeft());
+    SimpleButton(manipulatorController, Xbox::B_button).WhileHeld(new LazySusanRight());
     SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
     SimpleButton(manipulatorController, Xbox::Y_button).WhileHeld(new IntakeUp);
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);

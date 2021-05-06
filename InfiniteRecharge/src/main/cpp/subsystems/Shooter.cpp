@@ -16,7 +16,7 @@ double Shooter::rampRate;
 
 Shooter::Shooter() {
     shooterTalon = std::make_unique<WPI_TalonFX>(Constants::MotorIDs::shooter);
-    hoodTalon = std::make_unique<WPI_TalonSRX>(Constants::MotorIDs::hood);
+    hoodSpark = std::make_unique<rev::CANSparkMax>(Constants::MotorIDs::hood, rev::CANSparkMax::MotorType::kBrushed);
     susanSpark = std::make_unique<rev::CANSparkMax>(Constants::MotorIDs::susan, rev::CANSparkMax::MotorType::kBrushless);
     //pidController.reset(new rev::CANPIDController(shooterTalon->rev::CANSparkMax::GetPIDController()));
     shooterShifter = std::make_unique<frc::Solenoid>(Constants::PCMCanBusID, 1);
@@ -106,7 +106,7 @@ void Shooter::SetRawSpeed(double speed) {
 }
 
 void Shooter::SetHoodSpeed(double speed){
-    hoodTalon->Set(speed);
+    hoodSpark->Set(speed);
 }
 
 int Shooter::GetCurrentRPM() {
@@ -180,5 +180,5 @@ double Shooter::GetHoodAngle() {
     if (GetHoodLimitSwitch())
         return 0;
     else
-        return hoodTalon->GetSensorCollection().GetAnalogIn(); ////TODO: convert potentiometer reading to angle
+        return hoodSpark->GetAnalog().GetPosition(); ////TODO: convert potentiometer reading to angle
 }
