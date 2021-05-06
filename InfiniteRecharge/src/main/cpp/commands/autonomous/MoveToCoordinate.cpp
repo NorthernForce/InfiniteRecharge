@@ -19,11 +19,9 @@
 
 std::unique_ptr<Logger> Robot::logger;
 
-MoveToCoordinate::MoveToCoordinate(CPlane::Point end, double speed) : baseSpeed(speed) {
+MoveToCoordinate::MoveToCoordinate(CPlane::Point end, double speed, bool stop) : baseSpeed(speed), stopAtPoint(stop), finalPos(end) {
   AddRequirements(RobotContainer::drivetrain.get());
   SetName("MoveToCoordinate");
-  finalPos.x = end.x;
-  finalPos.y = end.y;
   movementStage = 0;
 }
 
@@ -31,19 +29,6 @@ MoveToCoordinate::MoveToCoordinate(CPlane::Point end, double speed) : baseSpeed(
 void MoveToCoordinate::Initialize() {
   previousDistanceError = sqrt((finalPos.x - robotPos.x) * (finalPos.x - robotPos.x) + (finalPos.y - robotPos.y) * (finalPos.y - robotPos.y));
 }
-
-// double MoveToCoordinate::RemoveJumps(double angToFinalWithJumps) {
-//   bool close = false;
-//   for (unsigned i = 0; i < previousAngToFinals.size(); i++) {
-//     if ((angToFinal < previousAngToFinals[i] + 1) && (angToFinal > previousAngToFinals[i] - 1)) {
-//       previousAngToFinals.assign(1,angToFinal);
-//       close = true;
-//     }
-//   }
-//   if (!close) {
-//     previousAngToFinals.push_back(angToFinal);
-//   }
-// }
 
 double MoveToCoordinate::Limit(double value, double limit) {
   if (value < -abs(limit))
@@ -100,12 +85,13 @@ double MoveToCoordinate::DrivePID() {
   return Limit(((p * distanceError) + (i * totalDistanceError) + (d * errorChange)), baseSpeed);
 }
 
-bool MoveToCoordinate::HasOscillated() {
-  if (driveSpeed < 0) {
-    hasOscillated = true;
-  }
-  return hasOscillated;
-}
+////TODO: Make autoPID tuner 
+// bool MoveToCoordinate::HasOscillated() {
+//   if (driveSpeed < 0) {
+//     hasOscillated = true;
+//   }
+//   return hasOscillated;
+// }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToCoordinate::Execute() {

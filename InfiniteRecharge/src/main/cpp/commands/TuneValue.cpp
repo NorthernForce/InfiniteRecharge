@@ -38,15 +38,15 @@ void TuneValue::Execute()
   else if (!commandToTune->IsScheduled() && !scheduleCommand)
   {
     scheduleCommand = true;
-    if (!commandToTune->HasOscillated())
-    {
-      values[tunedValue] -= tuneIncremenet;
-      tuneIncremenet /= 4;
-    }
-    else
-    {
-      values[tunedValue] += tuneIncremenet;
-    }
+    // if (!commandToTune->HasOscillated())
+    // {
+    //   values[tunedValue] -= tuneIncremenet;
+    //   tuneIncremenet /= 4;
+    // }
+    // else
+    // {
+    //   values[tunedValue] += tuneIncremenet;
+    // }
   }
   else if (commandToTune->IsScheduled())
   {

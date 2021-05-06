@@ -25,7 +25,7 @@
 class MoveToCoordinate
     : public frc2::CommandHelper<frc2::CommandBase, MoveToCoordinate> {
  public:
-  MoveToCoordinate(CPlane::Point end, double speed=0.3);
+  MoveToCoordinate(CPlane::Point end, double speed=0.3, bool stop=true);
 
   void Initialize() override;
 
@@ -51,8 +51,9 @@ class MoveToCoordinate
  private:
   std::unique_ptr<TurnToAngle> turnToAngle;
 
-  CPlane::Point finalPos;
+  const CPlane::Point finalPos;
   const double baseSpeed;
+  const bool stopAtPoint;
 
   const int cyclePerSecond = 20;
 
