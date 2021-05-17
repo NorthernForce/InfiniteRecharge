@@ -180,5 +180,5 @@ double Shooter::GetHoodAngle() {
     if (GetHoodLimitSwitch())
         return 0;
     else
-        return hoodSpark->GetAnalog().GetPosition(); ////TODO: convert potentiometer reading to angle
+        return hoodSpark->GetAnalog().GetVoltage(); ////TODO: convert potentiometer reading to angle
 }
