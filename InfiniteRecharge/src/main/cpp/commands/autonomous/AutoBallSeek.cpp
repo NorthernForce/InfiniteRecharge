@@ -18,7 +18,6 @@ void AutoBallSeek::Initialize() {
 }
 
 void AutoBallSeek::Execute() {
-    frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
     if (turnToTarget->HasRobotTurned() && !hasDriven) {
         RobotContainer::cameraMount->PauseSweep();
         turnToTarget->DisableTurningMode();
@@ -46,7 +45,7 @@ void AutoBallSeek::SetDistanceToTargetAndDrive() {
     if (inchesToTarget != 0 && !distHasBeenSet) {
         std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
         RobotContainer::aiComms->SwitchCameraToIntake();
-        moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
+        moveToCoordinate.reset(new MoveToCoordinate(CPlane::Point(targetCoords.first, targetCoords.second), 0.145));
         distHasBeenSet = true;
     }
     if (distHasBeenSet)

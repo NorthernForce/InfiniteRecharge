@@ -17,7 +17,7 @@ Ultrasonic::Ultrasonic() {
 void Ultrasonic::Periodic() {
     isObstacleDetected = IsObstacleAt(12);
     distance = GetDistance();
-    frc::SmartDashboard::PutNumber("Ultrasonic distance: ", distance);
+    // frc::SmartDashboard::PutNumber("Ultrasonic distance: ", distance);
 }
 
 

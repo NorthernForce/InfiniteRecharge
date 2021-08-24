@@ -122,7 +122,7 @@ void AutoCommandScheduler::DashboardAuto(std::vector<std::string> &&driverInput,
                 break;
             
             case CommandTypes::Coordinate:
-                commandQueue.push_back(new MoveToCoordinate(cmdParams[0], cmdParams[1], cmdParams[2]));
+                commandQueue.push_back(new MoveToCoordinate(CPlane::Point(cmdParams[0], cmdParams[1]), cmdParams[2]));
                 break;
             
             default:

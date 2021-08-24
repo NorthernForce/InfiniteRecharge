@@ -24,19 +24,19 @@ Shooter::Shooter() {
 
     ConfigureSpark();
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
-    frc::SmartDashboard::PutNumber("Shooter P: ", p);
-    frc::SmartDashboard::PutNumber("Shooter I: ", i);
-    frc::SmartDashboard::PutNumber("Shooter D: ", d);
-    frc::SmartDashboard::PutNumber("Shooter FF: ", ff);
+    // frc::SmartDashboard::PutNumber("Shooter P: ", p);
+    // frc::SmartDashboard::PutNumber("Shooter I: ", i);
+    // frc::SmartDashboard::PutNumber("Shooter D: ", d);
+    // frc::SmartDashboard::PutNumber("Shooter FF: ", ff);
 }
 
 // This method will be called once per scheduler run
 void Shooter::Periodic() {
     targetRPM = frc::SmartDashboard::GetNumber("Shooter target RPM: ", targetRPM);
-    p = frc::SmartDashboard::GetNumber("Shooter P: ", p);
-    i = frc::SmartDashboard::GetNumber("Shooter I: ", i);
-    d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
-    ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
+    // p = frc::SmartDashboard::GetNumber("Shooter P: ", p);
+    // i = frc::SmartDashboard::GetNumber("Shooter I: ", i);
+    // d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
+    // ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
 
     // if (pidController->GetP() != p)
     //     pidController->SetP(p);

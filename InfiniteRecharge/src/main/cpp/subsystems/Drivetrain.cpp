@@ -77,13 +77,13 @@ void Drivetrain::setPID()
       kMaxOutput = max; 
     }
 
-    frc::SmartDashboard::PutNumber("P Gain", kP);
-    frc::SmartDashboard::PutNumber("I Gain", kI);
-    frc::SmartDashboard::PutNumber("D Gain", kD);
-    frc::SmartDashboard::PutNumber("I Zone", kIz);
-    frc::SmartDashboard::PutNumber("Feed Forward", kFF);
-    frc::SmartDashboard::PutNumber("Min Output", kMinOutput);
-    frc::SmartDashboard::PutNumber("Max Output", kMaxOutput);
+    // frc::SmartDashboard::PutNumber("P Gain", kP);
+    // frc::SmartDashboard::PutNumber("I Gain", kI);
+    // frc::SmartDashboard::PutNumber("D Gain", kD);
+    // frc::SmartDashboard::PutNumber("I Zone", kIz);
+    // frc::SmartDashboard::PutNumber("Feed Forward", kFF);
+    // frc::SmartDashboard::PutNumber("Min Output", kMinOutput);
+    // frc::SmartDashboard::PutNumber("Max Output", kMaxOutput);
 
 }
 

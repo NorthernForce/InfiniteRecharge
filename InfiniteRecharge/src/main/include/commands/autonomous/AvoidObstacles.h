@@ -8,6 +8,7 @@
 #include <frc2/command/CommandHelper.h>
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "RobotContainer.h"
+#include "MoveToCoordinate.h"
 
 /**
  * An example command.
@@ -19,23 +20,19 @@
 class AvoidObstacles
     : public frc2::CommandHelper<frc2::CommandBase, AvoidObstacles> {
  public:
-  AvoidObstacles(double xPos, double yPos, std::vector<CPlane::Point> obstacles={}, double speed=0.3);
+  AvoidObstacles(CPlane::Point end, std::vector<CPlane::Point> obstacles={}, double speed=0.3);
 
   void Initialize() override;
 
   bool TestForCollision(double xTarget, double yTarget);
 
-  auto NearestGameCoordinate();
+  auto NearestObstacle();
 
   void UpdatePosition();
 
-  double NGCAngle();
+  double ObstacleAngle();
 
-  double NGCDistance();
-
-  bool WillHitNGC();
-
-  bool NGCisObstacle();
+  bool WillHitObstacle();
 
   double CorrectionAmount();
 
@@ -48,7 +45,14 @@ class AvoidObstacles
  private:
   std::unique_ptr<MoveToCoordinate> moveToCoordinate;
   std::vector<CPlane::Point> obstacleList;
+
   CPlane::Point robot;
-  CPlane::Point ngc;
+  int obstacleListIndex;
+  CPlane::Point obstacle;
+  double obstacleDistance;
+  CPlane::Point newObstacle;
+
   double horizontalDistance;
+
+  const int obstacleFOV = 100;
 };

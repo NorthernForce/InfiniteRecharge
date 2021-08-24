@@ -10,9 +10,10 @@
 
 ////TODO: Make valueToTune char
 
-TuneValue::TuneValue(int valueToTune, std::vector<double> parameters, std::vector<double> pidValues, double increment, double accuracy) {
+TuneValue::TuneValue(int valueToTune, std::vector<double> parameters, std::vector<double> pidValues, double increment, double accuracy)
+{
   tunedValue = valueToTune;
-  commandToTune = std::make_unique<MoveToCoordinate>(parameters[0], parameters[1], parameters[2]);
+  commandToTune = std::make_unique<MoveToCoordinate>(CPlane::Point(parameters[0], parameters[1]), parameters[2]);
   values = pidValues;
   tuneIncremenet = increment;
   tuneAccuracy = accuracy;
@@ -20,36 +21,42 @@ TuneValue::TuneValue(int valueToTune, std::vector<double> parameters, std::vecto
 }
 
 // Called when the command is initially scheduled.
-void TuneValue::Initialize() {
-    commandFail = 0;
+void TuneValue::Initialize()
+{
+  commandFail = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
-void TuneValue::Execute() {
-  frc::SmartDashboard::PutBoolean("executing pid command", commandToTune->IsScheduled());
-  if (!commandToTune->IsScheduled() && scheduleCommand) {
+void TuneValue::Execute()
+{
+  if (!commandToTune->IsScheduled() && scheduleCommand)
+  {
     commandToTune->Set(values);
     commandToTune->Schedule();
     scheduleCommand = false;
-  }   
-  else if (!commandToTune->IsScheduled() && !scheduleCommand) {
-    scheduleCommand = true;
-    if (!commandToTune->HasOscillated()) {
-      values[tunedValue] -= tuneIncremenet;
-      tuneIncremenet /= 4;
-    }
-    else {
-      values[tunedValue] += tuneIncremenet; 
-    }
   }
-  else if (commandToTune->IsScheduled()) {
-    frc::SmartDashboard::PutNumber("commandFail", commandFail);
+  else if (!commandToTune->IsScheduled() && !scheduleCommand)
+  {
+    scheduleCommand = true;
+    // if (!commandToTune->HasOscillated())
+    // {
+    //   values[tunedValue] -= tuneIncremenet;
+    //   tuneIncremenet /= 4;
+    // }
+    // else
+    // {
+    //   values[tunedValue] += tuneIncremenet;
+    // }
+  }
+  else if (commandToTune->IsScheduled())
+  {
     scheduleCommand = false;
     commandFail++;
-    if (commandFail > 200) {
+    if (commandFail > 200)
+    {
       commandFail = 0;
       commandToTune->Cancel();
-      commandToTune.reset(new MoveToCoordinate(commandToTuneParams[0], commandToTuneParams[1], commandToTuneParams[2]));
+      commandToTune.reset(new MoveToCoordinate(CPlane::Point(commandToTuneParams[0], commandToTuneParams[1]), commandToTuneParams[2]));
     }
   }
 }
@@ -58,6 +65,7 @@ void TuneValue::Execute() {
 void TuneValue::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool TuneValue::IsFinished() { 
+bool TuneValue::IsFinished()
+{
   return (tuneIncremenet < tuneAccuracy);
 }
