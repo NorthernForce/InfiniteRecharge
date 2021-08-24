@@ -11,17 +11,16 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Shooter::Shooter() {
-    shooterSpark.reset(new rev::CANSparkMax(Constants::MotorIDs::shooter, rev::CANSparkMax::MotorType::kBrushless));
-    pidController.reset(new rev::CANPIDController(shooterSpark->rev::CANSparkMax::GetPIDController()));
+    shooterTalon = std::make_shared<WPI_TalonFX>(new Constants::MotorIDs::shooter);
     shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
     timer.reset(new frc::Timer());
 
-    pidController->SetP(p);
-    pidController->SetI(i);
-    pidController->SetD(d);
-    pidController->SetFF(ff); 
-    pidController->SetIMaxAccum(maxI);
-    pidController->SetOutputRange(minOutput, maxOutput);
+    // pidController->SetP(p);
+    // pidController->SetI(i);
+    // pidController->SetD(d);
+    // pidController->SetFF(ff); 
+    // pidController->SetIMaxAccum(maxI);
+    // pidController->SetOutputRange(minOutput, maxOutput);
 
     ConfigureSpark();
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
@@ -39,45 +38,43 @@ void Shooter::Periodic() {
     d = frc::SmartDashboard::GetNumber("Shooter D: ", d);
     ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
 
-    if (pidController->GetP() != p)
-        pidController->SetP(p);
-    if (pidController->GetI() != i)
-        pidController->SetI(i);
-    if (pidController->GetD() != d)
-        pidController->SetD(d);
-    if (pidController->GetIMaxAccum() != maxI)
-        pidController->SetIMaxAccum(maxI);
-    if (pidController->GetOutputMin() != minOutput || pidController->GetOutputMax() != maxOutput)
-        pidController->SetOutputRange(minOutput, maxOutput);   
+    // if (pidController->GetP() != p)
+    //     pidController->SetP(p);
+    // if (pidController->GetI() != i)
+    //     pidController->SetI(i);
+    // if (pidController->GetD() != d)
+    //     pidController->SetD(d);
+    // if (pidController->GetIMaxAccum() != maxI)
+    //     pidController->SetIMaxAccum(maxI);
+    // if (pidController->GetOutputMin() != minOutput || pidController->GetOutputMax() != maxOutput)
+    //     pidController->SetOutputRange(minOutput, maxOutput);   
 }
 
 void Shooter::ConfigureSpark() {
-    auto &controller = *shooterSpark; //nice
-    controller.SetSecondaryCurrentLimit(secondaryCurrentLimit);
-    controller.SetSmartCurrentLimit(currentLimit);
-    controller.SetClosedLoopRampRate(rampRate);
-    controller.SetOpenLoopRampRate(rampRate);
-    controller.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    auto &controller = *shooterTalon; //nice
+    controller.ConfigSupplyCurrentLimit(new ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(true, currentLimit))
+    controller.ConfigStatorCurrentLimit(new ctre::phoenix::motorcontrol::StatorCurrentLimitConfiguration(true, secondaryCurrentLimit));
+    controller.SetNeutralMode(ctre::pheonix::motorcontroll::NeutralMode::Coast);
 }
 
 void Shooter::IdleShooter() {
-    pidController->SetReference(targetRPM * idlePercentage, rev::ControlType::kVelocity);
+    // pidController->SetReference(targetRPM * idlePercentage, rev::ControlType::kVelocity);
 }
 
 void Shooter::Shoot() {
-    pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
+    // pidController->SetReference(targetRPM, rev::ControlType::kVelocity);
 }
 
 void Shooter::SetRawSpeed(double speed) {
-    shooterSpark->Set(speed);
+    shooterTalon->Set(speed);
 }
 
 int Shooter::GetCurrentRPM() {
-    return shooterSpark->GetEncoder().GetVelocity();
+    return shooterTalon->getSensorCollection().getIntegratedSensorVelocity();
 }
 
 void Shooter::SetCurrentRPMTo(int rpm) {
-    pidController->SetReference(rpm, rev::ControlType::kVelocity);
+    // pidController->SetReference(rpm, rev::ControlType::kVelocity);
 }
 
 int Shooter::GetTargetRPM() {

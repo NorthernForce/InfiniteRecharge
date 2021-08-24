@@ -33,7 +33,7 @@ class Shooter : public frc2::SubsystemBase {
   const bool shiftOff = false;
 
  private:
-  std::shared_ptr<rev::CANSparkMax> shooterSpark;
+  std::shared_ptr<WPI_TalonFX> shooterTalon;
   std::shared_ptr<rev::CANPIDController> pidController;
   std::shared_ptr<frc::Solenoid> shooterShifter;
   std::shared_ptr<frc::Timer> timer;
