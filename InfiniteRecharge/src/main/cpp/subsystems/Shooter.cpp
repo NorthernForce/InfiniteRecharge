@@ -11,16 +11,9 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Shooter::Shooter() {
-    shooterTalon = std::make_shared<WPI_TalonFX>(new Constants::MotorIDs::shooter);
+    shooterTalon = std::make_shared<WPI_TalonFX>(Constants::MotorIDs::shooter);
     shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
     timer.reset(new frc::Timer());
-
-    // pidController->SetP(p);
-    // pidController->SetI(i);
-    // pidController->SetD(d);
-    // pidController->SetFF(ff); 
-    // pidController->SetIMaxAccum(maxI);
-    // pidController->SetOutputRange(minOutput, maxOutput);
 
     ConfigureSpark();
     frc::SmartDashboard::PutNumber("Shooter target RPM: ", targetRPM);
@@ -51,10 +44,9 @@ void Shooter::Periodic() {
 }
 
 void Shooter::ConfigureSpark() {
-    auto &controller = *shooterTalon; //nice
-    controller.ConfigSupplyCurrentLimit(new ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(true, currentLimit))
-    controller.ConfigStatorCurrentLimit(new ctre::phoenix::motorcontrol::StatorCurrentLimitConfiguration(true, secondaryCurrentLimit));
-    controller.SetNeutralMode(ctre::pheonix::motorcontroll::NeutralMode::Coast);
+    shooterTalon->ConfigSupplyCurrentLimit(ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
+    shooterTalon->ConfigStatorCurrentLimit(ctre::phoenix::motorcontrol::StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
+    shooterTalon->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 }
 
 void Shooter::IdleShooter() {
@@ -70,7 +62,7 @@ void Shooter::SetRawSpeed(double speed) {
 }
 
 int Shooter::GetCurrentRPM() {
-    return shooterTalon->getSensorCollection().getIntegratedSensorVelocity();
+    return shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
 }
 
 void Shooter::SetCurrentRPMTo(int rpm) {

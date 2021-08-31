@@ -11,6 +11,8 @@
 #include <rev/CANSparkMax.h>
 #include <frc/Solenoid.h>
 #include <frc/Timer.h>
+#include <ctre/Phoenix.h>
+#include <ctre/phoenix/motorcontrol/can/WPI_TalonFX.h>
 
 class Shooter : public frc2::SubsystemBase {
  public:
