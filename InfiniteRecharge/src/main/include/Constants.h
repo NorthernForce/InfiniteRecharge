@@ -49,6 +49,7 @@ namespace Constants {
         const int conveyor2 = 12;
 
         const int climberArm = 7;
+        const int hood = 7;
 
         const int panServoPWM = 7;
         const int tiltServoPWM = 8;

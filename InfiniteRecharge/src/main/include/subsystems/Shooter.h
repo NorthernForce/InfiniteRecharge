@@ -30,12 +30,14 @@ class Shooter : public frc2::SubsystemBase {
   int GetError();
   void ShooterUp();
   void ShooterDown();
+  double GetPotentiometerVoltage();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
 
  private:
   std::shared_ptr<WPI_TalonFX> shooterTalon;
+  std::shared_ptr<rev::CANSparkMax> hoodSpark;
   std::shared_ptr<rev::CANPIDController> pidController;
   std::shared_ptr<frc::Solenoid> shooterShifter;
   std::shared_ptr<frc::Timer> timer;

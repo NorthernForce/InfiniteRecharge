@@ -12,6 +12,7 @@
 
 Shooter::Shooter() {
     shooterTalon = std::make_shared<WPI_TalonFX>(Constants::MotorIDs::shooter);
+    hoodSpark = std::make_shared<rev::CANSparkMax>(Constants::MotorIDs::hood, rev::CANSparkMax::MotorType::kBrushed);
     shooterShifter.reset(new frc::Solenoid(Constants::PCMCanBusID, 1));
     timer.reset(new frc::Timer());
 
@@ -87,4 +88,8 @@ void Shooter::ShooterUp() {
 
 void Shooter::ShooterDown() {
     shooterShifter->Set(shiftOff);
+}
+
+double Shooter::GetPotentiometerVoltage() {
+    return hoodSpark->GetAnalog().GetVoltage();
 }
