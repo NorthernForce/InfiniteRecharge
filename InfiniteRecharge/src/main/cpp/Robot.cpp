@@ -27,9 +27,6 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
-#include "commands/autonomous/AutoChallengeChooser.h"
-#include "commands/autonomous/AutonomousBallSeek.h"
-#include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "commands/TuneValue.h"
@@ -146,21 +143,21 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-      autoCommandScheduler.reset(new AutoCommandScheduler({       
+      //autoCommandScheduler.reset(new AutoCommandScheduler({       
         //Path A-Galactic
         //Red
-        new MoveToCoordinate(15, 0),
-        new ParallelCommand({
-            new MoveToCoordinate(75, -30), new IntakePowerCell()
-        }),
-        new ParallelCommand({
-            new MoveToCoordinate(135, -60), new IntakePowerCell()
-        }),
-        new ParallelCommand({
-            new MoveToCoordinate(165, 30), new IntakePowerCell()
-        }),
-        new MoveToCoordinate(330, 0)
-    }));
+        //new MoveToCoordinate(15, 0),
+        //new ParallelCommand({
+            //new MoveToCoordinate(75, -30), new IntakePowerCell()
+        //}),
+        //new ParallelCommand({
+            //new MoveToCoordinate(135, -60), new IntakePowerCell()
+        //}),
+        //new ParallelCommand({
+            //new MoveToCoordinate(165, 30), new IntakePowerCell()
+        //}),
+        //new MoveToCoordinate(330, 0)
+    //}));
     //autoCommandScheduler.reset(new AutoCommandScheduler);
     //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }

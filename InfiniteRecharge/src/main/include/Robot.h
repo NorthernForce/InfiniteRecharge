@@ -15,7 +15,6 @@
 #include "commands/TurnToAngle.h"
 #include "commands/MoveToLimelight.h"
 #include "commands/AutoDrive.h"
-#include "commands/autonomous/CrossAutoLine.h"
 #include "commands/autonomous/AutoShootCell.h"
 #include <thread>
 

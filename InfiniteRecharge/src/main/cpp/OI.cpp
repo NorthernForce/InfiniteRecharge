@@ -12,22 +12,14 @@
 #include "commands/PushOutPowerCell.h"
 #include "commands/ToggleArm.h"
 #include "commands/ShootCell.h"
-#include "commands/PositionControl.h"
 #include "commands/RotationControl.h"
 #include "commands/TurnToAngle.h"
-#include "commands/autonomous/InFrontOfFoesTrench.h"
-#include "commands/autonomous/InFrontOfGoal.h"
-#include "commands/autonomous/InFrontOfOurTrench.h"
-#include "commands/autonomous/CrossAutoLine.h"
-#include "commands/autonomous/DoNothing.h"
 #include "commands/AimShooterUp.h"
 #include "commands/AimShooterDown.h"
 #include "commands/MoveToLimelight.h"
 #include "commands/Climb.h"
 #include "commands/ShootByDist.h"
-#include "commands/ManualWackyWheel.h"
 #include "commands/StopIntake.h"
-#include "commands/ReverseConveyor.h"
 #include "commands/ResetCoordinates.h"
 #include "commands/IndexPowerCells.h"
 #include "commands/IntakeUp.h"
@@ -37,7 +29,6 @@
 #include "commands/ManualIntake.h"
 #include "commands/ManualShooter.h"
 #include "commands/ManualConveyor.h"
-#include "commands/ManualIntakeBackward.h"
 #include "commands/TrevinIntake.h"
 #include "commands/ZeroRobotAngle.h"
 #include "commands/ZeroRobotPosition.h"
@@ -67,7 +58,6 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::lt_bumper).WhenPressed(new ShiftGear(ShiftGear::Gear::Low));
     SimpleButton(driverController, Xbox::lt_bumper).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     SimpleButton(driverController, Xbox::rt_bumper).WhileHeld(new IntakePowerCell);
-    SimpleButton(driverController, Xbox::X_button).WhileHeld(new ReverseConveyor);
     SimpleButton(driverController, Xbox::A_button).WhileHeld(new MoveToLimelight);
     SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
@@ -79,7 +69,6 @@ void OI::MapControllerButtons() {
     SimpleButton(manipulatorController, Xbox::Y_button).WhileHeld(new IntakeUp);
     SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
     SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
-    SimpleAxis(manipulatorController, XboxAxis::lt_trigger).WhileHeld(new ManualIntakeBackward);
     SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
     SimpleAxis(manipulatorController, XboxAxis::lt_Y, 0.5).WhileHeld(new HoodUp);
     SimpleAxis(manipulatorController, XboxAxis::lt_Y, -0.5).WhileHeld(new HoodDown);
