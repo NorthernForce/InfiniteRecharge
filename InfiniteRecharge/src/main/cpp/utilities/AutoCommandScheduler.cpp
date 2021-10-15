@@ -114,7 +114,7 @@ void AutoCommandScheduler::DashboardAuto(std::vector<std::string> &&driverInput,
                 break;
             
             case CommandTypes::Shoot:
-                commandQueue.push_back(new AutoShootCell());
+                commandQueue.push_back(new ShootCell());
                 break;
             
             case CommandTypes::AutoBallSeek:

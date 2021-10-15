@@ -7,7 +7,6 @@
 #include <frc2/command/button/POVButton.h>
 
 #include "commands/TurnToAngle.h"
-#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 
 class OI {

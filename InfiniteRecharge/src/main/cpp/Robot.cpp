@@ -18,7 +18,6 @@
 #include "OI.h"
 
 #include "commands/InventoryPowerCells.h"
-#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
 #include "commands/AutoDrive.h"
@@ -134,7 +133,6 @@ void Robot::AutonomousInit() {
     // Aiden's stuff
     // autoTurnToAngle.reset(new TurnToAngle);
     //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-    //autoShootCell.reset(new AutoShootCell);
 
     // RobotContainer::drivetrain->SetEncoderPosition(0);
     //autoTurnToAngle->SetAngle(90);
