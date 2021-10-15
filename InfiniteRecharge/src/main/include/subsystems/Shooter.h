@@ -20,7 +20,7 @@ class Shooter : public frc2::SubsystemBase {
   void Periodic();
   bool GetLazySusanLimitSwitch();
   bool GetHoodLimitSwitch();
-  void ConfigureSpark(double ramp=rampRate);
+  void ConfigureShooterTalon(double ramp=rampRate);
   void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
   void Shoot();
@@ -69,6 +69,8 @@ class Shooter : public frc2::SubsystemBase {
   static double rampRate;
   int targetRPM = 2200;
   double idlePercentage = 0.6; //units are decimals from 0-1
+  int cpr = 2048; // encoder count per rotations
+  int msTorpm = 600;
 
   std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
   std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
