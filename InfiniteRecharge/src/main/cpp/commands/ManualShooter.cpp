@@ -32,7 +32,7 @@ void ManualShooter::Execute() {
 // Called once the command ends or is interrupted.
 void ManualShooter::End(bool interrupted) {
   RobotContainer::shooter->SetRawSpeed(0);
-  RobotContainer::intake->ConveyorSetSpeed(0);
+  RobotContainer::intake->StopConveyor();
 }
 
 // Returns true when the command should end.

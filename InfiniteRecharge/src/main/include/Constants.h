@@ -38,7 +38,7 @@ namespace Constants {
         const int driveRightFollower1 = 2;
         const int driveRightFollower2 = 4;
 
-        const int susan = 8;
+        const int susan = 11;
         const int hood = 7;
 
         const int shooter = 8;

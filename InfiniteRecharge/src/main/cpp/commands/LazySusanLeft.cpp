@@ -6,15 +6,14 @@
 #include "ctre/Phoenix.h"
 #include "RobotContainer.h"
 
-LazySusanLeft::LazySusanLeft() {
-  AddRequirements(RobotContainer::shooter.get());
-}
+LazySusanLeft::LazySusanLeft() {}
 
 // Called when the command is initially scheduled.
 void LazySusanLeft::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void LazySusanLeft::Execute() {
+    std::cout << "running left\n";
     RobotContainer::shooter->SetSusanSpeed(-0.8);
 }
 

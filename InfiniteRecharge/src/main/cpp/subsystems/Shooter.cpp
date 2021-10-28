@@ -36,6 +36,7 @@ void Shooter::Periodic() {
     ff = frc::SmartDashboard::GetNumber("Shooter FF: ", ff);
 
     UpdateLazySusanAngle();
+    UpdateHoodAngle();
 
     frc::SmartDashboard::PutBoolean("sexy", sexyLimitSwitch->Get());
     frc::SmartDashboard::PutBoolean("hood", hoodLimitSwitch->Get());
@@ -52,11 +53,22 @@ bool Shooter::GetHoodLimitSwitch() {
 }
 
 void Shooter::ConfigureShooterTalon(double ramp) {
+    shooterTalon->ConfigFactoryDefault();
+    shooterTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 0);
     shooterTalon->ConfigSupplyCurrentLimit(ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
     shooterTalon->ConfigStatorCurrentLimit(ctre::phoenix::motorcontrol::StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
+
+    shooterTalon->Config_kP(0, 0);
+    shooterTalon->Config_kI(0, 0);
+    shooterTalon->Config_kD(0, 0);
+    shooterTalon->Config_kF(0, 0);
+
     shooterTalon->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
-    shooterTalon->ConfigOpenloopRamp(ramp);
-    shooterTalon->ConfigClosedloopRamp(ramp);
+    shooterTalon->SetSensorPhase(true);
+
+    shooterTalon->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, 0);
+    // shooterTalon->ConfigOpenloopRamp(ramp);
+    // shooterTalon->ConfigClosedloopRamp(ramp);
 }
 
 void Shooter::IdleShooter() {
@@ -67,7 +79,8 @@ void Shooter::IdleShooter() {
 
 void Shooter::Shoot() {
     double velocity = (targetRPM * cpr) / msTorpm;
-    shooterTalon->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, velocity);
+    std::cout << "velocity: " + std::to_string(velocity) + "\n";
+    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, velocity);
 }
 
 void Shooter::SetRawSpeed(double speed) {
@@ -111,16 +124,15 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    if (IsSusanSpeedWithinLimits(speed))
-        susanSpark->Set(speed);  
+    susanSpark->Set(speed);  
 }
 
 void Shooter::UpdateLazySusanAngle() {
     double encoder;
-    if (GetLazySusanLimitSwitch())
-        encoder = 0;
-    else
-        encoder = susanSpark->GetEncoder().GetPosition();
+    // if (GetLazySusanLimitSwitch())
+    //     encoder = 0;
+    // else
+    encoder = susanSpark->GetEncoder().GetPosition();
 
     double shaftWheelCirc = (Constants::pi * 0.28125);
     int lazySusanCirc = (Constants::pi * 3.5);
@@ -136,17 +148,19 @@ double Shooter::GetLazySusanAngle() {
 
 bool Shooter::IsSusanSpeedWithinLimits(double speed) {
     if (speed >= -1 || speed <= 1) {
-        if (!GetLazySusanLimitSwitch()) {
-            if (abs(GetLazySusanAngle()) <= limitSwitchAngOffset)
-                return true;
-        }
+        if (abs(GetLazySusanAngle()) <= limitSwitchAngOffset)
+            return true;
     }
     return false;
 }
 
 double Shooter::GetHoodAngle() {
+    return hoodAngle;
+}
+
+void Shooter::UpdateHoodAngle() {
     if (GetHoodLimitSwitch())
-        return 0;
+        hoodAngle = 0;
     else
-        return hoodSpark->GetAnalog().GetVoltage(); ////TODO: convert potentiometer reading to angle
+        hoodAngle = hoodSpark->GetAnalog().GetVoltage(); ////TODO: convert potentiometer reading to angle
 }
