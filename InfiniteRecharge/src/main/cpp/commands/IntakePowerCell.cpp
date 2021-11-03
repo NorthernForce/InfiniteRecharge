@@ -32,7 +32,6 @@ void IntakePowerCell::Initialize() {
 //***************************************************************************
 ////TODO: NEED to check if Pos. 4 is empty before starting Intake!!
 //****************************************************************************
-// Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
@@ -53,23 +52,6 @@ void IntakePowerCell::Execute() {
     RobotContainer::intake->StopConveyor();
   }
 
-/*
-  //stops conveyor when power cell has cleared pos 0
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 2 && fiveReached == false) {
-
-    //controls how long conveyor goes backward for
-    if (conveyorBackwardsCounter >= backwardCountLimit) {
-      RobotContainer::intake->StopConveyor();
-      //conveyorBackwardsCounter = 0;
-    }
-
-    //move conveyor backward to try and brake faster 
-    if (conveyorBackwardsCounter == 0) {
-      RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
-    }
-    conveyorBackwardsCounter++;
-  } 
-*/
   else {
    
     //run conveyor and intake to take in power cell

@@ -52,15 +52,6 @@ void Intake::Periodic() {
 
     //Outputs position states to driver station
     InventoryPowerCells();
-    //changed for loop to <5 
-    for(int i=0; i<6; i++) {
-        if (GetInventory(i) == StorageState::PRESENT) {
-           std::cout << "Position " << i <<  " full\n";
-        }
-        else {
-           std::cout << "Position " << i <<  " empty\n";
-        }
-    }
 }
 
 void Intake::TakeInPowerCell() {
@@ -112,7 +103,6 @@ void Intake::SetArmDown() {
 }
 
 //runs arm motors regardless of arm state
-////TODO: Block until Camera is safe
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
     std::cout << "Arm Position" << GetArmPosition() << '\n';
@@ -241,7 +231,7 @@ StorageState Intake::GetInventory(int position) {
 bool Intake::IsConveyorEmpty() {
     //changed for loop from <6
     for (int pos=0; pos<5; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::PRESENT)
+        if (GetInventory(pos) == StorageState::PRESENT)
             return false;
     }
     return true;

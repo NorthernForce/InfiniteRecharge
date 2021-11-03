@@ -9,7 +9,6 @@
 
 #include <frc2/command/RunCommand.h>
 #include "commands/DriveWithJoystick.h"
-#include "commands/Climb.h"
 #include "commands/TurnToTarget.h"
 
 std::shared_ptr<OI> RobotContainer::oi;
@@ -24,7 +23,6 @@ std::shared_ptr<AIVisionTargetting> RobotContainer::aiVisionTargetting;
 std::shared_ptr<Ultrasonic> RobotContainer::ultrasonic;
 std::shared_ptr<Intake> RobotContainer::intake;
 std::shared_ptr<Shooter> RobotContainer::shooter;
-std::shared_ptr<Climber> RobotContainer::climber;
 std::shared_ptr<Limelight> RobotContainer::limelight;
 std::shared_ptr<InteractTextFiles> RobotContainer::interactTextFiles;
 
@@ -47,17 +45,11 @@ void RobotContainer::InitSubsystems() {
     ultrasonic.reset(new Ultrasonic);
     intake.reset(new Intake);
     shooter.reset(new Shooter);
-    climber.reset(new Climber);
     limelight.reset(new Limelight);
 }
 
 void RobotContainer::InitDefaultCommands() {
     drivetrain->SetDefaultCommand(DriveWithJoystick());
-
-    climber->SetDefaultCommand(Climb( 
-        [this] { return oi->manipulatorController->GetY(frc::XboxController::kLeftHand); }
-    ));
-
     cameraMount->SetDefaultCommand(TurnToTarget());
 }
 

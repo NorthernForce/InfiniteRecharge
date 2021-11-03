@@ -64,12 +64,9 @@ class Intake : public frc2::SubsystemBase {
   //Return the First Position in the Conveyor Storage that is empty (no PC).
   int GetFirstEmptyPosition();
   int LowestFullPosition();
-  
-  
+
   double speed;
-
-  ////TODO: add ramp rate?
-
+  
  private:
 
   ArmState currentArmState;

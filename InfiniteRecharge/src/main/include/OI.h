@@ -60,7 +60,7 @@ class OI {
  private:
     double GetDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
-    frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, int btn);
-    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold=0.5);
-    frc2::POVButton SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degrees);
+    frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, uint8_t btn);
+    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, uint8_t axis, double threshold=0.5);
+    frc2::POVButton SimplePOV(std::shared_ptr<frc::GenericHID> controller, uint16_t degrees);
 };

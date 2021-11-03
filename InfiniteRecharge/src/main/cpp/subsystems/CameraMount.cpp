@@ -9,7 +9,7 @@
 #include "RobotContainer.h"
 #include "Constants.h"
 
-int CameraMount::sweepPassCount;
+uint32_t CameraMount::sweepPassCount;
 
 CameraMount::CameraMount() {
     panServo = std::make_shared<frc::Servo>(Constants::MotorIDs::panServoPWM);
@@ -37,7 +37,7 @@ int CameraMount::GetServoAngleToTarget() {
 }
 
 void CameraMount::SmartSweep() {
-    int millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
+    uint32_t millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
     if (millisSinceTargetRegistered >= 1250) {

@@ -47,7 +47,7 @@ class CameraMount : public frc2::SubsystemBase {
   char panDirection;
   char tiltDirection;
   int servoAngleToTarget;
-  static int sweepPassCount;
+  static uint32_t sweepPassCount;
   int offsetCorrectLimiter;
   double pcOffset;
   double lastNonZeroPcOffset;

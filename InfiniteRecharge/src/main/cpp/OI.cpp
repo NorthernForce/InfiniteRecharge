@@ -17,11 +17,9 @@
 #include "commands/AimShooterUp.h"
 #include "commands/AimShooterDown.h"
 #include "commands/MoveToLimelight.h"
-#include "commands/Climb.h"
 #include "commands/ShootByDist.h"
 #include "commands/StopIntake.h"
 #include "commands/ResetCoordinates.h"
-#include "commands/IndexPowerCells.h"
 #include "commands/IntakeUp.h"
 #include "commands/IntakeDown.h"
 #include "commands/DecreaseShooterRPM.h"
@@ -102,11 +100,11 @@ double OI::CheckAndLimitValue(double value, double upperLimit, double lowerLimit
   return value;
 }
 
-frc2::Button OI::SimpleButton(std::shared_ptr<frc::GenericHID> controller, int btn) {
+frc2::Button OI::SimpleButton(std::shared_ptr<frc::GenericHID> controller, uint8_t btn) {
   return frc2::Button([this, controller, btn] { return controller->GetRawButton(btn); });
 }
 
-frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold) {
+frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, uint8_t axis, double threshold) {
     return frc2::Button([this, controller, axis, threshold] {
         if (threshold < 0)
             return controller->GetRawAxis(axis) < threshold;
@@ -115,6 +113,6 @@ frc2::Button OI::SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axi
     });
 }
 
-frc2::POVButton OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degs) {
+frc2::POVButton OI::SimplePOV(std::shared_ptr<frc::GenericHID> controller, uint16_t degs) {
     return frc2::POVButton(controller.get(), degs);
 }

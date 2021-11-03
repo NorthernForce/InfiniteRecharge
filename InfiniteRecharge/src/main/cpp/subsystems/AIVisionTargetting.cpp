@@ -15,7 +15,7 @@
 
 using Target = AIVisionTargetting::Target;
 
-bool IsXInRange(unsigned x, unsigned low, unsigned high) {
+bool IsXInRange(uint32_t x, uint32_t low, uint32_t high) {
     return ((x - low) <= (high - low));
 }
 
@@ -51,16 +51,16 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
-    int multiplier = 20;
-    int millis = loopCyclesSinceTargetRegistered * multiplier;
+uint32_t AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
+    uint8_t multiplier = 20;
+    uint32_t millis = loopCyclesSinceTargetRegistered * multiplier;
     return millis;
 }
 
 bool AIVisionTargetting::IsTargetLocked() {
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
-    int currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    uint8_t currentPan = RobotContainer::cameraMount->GetCurrentPan();
+    uint8_t avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
 
     return (IsXInRange(currentPan, avgOfRecentPans-3, avgOfRecentPans+3) and isTargetFound);
 }
@@ -158,7 +158,7 @@ double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
     return dist;
 }
 
-int AIVisionTargetting::GetArea() {
+uint32_t AIVisionTargetting::GetArea() {
     return RobotContainer::aiComms->GetNumber("target area");
 }
 
@@ -243,8 +243,8 @@ Triangle AIVisionTargetting::GetCenterTriangle() {
 }
 
 double AIVisionTargetting::GetPowercellOffsetInIntakeCam() {
-    int px_per_inch = 40;
-    int x_intake_center = 185;
+    uint8_t px_per_inch = 40;
+    uint8_t x_intake_center = 185;
     double xCoord = frc::SmartDashboard::GetNumber("AI: IntakeOffsetX", 0);
     
     double xError = x_intake_center - xCoord;

@@ -22,7 +22,6 @@
 #include "subsystems/Ultrasonic.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Shooter.h"
-#include "subsystems/Climber.h"
 #include "subsystems/Limelight.h"
 
 #include "utilities/InteractTextFiles.h"
@@ -50,7 +49,6 @@ class RobotContainer {
   static std::shared_ptr<Ultrasonic> ultrasonic;
   static std::shared_ptr<Intake> intake;
   static std::shared_ptr<Shooter> shooter;
-  static std::shared_ptr<Climber> climber;
   static std::shared_ptr<Limelight> limelight;
   static std::shared_ptr<InteractTextFiles> interactTextFiles;
 

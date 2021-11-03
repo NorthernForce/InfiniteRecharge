@@ -73,7 +73,6 @@ void Navigation::TotalInchesTravelled() {
 
 //Calculates coordinate position with sensors
 void Navigation::ResetPosition() {
-    ////TODO: Change angle variable
   xPosition = RobotContainer::aiComms->GetNumber(RobotContainer::aiComms->distanceToPcFromCam_label) * NavXScaling * abs(cos(robotAngleDifference));
   yPosition = RobotContainer::ultrasonic->GetDistance();
 }

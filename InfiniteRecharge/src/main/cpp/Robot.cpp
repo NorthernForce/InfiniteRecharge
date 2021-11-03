@@ -55,7 +55,6 @@ void Robot::RobotInit() {
     */
 
 
-    ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
     /*
     autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
     autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());

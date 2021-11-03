@@ -21,9 +21,10 @@ Shooter::Shooter() {
     //pidController.reset(new rev::CANPIDController(shooterTalon->rev::CANSparkMax::GetPIDController()));
     shooterShifter = std::make_unique<frc::Solenoid>(Constants::PCMCanBusID, 1);
     timer = std::make_unique<frc::Timer>();
-    sexyLimitSwitch = std::make_unique<frc::DigitalInput>(Constants::MotorIDs::susan);
+    sexyLimitSwitch = std::make_unique<frc::DigitalInput>(Constants::DigitalPort::susanLimitSwitch);
     hoodLimitSwitch = std::make_unique<frc::DigitalInput>(Constants::MotorIDs::hood);
 
+    hoodSpark->SetOpenLoopRampRate(0.5);
     ConfigureShooterTalon();
 }
 
@@ -124,7 +125,8 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    susanSpark->Set(speed);  
+    std::cout << "running set susan speed\n";
+    susanSpark->Set(speed);
 }
 
 void Shooter::UpdateLazySusanAngle() {

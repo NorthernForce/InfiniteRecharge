@@ -16,7 +16,10 @@ void HoodUp::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void HoodUp::Execute() {
-  RobotContainer::shooter->SetHoodSpeed(-.8);
+  if (RobotContainer::shooter->GetHoodLimitSwitch())
+        RobotContainer::shooter->SetHoodSpeed(0);
+    else
+        RobotContainer::shooter->SetHoodSpeed(-.8);
 }
 
 // Called once the command ends or is interrupted.

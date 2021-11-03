@@ -17,7 +17,10 @@ void HoodDown::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void HoodDown::Execute() {
-  RobotContainer::shooter->SetHoodSpeed(.8);
+    if (RobotContainer::shooter->GetHoodLimitSwitch())
+        RobotContainer::shooter->SetHoodSpeed(0);
+    else
+        RobotContainer::shooter->SetHoodSpeed(.8);
 }
 
 // Called once the command ends or is interrupted.
@@ -27,5 +30,5 @@ void HoodDown::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool HoodDown::IsFinished() {
-  return false;
+    return false;
 }
