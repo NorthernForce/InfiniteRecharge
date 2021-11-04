@@ -54,10 +54,10 @@ bool Shooter::GetHoodLimitSwitch() {
 }
 
 void Shooter::ConfigureShooterTalon(double ramp) {
-    // shooterTalon->ConfigSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
-    // shooterTalon->ConfigStatorCurrentLimit(StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
     shooterTalon->ConfigFactoryDefault();
     shooterTalon->SetNeutralMode(NeutralMode::Coast);
+    // shooterTalon->ConfigSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
+    // shooterTalon->ConfigStatorCurrentLimit(StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
     
     /* Config neutral deadband to be the smallest possible */
     shooterTalon->ConfigNeutralDeadband(0.001);
@@ -73,6 +73,8 @@ void Shooter::ConfigureShooterTalon(double ramp) {
     shooterTalon->Config_kP(pidLoopIdx, p, timeoutMs);
     shooterTalon->Config_kI(pidLoopIdx, i, timeoutMs);
     shooterTalon->Config_kD(pidLoopIdx, d, timeoutMs);
+
+    shooterTalon->ConfigOpenloopRamp(5);
 }
 
 void Shooter::IdleShooter() {}
@@ -90,7 +92,7 @@ void Shooter::SetHoodSpeed(double speed){
 }
 
 int Shooter::GetCurrentRPM() {
-    double velocity = shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
+    double velocity = -shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
     int rpm = (velocity * msTorpm) / cpr;
     return rpm;
 }
@@ -98,7 +100,7 @@ int Shooter::GetCurrentRPM() {
 void Shooter::SetCurrentRPMTo(int rpm) {
     double velocity = (rpm * cpr) / msTorpm;
     std::cout << "velocity: " + std::to_string(velocity) + "\n";
-    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, velocity);
+    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -velocity);
 }
 
 int Shooter::GetTargetRPM() {
@@ -122,16 +124,16 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    std::cout << "running set susan speed\n";
+    if (abs(lazySusanAngle) > 85)
     susanSpark->Set(speed);
 }
 
 void Shooter::UpdateLazySusanAngle() {
     double encoder;
-    // if (GetLazySusanLimitSwitch())
-    //     encoder = 0;
-    // else
-    encoder = susanSpark->GetEncoder().GetPosition();
+    if (GetLazySusanLimitSwitch())
+        encoder = 0;
+    else
+        encoder = susanSpark->GetEncoder().GetPosition();
 
     double shaftWheelCirc = (Constants::pi * 0.28125);
     int lazySusanCirc = (Constants::pi * 3.5);

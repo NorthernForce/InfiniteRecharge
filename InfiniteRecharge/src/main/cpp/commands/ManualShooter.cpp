@@ -19,7 +19,7 @@ void ManualShooter::Initialize() {}
 void ManualShooter::Execute() {
   //double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
   //if (rtTriggerAxis > 0.5) {
-    RobotContainer::shooter->SetRawSpeed(-0.5);
+    RobotContainer::shooter->SetRawSpeed(1);
 
     //if (RobotContainer::shooter->GetError() < -100)
         //RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
