@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include "RobotContainer.h"
 #include <frc2/command/CommandScheduler.h>
+#include <tuple>
 
 double TurnToAngle::distanceToTargetAngle;
 bool TurnToAngle::isTurnFinished;
@@ -24,16 +25,27 @@ TurnToAngle::TurnToAngle(double target) {
             AddRequirements(RobotContainer::drivetrain.get());
         else if (!(cmd->GetName() == "MoveToCoordinate"))
             AddRequirements(RobotContainer::drivetrain.get());
+        //delete cmd;
     }
     catch (...) {}
 
-    frc::SmartDashboard::PutNumber("TurnToAngle: P", pValue);
-    frc::SmartDashboard::PutNumber("TurnToAngle: I", iValue);
-    frc::SmartDashboard::PutNumber("TurnToAngle: D", dValue);
-
+    SetDashboardDefaultPIDs();
     if (target != 0)
         SetAngle(target);
     isTurnFinished = false;
+}
+
+void TurnToAngle::SetDashboardDefaultPIDs() {
+    int i = 0;
+    for (char c : {'P', 'I', 'D'}) {
+        std::string dashboardKey = ("TurnToAngle: " + std::to_string(c));
+        if (frc::SmartDashboard::GetNumber(dashboardKey, 0) == 0)
+            frc::SmartDashboard::PutNumber(dashboardKey, defaultPIDs[i]);
+        i++;
+    }
+    p = defaultPIDs[0];
+    i = defaultPIDs[1];
+    d = defaultPIDs[2];
 }
 
 void TurnToAngle::SetAngle(double angle) {
@@ -52,10 +64,6 @@ void TurnToAngle::Initialize() {
 void TurnToAngle::Execute() {
     currentAngle = RobotContainer::imu->GetRotation();
     frc::SmartDashboard::PutNumber("Robot angle: ", currentAngle);
-
-    double p = frc::SmartDashboard::GetNumber("TurnToAngle: P", pValue);
-    double i = frc::SmartDashboard::GetNumber("TurnToAngle: I", iValue);
-    double d = frc::SmartDashboard::GetNumber("TurnToAngle: D", dValue);
 
     double rotRaw = GetRotationFromPID(p,i,d);
     double rotMult = GetRotationMultiplier();

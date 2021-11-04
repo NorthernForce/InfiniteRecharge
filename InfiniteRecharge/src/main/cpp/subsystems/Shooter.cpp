@@ -54,34 +54,31 @@ bool Shooter::GetHoodLimitSwitch() {
 }
 
 void Shooter::ConfigureShooterTalon(double ramp) {
+    // shooterTalon->ConfigSupplyCurrentLimit(SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
+    // shooterTalon->ConfigStatorCurrentLimit(StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
     shooterTalon->ConfigFactoryDefault();
-    shooterTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::CTRE_MagEncoder_Absolute, 0, 0);
-    shooterTalon->ConfigSupplyCurrentLimit(ctre::phoenix::motorcontrol::SupplyCurrentLimitConfiguration(true, currentLimit, (currentLimit-5), 30));
-    shooterTalon->ConfigStatorCurrentLimit(ctre::phoenix::motorcontrol::StatorCurrentLimitConfiguration(true, secondaryCurrentLimit, (secondaryCurrentLimit-5), 30));
+    shooterTalon->SetNeutralMode(NeutralMode::Coast);
+    
+    /* Config neutral deadband to be the smallest possible */
+    shooterTalon->ConfigNeutralDeadband(0.001);
 
-    shooterTalon->Config_kP(0, 0);
-    shooterTalon->Config_kI(0, 0);
-    shooterTalon->Config_kD(0, 0);
-    shooterTalon->Config_kF(0, 0);
+    shooterTalon->ConfigSelectedFeedbackSensor(FeedbackDevice::IntegratedSensor, pidLoopIdx, timeoutMs);
+                                        
+    shooterTalon->ConfigNominalOutputForward(0, timeoutMs);
+    shooterTalon->ConfigNominalOutputReverse(0, timeoutMs);
+    shooterTalon->ConfigPeakOutputForward(1, timeoutMs);
+    shooterTalon->ConfigPeakOutputReverse(-1, timeoutMs);
 
-    shooterTalon->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
-    shooterTalon->SetSensorPhase(true);
-
-    shooterTalon->Set(ctre::phoenix::motorcontrol::ControlMode::Velocity, 0);
-    // shooterTalon->ConfigOpenloopRamp(ramp);
-    // shooterTalon->ConfigClosedloopRamp(ramp);
+    shooterTalon->Config_kF(pidLoopIdx, ff, timeoutMs);
+    shooterTalon->Config_kP(pidLoopIdx, p, timeoutMs);
+    shooterTalon->Config_kI(pidLoopIdx, i, timeoutMs);
+    shooterTalon->Config_kD(pidLoopIdx, d, timeoutMs);
 }
 
-void Shooter::IdleShooter() {
-    /*
-    pidController->SetReference(targetRPM * idlePercentage, rev::ControlType::kVelocity);
-    */
-}
+void Shooter::IdleShooter() {}
 
 void Shooter::Shoot() {
-    double velocity = (targetRPM * cpr) / msTorpm;
-    std::cout << "velocity: " + std::to_string(velocity) + "\n";
-    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, velocity);
+    SetCurrentRPMTo(targetRPM);
 }
 
 void Shooter::SetRawSpeed(double speed) {
@@ -99,9 +96,9 @@ int Shooter::GetCurrentRPM() {
 }
 
 void Shooter::SetCurrentRPMTo(int rpm) {
-    /*
-    pidController->SetReference(rpm, rev::ControlType::kVelocity);
-    */
+    double velocity = (rpm * cpr) / msTorpm;
+    std::cout << "velocity: " + std::to_string(velocity) + "\n";
+    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, velocity);
 }
 
 int Shooter::GetTargetRPM() {

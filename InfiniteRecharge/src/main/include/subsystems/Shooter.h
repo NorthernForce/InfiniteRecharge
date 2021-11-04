@@ -52,26 +52,28 @@ class Shooter : public frc2::SubsystemBase {
   std::unique_ptr<frc::Solenoid> shooterShifter;
   std::unique_ptr<frc::Timer> timer;
 
-  double p = 0.4;
-  double i = 0;
-  double d = 0.3; 
-  double ff = 1.0;
-  const int maxI = 100;
+  double p = 0.1;
+  double i = 0.001;
+  double d = 5; 
+  double ff = (1023/20660);
+  const int maxI = 300;
   const double maxOutput = 1;
   const double minOutput = -1;
+  uint8_t timeoutMs = 30;
+  uint8_t pidLoopIdx = 0; //default
   
   double error;
   double integral;
   double derivative;
   double errorPrior;
 
-  int currentLimit = 60;
-  int secondaryCurrentLimit = 80;
+  uint8_t currentLimit = 60;
+  uint8_t secondaryCurrentLimit = 80;
   static double rampRate;
-  int targetRPM = 2200;
+  uint16_t targetRPM = 3500;
   double idlePercentage = 0.6; //units are decimals from 0-1
-  int cpr = 2048; // encoder count per rotations
-  int msTorpm = 600;
+  uint16_t cpr = 2048; // encoder count per rotations
+  uint16_t msTorpm = 600;
 
   std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
   std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;

@@ -9,6 +9,7 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
+#include <vector>
 
 /**
  * An example command.
@@ -43,15 +44,17 @@ class TurnToAngle
   double GetRotationFromPID(double p, double i, double d);
   double GetRotationMultiplier();
   double LimitMaxTurnSpeed(double currentSpeed);
+  void SetDashboardDefaultPIDs();
 
   double rawTargetAngle = 0;
   static double distanceToTargetAngle;
   double currentAngle;
   int defaultPeriodInMs = 20;
 
-  const double pValue = 1.6;
-  const double iValue = 0.05;
-  const double dValue = 0;
+  const std::vector<double> defaultPIDs = {1.6, 0.05, 0};
+  double p;
+  double i;
+  double d;
 
   const double maxTurnSpeed = 0.4;
   const double minError = 0.025;

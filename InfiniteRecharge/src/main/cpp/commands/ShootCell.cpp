@@ -22,8 +22,9 @@ void ShootCell::Execute() {
   std::cout << "error: " << RobotContainer::shooter->GetError() << '\n';
   std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
   std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
+
   RobotContainer::shooter->Shoot();
-  if (RobotContainer::shooter->GetError() < 100) {
+  if (abs(RobotContainer::shooter->GetError()) < 100) {
     RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
   }
   else {
