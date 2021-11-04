@@ -23,7 +23,7 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  auto driveControls = RobotContainer::oi->GetDriveControls();
+  driveControls = RobotContainer::oi->GetDriveControls();
   speed = driveControls.first;
   rotation = driveControls.second;
   RobotContainer::drivetrain->Drive(speed, rotation);

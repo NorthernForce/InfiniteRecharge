@@ -58,9 +58,13 @@ class OI {
     const static auto rightHand = frc::XboxController::JoystickHand::kRightHand;
 
  private:
-    double GetDriveSpeedMultiplier();
+    void UpdateDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
+    double speed;
+    double rotation;
+    double driveSpeedMultiplier;
     frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, uint8_t btn);
     frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, uint8_t axis, double threshold=0.5);
     frc2::POVButton SimplePOV(std::shared_ptr<frc::GenericHID> controller, uint16_t degrees);
+    uint8_t cyclesSinceDriveSpeedCheck;
 };

@@ -74,15 +74,18 @@ void OI::MapControllerButtons() {
 }
 
 std::pair<double, double> OI::GetDriveControls() {
-  double speed = driverController->GetY(frc::XboxController::JoystickHand::kLeftHand);
-  double rotation = driverController->GetX(frc::XboxController::JoystickHand::kRightHand) *-1;
-  double multiplier = GetDriveSpeedMultiplier();
-  return std::make_pair(speed*multiplier, rotation*multiplier);
+    speed = driverController->GetY(frc::XboxController::JoystickHand::kLeftHand);
+    rotation = driverController->GetX(frc::XboxController::JoystickHand::kRightHand) *-1;
+    if (cyclesSinceDriveSpeedCheck % 50 == 0) {
+        UpdateDriveSpeedMultiplier();
+        cyclesSinceDriveSpeedCheck = 0;
+    }
+    cyclesSinceDriveSpeedCheck++;
+    return std::make_pair(speed*driveSpeedMultiplier, rotation*driveSpeedMultiplier);
 }
 
-double OI::GetDriveSpeedMultiplier() {
-    double speedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
-    return CheckAndLimitValue(speedMultiplier);
+void OI::UpdateDriveSpeedMultiplier() {
+    driveSpeedMultiplier = frc::SmartDashboard::GetNumber("Drive Speed:", 1.0);
 }
 
 void OI::SetControllerRumble(frc::XboxController *controller, double value, bool lightly) {
