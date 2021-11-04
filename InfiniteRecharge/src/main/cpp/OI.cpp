@@ -76,11 +76,7 @@ void OI::MapControllerButtons() {
 std::pair<double, double> OI::GetDriveControls() {
     speed = driverController->GetY(frc::XboxController::JoystickHand::kLeftHand);
     rotation = driverController->GetX(frc::XboxController::JoystickHand::kRightHand) *-1;
-    if (cyclesSinceDriveSpeedCheck % 50 == 0) {
-        UpdateDriveSpeedMultiplier();
-        cyclesSinceDriveSpeedCheck = 0;
-    }
-    cyclesSinceDriveSpeedCheck++;
+    UpdateDriveSpeedMultiplier();
     return std::make_pair(speed*driveSpeedMultiplier, rotation*driveSpeedMultiplier);
 }
 

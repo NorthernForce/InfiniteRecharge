@@ -75,6 +75,7 @@ void Shooter::ConfigureShooterTalon(double ramp) {
     shooterTalon->Config_kD(pidLoopIdx, d, timeoutMs);
 
     shooterTalon->ConfigOpenloopRamp(5);
+    shooterTalon->SetInverted(false);
 }
 
 void Shooter::IdleShooter() {}
@@ -84,7 +85,7 @@ void Shooter::Shoot() {
 }
 
 void Shooter::SetRawSpeed(double speed) {
-    shooterTalon->Set(speed);
+    shooterTalon->Set(-speed);
 }
 
 void Shooter::SetHoodSpeed(double speed){
@@ -92,7 +93,7 @@ void Shooter::SetHoodSpeed(double speed){
 }
 
 int Shooter::GetCurrentRPM() {
-    double velocity = -shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
+    double velocity = shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
     int rpm = (velocity * msTorpm) / cpr;
     return rpm;
 }
@@ -100,7 +101,7 @@ int Shooter::GetCurrentRPM() {
 void Shooter::SetCurrentRPMTo(int rpm) {
     double velocity = (rpm * cpr) / msTorpm;
     std::cout << "velocity: " + std::to_string(velocity) + "\n";
-    shooterTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -velocity);
+    shooterTalon->Set(TalonFXControlMode::Velocity, velocity);
 }
 
 int Shooter::GetTargetRPM() {
@@ -124,16 +125,16 @@ void Shooter::ShooterDown() {
 }
 
 void Shooter::SetSusanSpeed(double speed) {
-    if (abs(lazySusanAngle) > 85)
-    susanSpark->Set(speed);
+    // if (abs(lazySusanAngle) > 85)
+        susanSpark->Set(speed);
 }
 
 void Shooter::UpdateLazySusanAngle() {
     double encoder;
-    if (GetLazySusanLimitSwitch())
-        encoder = 0;
-    else
-        encoder = susanSpark->GetEncoder().GetPosition();
+    // if (GetLazySusanLimitSwitch())
+    //     encoder = 0;
+    // else
+    encoder = susanSpark->GetEncoder().GetPosition();
 
     double shaftWheelCirc = (Constants::pi * 0.28125);
     int lazySusanCirc = (Constants::pi * 3.5);
