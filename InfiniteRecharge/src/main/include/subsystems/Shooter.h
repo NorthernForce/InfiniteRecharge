@@ -70,7 +70,7 @@ class Shooter : public frc2::SubsystemBase {
   uint8_t currentLimit = 60;
   uint8_t secondaryCurrentLimit = 80;
   static double rampRate;
-  uint16_t targetRPM = 3500;
+  uint16_t targetRPM = 4000;
   double idlePercentage = 0.6; //units are decimals from 0-1
   uint16_t cpr = 2048; // encoder count per rotations
   uint16_t msTorpm = 600;
