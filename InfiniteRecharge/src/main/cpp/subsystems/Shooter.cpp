@@ -75,7 +75,7 @@ void Shooter::ConfigureShooterTalon(double ramp) {
     shooterTalon->Config_kD(pidLoopIdx, d, timeoutMs);
 
     shooterTalon->ConfigOpenloopRamp(5);
-    shooterTalon->SetInverted(false);
+    shooterTalon->SetInverted(true);
 }
 
 void Shooter::IdleShooter() {}
@@ -93,7 +93,7 @@ void Shooter::SetHoodSpeed(double speed){
 }
 
 int Shooter::GetCurrentRPM() {
-    double velocity = shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
+    double velocity = -shooterTalon->GetSensorCollection().GetIntegratedSensorVelocity();
     int rpm = (velocity * msTorpm) / cpr;
     return rpm;
 }

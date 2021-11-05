@@ -23,26 +23,25 @@ void ShootCell::Execute() {
   std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
   std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
 
-  RobotContainer::shooter->Shoot();
-
-  if (abs(RobotContainer::shooter->GetError()) < 50) {
-    RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
-  }
-  else {
-    if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
-      RobotContainer::intake->RunConveyor();
-    else {
-      conveyorBackwardsCounter++;
-      if (conveyorBackwardsCounter >= 10) {
-        RobotContainer::intake->StopConveyor();
-        conveyorBackwardsCounter = 0;
-      }
+    RobotContainer::shooter->Shoot();
+    if (abs(RobotContainer::shooter->GetError()) < 100) {
+        RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
     }
-  }
+    else {
+        if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
+            RobotContainer::intake->RunConveyor();
+        else {
+            conveyorBackwardsCounter++;
+            if (conveyorBackwardsCounter >= 10) {
+                RobotContainer::intake->StopConveyor();
+                conveyorBackwardsCounter = 0;
+            }
+        }
+    }
 }
 
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetCurrentRPMTo(0); // consider adding an idle state where the rpm is lower than the target but not off
+  RobotContainer::shooter->SetRawSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off
   RobotContainer::intake->StopConveyor(); 
 }
 
