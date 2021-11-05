@@ -29,6 +29,5 @@ class ShootCell
   bool IsFinished() override;
 
  private:
-  int conveyorBackwardsCounter = 0;
   const double conveyorShooterSpeed = -0.5;
 };

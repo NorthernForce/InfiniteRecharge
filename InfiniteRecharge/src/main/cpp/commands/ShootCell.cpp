@@ -18,11 +18,6 @@ ShootCell::ShootCell() {
 void ShootCell::Initialize() {}
 
 void ShootCell::Execute() {
-  // outputs for tuning  
-  std::cout << "error: " << RobotContainer::shooter->GetError() << '\n';
-  std::cout << "targetRPM: " << RobotContainer::shooter->GetTargetRPM() << '\n';
-  std::cout << "currentRPM: " << RobotContainer::shooter->GetCurrentRPM() << '\n';
-
     RobotContainer::shooter->Shoot();
     if (abs(RobotContainer::shooter->GetError()) < 100) {
         RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
@@ -30,18 +25,13 @@ void ShootCell::Execute() {
     else {
         if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
             RobotContainer::intake->RunConveyor();
-        else {
-            conveyorBackwardsCounter++;
-            if (conveyorBackwardsCounter >= 10) {
-                RobotContainer::intake->StopConveyor();
-                conveyorBackwardsCounter = 0;
-            }
-        }
+        else
+            RobotContainer::intake->StopConveyor();
     }
 }
 
 void ShootCell::End(bool interrupted) {
-  RobotContainer::shooter->SetRawSpeed(0); // consider adding an idle state where the rpm is lower than the target but not off
+  RobotContainer::shooter->SetRawSpeed(0);
   RobotContainer::intake->StopConveyor(); 
 }
 
