@@ -121,7 +121,11 @@ void Robot::AutonomousInit() {
 
     RobotContainer::imu->ZeroRotation();
 
-    RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals('l'), RobotContainer::drivetrain->GetMotorVals('r'));
+    // RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals('l'), RobotContainer::drivetrain->GetMotorVals('r'));
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new SimpleCrossAutoLine()
+    }));
+  
 
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),

@@ -57,7 +57,7 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::lt_bumper).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     SimpleButton(driverController, Xbox::rt_bumper).WhileHeld(new IntakePowerCell);
     SimpleButton(driverController, Xbox::A_button).WhileHeld(new MoveToLimelight);
-    SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
+    // SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     
@@ -65,8 +65,8 @@ void OI::MapControllerButtons() {
     SimpleButton(manipulatorController, Xbox::B_button).WhileHeld(new LazySusanRight);
     SimpleButton(manipulatorController, Xbox::A_button).WhileHeld(new IntakeDown);
     SimpleButton(manipulatorController, Xbox::Y_button).WhileHeld(new IntakeUp);
-    SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualShooter);
-    SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualIntake);
+    SimpleButton(manipulatorController, Xbox::rt_bumper).WhileHeld(new ManualIntake);
+    SimpleAxis(manipulatorController, XboxAxis::rt_trigger).WhileHeld(new ManualShooter);
     SimpleButton(manipulatorController, Xbox::lt_bumper).WhileHeld(new ManualConveyor);
     SimpleAxis(manipulatorController, XboxAxis::lt_Y, 0.5).WhileHeld(new HoodUp);
     SimpleAxis(manipulatorController, XboxAxis::lt_Y, -0.5).WhileHeld(new HoodDown);
