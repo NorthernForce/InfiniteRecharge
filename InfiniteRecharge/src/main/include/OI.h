@@ -4,9 +4,9 @@
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/button/Button.h>
+#include <frc2/command/button/POVButton.h>
 
 #include "commands/TurnToAngle.h"
-#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 
 class OI {
@@ -15,7 +15,7 @@ class OI {
     void InitControllers();
     void MapControllerButtons();
     void MapControllerButtonsNew();
-    frc::SendableChooser<frc2::Command*> DisplayAutonomousChooser();
+    //frc::SendableChooser<frc2::Command*> DisplayAutonomousChooser();
     std::pair<double, double> GetDriveControls();
     void SetControllerRumble(frc::XboxController *controller, double value=0, bool lightly=false);
 
@@ -58,9 +58,13 @@ class OI {
     const static auto rightHand = frc::XboxController::JoystickHand::kRightHand;
 
  private:
-    double GetDriveSpeedMultiplier();
+    void UpdateDriveSpeedMultiplier();
     double CheckAndLimitValue(double value, double upperLimit=1, double lowerLimit=0);
-    frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, int btn);
-    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, int axis, double threshold=0.5);
-    frc2::Button SimplePOV(std::shared_ptr<frc::GenericHID> controller, int degrees);
+    double speed;
+    double rotation;
+    double driveSpeedMultiplier;
+    frc2::Button SimpleButton(std::shared_ptr<frc::GenericHID> controller, uint8_t btn);
+    frc2::Button SimpleAxis(std::shared_ptr<frc::GenericHID> controller, uint8_t axis, double threshold=0.5);
+    frc2::POVButton SimplePOV(std::shared_ptr<frc::GenericHID> controller, uint16_t degrees);
+    uint8_t cyclesSinceDriveSpeedCheck;
 };

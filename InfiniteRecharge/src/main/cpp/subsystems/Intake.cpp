@@ -39,7 +39,8 @@ void Intake::InitBallPositionSensors() {
         new frc::DigitalInput(Constants::DigitalPort::ballPort2),
         new frc::DigitalInput(Constants::DigitalPort::ballPort3),
         new frc::DigitalInput(Constants::DigitalPort::ballPort4),
-        new frc::DigitalInput(Constants::DigitalPort::ballPort5)
+        //commented because there is no longer a 5th position
+      //  new frc::DigitalInput(Constants::DigitalPort::ballPort5)
     };
 }
 
@@ -51,14 +52,6 @@ void Intake::Periodic() {
 
     //Outputs position states to driver station
     InventoryPowerCells();
-    for(int i=0; i<6; i++) {
-        if (GetInventory(i) == StorageState::PRESENT) {
-           std::cout << "Position " << i <<  " full\n";
-        }
-        else {
-           std::cout << "Position " << i <<  " empty\n";
-        }
-    }
 }
 
 void Intake::TakeInPowerCell() {
@@ -110,7 +103,6 @@ void Intake::SetArmDown() {
 }
 
 //runs arm motors regardless of arm state
-////TODO: Block until Camera is safe
 void Intake::SetArm(double speed) {
     armSpark->Set(speed);
     std::cout << "Arm Position" << GetArmPosition() << '\n';
@@ -125,8 +117,9 @@ ArmState Intake::GetArmState() {
 }
 
 void Intake::RunConveyor() {
-    //runs conveyor at faster speeds until position 4 or 5  is reached
-    if (GetInventory(4) == StorageState::PRESENT || GetInventory(5) == StorageState::PRESENT) {
+    //runs conveyor at faster speeds until position 3 or 4  is reached
+    //changed from 4 or 5
+    if (GetInventory(3) == StorageState::PRESENT || GetInventory(4) == StorageState::PRESENT) {
         primaryConveyorSpark->Set(-0.3);
     }
     else {
@@ -135,8 +128,9 @@ void Intake::RunConveyor() {
 }
 
 void Intake::ConveyorSetSpeed(double speed) {
-    // runs conveyor faster until position 4 is full
-    if (GetInventory(4) == StorageState::PRESENT || GetInventory(5) == StorageState::PRESENT) {
+    // runs conveyor faster until position 3 is full
+    //changed from 4
+    if (GetInventory(3) == StorageState::PRESENT || GetInventory(4) == StorageState::PRESENT) {
         primaryConveyorSpark->Set(speed);
     }
     else {
@@ -159,6 +153,7 @@ double Intake::GetConveyerSpeed() {
     return sparkSpeed;
 }
 
+//didn't modify any of this code
 bool Intake::TrevinIntake() {
     bool stop;
     if (GetInventory(5) == StorageState::PRESENT) {
@@ -219,7 +214,8 @@ void Intake::StopConveyor() {
 
 //cycles through positions to get storage states
 void Intake::InventoryPowerCells() {
-    for(int pos=0; pos<6; pos++) {
+    //changed for loop from <6
+    for(int pos=0; pos<5; pos++) {
         if (ballPosition[pos]->Get() == ballDetected)
             powerCellPosition[pos] = StorageState::PRESENT;
         else
@@ -233,8 +229,9 @@ StorageState Intake::GetInventory(int position) {
 }
 
 bool Intake::IsConveyorEmpty() {
-    for (int pos=0; pos<6; pos++) {
-        if (GetInventory(pos) == Intake::StorageState::PRESENT)
+    //changed for loop from <6
+    for (int pos=0; pos<5; pos++) {
+        if (GetInventory(pos) == StorageState::PRESENT)
             return false;
     }
     return true;
@@ -243,7 +240,8 @@ bool Intake::IsConveyorEmpty() {
 //Return the First Position in the Conveyor Storage that is empty (no PC).
 int Intake::GetFirstEmptyPosition() {
     int position = noEmptyPositionFound;
-    for (int i = 1; i < 6; i++) {
+    //changed for loop from <6
+    for (int i = 1; i < 5; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             position = i;
             break;
@@ -254,7 +252,8 @@ int Intake::GetFirstEmptyPosition() {
 
 int Intake::LowestFullPosition() {
     int position = noFullPositionFound;
-    for (int i = 1; i < 6; i++) {
+    //changed for loop from <6
+    for (int i = 1; i < 5; i++) {
         if (Intake::GetInventory(i) == StorageState::EMPTY) {
             continue;
         }

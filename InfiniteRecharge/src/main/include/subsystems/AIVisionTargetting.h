@@ -21,7 +21,7 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     void Periodic();
     bool CheckForTarget(Target type=Target::Powercell);
     Target CheckTargetType();
-    int TimeSinceTargetRegisteredInMillis();
+    uint32_t TimeSinceTargetRegisteredInMillis();
     bool IsTargetLocked();
     std::pair<double, double> GetFieldCoordinatesOfTarget();
     double GetRobotDistToTarget();
@@ -30,7 +30,7 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     char GetSideOfIntakeWithTargetFromMainCam();
     char GetSideOfIntakeWithTargetFromIntakeCam();
     double GetCameraDistToTargetFromArea(int area);
-    int GetArea();
+    uint32_t GetArea();
     double GetHeightOfTriangle(Triangle t, double base);
     double GetPowercellOffsetInIntakeCam();
 
@@ -53,9 +53,9 @@ class AIVisionTargetting : public frc2::SubsystemBase {
     std::unique_ptr<TriangleCalculator> calculator;
 
     double camAngleOffset;
-    int servoToRobotCenterAngleOffset = 90;
+    uint8_t servoToRobotCenterAngleOffset = 90;
     double pcOffsetInCam;
 
-    int loopCyclesSinceTargetRegistered;
+    uint32_t loopCyclesSinceTargetRegistered;
     bool targetHasBeenRegistered;
 };

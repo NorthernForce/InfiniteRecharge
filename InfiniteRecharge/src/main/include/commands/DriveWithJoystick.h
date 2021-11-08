@@ -27,4 +27,5 @@ class DriveWithJoystick
   void ShiftIfEligible(bool isEligible);
   double speed;
   double rotation;
+  std::pair<double, double> driveControls;
 };

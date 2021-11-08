@@ -14,6 +14,7 @@
 class Drivetrain : public frc2::SubsystemBase {
  public:
   Drivetrain();
+  void RecordMotorPos();
   void SetInvertedFollowers();
   void ConfigureAllControllers();
   void Drive(double speed, double rotation);
@@ -28,15 +29,24 @@ class Drivetrain : public frc2::SubsystemBase {
   void SimpleDriveWithEncoder(double desiredEncoder);
   void SetEncoderPosition(double position);
   int GetSpeedInInchesPerSecond();
+  void WriteLeftMotorPos(std::string fileName);
+  void WriteRightMotorPos(std::string fileName);
+  void PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals);
+  std::vector<double> GetMotorVals(char side);
 
   static std::shared_ptr<rev::CANSparkMax> leftPrimarySpark;
   static std::shared_ptr<rev::CANSparkMax> rightPrimarySpark;
   static std::shared_ptr<frc::DifferentialDrive> robotDrive;
 
+  std::vector<double> leftMotorPos;
+  std::vector<double> rightMotorPos;
+
   bool continueDrive;
+  bool hasDriven;
   int currentEncoder;
   int prevEncoder;
   const int loopCyclesInOneSecond = 50;
+
 
  private:
   void setPID();

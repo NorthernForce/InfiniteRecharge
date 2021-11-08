@@ -56,6 +56,7 @@ class MoveToCoordinate
 
   double angleError;
   double totalAngleError;
+  double origAngleToFinal;
   double distanceError;
   double totalDistanceError;
   double previousDistanceError;

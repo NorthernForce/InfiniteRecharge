@@ -22,7 +22,7 @@ void IntakePowerCell::Initialize() {
   emptyPosition = RobotContainer::intake->GetFirstEmptyPosition();
   conveyorBackwardsCounter = 0;
   rumbleCounter = 0;
-  fiveReached = false;
+  fourReached = false; //changed from fiveReached
   emptyPositionTriggered = false;
   oneTriggered = false;
   badIntake = false;
@@ -30,9 +30,8 @@ void IntakePowerCell::Initialize() {
 }
 
 //***************************************************************************
-////TODO: NEED to check if Pos. 5 is empty before starting Intake!!
+////TODO: NEED to check if Pos. 4 is empty before starting Intake!!
 //****************************************************************************
-// Called repeatedly when this Command is scheduled to run
 void IntakePowerCell::Execute() {
   
   std::cout << "Empty Position is " << emptyPosition <<  "\n";
@@ -48,27 +47,11 @@ void IntakePowerCell::Execute() {
     std::cout << "Empty Position " << emptyPosition <<  " empty\n";
   }
 
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
+  //changed from 5 to 4
+  if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::PRESENT) {
     RobotContainer::intake->StopConveyor();
   }
 
-/*
-  //stops conveyor when power cell has cleared pos 0
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT && conveyorBackwardsCounter <= 2 && fiveReached == false) {
-
-    //controls how long conveyor goes backward for
-    if (conveyorBackwardsCounter >= backwardCountLimit) {
-      RobotContainer::intake->StopConveyor();
-      //conveyorBackwardsCounter = 0;
-    }
-
-    //move conveyor backward to try and brake faster 
-    if (conveyorBackwardsCounter == 0) {
-      RobotContainer::intake->ConveyorSetSpeed(conveyorBackwardSpeed);
-    }
-    conveyorBackwardsCounter++;
-  } 
-*/
   else {
    
     //run conveyor and intake to take in power cell
@@ -78,13 +61,13 @@ void IntakePowerCell::Execute() {
     }
 
   }
-  //tag to keep the conveyor from oscillating at five
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::PRESENT) {
-    fiveReached = true;
+  //tag to keep the conveyor from oscillating at four (changed from 5)
+  if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::PRESENT) {
+    fourReached = true; //changed from fiveReached
   }
 
-  //makes it so the counter will only be reset if the ball is no longer in 5
-  if (RobotContainer::intake->GetInventory(5) == Intake::StorageState::EMPTY) {
+  //makes it so the counter will only be reset if the ball is no longer in 4 (changed from 5)
+  if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY) {
     conveyorBackwardsCounter = 0;
   }
 

@@ -9,7 +9,7 @@
 #include "RobotContainer.h"
 #include "Constants.h"
 
-int CameraMount::sweepPassCount;
+uint32_t CameraMount::sweepPassCount;
 
 CameraMount::CameraMount() {
     panServo = std::make_shared<frc::Servo>(Constants::MotorIDs::panServoPWM);
@@ -21,7 +21,7 @@ CameraMount::CameraMount() {
 void CameraMount::Init() {
     currentPan = 90;
     currentTilt = 0;
-    previousPan = 90;
+    CameraMount::previousPan = 90;
     previousTilt = 0;
 }
 
@@ -37,7 +37,7 @@ int CameraMount::GetServoAngleToTarget() {
 }
 
 void CameraMount::SmartSweep() {
-    int millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
+    uint32_t millisSinceTargetRegistered = RobotContainer::aiVisionTargetting->TimeSinceTargetRegisteredInMillis();
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
 
     if (millisSinceTargetRegistered >= 1250) {
@@ -106,7 +106,7 @@ int CameraMount::GetCurrentPan() {
 }
 
 int CameraMount::GetPreviousPan() {
-    return previousPan;
+    return CameraMount::previousPan;
 }
 
 int CameraMount::GetAvgOfRecentPans() {
@@ -127,7 +127,7 @@ int CameraMount::GetPreviousTilt() {
 }
 
 void CameraMount::Pan(int degrees) {
-    previousPan = currentPan;
+    CameraMount::previousPan = currentPan;
     currentPan = degrees;
     panServo->SetAngle(degrees);
 }

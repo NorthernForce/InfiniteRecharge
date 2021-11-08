@@ -14,43 +14,58 @@ AutoBallSeek::AutoBallSeek() {
 }
 
 void AutoBallSeek::Initialize() {
+    RobotContainer::cameraMount->ResumeSweep();
+    RobotContainer::aiComms->SwitchCameraToGimbal();
     turnToTarget->EnableTurningMode();
 }
 
 void AutoBallSeek::Execute() {
-    frc::SmartDashboard::PutBoolean("hasDriven", hasDriven);
+    if (driveHasBeenScheduled && !moveToCoordinate->IsScheduled()) {
+        moveToCoordinate->Cancel();
+        hasDriven = true;
+    }
+
+    currentEncoder = RobotContainer::drivetrain->GetEncoderRotations().first;
+
     if (turnToTarget->HasRobotTurned() && !hasDriven) {
         RobotContainer::cameraMount->PauseSweep();
+        RobotContainer::cameraMount->Pan(90);
         turnToTarget->DisableTurningMode();
         turnToTarget->Cancel();
         SetDistanceToTargetAndDrive();
     }
-    else if (hasDriven) {
-        if (!turnToAngle->IsScheduled() && !turnToAngleHasBeenScheduled) {
-            double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTargetIntakeCam();
-            if (angleToTarget != 0) {
-                turnToAngle->SetAngle(angleToTarget);
-                turnToAngle->Schedule();
-                turnToAngleHasBeenScheduled = true;
-            }
-        }
-        if (!intakeHasBeenScheduled && turnToAngleHasBeenScheduled) {
-            intakeBall->Schedule();
-            intakeHasBeenScheduled = true;
-        }
-    }
+    // else if (hasDriven) {
+    //     intakeHasBeenScheduled = true;
+    //     intakeBall->Schedule();
+    //     // if (!turnToAngle->IsScheduled() && !turnToAngleHasBeenScheduled) {
+    //     //     double angleToTarget = RobotContainer::aiVisionTargetting->GetRobotAngleToTargetIntakeCam();
+    //     //     if (angleToTarget != 0) {
+    //     //         turnToAngle->SetAngle(angleToTarget);
+    //     //         turnToAngle->Schedule();
+    //     //         turnToAngleHasBeenScheduled = true;
+    //     //     }
+    //     // }
+    //     if (!intakeHasBeenScheduled) {
+    //         intakeBall->Schedule();
+    //         intakeHasBeenScheduled = true;
+    //     }
+    // }
+
+    previousEncoder = currentEncoder;
 }
 
 void AutoBallSeek::SetDistanceToTargetAndDrive() {
     inchesToTarget = turnToTarget->GetDistanceToTargetBeforeTurn();
     if (inchesToTarget != 0 && !distHasBeenSet) {
         std::pair<double, double> targetCoords = RobotContainer::aiVisionTargetting->GetFieldCoordinatesOfTarget();
-        RobotContainer::aiComms->SwitchCameraToIntake();
+        //RobotContainer::aiComms->SwitchCameraToIntake();
         moveToCoordinate.reset(new MoveToCoordinate(targetCoords.first, targetCoords.second, 0.145));
         distHasBeenSet = true;
     }
-    if (distHasBeenSet)
+    if (distHasBeenSet) {
         DriveToTargetAndStop();
+        intakeBall->Schedule();
+    }  
 }
 
 void AutoBallSeek::DriveToTargetAndStop() {

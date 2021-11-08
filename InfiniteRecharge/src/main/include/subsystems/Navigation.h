@@ -24,7 +24,7 @@ class Navigation : public frc2::SubsystemBase {
   double AngleToPoint(double xPos, double yPos);
 
  private:
-    int smartdashCycles;
+    uint32_t smartdashCycles;
     double robotStartingAngle;
     double robotCurrentAngle;
     double robotAngleDifference = robotStartingAngle - robotCurrentAngle;

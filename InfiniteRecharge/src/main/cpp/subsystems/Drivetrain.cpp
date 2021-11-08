@@ -167,3 +167,50 @@ int Drivetrain::GetSpeedInInchesPerSecond() {
         
     return convertToInchesMultiplier * changeInPosition * loopCyclesInOneSecond;
 }
+
+void Drivetrain::RecordMotorPos(){
+    leftMotorPos.push_back(GetEncoderRotations().first);
+    rightMotorPos.push_back(GetEncoderRotations().second);
+}
+
+void Drivetrain::WriteLeftMotorPos(std::string fileName) {
+    RobotContainer::interactTextFiles->WriteTextFile(leftMotorPos, fileName);
+}
+
+void Drivetrain::WriteRightMotorPos(std::string fileName) {
+    RobotContainer::interactTextFiles->WriteTextFile(rightMotorPos, fileName);
+}
+
+std::vector<double> Drivetrain::GetMotorVals(char side) {
+
+    std::vector<double> motorVals;
+
+    if (side == 'l'){
+        motorVals = RobotContainer::interactTextFiles->ReadTextFile("leftTest");
+        return motorVals;
+    } else if(side == 'r') {
+        motorVals = RobotContainer::interactTextFiles->ReadTextFile("rightTest");
+        return motorVals;
+    } else {
+        return motorVals;
+    }
+}
+
+void Drivetrain::PlayRecordedRun(std::vector<double> leftMotorVals, std::vector<double> rightMotorVals) {
+    
+    static unsigned i = 0;
+
+    for(; ((i < leftMotorVals.size()) && (i < rightMotorVals.size())); i++) {
+        while(leftMotorVals[i] > GetEncoderRotations().first) {
+            leftPrimarySpark->Set(.13);
+        }
+        while(rightMotorVals[i] > GetEncoderRotations().second) {
+            rightPrimarySpark->Set(.13);
+        }
+
+        if((rightMotorVals[i] <= GetEncoderRotations().second) && (leftMotorVals[i] <= GetEncoderRotations().first)) {
+            leftPrimarySpark->Set(0);
+            rightPrimarySpark->Set(0);
+        }
+    }
+}

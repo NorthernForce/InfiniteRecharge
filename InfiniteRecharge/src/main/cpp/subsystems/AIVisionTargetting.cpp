@@ -15,7 +15,7 @@
 
 using Target = AIVisionTargetting::Target;
 
-bool IsXInRange(unsigned x, unsigned low, unsigned high) {
+bool IsXInRange(uint32_t x, uint32_t low, uint32_t high) {
     return ((x - low) <= (high - low));
 }
 
@@ -51,16 +51,16 @@ Target AIVisionTargetting::CheckTargetType() {
         return Target::None;
 }
 
-int AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
-    int multiplier = 20;
-    int millis = loopCyclesSinceTargetRegistered * multiplier;
+uint32_t AIVisionTargetting::TimeSinceTargetRegisteredInMillis() {
+    uint8_t multiplier = 20;
+    uint32_t millis = loopCyclesSinceTargetRegistered * multiplier;
     return millis;
 }
 
 bool AIVisionTargetting::IsTargetLocked() {
     bool isTargetFound = RobotContainer::aiComms->IsTargetFound();
-    int currentPan = RobotContainer::cameraMount->GetCurrentPan();
-    int avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
+    uint8_t currentPan = RobotContainer::cameraMount->GetCurrentPan();
+    uint8_t avgOfRecentPans = RobotContainer::cameraMount->GetAvgOfRecentPans();
 
     return (IsXInRange(currentPan, avgOfRecentPans-3, avgOfRecentPans+3) and isTargetFound);
 }
@@ -96,8 +96,10 @@ double AIVisionTargetting::GetRobotAngleToTarget() {
 
     try {
         calculatedAngle = finalTriangle.GetAngleB();
-        if (sideOfIntakeWithTarget == 'l')
-            calculatedAngle *= -1;
+        if (sideOfIntakeWithTarget == 'r')
+            calculatedAngle *= -0.9;
+        else
+            calculatedAngle *= 1.2;
     }
     catch (const TriangleCalculator::BaseException& e) {
         std::cout << e.what() << '\n';
@@ -112,8 +114,9 @@ double AIVisionTargetting::GetRobotAngleToTargetIntakeCam() {
 
     try {
         calculatedAngle = intakeTriangle.GetAngleB();
-        if (sideOfIntakeWithTarget == 'l')
+        if (sideOfIntakeWithTarget == 'l') {
             calculatedAngle *= -1;
+        }
         else if (sideOfIntakeWithTarget == 'c')
             calculatedAngle = 0;
     }
@@ -125,12 +128,12 @@ double AIVisionTargetting::GetRobotAngleToTargetIntakeCam() {
 }
 
 char AIVisionTargetting::GetSideOfIntakeWithTargetFromMainCam() {
-    double angFromIntakeCenter = GetMainTriangle().GetAngleA();
+    double angFromIntakeCenter = GetMainTriangle().GetAngleA() + pcOffsetInCam;
     double servoPan = RobotContainer::cameraMount->GetCurrentPan();
 
-    if (angFromIntakeCenter < 90 || servoPan > 90)
+    if (angFromIntakeCenter > 90)
         return 'r';
-    else if (angFromIntakeCenter > 90)
+    else if (angFromIntakeCenter < 90 || servoPan > 90)
         return 'l';
     else
         return 'c';
@@ -155,7 +158,7 @@ double AIVisionTargetting::GetCameraDistToTargetFromArea(int area) {
     return dist;
 }
 
-int AIVisionTargetting::GetArea() {
+uint32_t AIVisionTargetting::GetArea() {
     return RobotContainer::aiComms->GetNumber("target area");
 }
 
@@ -222,9 +225,9 @@ Triangle AIVisionTargetting::GetLeftFinalTriangle() {
 Triangle AIVisionTargetting::GetFinalTriangle() {
     char turnDir = GetSideOfIntakeWithTargetFromMainCam();
         
-    if (turnDir == 'l')
+    if (turnDir == 'r')
         finalTriangle = GetLeftFinalTriangle();
-    else if (turnDir == 'r')
+    else if (turnDir == 'l')
         finalTriangle = GetRightFinalTriangle();
 
     return finalTriangle;
@@ -240,8 +243,8 @@ Triangle AIVisionTargetting::GetCenterTriangle() {
 }
 
 double AIVisionTargetting::GetPowercellOffsetInIntakeCam() {
-    int px_per_inch = 40;
-    int x_intake_center = 185;
+    uint8_t px_per_inch = 40;
+    uint8_t x_intake_center = 185;
     double xCoord = frc::SmartDashboard::GetNumber("AI: IntakeOffsetX", 0);
     
     double xError = x_intake_center - xCoord;

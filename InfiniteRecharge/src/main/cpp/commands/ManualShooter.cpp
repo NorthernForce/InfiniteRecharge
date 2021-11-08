@@ -17,12 +17,22 @@ void ManualShooter::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualShooter::Execute() {
-  RobotContainer::shooter->SetRawSpeed(0.5);
+  //double rtTriggerAxis = RobotContainer::oi->driverController->GetRawAxis(OI::XboxAxis::rt_trigger);
+  //if (rtTriggerAxis > 0.5) {
+    RobotContainer::shooter->SetRawSpeed(1);
+
+    //if (RobotContainer::shooter->GetError() < -100)
+        //RobotContainer::intake->ConveyorSetSpeed(conveyorShooterSpeed);
+    //if (RobotContainer::intake->GetInventory(4) == Intake::StorageState::EMPTY)
+        RobotContainer::intake->ConveyorSetSpeed(-0.5);
+    std::cout << RobotContainer::shooter->GetCurrentRPM() << '\n';
+  //}
 }
 
 // Called once the command ends or is interrupted.
 void ManualShooter::End(bool interrupted) {
-  RobotContainer::shooter->SetRawSpeed(0.0);
+  RobotContainer::shooter->SetRawSpeed(0);
+  RobotContainer::intake->StopConveyor();
 }
 
 // Returns true when the command should end.

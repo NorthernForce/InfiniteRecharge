@@ -38,16 +38,16 @@ namespace Constants {
         const int driveRightFollower1 = 2;
         const int driveRightFollower2 = 4;
 
-        const int shooter = 8;
-        const int wackyWheel = 11; 
+        const int susan = 11;
+        const int hood = 7;
 
+        const int shooter = 8;
+        
         const int intake = 13;  
 
         const int intakeArm = 9;
         const int conveyor1 = 10;
         const int conveyor2 = 12;
-
-        const int climberArm = 7;
 
         const int panServoPWM = 7;
         const int tiltServoPWM = 8;
@@ -66,15 +66,17 @@ namespace Constants {
     }
 
     namespace DigitalPort { 
-        const int ballPort0 = 0; 
-        const int ballPort1 = 1;
-        const int ballPort2 = 2;
-        const int ballPort3 = 3;
-        const int ballPort4 = 4;
-        const int ballPort5 = 5;
+        const uint8_t ballPort0 = 0; 
+        const uint8_t ballPort1 = 1;
+        const uint8_t ballPort2 = 2;
+        const uint8_t ballPort3 = 3;
+        const uint8_t ballPort4 = 4;
+        const uint8_t ballPort5 = 5;
 
-        const int redRGB = 10;
-        const int greenRGB = 11;
-        const int blueRGB = 12;
+        const uint8_t susanLimitSwitch = 9;
+
+        const uint8_t redRGB = 10;
+        const uint8_t greenRGB = 11;
+        const uint8_t blueRGB = 12;
     }
 }

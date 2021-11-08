@@ -15,8 +15,6 @@
 #include "commands/TurnToAngle.h"
 #include "commands/MoveToLimelight.h"
 #include "commands/AutoDrive.h"
-#include "commands/autonomous/CrossAutoLine.h"
-#include "commands/autonomous/AutoShootCell.h"
 #include <thread>
 
 #include "RobotContainer.h"
@@ -55,7 +53,6 @@ class Robot : public frc::TimedRobot {
   //AutoDrive* autoDrive;
     std::shared_ptr<TurnToAngle> autoTurnToAngle;
     std::shared_ptr<SimpleCrossAutoLine> simpleCrossAutoLine;
-    std::shared_ptr<AutoShootCell> autoShootCell;
   //std::shared_ptr<CrossAutoLine> autoTestDrive;
   //ShootCell* autoShooter;
   //std::string chooserAutoSelected;

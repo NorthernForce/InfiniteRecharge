@@ -18,7 +18,6 @@
 #include "OI.h"
 
 #include "commands/InventoryPowerCells.h"
-#include "commands/autonomous/AutoShootCell.h"
 #include "commands/autonomous/SimpleCrossAutoLine.h"
 #include "subsystems/DriveShifter.h"
 #include "commands/AutoDrive.h"
@@ -27,11 +26,11 @@
 #include "commands/TurnToAngle.h"
 #include "commands/ShootCell.h"
 #include "commands/MoveToLimelight.h"
-#include "commands/autonomous/AutonomousBallSeek.h"
-#include "commands/autonomous/AutoBallSeek.h"
 #include "commands/autonomous/MoveToCoordinate.h"
 #include "commands/autonomous/MoveThroughCoordinateSet.h"
 #include "commands/TuneValue.h"
+#include "commands/TestServo.h"
+#include "commands/ParallelCommand.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc2/command/ParallelCommandGroup.h>
@@ -41,6 +40,7 @@ void Robot::RobotInit() {
     container = std::make_shared<RobotContainer>();
     logger = std::make_unique<Logger>();
 
+    /*
     frc::SmartDashboard::PutString("auto string input 1", "insert here");
     frc::SmartDashboard::PutString("auto 1 parameter", "");
     frc::SmartDashboard::PutString("auto string input 2", "insert here");
@@ -52,9 +52,9 @@ void Robot::RobotInit() {
     frc::SmartDashboard::PutString("auto string input 5", "insert here");
     frc::SmartDashboard::PutString("auto 5 parameter", "");
     frc::SmartDashboard::PutNumberArray("Coordinate Set", 0);
+    */
 
 
-    ////TODO: Fix the autonomous stuff because sendablechooser is annoying and I don't understand it
     /*
     autonomousChooser.SetDefaultOption("1) Cross auto line", new CrossAutoLine());
     autonomousChooser.AddOption("2) In front of goal", new InFrontOfGoal());
@@ -76,7 +76,7 @@ void Robot::RobotInit() {
 
     */
 
-    frc::CameraServer::GetInstance()->StartAutomaticCapture();
+    //frc::CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**
@@ -94,7 +94,11 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
-void Robot::DisabledInit() {}
+
+void Robot::DisabledInit() {
+//   RobotContainer::drivetrain->WriteLeftMotorPos("LeftTest");
+//   RobotContainer::drivetrain->WriteRightMotorPos("RightTest");
+}
 
 void Robot::DisabledPeriodic() {}
 
@@ -117,16 +121,21 @@ void Robot::AutonomousInit() {
 
     RobotContainer::imu->ZeroRotation();
 
+    // RobotContainer::drivetrain->PlayRecordedRun(RobotContainer::drivetrain->GetMotorVals('l'), RobotContainer::drivetrain->GetMotorVals('r'));
+    autoCommandScheduler.reset(new AutoCommandScheduler({
+        new SimpleCrossAutoLine()
+    }));
+  
+
     //   frc2::SequentialCommandGroup{
     //   TurnToAngle(90),
     //   SimpleCrossAutoLine(),
-    // };
+    // }
 
 
     // Aiden's stuff
     // autoTurnToAngle.reset(new TurnToAngle);
     //simpleCrossAutoLine.reset(new SimpleCrossAutoLine);
-    //autoShootCell.reset(new AutoShootCell);
 
     // RobotContainer::drivetrain->SetEncoderPosition(0);
     //autoTurnToAngle->SetAngle(90);
@@ -135,18 +144,23 @@ void Robot::AutonomousInit() {
     // isShooterFinished = false;
 
     // auto command scheduler init
-    // autoCommandScheduler.reset(new AutoCommandScheduler({
-        
-    //     // new MoveToCoordinate(72, 0, 0.145),
-    //     // new MoveToCoordinate(72, -72, 0.145),
-    //     // new MoveToCoordinate(0, 0, 0.145),
-    //     // new TurnToAngle(-RobotContainer::imu->GetRotation())
-    //     // new MoveThroughCoordinateSet()
-    //     // new TuneValue(0, {-36, 0, 0.145}, {0.2, 0, 0}, 0.1, 0.0001)
-    //     new AutoBallSeek
-    // }));
-    autoCommandScheduler.reset(new AutoCommandScheduler);
-    autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
+      //autoCommandScheduler.reset(new AutoCommandScheduler({       
+        //Path A-Galactic
+        //Red
+        //new MoveToCoordinate(15, 0),
+        //new ParallelCommand({
+            //new MoveToCoordinate(75, -30), new IntakePowerCell()
+        //}),
+        //new ParallelCommand({
+            //new MoveToCoordinate(135, -60), new IntakePowerCell()
+        //}),
+        //new ParallelCommand({
+            //new MoveToCoordinate(165, 30), new IntakePowerCell()
+        //}),
+        //new MoveToCoordinate(330, 0)
+    //}));
+    //autoCommandScheduler.reset(new AutoCommandScheduler);
+    //autoCommandScheduler->DashboardAuto({"Coordinate", "Turn"}, {"0, 36, 0.145", "30"});
 }
 
 void Robot::AutonomousPeriodic() {
@@ -166,7 +180,9 @@ void Robot::TeleopInit() {
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+//   RobotContainer::drivetrain->RecordMotorPos();
+}
 
 /**
  * This function is called periodically during test mode.

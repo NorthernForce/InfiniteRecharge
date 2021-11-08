@@ -11,16 +11,21 @@
 #include <rev/CANSparkMax.h>
 #include <frc/Solenoid.h>
 #include <frc/Timer.h>
+#include <ctre/Phoenix.h>
+#include <frc/DigitalInput.h>
 
 class Shooter : public frc2::SubsystemBase {
  public:
   Shooter();
   void Periodic();
-  void ConfigureSpark();
+  bool GetLazySusanLimitSwitch();
+  bool GetHoodLimitSwitch();
+  void ConfigureShooterTalon(double ramp=rampRate);
   void IdleShooter(); 
   double GetSpeedFromPID(double p, double i, double d);
   void Shoot();
   void SetRawSpeed(double speed);
+  void SetHoodSpeed(double speed);
   int GetCurrentRPM();
   void SetCurrentRPMTo(int rpm);
   int GetTargetRPM();
@@ -28,32 +33,51 @@ class Shooter : public frc2::SubsystemBase {
   int GetError();
   void ShooterUp();
   void ShooterDown();
+  void SetSusanSpeed(double speed);
+  void UpdateLazySusanAngle();
+  double GetLazySusanAngle();  
+  void CalibrateHood();
+  bool IsSusanSpeedWithinLimits(double speed);
+  double GetHoodAngle();
+  void UpdateHoodAngle();
 
   const bool shiftOn = true;
   const bool shiftOff = false;
 
  private:
-  std::shared_ptr<rev::CANSparkMax> shooterSpark;
-  std::shared_ptr<rev::CANPIDController> pidController;
-  std::shared_ptr<frc::Solenoid> shooterShifter;
-  std::shared_ptr<frc::Timer> timer;
+  std::unique_ptr<WPI_TalonFX> shooterTalon;
+  std::unique_ptr<rev::CANSparkMax> hoodSpark;
+  std::unique_ptr<rev::CANSparkMax> susanSpark;
+  std::unique_ptr<rev::CANPIDController> pidController;
+  std::unique_ptr<frc::Solenoid> shooterShifter;
+  std::unique_ptr<frc::Timer> timer;
 
-  double p = 0.4;
-  double i = 0;
-  double d = 0.3; 
-  double ff = 1.0;
-  const int maxI = 100;
+  double p = 0.1;
+  double i = 0.001;
+  double d = 5; 
+  double ff = (1023/20660);
+  const int maxI = 300;
   const double maxOutput = 1;
   const double minOutput = -1;
+  uint8_t timeoutMs = 30;
+  uint8_t pidLoopIdx = 0; //default
   
   double error;
   double integral;
   double derivative;
   double errorPrior;
 
-  int currentLimit = 60;
-  int secondaryCurrentLimit = 80;
-  const double rampRate = 0;
-  int targetRPM = 2200;
+  uint8_t currentLimit = 60;
+  uint8_t secondaryCurrentLimit = 80;
+  static double rampRate;
+  uint16_t targetRPM = 5500;
   double idlePercentage = 0.6; //units are decimals from 0-1
+  uint16_t cpr = 2048; // encoder count per rotations
+  uint16_t msTorpm = 600;
+
+  std::unique_ptr<frc::DigitalInput> hoodLimitSwitch;
+  std::unique_ptr<frc::DigitalInput> sexyLimitSwitch;
+  double lazySusanAngle;
+  double hoodAngle;
+  const double limitSwitchAngOffset = 0; ////TODO: update this value
 };
