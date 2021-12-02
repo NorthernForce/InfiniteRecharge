@@ -9,7 +9,6 @@
 
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
-#include "commands/TurnToAngle.h"
 #include "RobotContainer.h"
 
 /**
@@ -34,5 +33,4 @@ class MoveToLimelight
  private:
   double limeLightOffset;
   bool isTargetThere;
-  TurnToAngle* turnToLimelight;
 };

@@ -34,6 +34,7 @@
 #include "commands/LazySusanRight.h"
 #include "commands/HoodUp.h"
 #include "commands/HoodDown.h"
+#include "commands/ToggleLimelight.h"
 
 std::shared_ptr<frc::XboxController> OI::driverController;
 std::shared_ptr<frc::XboxController> OI::manipulatorController;
@@ -57,7 +58,7 @@ void OI::MapControllerButtons() {
     SimpleButton(driverController, Xbox::lt_bumper).WhenReleased(new ShiftGear(ShiftGear::Gear::High));
     SimpleButton(driverController, Xbox::rt_bumper).WhileHeld(new IntakePowerCell);
     SimpleButton(driverController, Xbox::A_button).WhileHeld(new MoveToLimelight);
-    // SimpleButton(driverController, Xbox::Y_button).WhileHeld(new TrevinIntake);
+    SimpleButton(driverController, Xbox::Y_button).WhenPressed(new ToggleLimelight);
     SimpleButton(driverController, Xbox::menu_button).WhileHeld(new ZeroRobotAngle);
     SimpleButton(driverController, Xbox::view_button).WhileHeld(new ZeroRobotPosition);
     

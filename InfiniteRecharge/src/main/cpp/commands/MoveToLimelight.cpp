@@ -9,6 +9,8 @@
 #include "commands/TurnToAngle.h"
 #include <frc2/command/Command.h>
 #include <frc2/command/ScheduleCommand.h>
+#include "ctre/Phoenix.h"
+#include "RobotContainer.h"
 #include <iostream>
 
 MoveToLimelight::MoveToLimelight() {
@@ -19,30 +21,34 @@ MoveToLimelight::MoveToLimelight() {
 // Called when the command is initially scheduled.
 void MoveToLimelight::Initialize() {
     RobotContainer::limelight->PutNumberToTable("ledMode", 3);
-    turnToLimelight = new TurnToAngle();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void MoveToLimelight::Execute() {
     limeLightOffset = RobotContainer::limelight->GetXOffset();
+    int limeLightOffsetI = (int) limeLightOffset;
     isTargetThere = RobotContainer::limelight->IsTargetThere();
 
     if (isTargetThere == true) {
-        if (!turnToLimelight->IsScheduled()) {
-            turnToLimelight->SetAngle(limeLightOffset);
-            turnToLimelight->Schedule();
+        if(limeLightOffset > 3) {
+                RobotContainer::shooter->SetSusanSpeed(0.4);
+        } else if (limeLightOffset <= -3) {
+                RobotContainer::shooter->SetSusanSpeed(-0.4);
+        } else {
+                RobotContainer::shooter->SetSusanSpeed(-0);
         }
+
     }
+    
 }
 
 // Called once the command ends or is interrupted.
 void MoveToLimelight::End(bool interrupted) {
-    RobotContainer::limelight->PutNumberToTable("ledMode", 1);
-    RobotContainer::drivetrain->Drive(0,0);
-    // clean up raw ptr to cmd or change it to a smart pointer to avoid memory leak(s)
-}
+    if(limeLightOffset >= -3 && limeLightOffset <= 3){
+        std::cout << "done";
+    //RobotContainer::limelight->PutNumberToTable("ledMode", 1); 
+    }
+    }
 
 // Returns true when the command should end.
-bool MoveToLimelight::IsFinished() {
-    return turnToLimelight->IsScheduled();
-}
+bool MoveToLimelight::IsFinished() {}
